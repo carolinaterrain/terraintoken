@@ -35,7 +35,7 @@ const Transparency = () => {
     {
       icon: TrendingUp,
       label: "Total Supply",
-      value: "1,000,000,000 TRN",
+      value: "10,431,918 TRN",
       description: "Fixed supply - no minting",
       copyable: false,
     },

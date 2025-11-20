@@ -12,6 +12,7 @@ import UploadProject from "./pages/UploadProject";
 import UploadTestimonial from "./pages/UploadTestimonial";
 import EarnTRN from "./pages/EarnTRN";
 import AdminDashboard from "./pages/AdminDashboard";
+import Whitepaper from "./pages/Whitepaper";
 import MobileNav from "@/components/MobileNav";
 import ExitIntent from "@/components/ExitIntent";
 import PWAPrompt from "@/components/PWAPrompt";
@@ -36,6 +37,7 @@ const AppContent = () => {
         <Route path="/upload-testimonial" element={<UploadTestimonial />} />
         <Route path="/earn-trn" element={<EarnTRN />} />
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/whitepaper" element={<Whitepaper />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <MobileNav />
