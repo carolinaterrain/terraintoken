@@ -29,6 +29,7 @@ const DesktopNav = () => {
     { id: "tokenomics", label: "Token Info" },
     { id: "contest", label: "Contest" },
     { id: "community", label: "Community" },
+    { id: "earn-trn", label: "Earn TRN", isRoute: true },
   ];
 
   return (

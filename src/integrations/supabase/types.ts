@@ -14,6 +14,80 @@ export type Database = {
   }
   public: {
     Tables: {
+      contest_entries: {
+        Row: {
+          contest_category: string
+          contest_week: string
+          created_at: string | null
+          goblin_endorsed: boolean | null
+          id: string
+          media_id: string | null
+          prize_won: number | null
+          user_wallet_address: string
+          votes: number | null
+        }
+        Insert: {
+          contest_category: string
+          contest_week: string
+          created_at?: string | null
+          goblin_endorsed?: boolean | null
+          id?: string
+          media_id?: string | null
+          prize_won?: number | null
+          user_wallet_address: string
+          votes?: number | null
+        }
+        Update: {
+          contest_category?: string
+          contest_week?: string
+          created_at?: string | null
+          goblin_endorsed?: boolean | null
+          id?: string
+          media_id?: string | null
+          prize_won?: number | null
+          user_wallet_address?: string
+          votes?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contest_entries_media_id_fkey"
+            columns: ["media_id"]
+            isOneToOne: false
+            referencedRelation: "project_media"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      daily_quests: {
+        Row: {
+          active: boolean | null
+          description: string
+          id: string
+          quest_date: string
+          quest_type: string
+          target_count: number | null
+          trn_reward: number
+        }
+        Insert: {
+          active?: boolean | null
+          description: string
+          id?: string
+          quest_date: string
+          quest_type: string
+          target_count?: number | null
+          trn_reward: number
+        }
+        Update: {
+          active?: boolean | null
+          description?: string
+          id?: string
+          quest_date?: string
+          quest_type?: string
+          target_count?: number | null
+          trn_reward?: number
+        }
+        Relationships: []
+      }
       meme_submissions: {
         Row: {
           caption: string | null
@@ -61,37 +135,58 @@ export type Database = {
       }
       project_media: {
         Row: {
+          ai_validation_score: number | null
           category: string
           created_at: string | null
+          data_consent: boolean | null
           description: string | null
+          goblin_grade: string | null
           id: string
           image_url: string
           is_featured: boolean | null
           location: string | null
+          shared_on_social: boolean | null
           sort_order: number | null
           title: string | null
+          trn_earned: number | null
+          user_wallet_address: string | null
+          validation_status: string | null
         }
         Insert: {
+          ai_validation_score?: number | null
           category: string
           created_at?: string | null
+          data_consent?: boolean | null
           description?: string | null
+          goblin_grade?: string | null
           id?: string
           image_url: string
           is_featured?: boolean | null
           location?: string | null
+          shared_on_social?: boolean | null
           sort_order?: number | null
           title?: string | null
+          trn_earned?: number | null
+          user_wallet_address?: string | null
+          validation_status?: string | null
         }
         Update: {
+          ai_validation_score?: number | null
           category?: string
           created_at?: string | null
+          data_consent?: boolean | null
           description?: string | null
+          goblin_grade?: string | null
           id?: string
           image_url?: string
           is_featured?: boolean | null
           location?: string | null
+          shared_on_social?: boolean | null
           sort_order?: number | null
           title?: string | null
+          trn_earned?: number | null
+          user_wallet_address?: string | null
+          validation_status?: string | null
         }
         Relationships: []
       }
@@ -134,6 +229,109 @@ export type Database = {
         }
         Relationships: []
       }
+      trn_rewards: {
+        Row: {
+          claimed_at: string | null
+          created_at: string | null
+          id: string
+          media_id: string | null
+          reward_metadata: Json | null
+          reward_type: string
+          transaction_status: string | null
+          trn_amount: number
+          user_wallet_address: string
+        }
+        Insert: {
+          claimed_at?: string | null
+          created_at?: string | null
+          id?: string
+          media_id?: string | null
+          reward_metadata?: Json | null
+          reward_type: string
+          transaction_status?: string | null
+          trn_amount: number
+          user_wallet_address: string
+        }
+        Update: {
+          claimed_at?: string | null
+          created_at?: string | null
+          id?: string
+          media_id?: string | null
+          reward_metadata?: Json | null
+          reward_type?: string
+          transaction_status?: string | null
+          trn_amount?: number
+          user_wallet_address?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trn_rewards_media_id_fkey"
+            columns: ["media_id"]
+            isOneToOne: false
+            referencedRelation: "project_media"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_achievements: {
+        Row: {
+          achievement_id: string
+          earned_at: string | null
+          id: string
+          trn_bonus: number
+          user_wallet_address: string
+        }
+        Insert: {
+          achievement_id: string
+          earned_at?: string | null
+          id?: string
+          trn_bonus: number
+          user_wallet_address: string
+        }
+        Update: {
+          achievement_id?: string
+          earned_at?: string | null
+          id?: string
+          trn_bonus?: number
+          user_wallet_address?: string
+        }
+        Relationships: []
+      }
+      user_quest_progress: {
+        Row: {
+          completed: boolean | null
+          completed_at: string | null
+          id: string
+          progress: number | null
+          quest_id: string | null
+          user_wallet_address: string
+        }
+        Insert: {
+          completed?: boolean | null
+          completed_at?: string | null
+          id?: string
+          progress?: number | null
+          quest_id?: string | null
+          user_wallet_address: string
+        }
+        Update: {
+          completed?: boolean | null
+          completed_at?: string | null
+          id?: string
+          progress?: number | null
+          quest_id?: string | null
+          user_wallet_address?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_quest_progress_quest_id_fkey"
+            columns: ["quest_id"]
+            isOneToOne: false
+            referencedRelation: "daily_quests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           id: string
@@ -152,9 +350,69 @@ export type Database = {
         }
         Relationships: []
       }
+      user_stats: {
+        Row: {
+          created_at: string | null
+          last_upload_date: string | null
+          reputation_score: number | null
+          streak_days: number | null
+          total_shares: number | null
+          total_trn_earned: number | null
+          total_uploads: number | null
+          total_validations: number | null
+          updated_at: string | null
+          user_wallet_address: string
+        }
+        Insert: {
+          created_at?: string | null
+          last_upload_date?: string | null
+          reputation_score?: number | null
+          streak_days?: number | null
+          total_shares?: number | null
+          total_trn_earned?: number | null
+          total_uploads?: number | null
+          total_validations?: number | null
+          updated_at?: string | null
+          user_wallet_address: string
+        }
+        Update: {
+          created_at?: string | null
+          last_upload_date?: string | null
+          reputation_score?: number | null
+          streak_days?: number | null
+          total_shares?: number | null
+          total_trn_earned?: number | null
+          total_uploads?: number | null
+          total_validations?: number | null
+          updated_at?: string | null
+          user_wallet_address?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      terrain_contributors_leaderboard: {
+        Row: {
+          badges_earned: number | null
+          rank: number | null
+          reputation_score: number | null
+          streak_days: number | null
+          total_trn_earned: number | null
+          total_uploads: number | null
+          total_validations: number | null
+          user_wallet_address: string | null
+        }
+        Relationships: []
+      }
+      weekly_contributors: {
+        Row: {
+          user_wallet_address: string | null
+          weekly_rank: number | null
+          weekly_trn_earned: number | null
+          weekly_uploads: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
