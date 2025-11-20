@@ -71,7 +71,7 @@ const Hero = () => {
   return (
     <section 
       id="hero"
-      className="relative h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-32 md:pt-40"
     >
       {/* Background Layers - Edge to Edge */}
       <div className="absolute inset-0 pointer-events-none">
@@ -95,7 +95,7 @@ const Hero = () => {
       </div>
 
       {/* Content - 50/50 Split Layout */}
-      <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10 h-full mt-14 md:mt-0">
+      <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10">
         
         {/* LEFT SIDE - TRN Coin with Glow */}
         <div className="flex items-center justify-center relative order-2 md:order-1">
