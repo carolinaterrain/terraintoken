@@ -193,3 +193,26 @@ All colors MUST be HSL.
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Performance optimizations */
+.reduce-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+.disable-parallax * {
+  transform: none !important;
+}
+
+/* Will-change for animated elements */
+.animate-float,
+.animate-bounce,
+.animate-pulse,
+.animate-spin {
+  will-change: transform;
+}
+
+.animate-disco {
+  will-change: filter;
+}

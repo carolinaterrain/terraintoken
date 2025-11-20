@@ -13,6 +13,7 @@ import MobileNav from "@/components/MobileNav";
 import ExitIntent from "@/components/ExitIntent";
 import PWAPrompt from "@/components/PWAPrompt";
 import GoodbyeWave from "@/components/GoodbyeWave";
+import PerformanceMonitor from "@/components/PerformanceMonitor";
 import { useEasterEggs } from "@/hooks/useEasterEggs";
 
 const queryClient = new QueryClient();
@@ -42,6 +43,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <PerformanceMonitor />
         <Toaster />
         <Sonner />
         {showLoading ? (

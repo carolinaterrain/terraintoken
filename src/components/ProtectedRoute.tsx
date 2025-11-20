@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -7,18 +7,27 @@ interface ProtectedRouteProps {
   children: ReactNode;
 }
 
-const ADMIN_PASSWORD = "erosionneverdies";
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "erosionneverdies";
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { toast } = useToast();
 
+  // Check for existing session on mount
+  useEffect(() => {
+    const sessionAuth = sessionStorage.getItem("goblin-cave-auth");
+    if (sessionAuth === "true") {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (password === ADMIN_PASSWORD) {
       setIsAuthenticated(true);
+      sessionStorage.setItem("goblin-cave-auth", "true");
       toast({
         title: "🔓 Welcome to the Goblin Cave!",
         description: "The sacred grounds are now open to you.",
@@ -33,8 +42,31 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     }
   };
 
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    sessionStorage.removeItem("goblin-cave-auth");
+    toast({
+      title: "🚪 Logged Out",
+      description: "Returning to the surface...",
+    });
+  };
+
   if (isAuthenticated) {
-    return <>{children}</>;
+    return (
+      <>
+        <div className="fixed top-4 right-4 z-50">
+          <Button
+            onClick={handleLogout}
+            variant="outline"
+            size="sm"
+            className="bg-background/80 backdrop-blur-sm"
+          >
+            🚪 Logout
+          </Button>
+        </div>
+        {children}
+      </>
+    );
   }
 
   return (

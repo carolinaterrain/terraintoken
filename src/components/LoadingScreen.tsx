@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 const loadingMessages = [
-  { text: "Eroding jealousy...", progress: 42 },
-  { text: "Summoning goblins...", progress: 69 },
-  { text: "Checking soil moisture...", progress: 420 },
+  { text: "Compacting soil...", progress: 42 },
+  { text: "Convincing worms...", progress: 69 },
+  { text: "Installing French drains...", progress: 220 },
+  { text: "Summoning goblins...", progress: 420 },
+  { text: "Eroding jealousy...", progress: 666 },
+  { text: "Checking soil moisture...", progress: 840 },
   { text: "Preparing memes...", progress: 100 },
 ];
 

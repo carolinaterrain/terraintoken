@@ -102,6 +102,10 @@ export default {
           "0%": { transform: "translateX(-100%)" },
           "100%": { transform: "translateX(100vw)" },
         },
+        "scroll-left": {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
         float: {
           "0%, 100%": { transform: "translateY(0px)" },
           "50%": { transform: "translateY(-20px)" },
@@ -134,6 +138,7 @@ export default {
         disco: "disco 2s linear infinite",
         dance: "dance 0.5s ease-in-out infinite",
         "slide-right": "slide-right 10s linear infinite",
+        "scroll-left": "scroll-left 40s linear infinite",
         float: "float 3s ease-in-out infinite",
         "fade-in-up": "fade-in-up 0.6s ease-out",
         "scale-in": "scale-in 0.4s ease-out",
