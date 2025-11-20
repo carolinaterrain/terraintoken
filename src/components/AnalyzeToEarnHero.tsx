@@ -131,11 +131,7 @@ const AnalyzeToEarnHero = () => {
             className="font-display font-semibold text-lg"
             asChild
           >
-            <a
-              href="https://terrainvision-ai.com/analyze"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href="/upload-project">
               🚀 Analyze Your Yard & Earn TRN
             </a>
           </Button>
