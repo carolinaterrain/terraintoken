@@ -1,13 +1,25 @@
-import { useState } from "react";
-import { Building2, Sparkles, ExternalLink, Shield, Award, Truck, Star } from "lucide-react";
+import { useState, useRef } from "react";
+import { Building2, Sparkles, ExternalLink, Shield, Award, Truck, Star, Play } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import confetti from "canvas-confetti";
 
 const RealWorldRoots = () => {
   const [clickCount, setClickCount] = useState(0);
+  const [videoPlayCount, setVideoPlayCount] = useState(0);
+  const [currentCaptionIndex, setCurrentCaptionIndex] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const { toast } = useToast();
+
+  const videoCaptions = [
+    "🎬 Watch the legends at work! Real crews, real 700-gallon beast trucks, real certified drainage glory! (The goblins filmed this themselves with tiny GoPros) ⛏️💚",
+    "That's right — while other meme coins are tweeting hype, our team is out there installing Unilock patios and French drains that'll outlast the next bull run 🌱🏗️",
+    "Most meme coins show you Lambos. We show you ACTUAL FRENCH DRAINS! 🌧️⛏️",
+    "While other projects are touching grass, we're INSTALLING IT! 🌱",
+    "This isn't a promo video — this is PROOF OF WORK! 💪",
+  ];
 
   const handleCarolinaTerrainClick = () => {
     const newCount = clickCount + 1;
@@ -20,6 +32,37 @@ const RealWorldRoots = () => {
         duration: 5000,
       });
       setTimeout(() => setClickCount(0), 1000);
+    }
+  };
+
+  const handleVideoPlay = () => {
+    const newPlayCount = videoPlayCount + 1;
+    setVideoPlayCount(newPlayCount);
+    setCurrentCaptionIndex((prev) => (prev + 1) % videoCaptions.length);
+
+    if (newPlayCount === 1) {
+      toast({
+        title: "🎉 The goblin approves of your curiosity!",
+        description: "Nice choice, Ground Crew member!",
+        duration: 3000,
+      });
+    } else if (newPlayCount === 3) {
+      toast({
+        title: "You're becoming drainage-pilled! Keep watching! 💚",
+        description: "The more you watch, the more certified you become!",
+        duration: 3000,
+      });
+    } else if (newPlayCount === 5) {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+      toast({
+        title: "🚰⛏️ HONORARY DRAINAGE INSPECTOR CERTIFIED! 🚰⛏️",
+        description: "You've watched this enough times to qualify for the crew! The goblins are doing a victory dance!",
+        duration: 5000,
+      });
     }
   };
 
@@ -55,18 +98,57 @@ const RealWorldRoots = () => {
 
         {/* Video Showcase */}
         <div className="mb-16 max-w-4xl mx-auto">
-          <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/20">
+          <div className="text-center mb-6">
+            <Badge variant="outline" className="text-sm px-4 py-2 border-primary/50 mb-3 animate-pulse">
+              <Play className="w-4 h-4 inline mr-2" />
+              WATCH ME!
+            </Badge>
+            <h3 className="text-2xl md:text-3xl font-bold mb-2">
+              🎬 The Moment You've Been Waiting For...
+            </h3>
+            <p className="text-muted-foreground">
+              Behold! The majestic Carolina Terrain crew in their natural habitat — 
+              installing French drains so good even the goblins are jealous! 🌧️⛏️
+            </p>
+          </div>
+          
+          <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/20 hover:border-primary/40 transition-all hover:scale-[1.02]">
             <video 
+              ref={videoRef}
               controls 
               className="w-full rounded-lg"
               poster="/carolina-terrain-work-1.png"
+              onPlay={handleVideoPlay}
             >
               <source src="/carolina-terrain-showcase.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
-            <p className="text-center text-sm text-muted-foreground mt-4">
-              Watch Carolina Terrain in action — real crews, real equipment, real results
+            <p className="text-center text-sm text-muted-foreground mt-4 animate-fade-in">
+              {videoCaptions[currentCaptionIndex]}
             </p>
+            {videoPlayCount > 0 && (
+              <p className="text-center text-xs text-primary mt-2">
+                👀 You've watched this {videoPlayCount} time{videoPlayCount !== 1 ? 's' : ''}! The goblins are impressed!
+              </p>
+            )}
+          </Card>
+
+          {/* Goblin Fact Card */}
+          <Card className="mt-6 p-6 bg-gradient-to-r from-primary/10 to-primary/5 border-primary/30">
+            <div className="flex items-start gap-4">
+              <div className="text-4xl">💡</div>
+              <div>
+                <h4 className="text-lg font-bold text-primary mb-2">Goblin Fun Fact:</h4>
+                <p className="text-sm text-foreground mb-2">
+                  Did you know? Carolina Terrain's custom 700-gallon pressure washing trailer can clean 
+                  an entire industrial park while the goblin takes a nap! That's what we call efficiency! 🚰✨
+                </p>
+                <p className="text-xs text-muted-foreground italic">
+                  (And yes, every French drain installed is one more reason this token has ACTUAL BACKING! 
+                  We're not just memeing, we're DRAINING! 🌧️)
+                </p>
+              </div>
+            </div>
           </Card>
         </div>
 
