@@ -15,8 +15,8 @@ const features = [
   },
   {
     icon: Brain,
-    title: "AI Integration",
-    description: "Unlock AI-powered terrain analysis and premium intelligence tools"
+    title: "Analyze-to-Earn (LIVE)",
+    description: "Upload terrain photos on TerrainVision AI. Get instant AI analysis. Earn TRN rewards. The future is here."
   },
   {
     icon: Bot,
@@ -46,8 +46,8 @@ const About = () => {
             What is <span className="text-primary">TRN</span>?
           </h2>
           <p className="font-body text-lg text-muted-foreground max-w-3xl mx-auto mb-3">
-            Terrain Token begins as a fun, community-driven meme coin but evolves into the world's 
-            first terrain-data reward ecosystem. Combining internet culture with cutting-edge technology.
+            Terrain Token <span className="text-primary font-semibold">has evolved</span> into the world's 
+            first terrain-data reward ecosystem. <span className="text-primary font-semibold">Right now, you can upload photos on TerrainVision AI and earn TRN tokens while training our AI.</span> No speculation. Just contribution.
           </p>
           <p className="font-body text-md text-primary italic max-w-3xl mx-auto">
             While DOGE tweets and SHIB hopes, TRN BUILDS. We're the evolution of meme coins — from hot air to HARD ASSETS.

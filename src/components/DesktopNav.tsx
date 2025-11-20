@@ -34,7 +34,7 @@ const DesktopNav = () => {
 
   return (
     <nav
-      className={`hidden md:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 animate-slide-in-down ${
+      className={`hidden md:block fixed top-12 left-0 right-0 z-50 transition-all duration-300 animate-slide-in-down ${
         scrolled
           ? "bg-background/80 backdrop-blur-xl border-b border-border shadow-lg"
           : "bg-transparent"
@@ -58,7 +58,13 @@ const DesktopNav = () => {
             {navItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => scrollToSection(item.id)}
+                onClick={() => {
+                  if (item.isRoute) {
+                    window.location.href = `/${item.id}`;
+                  } else {
+                    scrollToSection(item.id);
+                  }
+                }}
                 className={`px-4 py-2 text-sm font-medium transition-all relative ${
                   activeSection === item.id
                     ? "text-primary"

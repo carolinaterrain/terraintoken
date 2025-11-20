@@ -23,21 +23,42 @@ const Vision = () => {
               <h2 className="font-display text-3xl md:text-4xl font-bold">Our Vision</h2>
             </div>
             
+            <h3 className="font-display text-2xl font-bold mb-4 text-primary">
+              From Speculation to Contribution: The Meme Coin Revolution
+            </h3>
+            
             <p className="font-body text-lg text-muted-foreground leading-relaxed">
-              Terrain Token begins as a fun community-driven meme coin but evolves into the world's 
-              first terrain-data reward token. Users will earn <span className="text-primary font-semibold">TRN</span> for 
-              contributing real-world yard, drainage, erosion, and terrain data. 
+              Other meme coins ask you to <span className="font-semibold">HODL and hope</span>. We ask you to <span className="text-primary font-semibold">CONTRIBUTE and earn</span>.
             </p>
             
             <p className="font-body text-lg text-muted-foreground leading-relaxed mt-4">
-              <span className="text-primary font-semibold">TRN</span> will unlock AI-powered tools, 
-              premium analysis, and eventually a global terrain intelligence network. From memes to 
-              meaningful data — we're building the future of ground-level intelligence.
+              Every photo uploaded trains our AI. Every analysis improves our intelligence. Every contribution earns you <span className="text-primary font-semibold">TRN</span>.
             </p>
             
-            <p className="font-body text-md text-primary font-semibold italic leading-relaxed mt-6">
-              We're not here to compete with DOGE. We're here to REPLACE the entire concept of what a meme coin can be. 
-              From memeing to utility. From jokes to JOBS. From pumps to PUMPS (water pumps, that is). 🚰⛏️
+            <p className="font-body text-xl font-bold text-primary leading-relaxed mt-6">
+              This isn't a roadmap promise for 2026. This is LIVE, RIGHT NOW.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 mb-6">
+              <div className="p-4 rounded-lg bg-primary/5 border border-primary/20">
+                <p className="text-2xl mb-2">🏗️</p>
+                <p className="font-display font-semibold mb-1">For Landscaping</p>
+                <p className="text-sm text-muted-foreground">We're building the Wikipedia of terrain data</p>
+              </div>
+              <div className="p-4 rounded-lg bg-primary/5 border border-primary/20">
+                <p className="text-2xl mb-2">🤖</p>
+                <p className="font-display font-semibold mb-1">For AI</p>
+                <p className="text-sm text-muted-foreground">We're democratizing machine learning datasets</p>
+              </div>
+              <div className="p-4 rounded-lg bg-primary/5 border border-primary/20">
+                <p className="text-2xl mb-2">💎</p>
+                <p className="font-display font-semibold mb-1">For Crypto</p>
+                <p className="text-sm text-muted-foreground">We're proving meme coins can have REAL utility</p>
+              </div>
+            </div>
+            
+            <p className="font-body text-lg font-bold text-foreground leading-relaxed mt-6 p-4 bg-primary/10 rounded-lg border-l-4 border-primary">
+              We're not competing with DOGE or SHIB. We're creating an entirely new category: <span className="text-primary">Data Contribution Tokens</span>.
             </p>
           </div>
         </GlassCard>

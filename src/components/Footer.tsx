@@ -64,6 +64,36 @@ const Footer = () => {
           <p className="text-xs text-muted-foreground">
             Not financial advice. DYOR. Meme responsibly. 🌱
           </p>
+          <div className="flex items-center justify-center gap-6 mt-3">
+            <a 
+              href="/earn-trn" 
+              className="text-xs text-primary hover:underline font-medium"
+            >
+              Earn TRN Dashboard
+            </a>
+            <a 
+              href="https://terrainvision-ai.com" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-primary hover:underline font-medium"
+            >
+              TerrainVision AI
+            </a>
+            <a 
+              href="/upload-project" 
+              className="text-xs text-primary hover:underline font-medium"
+            >
+              Upload & Earn
+            </a>
+            <a 
+              href="https://terrainvision-ai.com/analyze" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-primary hover:underline font-medium"
+            >
+              Analyze Your Yard
+            </a>
+          </div>
         </div>
       </div>
     </footer>
