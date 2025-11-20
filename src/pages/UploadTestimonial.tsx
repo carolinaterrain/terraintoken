@@ -8,6 +8,15 @@ import { Label } from "@/components/ui/label";
 import { GlassCard } from "@/components/ui/glass-card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { z } from "zod";
+
+const testimonialSchema = z.object({
+  authorName: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
+  rating: z.number().int().min(1, "Rating must be at least 1").max(5, "Rating must be at most 5"),
+  reviewText: z.string().trim().min(10, "Review must be at least 10 characters").max(2000, "Review must be less than 2000 characters"),
+  location: z.string().trim().max(200, "Location must be less than 200 characters").optional(),
+  googleReviewUrl: z.string().trim().url("Invalid URL format").optional().or(z.literal("")),
+});
 
 const UploadTestimonial = () => {
   const navigate = useNavigate();
@@ -30,6 +39,26 @@ const UploadTestimonial = () => {
         variant: "destructive",
       });
       return;
+    }
+
+    // Validate inputs
+    try {
+      testimonialSchema.parse({
+        authorName,
+        rating,
+        reviewText,
+        location: location || undefined,
+        googleReviewUrl: googleReviewUrl || "",
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        toast({
+          title: "Validation Error",
+          description: error.errors[0].message,
+          variant: "destructive",
+        });
+        return;
+      }
     }
 
     setIsSubmitting(true);

@@ -12,6 +12,15 @@ serve(async (req) => {
   }
 
   try {
+    // Verify authentication
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Authentication required' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const { mediaId, walletAddress, dataConsent, category } = await req.json();
 
     console.log('Calculating TRN reward for:', { mediaId, walletAddress, category, dataConsent });
@@ -20,6 +29,39 @@ serve(async (req) => {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Validate the media exists and hasn't been rewarded yet
+    const { data: media, error: mediaError } = await supabase
+      .from('project_media')
+      .select('id, trn_earned, user_wallet_address')
+      .eq('id', mediaId)
+      .single();
+
+    if (mediaError || !media) {
+      console.error('Media not found:', mediaError);
+      return new Response(
+        JSON.stringify({ error: 'Media not found' }),
+        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Prevent duplicate rewards
+    if (media.trn_earned && media.trn_earned > 0) {
+      console.log('Media already rewarded:', mediaId);
+      return new Response(
+        JSON.stringify({ error: 'This media has already been rewarded' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Validate wallet address ownership (if provided)
+    if (walletAddress && media.user_wallet_address !== walletAddress) {
+      console.error('Wallet address mismatch');
+      return new Response(
+        JSON.stringify({ error: 'Wallet address does not match media owner' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
     let totalTRN = 10; // Base upload reward
     const rewards = [{ type: 'upload', amount: 10 }];

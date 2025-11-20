@@ -10,6 +10,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { GlassCard } from "@/components/ui/glass-card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { z } from "zod";
+
+const projectSchema = z.object({
+  title: z.string().trim().max(200, "Title must be less than 200 characters").optional(),
+  category: z.enum(['drainage', 'erosion', 'grading', 'retaining-wall', 'other'], {
+    errorMap: () => ({ message: "Please select a valid category" })
+  }),
+  location: z.string().trim().max(200, "Location must be less than 200 characters").optional(),
+  description: z.string().trim().max(2000, "Description must be less than 2000 characters").optional(),
+  walletAddress: z.string().trim().max(100, "Wallet address must be less than 100 characters").optional()
+    .refine((val) => !val || /^[A-Za-z0-9]+$/.test(val), "Invalid wallet address format"),
+});
 
 const UploadProject = () => {
   const navigate = useNavigate();
@@ -60,6 +72,46 @@ const UploadProject = () => {
       toast({
         title: "Missing Information",
         description: "Please upload an image and select a category.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate inputs
+    try {
+      projectSchema.parse({
+        title,
+        category,
+        location,
+        description,
+        walletAddress
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        toast({
+          title: "Validation Error",
+          description: error.errors[0].message,
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+
+    // Validate file type and size
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+    if (!allowedTypes.includes(imageFile.type)) {
+      toast({
+        title: "Invalid File Type",
+        description: "Please upload a PNG, JPG, or WebP image.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (imageFile.size > 10485760) {
+      toast({
+        title: "File Too Large",
+        description: "Image must be less than 10MB.",
         variant: "destructive",
       });
       return;
