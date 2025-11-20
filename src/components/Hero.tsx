@@ -119,33 +119,38 @@ const Hero = () => {
 
         {/* RIGHT SIDE - Goblin + Content Stack */}
         <div className="flex flex-col items-start justify-center gap-6 text-left order-1 md:order-2">
-          {/* Goblin Mascot with Blink */}
-          <div className="relative">
-            <img
-              src={terrainMascot}
-              alt="Terrain Goblin"
-              className="w-24 h-24 md:w-32 md:h-32 animate-blink cursor-pointer"
-              onClick={handleGoblinClick}
-              onMouseEnter={handleGoblinHover}
-            />
-            
-            {/* Speech Bubble */}
-            {showSpeechBubble && (
-              <div className="absolute -top-12 left-20 bg-card border border-primary rounded-lg px-3 py-2 text-sm whitespace-nowrap animate-fade-in-up shadow-glow">
-                {goblinPhrase}
-              </div>
-            )}
+          {/* Goblin + Title Row */}
+          <div className="flex items-center gap-4">
+            {/* Goblin Mascot */}
+            <div className="relative flex-shrink-0">
+              <img
+                src={terrainMascot}
+                alt="Terrain Goblin"
+                className="w-16 h-16 md:w-20 md:h-20 animate-blink cursor-pointer"
+                onClick={handleGoblinClick}
+                onMouseEnter={handleGoblinHover}
+              />
+              
+              {/* Speech Bubble */}
+              {showSpeechBubble && (
+                <div className="absolute -top-12 left-16 md:left-20 bg-card border border-primary rounded-lg px-3 py-2 text-sm whitespace-nowrap animate-fade-in-up shadow-glow z-10">
+                  {goblinPhrase}
+                </div>
+              )}
+            </div>
+
+            {/* Title */}
+            <div>
+              <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
+                TERRAIN <span className="text-primary">TOKEN</span>
+              </h1>
+            </div>
           </div>
 
-          {/* Main Title */}
-          <div>
-            <h1 className="font-display text-5xl md:text-7xl font-bold mb-2 leading-tight">
-              TERRAIN <span className="text-primary">TOKEN</span>
-            </h1>
-            <p className="font-display text-xl md:text-2xl text-muted-foreground">
-              Born From The Ground Down
-            </p>
-          </div>
+          {/* Subheading */}
+          <p className="font-display text-lg md:text-xl lg:text-2xl text-muted-foreground -mt-3">
+            Born From The Ground Down
+          </p>
 
           {/* Subtitle Tagline */}
           <p className="font-body text-base md:text-lg text-muted-foreground max-w-lg">
