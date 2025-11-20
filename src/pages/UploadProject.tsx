@@ -21,6 +21,12 @@ const UploadProject = () => {
   const [description, setDescription] = useState("");
   const [isFeatured, setIsFeatured] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [walletAddress, setWalletAddress] = useState("");
+  const [dataConsent, setDataConsent] = useState(false);
+  const [expectedTRN, setExpectedTRN] = useState(10);
+  const [earnedTRN, setEarnedTRN] = useState(0);
+  const [goblinMessage, setGoblinMessage] = useState("");
+  const [showRewardModal, setShowRewardModal] = useState(false);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
@@ -35,6 +41,15 @@ const UploadProject = () => {
         setImagePreview(URL.createObjectURL(file));
       }
     }
+  });
+
+  // Calculate expected TRN reward
+  useState(() => {
+    let reward = 10; // Base upload
+    if (dataConsent) reward += 50;
+    if (walletAddress) reward += 5;
+    if (category === 'erosion' || category === 'drainage') reward += 10;
+    setExpectedTRN(reward);
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -68,7 +83,7 @@ const UploadProject = () => {
         .getPublicUrl(fileName);
 
       // Insert into database
-      const { error: insertError } = await supabase
+      const { data: insertData, error: insertError } = await supabase
         .from('project_media')
         .insert({
           image_url: publicUrl,
@@ -77,26 +92,54 @@ const UploadProject = () => {
           location: location || null,
           description: description || null,
           is_featured: isFeatured,
-        });
+          user_wallet_address: walletAddress || null,
+          data_consent: dataConsent,
+        })
+        .select()
+        .single();
 
       if (insertError) throw insertError;
 
-      toast({
-        title: "Success!",
-        description: "Project uploaded successfully.",
-      });
+      // Calculate TRN rewards
+      if (walletAddress && insertData) {
+        const { data: rewardData } = await supabase.functions.invoke('calculate-trn-reward', {
+          body: { 
+            mediaId: insertData.id,
+            walletAddress,
+            dataConsent,
+            category
+          }
+        });
 
-      // Reset form
-      setImageFile(null);
-      setImagePreview("");
-      setTitle("");
-      setCategory("");
-      setLocation("");
-      setDescription("");
-      setIsFeatured(false);
+        if (rewardData) {
+          setEarnedTRN(rewardData.totalTRN);
+          setGoblinMessage(rewardData.goblinMessage);
+          setShowRewardModal(true);
+        }
+      }
 
-      // Navigate to home after delay
-      setTimeout(() => navigate("/"), 2000);
+      if (!walletAddress) {
+        toast({
+          title: "Success!",
+          description: "Project uploaded successfully.",
+        });
+      }
+
+      // Reset form (but keep modal open if rewards earned)
+      if (!showRewardModal) {
+        setImageFile(null);
+        setImagePreview("");
+        setTitle("");
+        setCategory("");
+        setLocation("");
+        setDescription("");
+        setIsFeatured(false);
+        setWalletAddress("");
+        setDataConsent(false);
+        
+        // Navigate to home after delay
+        setTimeout(() => navigate("/"), 2000);
+      }
     } catch (error) {
       console.error("Upload error:", error);
       toast({

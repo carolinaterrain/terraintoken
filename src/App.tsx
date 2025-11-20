@@ -9,6 +9,7 @@ import SubmitMeme from "./pages/SubmitMeme";
 import GoblinCave from "./pages/GoblinCave";
 import UploadProject from "./pages/UploadProject";
 import UploadTestimonial from "./pages/UploadTestimonial";
+import EarnTRN from "./pages/EarnTRN";
 import MobileNav from "@/components/MobileNav";
 import ExitIntent from "@/components/ExitIntent";
 import PWAPrompt from "@/components/PWAPrompt";
@@ -31,6 +32,7 @@ const AppContent = () => {
         <Route path="/goblin-cave" element={<GoblinCave />} />
         <Route path="/upload-project" element={<UploadProject />} />
         <Route path="/upload-testimonial" element={<UploadTestimonial />} />
+        <Route path="/earn-trn" element={<EarnTRN />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <MobileNav />
