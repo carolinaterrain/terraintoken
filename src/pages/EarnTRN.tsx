@@ -20,14 +20,14 @@ const EarnTRN = () => {
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-b from-background to-background/50">
-      <EarnHero />
-      <HowItWorks />
-      <DailyQuests />
-      <Leaderboard />
-      <MyRewardsDashboard />
-      <AchievementBadges />
-      <WeeklyContests />
-      <LegalDisclaimers />
+        <EarnHero />
+        <HowItWorks />
+        <DailyQuests />
+        <Leaderboard />
+        <MyRewardsDashboard />
+        <AchievementBadges />
+        <WeeklyContests />
+        <LegalDisclaimers />
       </div>
     </>
   );

@@ -58,9 +58,10 @@ export default function DailyQuests({ walletAddress }: { walletAddress?: string 
   }, [walletAddress]);
 
   return (
-    <section className="py-12">
-      <h3 className="font-display text-2xl font-bold mb-6">Daily Quests</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <section className="py-12 px-4">
+      <div className="container mx-auto max-w-4xl">
+        <h3 className="font-display text-2xl font-bold mb-6">Daily Quests</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {quests.map((quest) => {
           const Icon = questIcons[quest.quest_type as keyof typeof questIcons] || Upload;
           const userProgress = progress[quest.id];
@@ -101,6 +102,7 @@ export default function DailyQuests({ walletAddress }: { walletAddress?: string 
             </GlassCard>
           );
         })}
+        </div>
       </div>
     </section>
   );
