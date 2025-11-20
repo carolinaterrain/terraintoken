@@ -14,11 +14,11 @@ const RealWorldRoots = () => {
   const { toast } = useToast();
 
   const videoCaptions = [
-    "🎬 Watch the legends at work! Real crews, real 700-gallon beast trucks, real certified drainage glory! (The goblins filmed this themselves with tiny GoPros) ⛏️💚",
-    "That's right — while other meme coins are tweeting hype, our team is out there installing Unilock patios and French drains that'll outlast the next bull run 🌱🏗️",
-    "Most meme coins show you Lambos. We show you ACTUAL FRENCH DRAINS! 🌧️⛏️",
-    "While other projects are touching grass, we're INSTALLING IT! 🌱",
-    "This isn't a promo video — this is PROOF OF WORK! 💪",
+    "🎬 Behold! The official Terrain Token goblin doing its LEGENDARY victory dance over a French drain! This is what peak performance looks like! ⛏️💚",
+    "When your meme coin mascot has more moves than most crypto influencers 🕺✨ (And it's backed by actual drainage contractors!)",
+    "This goblin dances on certified French drains installed by Carolina Terrain! The vibes are immaculate! 🌧️⛏️",
+    "POV: You just realized this dancing goblin represents a token with REAL construction company backing 🤯💚",
+    "The only meme coin where the mascot's victory dance is powered by NDS-certified drainage energy! 🚰✨",
   ];
 
   const handleCarolinaTerrainClick = () => {
@@ -42,14 +42,14 @@ const RealWorldRoots = () => {
 
     if (newPlayCount === 1) {
       toast({
-        title: "🎉 The goblin approves of your curiosity!",
-        description: "Nice choice, Ground Crew member!",
+        title: "🎉 The goblin noticed you watching!",
+        description: "Those are some certified moves, aren't they? 💚",
         duration: 3000,
       });
     } else if (newPlayCount === 3) {
       toast({
-        title: "You're becoming drainage-pilled! Keep watching! 💚",
-        description: "The more you watch, the more certified you become!",
+        title: "You can't stop watching the goblin dance! 💚",
+        description: "Don't worry, nobody can resist those drainage-powered moves!",
         duration: 3000,
       });
     } else if (newPlayCount === 5) {
@@ -59,8 +59,8 @@ const RealWorldRoots = () => {
         origin: { y: 0.6 }
       });
       toast({
-        title: "🚰⛏️ HONORARY DRAINAGE INSPECTOR CERTIFIED! 🚰⛏️",
-        description: "You've watched this enough times to qualify for the crew! The goblins are doing a victory dance!",
+        title: "🕺⛏️ OFFICIAL GOBLIN DANCE CERTIFIED! 🕺⛏️",
+        description: "You've watched the goblin dance enough times to learn the moves! You're now part of the crew!",
         duration: 5000,
       });
     }
@@ -101,14 +101,14 @@ const RealWorldRoots = () => {
           <div className="text-center mb-6">
             <Badge variant="outline" className="text-sm px-4 py-2 border-primary/50 mb-3 animate-pulse">
               <Play className="w-4 h-4 inline mr-2" />
-              WATCH ME!
+              WATCH THE GOBLIN!
             </Badge>
             <h3 className="text-2xl md:text-3xl font-bold mb-2">
               🎬 The Moment You've Been Waiting For...
             </h3>
             <p className="text-muted-foreground">
-              Behold! The majestic Carolina Terrain crew in their natural habitat — 
-              installing French drains so good even the goblins are jealous! 🌧️⛏️
+              Witness the official Terrain Token goblin performing its legendary victory dance! 
+              Powered by real French drain energy and certified drainage vibes! 🌧️⛏️✨
             </p>
           </div>
           
