@@ -40,9 +40,12 @@ const About = () => {
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             What is <span className="text-primary">TRN</span>?
           </h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-3">
             Terrain Token begins as a fun, community-driven meme coin but evolves into the world's 
             first terrain-data reward ecosystem. Combining internet culture with cutting-edge technology.
+          </p>
+          <p className="text-md text-primary italic max-w-3xl mx-auto">
+            While DOGE tweets and SHIB hopes, TRN BUILDS. We're the evolution of meme coins — from hot air to HARD ASSETS.
           </p>
         </div>
         

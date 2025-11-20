@@ -1,10 +1,12 @@
 import { useState, useRef } from "react";
-import { Building2, Sparkles, ExternalLink, Shield, Award, Truck, Star, Play } from "lucide-react";
+import { Building2, Sparkles, ExternalLink, Shield, Award, Truck, Star, Play, Phone, Mail, MapPin, Globe, Video, Map, Droplets, Hammer, TreePine, Sparkle, Ruler, Building } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useToast } from "@/hooks/use-toast";
 import confetti from "canvas-confetti";
+import JobberEmbed from "./JobberEmbed";
 
 const RealWorldRoots = () => {
   const [clickCount, setClickCount] = useState(0);
@@ -67,12 +69,13 @@ const RealWorldRoots = () => {
   };
 
   const certifications = [
-    { icon: Shield, text: "Licensed NC Landscape Contractor" },
+    { icon: Shield, text: "Licensed NC Landscape Contractor (CL.1872)" },
     { icon: Award, text: "NDS Certified Property Drainage Contractor" },
     { icon: Award, text: "Keystone Certified Hardscape Contractor" },
     { icon: Shield, text: "SOX Erosion Control Certified" },
     { icon: Truck, text: "Custom 700-Gallon Pressure Washing Trailer" },
     { icon: Award, text: "Unilock Lifetime Warranty Projects" },
+    { icon: Sparkles, text: "Pike's Nursery Partner - Lifetime Plant Replacement" },
     { icon: Star, text: "125+ 5-Star Reviews" },
   ];
 
@@ -91,13 +94,50 @@ const RealWorldRoots = () => {
             Most meme coins are built on hot air. Terrain Token is built on top of a company 
             that installs French drains with a 700-gallon beast truck and lifetime Unilock warranties.
           </p>
-          <Badge variant="outline" className="text-lg px-6 py-2 border-primary/50">
-            Born from the ground down — and that ground is NDS-certified! 🌱⛏️💚
-          </Badge>
+          <p className="text-sm text-primary italic">
+            Born from the ground down — and that ground is NDS-certified, baby! 🌱⛏️💚
+          </p>
         </div>
 
-        {/* Video Showcase */}
-        <div className="mb-16 max-w-4xl mx-auto">
+        {/* Contact Info Card */}
+        <Card className="p-6 mb-12 bg-gradient-to-br from-primary/10 to-primary/5 border-primary/30">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <a href="tel:9802807638" className="flex items-center gap-3 p-4 rounded-lg bg-background/50 hover:bg-background transition-colors">
+              <Phone className="w-5 h-5 text-primary" />
+              <div>
+                <p className="text-xs text-muted-foreground">Phone</p>
+                <p className="font-semibold">(980) 280-7638</p>
+              </div>
+            </a>
+            <a href="mailto:info@carolinaterrain.com" className="flex items-center gap-3 p-4 rounded-lg bg-background/50 hover:bg-background transition-colors">
+              <Mail className="w-5 h-5 text-primary" />
+              <div>
+                <p className="text-xs text-muted-foreground">Email</p>
+                <p className="font-semibold text-sm">info@carolinaterrain.com</p>
+              </div>
+            </a>
+            <div className="flex items-center gap-3 p-4 rounded-lg bg-background/50">
+              <Shield className="w-5 h-5 text-primary" />
+              <div>
+                <p className="text-xs text-muted-foreground">License</p>
+                <p className="font-semibold">CL.1872</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-4 rounded-lg bg-background/50">
+              <MapPin className="w-5 h-5 text-primary" />
+              <div>
+                <p className="text-xs text-muted-foreground">Location</p>
+                <p className="font-semibold">Waxhaw, NC & Beyond!</p>
+              </div>
+            </div>
+          </div>
+          <p className="text-center text-sm text-primary mt-4 italic">
+            The goblins approve this contact info! Call the legends! 💚⛏️
+          </p>
+        </Card>
+
+        {/* Video showcase */}
+        <Card className="p-6 md:p-8 mb-12 bg-card border-primary/20">
           <div className="text-center mb-6">
             <Badge variant="outline" className="text-sm px-4 py-2 border-primary/50 mb-3 animate-pulse">
               <Play className="w-4 h-4 inline mr-2" />
@@ -112,207 +152,369 @@ const RealWorldRoots = () => {
             </p>
           </div>
           
-          <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/20 hover:border-primary/40 transition-all hover:scale-[1.02]">
-            <video 
+          <div className="relative max-w-3xl mx-auto">
+            <video
               ref={videoRef}
-              controls 
-              className="w-full rounded-lg"
-              poster="/carolina-terrain-work-1.png"
+              className="w-full rounded-lg shadow-2xl"
+              controls
               onPlay={handleVideoPlay}
+              poster="/terrain-mascot.png"
             >
               <source src="/carolina-terrain-showcase.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
-            <p className="text-center text-sm text-muted-foreground mt-4 animate-fade-in">
-              {videoCaptions[currentCaptionIndex]}
-            </p>
-            {videoPlayCount > 0 && (
-              <p className="text-center text-xs text-primary mt-2">
-                👀 You've watched this {videoPlayCount} time{videoPlayCount !== 1 ? 's' : ''}! The goblins are impressed!
+            
+            <div className="mt-4 text-center">
+              <p className="text-sm text-muted-foreground italic">
+                {videoCaptions[currentCaptionIndex]}
               </p>
-            )}
-          </Card>
-
-          {/* Goblin Fact Card */}
-          <Card className="mt-6 p-6 bg-gradient-to-r from-primary/10 to-primary/5 border-primary/30">
-            <div className="flex items-start gap-4">
-              <div className="text-4xl">💡</div>
-              <div>
-                <h4 className="text-lg font-bold text-primary mb-2">Goblin Fun Fact:</h4>
-                <p className="text-sm text-foreground mb-2">
-                  Did you know? Carolina Terrain's custom 700-gallon pressure washing trailer can clean 
-                  an entire industrial park while the goblin takes a nap! That's what we call efficiency! 🚰✨
-                </p>
-                <p className="text-xs text-muted-foreground italic">
-                  (And yes, every French drain installed is one more reason this token has ACTUAL BACKING! 
-                  We're not just memeing, we're DRAINING! 🌧️)
-                </p>
-              </div>
+              {videoPlayCount > 0 && (
+                <Badge variant="outline" className="mt-2">
+                  Views: {videoPlayCount} {videoPlayCount >= 5 && "🏆"}
+                </Badge>
+              )}
             </div>
-          </Card>
+          </div>
+        </Card>
+
+        {/* Jobber Embed */}
+        <div className="mb-12">
+          <JobberEmbed />
         </div>
 
-        {/* Certifications Grid */}
-        <div className="mb-16">
-          <h3 className="text-3xl font-bold text-center mb-8">
-            <span className="text-primary">God-Tier</span> Credentials
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
-            {certifications.map((cert, index) => (
-              <Card key={index} className="p-4 bg-card/50 backdrop-blur-sm border-primary/20 hover:border-primary/50 transition-all">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-primary/10 rounded-lg">
-                    <cert.icon className="w-5 h-5 text-primary" />
-                  </div>
-                  <p className="text-sm font-medium">{cert.text}</p>
-                </div>
-              </Card>
-            ))}
+        {/* Remote Services Section */}
+        <div className="mb-12">
+          <div className="text-center mb-8">
+            <h3 className="text-3xl md:text-4xl font-bold mb-3">
+              🌍 <span className="text-primary">GLOBAL TERRAIN DOMINATION</span> 🌍
+            </h3>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Not in North Carolina? No problem! We offer remote services nationwide!
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card className="p-6 bg-card border-primary/20 hover:border-primary/50 transition-all">
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 mx-auto">
+                <Ruler className="w-6 h-6 text-primary" />
+              </div>
+              <h4 className="text-xl font-bold text-center mb-3">Remote 2D/3D Design</h4>
+              <p className="text-muted-foreground text-center text-sm mb-4">
+                Upload yard photos → Get professional 2D/3D landscape designs. 
+                We'll plan your entire project remotely using Terrain Vision AI + human expertise!
+              </p>
+              <p className="text-xs text-center text-primary italic">
+                "Your backyard gets the royal treatment, even from 1,000 miles away! 👑"
+              </p>
+            </Card>
+
+            <Card className="p-6 bg-card border-primary/20 hover:border-primary/50 transition-all">
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 mx-auto">
+                <Video className="w-6 h-6 text-primary" />
+              </div>
+              <h4 className="text-xl font-bold text-center mb-3">Virtual Consultations</h4>
+              <p className="text-muted-foreground text-center text-sm mb-4">
+                Schedule Zoom/video consultation with licensed contractors. 
+                Get expert advice on drainage, hardscaping, and landscaping!
+              </p>
+              <p className="text-xs text-center text-primary italic">
+                "The goblins will personally review your yard disasters on camera! 📹"
+              </p>
+            </Card>
+
+            <Card className="p-6 bg-card border-primary/20 hover:border-primary/50 transition-all">
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 mx-auto">
+                <Map className="w-6 h-6 text-primary" />
+              </div>
+              <h4 className="text-xl font-bold text-center mb-3">Local Provider Network</h4>
+              <p className="text-muted-foreground text-center text-sm mb-4">
+                Not in North Carolina? We'll connect you with certified local contractors. 
+                Our network ensures you get quality work anywhere in the USA!
+              </p>
+              <p className="text-xs text-center text-primary italic">
+                "The drainage revolution is spreading like erosion... but in a GOOD way! 🌊"
+              </p>
+            </Card>
           </div>
         </div>
 
-        {/* Work Gallery with Goblin Images */}
-        <div className="mb-16">
-          <h3 className="text-3xl font-bold text-center mb-8">
-            Real Work. Real Credentials. Real <span className="text-primary">Drainage Glory</span>
+        {/* Certifications Grid */}
+        <div className="mb-12">
+          <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">
+            🏆 <span className="text-primary">Professional Credentials</span>
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            <Card className="overflow-hidden border-primary/20">
-              <img src="/carolina-terrain-work-1.png" alt="Carolina Terrain professional work" className="w-full h-64 object-cover" />
-            </Card>
-            <Card className="overflow-hidden border-primary/20">
-              <img src="/goblin-certified.png" alt="Certified by the goblins" className="w-full h-64 object-cover" />
-            </Card>
-            <Card className="overflow-hidden border-primary/20">
-              <img src="/carolina-terrain-work-2.png" alt="Carolina Terrain drainage expertise" className="w-full h-64 object-cover" />
-            </Card>
-            <Card className="overflow-hidden border-primary/20">
-              <img src="/goblin-drainage.png" alt="Goblin drainage inspector" className="w-full h-64 object-cover" />
-            </Card>
-            <Card className="overflow-hidden border-primary/20">
-              <img src="/carolina-terrain-work-3.png" alt="Carolina Terrain hardscape mastery" className="w-full h-64 object-cover" />
-            </Card>
-            <Card className="overflow-hidden border-primary/20">
-              <img src="/carolina-terrain-work-4.png" alt="Carolina Terrain erosion control" className="w-full h-64 object-cover" />
-            </Card>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {certifications.map((cert, index) => {
+              const Icon = cert.icon;
+              return (
+                <Card 
+                  key={index}
+                  className="p-4 bg-card border-border hover:border-primary/50 transition-all duration-300 hover:shadow-[0_0_20px_hsl(var(--primary)/0.2)]"
+                >
+                  <Icon className="w-8 h-8 text-primary mb-2 mx-auto" />
+                  <p className="text-sm text-center text-muted-foreground">{cert.text}</p>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Full Service Menu */}
+        <div className="mb-12">
+          <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">
+            🛠️ <span className="text-primary">Full Service Arsenal</span> 🛠️
+          </h3>
+          
+          <Accordion type="single" collapsible className="max-w-3xl mx-auto">
+            <AccordionItem value="drainage">
+              <AccordionTrigger className="text-lg font-semibold">
+                <div className="flex items-center gap-2">
+                  <Droplets className="w-5 h-5 text-primary" />
+                  Drainage Solutions 🌧️
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <ul className="space-y-2 text-muted-foreground pl-4">
+                  <li>• French Drains (NDS-Certified)</li>
+                  <li>• Catch Basins</li>
+                  <li>• Downspout Extensions</li>
+                  <li>• Sump Pump Installation</li>
+                </ul>
+                <p className="text-sm text-primary italic mt-3">"We fix what other contractors ignore!"</p>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="hardscaping">
+              <AccordionTrigger className="text-lg font-semibold">
+                <div className="flex items-center gap-2">
+                  <Hammer className="w-5 h-5 text-primary" />
+                  Hardscaping 🪨
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <ul className="space-y-2 text-muted-foreground pl-4">
+                  <li>• Keystone Retaining Walls</li>
+                  <li>• Unilock Patios (Lifetime Warranty)</li>
+                  <li>• Permeable Pavers</li>
+                  <li>• Walkways & Driveways</li>
+                </ul>
+                <p className="text-sm text-primary italic mt-3">"Built to outlast the next bull run!"</p>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="landscaping">
+              <AccordionTrigger className="text-lg font-semibold">
+                <div className="flex items-center gap-2">
+                  <TreePine className="w-5 h-5 text-primary" />
+                  Landscaping 🌱
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <ul className="space-y-2 text-muted-foreground pl-4">
+                  <li>• Grading & Leveling</li>
+                  <li>• Sod Installation (Pike's Nursery - Lifetime Plant Replacement)</li>
+                  <li>• Landscape Lighting</li>
+                  <li>• Erosion Control</li>
+                </ul>
+                <p className="text-sm text-primary italic mt-3">"From barren wasteland to goblin paradise!"</p>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="maintenance">
+              <AccordionTrigger className="text-lg font-semibold">
+                <div className="flex items-center gap-2">
+                  <Sparkle className="w-5 h-5 text-primary" />
+                  Maintenance & Washing 🚿
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <ul className="space-y-2 text-muted-foreground pl-4">
+                  <li>• VIP Maintenance Plans</li>
+                  <li>• 700-Gallon Pressure Washing</li>
+                  <li>• Fleet Washing</li>
+                  <li>• Industrial Park Cleaning</li>
+                </ul>
+                <p className="text-sm text-primary italic mt-3">"We keep it clean while you stack TRN!"</p>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="design">
+              <AccordionTrigger className="text-lg font-semibold">
+                <div className="flex items-center gap-2">
+                  <Ruler className="w-5 h-5 text-primary" />
+                  Design Services 📐
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <ul className="space-y-2 text-muted-foreground pl-4">
+                  <li>• 2D/3D Landscape Designs</li>
+                  <li>• Remote Zoom Consultations</li>
+                  <li>• HOA Approval Assistance</li>
+                  <li>• Project Planning</li>
+                </ul>
+                <p className="text-sm text-primary italic mt-3">"Terrain Vision AI meets human expertise!"</p>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="commercial">
+              <AccordionTrigger className="text-lg font-semibold">
+                <div className="flex items-center gap-2">
+                  <Building className="w-5 h-5 text-primary" />
+                  Commercial & Government 🏢
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <ul className="space-y-2 text-muted-foreground pl-4">
+                  <li>• HOA Contracts</li>
+                  <li>• Industrial Parks</li>
+                  <li>• Government Projects</li>
+                  <li>• Multi-Property Management</li>
+                </ul>
+                <p className="text-sm text-primary italic mt-3">"We don't just drain yards... we drain EMPIRES!"</p>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+
+        {/* Goblin Fun Fact Card */}
+        <Card className="p-6 mb-12 bg-gradient-to-br from-primary/5 to-primary/10 border-primary/30">
+          <h3 className="text-xl font-bold mb-3 text-center">🌱 Goblin Fun Fact 🌱</h3>
+          <p className="text-muted-foreground text-center">
+            While other meme coins are pumping tweets, Carolina Terrain is pumping... well, actual water. 
+            Out of your yard. With 700 gallons of pressure. The goblin approves. 💚
+          </p>
+        </Card>
+
+        {/* Work Gallery */}
+        <div className="mb-12">
+          <h3 className="text-2xl font-bold text-center mb-6">📸 Real Work, Real Results</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <img src="/carolina-terrain-work-1.png" alt="Project 1" className="rounded-lg w-full" />
+            <img src="/carolina-terrain-work-2.png" alt="Project 2" className="rounded-lg w-full" />
+            <img src="/carolina-terrain-work-3.png" alt="Project 3" className="rounded-lg w-full" />
+            <img src="/carolina-terrain-work-4.png" alt="Project 4" className="rounded-lg w-full" />
+          </div>
+        </div>
+
+        {/* Goblin Image Gallery */}
+        <div className="mb-12">
+          <h3 className="text-2xl font-bold text-center mb-6">🌱 Goblin-Approved Certifications</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <img src="/goblin-certified.png" alt="Certified Goblin" className="rounded-lg w-full" />
+            <img src="/goblin-drainage.png" alt="Drainage Goblin" className="rounded-lg w-full" />
+            <img src="/goblin-banner.png" alt="Goblin Banner" className="rounded-lg w-full" />
           </div>
         </div>
 
         {/* Company Cards */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
-          {/* Carolina Terrain */}
-          <Card className="p-8 bg-card/50 backdrop-blur-sm border-primary/20 hover:border-primary/50 transition-all group">
-            <div className="flex items-start gap-4 mb-6">
-              <div className="p-3 bg-primary/10 rounded-lg">
-                <Building2 className="w-8 h-8 text-primary" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          {/* Carolina Terrain Card */}
+          <Card 
+            className="p-6 bg-card border-primary/30 hover:border-primary transition-all duration-300 hover:shadow-[0_0_30px_hsl(var(--primary)/0.3)] cursor-pointer"
+            onClick={handleCarolinaTerrainClick}
+          >
+            <div className="flex items-start gap-4 mb-4">
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <Building2 className="w-6 h-6 text-primary" />
               </div>
               <div>
                 <h3 className="text-2xl font-bold mb-2">Carolina Terrain</h3>
-                <p className="text-sm text-muted-foreground">Professional Landscape Installation Company</p>
+                <p className="text-sm text-muted-foreground">Landscape Installation Company</p>
               </div>
             </div>
             
-            <div className="space-y-3 mb-6">
-              <div className="p-3 bg-primary/5 rounded-lg">
-                <p className="text-sm font-semibold text-primary mb-1">Serving:</p>
-                <p className="text-xs text-muted-foreground">Industrial Parks • HOAs • Government Contracts • Commercial Properties</p>
-              </div>
-              <div className="p-3 bg-primary/5 rounded-lg">
-                <p className="text-sm font-semibold text-primary mb-1">Specialties:</p>
-                <p className="text-xs text-muted-foreground">French Drains • Erosion Control • Hardscape • Pressure Washing • Landscape Installation</p>
-              </div>
-            </div>
-
-            <Button
-              onClick={handleCarolinaTerrainClick}
-              className="w-full group-hover:shadow-glow transition-all"
-              asChild
-            >
-              <a 
-                href="https://www.carolinaterrain.com/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2"
-              >
+            <p className="text-muted-foreground mb-4">
+              Licensed NC Landscape Contractor (CL.1872) specializing in:
+            </p>
+            
+            <ul className="space-y-2 mb-6 text-sm text-muted-foreground">
+              <li className="flex items-center gap-2">
+                <span className="text-primary">•</span>
+                French Drain Installation
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-primary">•</span>
+                Hardscape Design & Construction
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-primary">•</span>
+                Property Drainage Solutions
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-primary">•</span>
+                Erosion Control Systems
+              </li>
+            </ul>
+            
+            <Button variant="outline" className="w-full" asChild>
+              <a href="https://carolinaterrain.com" target="_blank" rel="noopener noreferrer">
                 Visit Carolina Terrain
-                <ExternalLink className="w-4 h-4" />
+                <ExternalLink className="ml-2 w-4 h-4" />
               </a>
             </Button>
           </Card>
 
-          {/* Terrain Vision AI */}
-          <Card className="p-8 bg-card/50 backdrop-blur-sm border-primary/20 hover:border-primary/50 transition-all group">
-            <div className="flex items-start gap-4 mb-6">
-              <div className="p-3 bg-primary/10 rounded-lg">
-                <Sparkles className="w-8 h-8 text-primary" />
+          {/* Terrain Vision AI Card */}
+          <Card className="p-6 bg-card border-primary/30 hover:border-primary transition-all duration-300 hover:shadow-[0_0_30px_hsl(var(--primary)/0.3)]">
+            <div className="flex items-start gap-4 mb-4">
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <Sparkles className="w-6 h-6 text-primary" />
               </div>
               <div>
                 <h3 className="text-2xl font-bold mb-2">Terrain Vision AI</h3>
-                <p className="text-sm text-muted-foreground">Data-Driven Landscape Intelligence</p>
+                <p className="text-sm text-muted-foreground">AI-Powered Landscape Intelligence</p>
               </div>
             </div>
             
-            <ul className="space-y-2 mb-6 text-sm">
+            <p className="text-muted-foreground mb-4">
+              Advanced AI platform providing:
+            </p>
+            
+            <ul className="space-y-2 mb-6 text-sm text-muted-foreground">
               <li className="flex items-center gap-2">
-                <span className="text-primary">✓</span>
-                AI-Powered Landscape Analysis
+                <span className="text-primary">•</span>
+                Instant Yard Analysis
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-primary">✓</span>
-                Automated Project Planning
+                <span className="text-primary">•</span>
+                Automated Pricing & Estimates
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-primary">✓</span>
-                Smart Drainage Solutions
+                <span className="text-primary">•</span>
+                Data-Driven Design Recommendations
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-primary">✓</span>
-                Future of Terrain Management
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-primary">✓</span>
-                Innovation Lab for Phase 3-5
+                <span className="text-primary">•</span>
+                Integration with Local Resources
               </li>
             </ul>
-
-            <Button
-              variant="outline"
-              className="w-full group-hover:bg-primary/10 transition-all"
-              asChild
-            >
-              <a 
-                href="https://terrainvision-ai.com/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2"
-              >
-                Explore Terrain Vision AI
-                <ExternalLink className="w-4 h-4" />
+            
+            <Button variant="outline" className="w-full" asChild>
+              <a href="https://terrainvision-ai.com" target="_blank" rel="noopener noreferrer">
+                Try Terrain Vision AI
+                <ExternalLink className="ml-2 w-4 h-4" />
               </a>
             </Button>
           </Card>
         </div>
 
-        {/* Bottom Proclamation */}
-        <Card className="p-8 bg-gradient-to-br from-primary/10 to-primary/5 border-primary/30 max-w-4xl mx-auto">
-          <div className="text-center space-y-4">
-            <h3 className="text-2xl md:text-3xl font-bold">
-              🌱 Official Goblin Proclamation 🌱
-            </h3>
-            <p className="text-lg">
-              "We're not just eroding jealousy...
-            </p>
-            <p className="text-xl font-bold text-primary">
-              We're eroding actual water damage for HOAs across North Carolina."
-            </p>
-            <p className="text-muted-foreground mt-4">
-              When Phase 3–5 hits and Terrain Vision AI starts feeding real backyard photos into our AI, 
-              every single meme submitted today becomes training data for the future Terrain Vision empire tomorrow.
-            </p>
-            <Badge variant="outline" className="text-base px-4 py-2 border-primary/50 mt-4">
-              The chaotic, cute, goblin-fronted marketing department for a legitimate terrain revolution 🌧️⛏️💚
-            </Badge>
-          </div>
+        {/* Final Proclamation */}
+        <Card className="p-8 bg-gradient-to-br from-primary/10 to-primary/5 border-primary/30 text-center">
+          <h3 className="text-2xl md:text-3xl font-bold mb-4">
+            🌱 THE GOBLIN PROCLAMATION 🌱
+          </h3>
+          <p className="text-lg text-muted-foreground mb-4">
+            Most meme coins are built on hot air.<br />
+            Terrain Token is built on top of a company that installs French drains with a 700-gallon beast truck 
+            and lifetime Unilock warranties.
+          </p>
+          <p className="text-lg font-semibold text-primary mb-4">
+            We're not just eroding jealousy...<br />
+            We're eroding actual water damage for HOAs across North Carolina.
+          </p>
+          <p className="text-md text-muted-foreground italic">
+            Born from the ground down — and that ground is NDS-certified, baby!!! 🌱⛏️💚
+          </p>
         </Card>
       </div>
     </section>

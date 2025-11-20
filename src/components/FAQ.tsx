@@ -13,6 +13,22 @@ const faqs = [
     answer: "Post your terrain-themed meme on Twitter/X with #TRNMemes and tag @carolinaterrain. Check the Contest Rules section for full details, prizes, and submission guidelines."
   },
   {
+    question: "Can Carolina Terrain help me if I'm not in North Carolina?",
+    answer: "YES! We offer remote 2D/3D design services, virtual consultations, and can connect you with certified local contractors in your area. The goblin revolution is NATIONWIDE! 🌍 Fill out the consultation form on our site or visit carolinaterrain.com."
+  },
+  {
+    question: "What makes TRN different from DOGE, SHIB, and other meme coins?",
+    answer: "Unlike pure meme coins, TRN is backed by a real licensed landscape company (CL.1872) with $2M+ annual revenue, physical equipment worth $200K+, 8 industry certifications, and a 6-phase roadmap to AI-powered utility. We're the first meme coin where growth supports REAL construction projects."
+  },
+  {
+    question: "How does the Jobber consultation work?",
+    answer: "Fill out the form on our site, schedule a video call, and get expert advice from licensed contractors. We can design your entire project remotely using 2D/3D tools and Terrain Vision AI. If you're local to NC, we'll install it. If not, we'll connect you with quality contractors in your area!"
+  },
+  {
+    question: "What's Terrain Vision AI and how does it relate to TRN?",
+    answer: "Terrain Vision AI is our data-driven landscape intelligence platform (Phase 3-5 of roadmap). It uses AI to analyze yard photos, generate instant quotes, and provide smart drainage solutions. In the future, TRN holders will earn tokens for contributing terrain data and unlock premium AI features."
+  },
+  {
     question: "Is TRN an investment?",
     answer: "No. TRN is not an investment and carries no expectation of profit. It's a community token designed for entertainment and future ecosystem utilities."
   },
@@ -27,10 +43,6 @@ const faqs = [
   {
     question: "How do I buy TRN?",
     answer: "TRN is available on pump.fun and other decentralized exchanges. Check our official social channels for the latest trading information and contract address."
-  },
-  {
-    question: "What makes TRN different from other meme coins?",
-    answer: "While TRN starts as a meme, it has a clear evolution path toward real-world utility. We're building the first terrain-data reward ecosystem, bridging internet culture with practical technology."
   }
 ];
 
