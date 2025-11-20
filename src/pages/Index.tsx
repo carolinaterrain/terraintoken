@@ -1,4 +1,5 @@
 import Hero from "@/components/Hero";
+import HowToBuy from "@/components/HowToBuy";
 import About from "@/components/About";
 import Roadmap from "@/components/Roadmap";
 import Tokenomics from "@/components/Tokenomics";
@@ -13,6 +14,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Hero />
+      <HowToBuy />
       <About />
       <Roadmap />
       <Tokenomics />
