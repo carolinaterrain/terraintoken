@@ -1,5 +1,6 @@
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
+import TokenomicsDashboard from "@/components/TokenomicsDashboard";
 import { Coins, Shield, Rocket, RefreshCw, Gift } from "lucide-react";
 
 const stats = [
@@ -87,6 +88,11 @@ const Tokenomics = () => {
               </GlassCard>
             );
           })}
+        </div>
+
+        {/* Interactive Dashboard */}
+        <div className="mt-16">
+          <TokenomicsDashboard />
         </div>
       </div>
     </section>

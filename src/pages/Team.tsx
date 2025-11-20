@@ -1,0 +1,209 @@
+import { GlassCard } from "@/components/ui/glass-card";
+import { Helmet } from "react-helmet-async";
+import DesktopNav from "@/components/DesktopNav";
+import Footer from "@/components/Footer";
+import ScrollProgress from "@/components/ScrollProgress";
+import { Users, Target, Award, Shield, Linkedin, Twitter } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import zachHyman from "@/assets/zac-hyman.jpg";
+import alexPurdy from "@/assets/alex-purdy.jpg";
+
+interface TeamMember {
+  name: string;
+  role: string;
+  bio: string;
+  image: string;
+  certifications: string[];
+  linkedin?: string;
+  twitter?: string;
+}
+
+const team: TeamMember[] = [
+  {
+    name: "Zac Hyman",
+    role: "Co-Founder & CEO",
+    bio: "Licensed NC Landscape Contractor with a passion for innovation. Zac founded Carolina Terrain LLC to bring professional-grade drainage solutions to homeowners. Now bridging traditional landscaping with blockchain technology through TRN.",
+    image: zachHyman,
+    certifications: [
+      "Licensed NC Landscape Contractor (CL.1872)",
+      "NDS Certified Property Drainage Contractor",
+      "Keystone Certified Hardscape Contractor"
+    ],
+    linkedin: "https://www.linkedin.com/in/zachyman",
+    twitter: "https://x.com/carolinaterrain"
+  },
+  {
+    name: "Alex Purdy",
+    role: "Co-Founder & CTO",
+    bio: "Tech visionary and drainage expert. Alex combines deep technical expertise with hands-on field experience. Leads the development of TerrainVision AI and the integration of blockchain technology into Carolina Terrain's operations.",
+    image: alexPurdy,
+    certifications: [
+      "NDS Certified Property Drainage Contractor",
+      "SOX Erosion Control Certified",
+      "Unilock Lifetime Warranty Certified"
+    ],
+    linkedin: "https://www.linkedin.com/in/alexpurdy"
+  }
+];
+
+const companyStats = [
+  {
+    icon: Award,
+    label: "Years in Business",
+    value: "5+",
+    description: "Serving North Carolina"
+  },
+  {
+    icon: Users,
+    label: "Happy Customers",
+    value: "500+",
+    description: "5-star reviews"
+  },
+  {
+    icon: Shield,
+    label: "Certifications",
+    value: "8+",
+    description: "Industry credentials"
+  },
+  {
+    icon: Target,
+    label: "Annual Revenue",
+    value: "$2M+",
+    description: "Real company backing"
+  }
+];
+
+const Team = () => {
+  return (
+    <>
+      <Helmet>
+        <title>Team | Terrain Token (TRN)</title>
+        <meta name="description" content="Meet the founders behind Terrain Token and Carolina Terrain LLC. Licensed contractors building the bridge between traditional landscaping and blockchain technology." />
+      </Helmet>
+
+      <ScrollProgress />
+      <DesktopNav />
+
+      <div className="min-h-screen bg-background pt-32 pb-20">
+        <div className="container mx-auto px-4 max-w-6xl">
+          {/* Hero */}
+          <div className="text-center mb-16">
+            <h1 className="font-display text-5xl md:text-6xl font-bold mb-4">
+              Meet the <span className="text-primary">Team</span>
+            </h1>
+            <p className="font-body text-xl text-muted-foreground max-w-3xl mx-auto">
+              Real founders. Real business. Real transparency.
+            </p>
+          </div>
+
+          {/* Company Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+            {companyStats.map((stat, index) => {
+              const Icon = stat.icon;
+              return (
+                <GlassCard key={index} className="p-6 text-center">
+                  <Icon className="w-8 h-8 text-primary mx-auto mb-3" />
+                  <p className="font-display text-3xl font-bold text-primary mb-1">{stat.value}</p>
+                  <p className="font-display text-sm font-semibold mb-1">{stat.label}</p>
+                  <p className="text-xs text-muted-foreground">{stat.description}</p>
+                </GlassCard>
+              );
+            })}
+          </div>
+
+          {/* Team Members */}
+          <div className="space-y-12 mb-16">
+            {team.map((member, index) => (
+              <GlassCard key={index} className="overflow-hidden">
+                <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 ${index % 2 === 1 ? 'md:grid-flow-dense' : ''}`}>
+                  <div className={`${index % 2 === 1 ? 'md:col-start-2' : ''}`}>
+                    <img 
+                      src={member.image} 
+                      alt={`${member.name} - ${member.role} of Terrain Token and Carolina Terrain LLC`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="p-8 flex flex-col justify-center">
+                    <h2 className="font-display text-3xl font-bold mb-2">{member.name}</h2>
+                    <p className="text-primary font-semibold mb-4">{member.role}</p>
+                    <p className="text-muted-foreground mb-6 leading-relaxed">
+                      {member.bio}
+                    </p>
+
+                    {/* Certifications */}
+                    <div className="mb-6">
+                      <h3 className="font-display font-semibold mb-3 flex items-center gap-2">
+                        <Award className="w-4 h-4 text-primary" />
+                        Certifications
+                      </h3>
+                      <ul className="space-y-2">
+                        {member.certifications.map((cert, idx) => (
+                          <li key={idx} className="text-sm text-muted-foreground flex items-start gap-2">
+                            <span className="text-primary mt-1">•</span>
+                            {cert}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Social Links */}
+                    <div className="flex gap-3">
+                      {member.linkedin && (
+                        <Button variant="outline" size="sm" asChild>
+                          <a href={member.linkedin} target="_blank" rel="noopener noreferrer">
+                            <Linkedin className="w-4 h-4 mr-2" />
+                            LinkedIn
+                          </a>
+                        </Button>
+                      )}
+                      {member.twitter && (
+                        <Button variant="outline" size="sm" asChild>
+                          <a href={member.twitter} target="_blank" rel="noopener noreferrer">
+                            <Twitter className="w-4 h-4 mr-2" />
+                            Twitter
+                          </a>
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </GlassCard>
+            ))}
+          </div>
+
+          {/* Mission Statement */}
+          <GlassCard className="p-8 md:p-12 bg-gradient-to-br from-primary/20 to-primary/5 text-center">
+            <h2 className="font-display text-3xl font-bold mb-6">
+              Our Mission
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-6">
+              "We started Carolina Terrain to solve drainage problems. We launched Terrain Token to prove that meme coins can be more than speculation—they can be backed by real work, real revenue, and real people."
+            </p>
+            <p className="text-sm text-primary italic">
+              — Zac Hyman & Alex Purdy, Co-Founders
+            </p>
+          </GlassCard>
+
+          {/* CTA */}
+          <div className="mt-16 text-center">
+            <h3 className="font-display text-2xl font-bold mb-4">Want to Learn More?</h3>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" asChild>
+                <a href="/whitepaper">Read Our Whitepaper</a>
+              </Button>
+              <Button size="lg" variant="outline" className="border-primary" asChild>
+                <a href="https://carolinaterrain.com" target="_blank" rel="noopener noreferrer">
+                  Visit Carolina Terrain
+                </a>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <Footer />
+    </>
+  );
+};
+
+export default Team;

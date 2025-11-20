@@ -91,20 +91,12 @@ const Footer = () => {
           <p className="text-xs text-muted-foreground">
             Not financial advice. DYOR. Meme responsibly. 🌱
           </p>
-          <div className="flex items-center justify-center gap-6 mt-3">
+          <div className="flex items-center justify-center flex-wrap gap-x-6 gap-y-3 mt-3">
             <a 
               href="/earn-trn" 
               className="text-xs text-primary hover:underline font-medium"
             >
               Earn TRN Dashboard
-            </a>
-            <a 
-              href="https://terrainvision-ai.com" 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-primary hover:underline font-medium"
-            >
-              TerrainVision AI
             </a>
             <a 
               href="/upload-project" 
@@ -116,7 +108,25 @@ const Footer = () => {
               href="/whitepaper" 
               className="text-xs text-primary hover:underline font-medium"
             >
-              Read Whitepaper
+              Whitepaper
+            </a>
+            <a 
+              href="/updates" 
+              className="text-xs text-primary hover:underline font-medium"
+            >
+              Blog & Updates
+            </a>
+            <a 
+              href="/team" 
+              className="text-xs text-primary hover:underline font-medium"
+            >
+              Meet the Team
+            </a>
+            <a 
+              href="/press" 
+              className="text-xs text-primary hover:underline font-medium"
+            >
+              Press Kit
             </a>
             <a 
               href="https://solscan.io/token/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump" 
