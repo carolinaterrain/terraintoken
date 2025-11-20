@@ -13,11 +13,13 @@ import PWAPrompt from "@/components/PWAPrompt";
 import GoodbyeWave from "@/components/GoodbyeWave";
 import PerformanceMonitor from "@/components/PerformanceMonitor";
 import { useEasterEggs } from "@/hooks/useEasterEggs";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 
 const queryClient = new QueryClient();
 
 const AppContent = () => {
   useEasterEggs();
+  useKeyboardShortcuts();
 
   return (
     <BrowserRouter>

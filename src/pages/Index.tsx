@@ -17,14 +17,21 @@ import Footer from "@/components/Footer";
 import GoblinWisdom from "@/components/GoblinWisdom";
 import SoundToggle from "@/components/SoundToggle";
 import GoblinAudioPlayer from "@/components/GoblinAudioPlayer";
+import MascotLore from "@/components/MascotLore";
+import DesktopNav from "@/components/DesktopNav";
+import ScrollProgress from "@/components/ScrollProgress";
+import AccessibilityMenu from "@/components/AccessibilityMenu";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <ScrollProgress />
+      <DesktopNav />
       <Hero />
       <TokenStats />
       <HowToBuy />
       <About />
+      <MascotLore />
       <RealWorldRoots />
       <CompetitiveEdge />
       <Roadmap />
@@ -40,6 +47,7 @@ const Index = () => {
       <GoblinWisdom />
       <SoundToggle />
       <GoblinAudioPlayer />
+      <AccessibilityMenu />
     </div>
   );
 };

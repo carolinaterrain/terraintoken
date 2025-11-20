@@ -13,6 +13,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        display: ['Space Grotesk', 'sans-serif'],
+        body: ['Inter', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -130,6 +134,22 @@ export default {
             transform: "scale(1)",
           },
         },
+        blink: {
+          "0%, 95%, 100%": { transform: "scaleY(1)" },
+          "97%": { transform: "scaleY(0.1)" },
+        },
+        "glow-pulse": {
+          "0%, 100%": { boxShadow: "0 0 20px hsl(142 76% 36% / 0.3)" },
+          "50%": { boxShadow: "0 0 40px hsl(142 84% 47% / 0.6)" },
+        },
+        "grid-shift": {
+          "0%": { transform: "translateX(0) translateY(0)" },
+          "100%": { transform: "translateX(-20px) translateY(-20px)" },
+        },
+        "slide-in-down": {
+          "0%": { transform: "translateY(-100%)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -142,6 +162,10 @@ export default {
         float: "float 3s ease-in-out infinite",
         "fade-in-up": "fade-in-up 0.6s ease-out",
         "scale-in": "scale-in 0.4s ease-out",
+        blink: "blink 8s ease-in-out infinite",
+        "glow-pulse": "glow-pulse 2s ease-in-out infinite",
+        "grid-shift": "grid-shift 15s linear infinite",
+        "slide-in-down": "slide-in-down 0.5s ease-out",
       },
     },
   },
