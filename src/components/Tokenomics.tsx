@@ -1,5 +1,5 @@
 import { GlassCard } from "@/components/ui/glass-card";
-import { Coins, Shield, Rocket, RefreshCw } from "lucide-react";
+import { Coins, Shield, Rocket, RefreshCw, Gift } from "lucide-react";
 
 const stats = [
   {
@@ -19,6 +19,12 @@ const stats = [
     label: "Fair Launch",
     value: "100% Community",
     description: "No pre-mine or insider allocation"
+  },
+  {
+    icon: Gift,
+    label: "Earn TRN",
+    value: "Upload & Earn",
+    description: "Get rewarded for terrain data"
   },
   {
     icon: RefreshCw,
@@ -50,7 +56,7 @@ const Tokenomics = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (

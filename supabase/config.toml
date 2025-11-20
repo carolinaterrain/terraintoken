@@ -1,1 +1,4 @@
 project_id = "dihbqhofqfcvjgpzmskx"
+
+[functions.calculate-trn-reward]
+verify_jwt = false

@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import EarnHero from "@/components/earn/EarnHero";
 import HowItWorks from "@/components/earn/HowItWorks";
+import DailyQuests from "@/components/earn/DailyQuests";
 import Leaderboard from "@/components/earn/Leaderboard";
 import MyRewardsDashboard from "@/components/earn/MyRewardsDashboard";
 import AchievementBadges from "@/components/earn/AchievementBadges";
@@ -19,13 +20,14 @@ const EarnTRN = () => {
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-b from-background to-background/50">
-        <EarnHero />
-        <HowItWorks />
-        <Leaderboard />
-        <MyRewardsDashboard />
-        <AchievementBadges />
-        <WeeklyContests />
-        <LegalDisclaimers />
+      <EarnHero />
+      <HowItWorks />
+      <DailyQuests />
+      <Leaderboard />
+      <MyRewardsDashboard />
+      <AchievementBadges />
+      <WeeklyContests />
+      <LegalDisclaimers />
       </div>
     </>
   );
