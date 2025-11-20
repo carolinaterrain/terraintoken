@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui/card";
+import { GlassCard } from "@/components/ui/glass-card";
 import { Coins, Shield, Rocket, RefreshCw } from "lucide-react";
 
 const stats = [
@@ -30,16 +30,21 @@ const stats = [
 
 const Tokenomics = () => {
   return (
-    <section id="tokenomics" className="py-20 px-4">
-      <div className="container mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+    <section id="tokenomics" className="py-12 px-4 relative overflow-hidden">
+      <div 
+        className="absolute inset-0 opacity-10"
+        style={{ background: "var(--terrain-grid)" }}
+      />
+      
+      <div className="container mx-auto relative">
+        <div className="text-center mb-12">
+          <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
             <span className="text-primary">Tokenomics</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-2">
+          <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto mb-2">
             Simple, transparent, and community-first token design
           </p>
-          <p className="text-sm text-primary italic max-w-2xl mx-auto">
+          <p className="font-body text-sm text-primary italic max-w-2xl mx-auto">
             Unlike other meme coins, a portion of ecosystem growth funds REAL terrain projects through Carolina Terrain. 
             Your memes literally pay for French drains. This is the future. 💚
           </p>
@@ -49,17 +54,18 @@ const Tokenomics = () => {
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
-              <Card 
+              <GlassCard 
                 key={index}
-                className="p-6 bg-card border-border text-center hover:border-primary/50 transition-all duration-300"
+                hover
+                className="p-6 text-center"
               >
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   <Icon className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-sm font-semibold text-muted-foreground mb-2">{stat.label}</h3>
-                <p className="text-2xl font-bold mb-2 text-primary">{stat.value}</p>
-                <p className="text-sm text-muted-foreground">{stat.description}</p>
-              </Card>
+                <h3 className="font-display text-sm font-semibold text-muted-foreground mb-2">{stat.label}</h3>
+                <p className="font-display text-2xl font-bold mb-2 text-primary">{stat.value}</p>
+                <p className="font-body text-sm text-muted-foreground">{stat.description}</p>
+              </GlassCard>
             );
           })}
         </div>
