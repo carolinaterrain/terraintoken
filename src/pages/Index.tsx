@@ -16,6 +16,7 @@ import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import GoblinWisdom from "@/components/GoblinWisdom";
 import SoundToggle from "@/components/SoundToggle";
+import GoblinAudioPlayer from "@/components/GoblinAudioPlayer";
 
 const Index = () => {
   return (
@@ -38,6 +39,7 @@ const Index = () => {
       <Footer />
       <GoblinWisdom />
       <SoundToggle />
+      <GoblinAudioPlayer />
     </div>
   );
 };
