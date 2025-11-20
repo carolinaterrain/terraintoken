@@ -59,6 +59,81 @@ export type Database = {
         }
         Relationships: []
       }
+      project_media: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string | null
+          id: string
+          image_url: string
+          is_featured: boolean | null
+          location: string | null
+          sort_order: number | null
+          title: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url: string
+          is_featured?: boolean | null
+          location?: string | null
+          sort_order?: number | null
+          title?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string
+          is_featured?: boolean | null
+          location?: string | null
+          sort_order?: number | null
+          title?: string | null
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          author_name: string
+          created_at: string | null
+          google_review_url: string | null
+          id: string
+          is_featured: boolean | null
+          location: string | null
+          rating: number
+          review_date: string | null
+          review_text: string
+          sort_order: number | null
+        }
+        Insert: {
+          author_name: string
+          created_at?: string | null
+          google_review_url?: string | null
+          id?: string
+          is_featured?: boolean | null
+          location?: string | null
+          rating: number
+          review_date?: string | null
+          review_text: string
+          sort_order?: number | null
+        }
+        Update: {
+          author_name?: string
+          created_at?: string | null
+          google_review_url?: string | null
+          id?: string
+          is_featured?: boolean | null
+          location?: string | null
+          rating?: number
+          review_date?: string | null
+          review_text?: string
+          sort_order?: number | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
