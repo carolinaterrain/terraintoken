@@ -17,7 +17,7 @@ const links = [
   {
     icon: Twitter,
     name: "Twitter / X",
-    url: "https://x.com/terraintoken",
+    url: "https://x.com/carolinaterrain",
     color: "hover:text-primary"
   }
 ];
