@@ -1,5 +1,6 @@
 import { GlassCard } from "@/components/ui/glass-card";
-import { Sparkles, Users, Gift, Cpu, Database, Cog, CheckCircle } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { Sparkles, Users, Gift, Cpu, Database, Cog, CheckCircle, Clock, TrendingUp } from "lucide-react";
 import terrainMascot from "@/assets/terrain-mascot.png";
 import {
   Carousel,
@@ -17,42 +18,60 @@ const phases = [
     title: "Meme",
     icon: Sparkles,
     description: "Launch as a community-driven meme token with viral potential",
-    status: "complete"
+    status: "complete",
+    progress: 100,
+    timeline: "Q2 2025",
+    milestones: ["Fair launch on Pump.fun", "Liquidity locked", "Community channels established"]
   },
   {
     phase: "Phase 1",
     title: "Community",
     icon: Users,
     description: "Build an engaged community through social channels and events",
-    status: "current"
+    status: "current",
+    progress: 75,
+    timeline: "Q3-Q4 2025",
+    milestones: ["1000+ Telegram members", "Whitepaper released", "Meme contests", "First partnerships"]
   },
   {
     phase: "Phase 2",
     title: "Data Contribution Rewards",
     icon: Gift,
     description: "Earn TRN by contributing real-world terrain and yard data",
-    status: "future"
+    status: "current",
+    progress: 40,
+    timeline: "Q4 2025",
+    milestones: ["TerrainVision AI beta", "Upload & earn system", "First 10k photos analyzed", "Community dashboard"]
   },
   {
     phase: "Phase 3",
     title: "AI Credit Unlocks",
     icon: Cpu,
     description: "Use TRN to access AI-powered terrain analysis and insights",
-    status: "future"
+    status: "future",
+    progress: 0,
+    timeline: "Q1-Q2 2026",
+    milestones: ["Pro tier access", "Advanced analysis features", "Mobile app launch", "API access"]
   },
   {
     phase: "Phase 4",
     title: "Terrain Data Marketplace",
     icon: Database,
     description: "Global marketplace for terrain intelligence and data exchange",
-    status: "future"
+    status: "future",
+    progress: 0,
+    timeline: "Q3-Q4 2026",
+    milestones: ["Data marketplace launch", "B2B partnerships", "Enterprise features", "DAO governance"]
   },
   {
     phase: "Phase 5",
     title: "Robotics Microtasks",
     icon: Cog,
     description: "Integration with autonomous systems for terrain-based tasks",
-    status: "future"
+    status: "future",
+    progress: 0,
+    timeline: "2027+",
+    milestones: ["Robotics partnerships", "IoT integration", "Autonomous data collection", "Global expansion"]
   }
 ];
 
@@ -79,6 +98,25 @@ const Roadmap = () => {
       />
       
       <div className="container mx-auto relative">
+        {/* Progress Overview */}
+        <div className="mb-12">
+          <GlassCard className="p-6 bg-gradient-to-br from-primary/10 to-primary/5">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="font-display text-2xl font-bold">Overall Progress</h3>
+                <p className="text-sm text-muted-foreground">Journey to terrain intelligence</p>
+              </div>
+              <TrendingUp className="w-8 h-8 text-primary" />
+            </div>
+            <Progress value={36} className="h-3" />
+            <div className="flex justify-between text-xs text-muted-foreground mt-2">
+              <span>0% Complete</span>
+              <span className="font-bold text-primary">36% Complete</span>
+              <span>100% Complete</span>
+            </div>
+          </GlassCard>
+        </div>
+
         <div className="text-center mb-12">
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
             The <span className="text-primary">Journey</span>

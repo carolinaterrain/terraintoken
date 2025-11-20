@@ -13,6 +13,9 @@ import UploadTestimonial from "./pages/UploadTestimonial";
 import EarnTRN from "./pages/EarnTRN";
 import AdminDashboard from "./pages/AdminDashboard";
 import Whitepaper from "./pages/Whitepaper";
+import Updates from "./pages/Updates";
+import Team from "./pages/Team";
+import PressKit from "./pages/PressKit";
 import MobileNav from "@/components/MobileNav";
 import ExitIntent from "@/components/ExitIntent";
 import PWAPrompt from "@/components/PWAPrompt";
@@ -38,6 +41,9 @@ const AppContent = () => {
         <Route path="/earn-trn" element={<EarnTRN />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/whitepaper" element={<Whitepaper />} />
+        <Route path="/updates" element={<Updates />} />
+        <Route path="/team" element={<Team />} />
+        <Route path="/press" element={<PressKit />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <MobileNav />
