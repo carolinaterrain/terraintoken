@@ -8,45 +8,60 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 3%;
+    /* GOBLIN GREEN PRIMARY */
+    --primary: 142 76% 39%;           /* #00C46A - Goblin Green */
+    --primary-foreground: 0 0% 98%;
+    --primary-glow: 142 84% 47%;      /* #06FF8C - Emerald Glow */
+    
+    /* DEEP SOIL CHARCOAL DARK */
+    --background: 0 0% 4%;            /* #0B0F12 - Deep Soil */
     --foreground: 0 0% 98%;
-
-    --card: 0 0% 6%;
+    
+    --card: 0 0% 7%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 6%;
+    --popover: 0 0% 7%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 142 76% 36%;
-    --primary-foreground: 0 0% 98%;
+    /* METALLIC SILVER ACCENT */
+    --accent: 220 15% 85%;            /* #D3D8E3 - Metallic Silver */
+    --accent-foreground: 0 0% 10%;
 
     --secondary: 0 0% 12%;
-    --secondary-foreground: 142 76% 36%;
+    --secondary-foreground: 142 76% 39%;
 
-    --muted: 0 0% 12%;
+    --muted: 142 10% 20%;
     --muted-foreground: 0 0% 60%;
-
-    --accent: 142 76% 36%;
-    --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 15%;
+    --border: 142 20% 15%;            /* Green-tinted borders */
     --input: 0 0% 15%;
-    --ring: 142 76% 36%;
+    --ring: 142 76% 39%;
 
     --radius: 0.75rem;
     
+    /* TERRAIN SYSTEM */
     --terrain-glow: 142 84% 47%;
-    --terrain-dark: 0 0% 8%;
-    --gradient-cyber: linear-gradient(135deg, hsl(142 76% 36% / 0.1), hsl(142 84% 47% / 0.05));
-    --shadow-glow: 0 0 30px hsl(142 76% 36% / 0.3);
+    --terrain-dark: 0 0% 6%;
+    
+    /* GRADIENTS */
+    --gradient-cyber: linear-gradient(135deg, hsl(142 76% 39% / 0.15), hsl(142 84% 47% / 0.05));
+    --gradient-primary: linear-gradient(135deg, hsl(142 76% 39%), hsl(142 84% 47%));
+    --gradient-dark: linear-gradient(180deg, hsl(0 0% 4%), hsl(0 0% 6%));
+    
+    /* SHADOWS & GLOWS */
+    --shadow-glow: 0 0 30px hsl(142 76% 39% / 0.3);
+    --shadow-elegant: 0 10px 30px -10px hsl(142 76% 39% / 0.3);
+    
+    /* TRANSITIONS */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     
-    /* Additional terrain colors */
-    --terrain-earth: 30 50% 40%;
-    --terrain-mud: 25 30% 25%;
+    /* PATTERNS */
+    --terrain-contour: repeating-linear-gradient(45deg, transparent, transparent 10px, hsl(142 76% 39% / 0.03) 10px, hsl(142 76% 39% / 0.03) 20px);
+    --terrain-grid: repeating-linear-gradient(0deg, transparent, transparent 30px, hsl(142 20% 15%) 30px, hsl(142 20% 15%) 31px),
+                    repeating-linear-gradient(90deg, transparent, transparent 30px, hsl(142 20% 15%) 30px, hsl(142 20% 15%) 31px);
 
     --sidebar-background: 0 0% 98%;
 
