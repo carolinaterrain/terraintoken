@@ -62,7 +62,12 @@ const DesktopNav = () => {
                   if (item.isRoute) {
                     window.location.href = `/${item.id}`;
                   } else {
-                    scrollToSection(item.id);
+                    // If not on homepage, navigate there first
+                    if (window.location.pathname !== '/') {
+                      window.location.href = `/#${item.id}`;
+                    } else {
+                      scrollToSection(item.id);
+                    }
                   }
                 }}
                 className={`px-4 py-2 text-sm font-medium transition-all relative ${
