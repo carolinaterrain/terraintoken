@@ -30,21 +30,28 @@ const links = [
 
 const Community = () => {
   return (
-    <section className="py-20 px-4">
-      <div className="container mx-auto text-center">
-        <h2 className="text-4xl md:text-5xl font-bold mb-6">
+    <section id="community" className="py-12 px-4 relative overflow-hidden">
+      <div 
+        className="absolute inset-0"
+        style={{ 
+          background: "linear-gradient(180deg, hsl(0 0% 4%), hsl(142 84% 47% / 0.05), hsl(0 0% 4%))",
+        }}
+      />
+      
+      <div className="container mx-auto text-center relative">
+        <h2 className="font-display text-4xl md:text-5xl font-bold mb-6">
           Join the <span className="text-primary">Movement</span>
         </h2>
         
-        <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+        <p className="font-body text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
           Connect with our growing community of terrain enthusiasts, meme lovers, and future data contributors
         </p>
         
         <div className="mb-8">
           <Button 
-            variant="hero" 
+            variant="default" 
             size="lg"
-            className="text-lg"
+            className="font-display text-lg animate-glow-pulse"
             asChild
           >
             <a href="#contest">
@@ -61,7 +68,7 @@ const Community = () => {
                 key={index}
                 variant="outline"
                 size="lg"
-                className={`border-primary/50 hover:border-primary transition-all ${link.color}`}
+                className={`font-display border-primary/30 hover:border-primary transition-all ${link.color}`}
                 asChild
               >
                 <a href={link.url} target="_blank" rel="noopener noreferrer">

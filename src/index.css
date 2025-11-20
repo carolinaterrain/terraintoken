@@ -99,9 +99,18 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground;
-  }
+body {
+  @apply bg-background text-foreground font-body;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-display;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
 }
 
 /* Easter Egg Animations */
@@ -197,6 +206,20 @@ All colors MUST be HSL.
 
 .shadow-glow {
   box-shadow: var(--shadow-glow);
+}
+
+/* Accessibility Modes */
+.high-contrast {
+  --primary: 142 100% 50%;
+  --border: 142 50% 30%;
+}
+
+.large-text * {
+  font-size: 150% !important;
+}
+
+.large-text h1 {
+  font-size: 200% !important;
 }
 
 /* Hide scrollbar but keep functionality */
