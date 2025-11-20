@@ -8,10 +8,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import confetti from "canvas-confetti";
+import { z } from "zod";
 
 const GOBLIN_IMAGES = [
   "🌱", "⛏️", "💎", "🌍", "⚡"
 ];
+
+const memeSubmissionSchema = z.object({
+  email: z.string().trim().email("Invalid email address").max(255, "Email must be less than 255 characters").optional().or(z.literal("")),
+  xHandle: z.string().trim().max(50, "X handle must be less than 50 characters").optional().or(z.literal("")),
+  caption: z.string().trim().max(1000, "Caption must be less than 1000 characters").optional().or(z.literal("")),
+  xPostUrl: z.string().trim().url("Invalid URL format").max(500, "URL must be less than 500 characters").optional().or(z.literal("")),
+});
 
 const SubmitMeme = () => {
   const navigate = useNavigate();
@@ -89,6 +97,25 @@ const SubmitMeme = () => {
         variant: "destructive"
       });
       return;
+    }
+
+    // Validate input data
+    try {
+      memeSubmissionSchema.parse({
+        email,
+        xHandle,
+        caption,
+        xPostUrl,
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        toast({
+          title: "Validation Error",
+          description: error.errors[0].message,
+          variant: "destructive",
+        });
+        return;
+      }
     }
     
     setIsSubmitting(true);
