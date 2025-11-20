@@ -21,6 +21,24 @@ const CompetitiveEdge = () => {
     pepe: false,
     trn: "French Drains, Hardscaping, Design"
   }, {
+    feature: "Active Earning System",
+    doge: false,
+    shib: false,
+    pepe: false,
+    trn: "Upload → Analyze → Earn (LIVE)"
+  }, {
+    feature: "Cross-Platform Integration",
+    doge: false,
+    shib: false,
+    pepe: false,
+    trn: "TerrainVision AI + terraintoken.com"
+  }, {
+    feature: "Real-World Data Utility",
+    doge: false,
+    shib: false,
+    pepe: false,
+    trn: "Training AI with 100k+ terrain photos"
+  }, {
     feature: "AI Integration",
     doge: false,
     shib: false,

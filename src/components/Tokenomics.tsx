@@ -22,9 +22,9 @@ const stats = [
   },
   {
     icon: Gift,
-    label: "Earn TRN",
+    label: "Earn By Contributing",
     value: "Upload & Earn",
-    description: "Get rewarded for terrain data"
+    description: "Earn 10-75+ TRN per photo upload on TerrainVision AI. Live NOW. No wallet required to start."
   },
   {
     icon: RefreshCw,

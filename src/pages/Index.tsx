@@ -22,13 +22,19 @@ import MascotLore from "@/components/MascotLore";
 import DesktopNav from "@/components/DesktopNav";
 import ScrollProgress from "@/components/ScrollProgress";
 import AccessibilityMenu from "@/components/AccessibilityMenu";
+import AnnouncementBanner from "@/components/AnnouncementBanner";
+import AnalyzeToEarnHero from "@/components/AnalyzeToEarnHero";
+import EcosystemFlow from "@/components/EcosystemFlow";
+import LiveProof from "@/components/LiveProof";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <AnnouncementBanner />
       <ScrollProgress />
       <DesktopNav />
       <Hero />
+      <AnalyzeToEarnHero />
       <TokenStats />
       <HowToBuy />
       <About />
@@ -36,8 +42,10 @@ const Index = () => {
       <RealWorldRoots />
       <Founders />
       <CompetitiveEdge />
+      <EcosystemFlow />
       <Roadmap />
       <Tokenomics />
+      <LiveProof />
       <Vision />
       <div id="contest">
         <MemeGenerator />

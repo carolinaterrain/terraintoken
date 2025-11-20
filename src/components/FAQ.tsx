@@ -9,6 +9,22 @@ import { AlertTriangle } from "lucide-react";
 
 const faqs = [
   {
+    question: "How do I earn TRN tokens?",
+    answer: "Upload photos on TerrainVision AI (terrainvision-ai.com/analyze), provide your Solana wallet, and consent to AI training. You'll earn 10-75+ TRN per upload based on data quality, consent, and category. It's live NOW."
+  },
+  {
+    question: "Do I need to buy TRN to earn TRN?",
+    answer: "Nope! You can start earning TRN for FREE by uploading terrain photos. No investment required. Just upload, analyze, and earn. This is the future of meme coins — contribution over speculation."
+  },
+  {
+    question: "What makes TRN different from other meme coins?",
+    answer: "Other meme coins rely on hype and speculation. TRN has a LIVE earning system where you contribute real-world data and get rewarded. We're backed by a real drainage company (Carolina Terrain) and integrated with AI technology (TerrainVision AI). From memes to meaningful utility."
+  },
+  {
+    question: "Can I analyze my yard for free?",
+    answer: "Yes! TerrainVision AI provides instant AI-powered drainage, erosion, and grading analysis for free. If you provide your wallet and consent to AI training, you ALSO earn TRN tokens. Win-win."
+  },
+  {
     question: "How do I participate in the meme contest?",
     answer: "Post your terrain-themed meme on Twitter/X with #TRNMemes and tag @carolinaterrain. Check the Contest Rules section for full details, prizes, and submission guidelines."
   },
