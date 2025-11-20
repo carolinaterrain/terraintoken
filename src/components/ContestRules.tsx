@@ -1,6 +1,7 @@
 import { Trophy, Calendar, CheckCircle2, AlertCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import ContestLeaderboard from "@/components/ContestLeaderboard";
 
 const ContestRules = () => {
   return (
@@ -143,6 +144,8 @@ const ContestRules = () => {
             <li>• By entering, you grant Terrain Token rights to share your meme on social media</li>
           </ul>
         </Card>
+
+        <ContestLeaderboard />
 
         <Alert className="mt-8 border-primary/50 bg-card">
           <AlertCircle className="h-4 w-4 text-primary" />
