@@ -1,7 +1,9 @@
 import { Brain, Hammer, MapPin, Shield, Award, Droplets } from "lucide-react";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
-import foundersHeadshot from "@/assets/founders-headshot.jpg";
+import foundersHeadshot from "@/assets/founders-together.jpg";
+import alexHeadshot from "@/assets/alex-purdy.jpg";
+import zachHeadshot from "@/assets/zac-hyman.jpg";
 
 const Founders = () => {
   const trustFactors = [
@@ -37,11 +39,11 @@ const Founders = () => {
         <div className="flex justify-center mb-16">
           <div className="relative">
             <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full animate-pulse" />
-            <img
-              src={foundersHeadshot}
-              alt="Alex Purdy and Zac Hyman, founders of Carolina Terrain"
-              className="relative w-full max-w-md rounded-lg border-2 border-primary/40 shadow-[0_0_40px_hsl(var(--primary)/0.3)]"
-            />
+          <img
+            src={foundersHeadshot}
+            alt="Alex Purdy and Zac Hyman, founders of Carolina Terrain, standing together outdoors"
+            className="relative w-full max-w-lg rounded-lg border-2 border-primary/40 shadow-[0_0_40px_hsl(var(--primary)/0.3)]"
+          />
           </div>
         </div>
 
@@ -49,9 +51,16 @@ const Founders = () => {
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           {/* Alex Purdy Card */}
           <GlassCard hover className="p-6 md:p-8">
-            <div className="flex items-start gap-4 mb-4">
-              <div className="p-3 bg-primary/10 rounded-lg border border-primary/30">
-                <Brain className="w-6 h-6 text-primary" />
+            <div className="flex items-start gap-4 mb-6">
+              <div className="relative flex-shrink-0">
+                <img
+                  src={alexHeadshot}
+                  alt="Alex Purdy, Co-Founder of Carolina Terrain, wearing company hat"
+                  className="w-20 h-20 md:w-24 md:h-24 rounded-lg object-cover border-2 border-primary/40 shadow-[0_0_20px_hsl(var(--primary)/0.2)]"
+                />
+                <div className="absolute -bottom-2 -right-2 p-1.5 bg-primary/90 rounded-full border-2 border-background">
+                  <Brain className="w-4 h-4 text-background" />
+                </div>
               </div>
               <div>
                 <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground">
@@ -99,9 +108,16 @@ const Founders = () => {
 
           {/* Zac Hyman Card */}
           <GlassCard hover className="p-6 md:p-8">
-            <div className="flex items-start gap-4 mb-4">
-              <div className="p-3 bg-primary/10 rounded-lg border border-primary/30">
-                <Hammer className="w-6 h-6 text-primary" />
+            <div className="flex items-start gap-4 mb-6">
+              <div className="relative flex-shrink-0">
+                <img
+                  src={zachHeadshot}
+                  alt="Zac Hyman, Co-Founder of Carolina Terrain, field operations lead"
+                  className="w-20 h-20 md:w-24 md:h-24 rounded-lg object-cover border-2 border-primary/40 shadow-[0_0_20px_hsl(var(--primary)/0.2)]"
+                />
+                <div className="absolute -bottom-2 -right-2 p-1.5 bg-primary/90 rounded-full border-2 border-background">
+                  <Hammer className="w-4 h-4 text-background" />
+                </div>
               </div>
               <div>
                 <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground">
