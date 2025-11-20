@@ -42,7 +42,15 @@ export async function fetchTRNStats(): Promise<TokenStats | null> {
     };
   } catch (error) {
     console.error("Error fetching TRN stats:", error);
-    return null;
+    // Return fallback data instead of null for better UX
+    return {
+      marketCap: "$--",
+      priceUsd: "0.00000000",
+      priceSol: "0.000000",
+      change24h: 0,
+      volume24h: "$--",
+      holders: "N/A"
+    };
   }
 }
 

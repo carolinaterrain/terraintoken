@@ -94,7 +94,7 @@ const GoblinCave = () => {
         status: "approved",
         placement,
         prize,
-        contest_date: new Date().toISOString()
+        contest_date: "Contest #1 - Nov 2025"
       })
       .eq("id", id);
 
@@ -113,35 +113,66 @@ const GoblinCave = () => {
       toast({
         title: "🏆 Added to Hall of Fame!",
         description: `Placement: ${placement}, Prize: ${prize}`,
+        duration: 5000,
       });
       fetchSubmissions();
     }
   };
 
   const triggerGlobalEffect = (effect: string) => {
-    switch (effect) {
-      case "confetti":
+    const effects = {
+      confetti: () => {
         confetti({
           particleCount: 200,
           spread: 100,
           origin: { y: 0.6 }
         });
-        break;
-      case "mud":
-        // Trigger mud fart animation
-        document.body.classList.add("shake");
-        setTimeout(() => document.body.classList.remove("shake"), 3000);
-        break;
-      case "rave":
-        // Trigger goblin rave
-        document.body.classList.add("disco");
-        setTimeout(() => document.body.classList.remove("disco"), 10000);
-        break;
-    }
+      },
+      mud: () => {
+        document.body.classList.add("animate-shake");
+        setTimeout(() => document.body.classList.remove("animate-shake"), 3000);
+      },
+      rave: () => {
+        document.body.classList.add("animate-disco");
+        setTimeout(() => document.body.classList.remove("animate-disco"), 10000);
+      },
+      coinRain: () => {
+        // Trigger coin rain confetti
+        const duration = 5000;
+        const animationEnd = Date.now() + duration;
+        const coinColors = ['#10b981', '#059669', '#047857'];
+        
+        const interval = setInterval(() => {
+          const timeLeft = animationEnd - Date.now();
+          if (timeLeft <= 0) {
+            clearInterval(interval);
+            return;
+          }
+          
+          confetti({
+            particleCount: 3,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 },
+            colors: coinColors
+          });
+          confetti({
+            particleCount: 3,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 },
+            colors: coinColors
+          });
+        }, 100);
+      }
+    };
+    
+    effects[effect as keyof typeof effects]?.();
     
     toast({
       title: "🎉 Global Effect Triggered!",
       description: `${effect} activated across the site!`,
+      duration: 4000,
     });
   };
 

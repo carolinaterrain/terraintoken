@@ -5,6 +5,7 @@ import About from "@/components/About";
 import Roadmap from "@/components/Roadmap";
 import Tokenomics from "@/components/Tokenomics";
 import Vision from "@/components/Vision";
+import RealWorldRoots from "@/components/RealWorldRoots";
 import MemeGenerator from "@/components/MemeGenerator";
 import MemeHallOfFame from "@/components/MemeHallOfFame";
 import MemeFeed from "@/components/MemeFeed";
@@ -25,6 +26,7 @@ const Index = () => {
       <Roadmap />
       <Tokenomics />
       <Vision />
+      <RealWorldRoots />
       <MemeGenerator />
       <MemeHallOfFame />
       <MemeFeed />
