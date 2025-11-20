@@ -19,11 +19,14 @@ const SoundToggle = () => {
     const newState = !soundEnabled;
     setSoundEnabled(newState);
     localStorage.setItem("trn-sound-enabled", String(newState));
+    
+    // Dispatch custom event for audio player to listen
+    window.dispatchEvent(new Event("sound-toggle-changed"));
 
     if (newState) {
       toast({
         title: "Sound effects enabled! 🎵",
-        description: "Enjoy the goblin ambience",
+        description: "Background music is now available in the bottom-right corner",
       });
     } else {
       toast({

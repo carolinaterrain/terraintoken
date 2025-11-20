@@ -175,9 +175,14 @@ const Hero = () => {
         </div>
         
         {/* Title with typewriter effect */}
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-terrain-glow to-foreground bg-clip-text text-transparent animate-title-drop">
+        <h1 className="text-5xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-foreground via-terrain-glow to-foreground bg-clip-text text-transparent animate-title-drop">
           Terrain Token
         </h1>
+        
+        {/* Subtitle */}
+        <p className="text-lg md:text-xl text-muted-foreground/80 mb-6 animate-fade-in-up max-w-3xl mx-auto" style={{ animationDelay: '0.2s' }}>
+          The first meme coin backed by NDS-certified drainage contractors
+        </p>
         
         {/* TRN ticker */}
         <p className="text-xl md:text-2xl mb-2 text-muted-foreground font-medium animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
