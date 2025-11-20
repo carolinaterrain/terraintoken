@@ -12,6 +12,16 @@ const MobileNav = () => {
     }
   };
 
+  const handleHomeClick = () => {
+    if (window.location.pathname !== "/") {
+      // Navigate to home page if not already there
+      navigate("/");
+    } else {
+      // Scroll to top if already on home page
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   const handleShare = async () => {
     if (navigator.share) {
       try {
@@ -32,7 +42,7 @@ const MobileNav = () => {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => scrollToSection("hero")}
+          onClick={handleHomeClick}
           className="flex flex-col items-center gap-1 h-auto py-2"
         >
           <Home className="w-5 h-5" />
