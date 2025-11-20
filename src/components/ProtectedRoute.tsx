@@ -1,126 +1,118 @@
 import { ReactNode, useState, useEffect } from "react";
-import { Input } from "@/components/ui/input";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ProtectedRouteProps {
   children: ReactNode;
 }
 
-const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "erosionneverdies";
-
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const [password, setPassword] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
-  // Check for existing session on mount
   useEffect(() => {
-    const sessionAuth = sessionStorage.getItem("goblin-cave-auth");
-    if (sessionAuth === "true") {
-      setIsAuthenticated(true);
-    }
+    checkAdminStatus();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (password === ADMIN_PASSWORD) {
-      setIsAuthenticated(true);
-      sessionStorage.setItem("goblin-cave-auth", "true");
-      toast({
-        title: "🔓 Welcome to the Goblin Cave!",
-        description: "The sacred grounds are now open to you.",
-      });
-    } else {
-      toast({
-        title: "❌ Wrong Password!",
-        description: "The goblins refuse your entry. Try again!",
-        variant: "destructive",
-      });
-      setPassword("");
+  const checkAdminStatus = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        setIsAdmin(false);
+        setLoading(false);
+        return;
+      }
+
+      const { data: roleData, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'admin')
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error checking admin role:', error);
+        setIsAdmin(false);
+      } else {
+        setIsAdmin(!!roleData);
+      }
+    } catch (error) {
+      console.error('Error in checkAdminStatus:', error);
+      setIsAdmin(false);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    sessionStorage.removeItem("goblin-cave-auth");
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setIsAdmin(false);
+    navigate('/');
     toast({
       title: "🚪 Logged Out",
       description: "Returning to the surface...",
     });
   };
 
-  if (isAuthenticated) {
+  if (loading) {
     return (
-      <>
-        <div className="fixed top-4 right-4 z-50">
-          <Button
-            onClick={handleLogout}
-            variant="outline"
-            size="sm"
-            className="bg-background/80 backdrop-blur-sm"
-          >
-            🚪 Logout
-          </Button>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4 animate-bounce">🔐</div>
+          <p className="text-muted-foreground">Checking credentials...</p>
         </div>
-        {children}
-      </>
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="max-w-md w-full">
+          <div className="bg-card border-2 border-destructive/30 rounded-2xl p-8 shadow-2xl">
+            <div className="text-center mb-8">
+              <div className="text-6xl mb-4">⛔</div>
+              <h1 className="text-3xl font-bold text-foreground mb-2">
+                Access Denied
+              </h1>
+              <p className="text-muted-foreground">
+                Only admin goblins may enter this cave.
+              </p>
+            </div>
+            
+            <Button
+              onClick={() => navigate('/')}
+              className="w-full bg-primary hover:bg-primary/90"
+              size="lg"
+            >
+              Return to Surface
+            </Button>
+          </div>
+        </div>
+      </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
-        <div className="bg-card border-2 border-primary/30 rounded-2xl p-8 shadow-2xl">
-          <div className="text-center mb-8">
-            <div className="text-6xl mb-4 animate-bounce">🔐</div>
-            <h1 className="text-3xl font-bold text-foreground mb-2">
-              Secret Goblin Cave
-            </h1>
-            <p className="text-muted-foreground">
-              Only true erosion masters may enter...
-            </p>
-          </div>
-          
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="text-sm font-medium text-foreground mb-2 block">
-                🗝️ Enter Password
-              </label>
-              <Input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="erosion..."
-                className="bg-background border-primary/20"
-              />
-            </div>
-            
-            <Button
-              type="submit"
-              className="w-full bg-primary hover:bg-primary/90"
-              size="lg"
-            >
-              Unlock the Cave
-            </Button>
-          </form>
-          
-          <div className="mt-6 text-center">
-            <p className="text-xs text-muted-foreground">
-              🌱 Hint: What never stops? 💎
-            </p>
-          </div>
-        </div>
-        
-        <div className="text-center mt-4">
-          <p className="text-sm text-muted-foreground">
-            Lost? <a href="/" className="text-primary hover:underline">Return to surface</a>
-          </p>
-        </div>
+    <>
+      <div className="fixed top-4 right-4 z-50">
+        <Button
+          onClick={handleLogout}
+          variant="outline"
+          size="sm"
+          className="bg-background/80 backdrop-blur-sm"
+        >
+          🚪 Logout
+        </Button>
       </div>
-    </div>
+      {children}
+    </>
   );
-};
+}
 
 export default ProtectedRoute;
