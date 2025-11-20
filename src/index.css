@@ -46,6 +46,12 @@ All colors MUST be HSL.
     --terrain-glow: 142 84% 47%;
     --terrain-dark: 0 0% 6%;
     
+    /* EARTHY TERRAIN COLORS */
+    --earth-brown: 25 50% 35%;        /* Soil brown */
+    --forest-green: 142 60% 25%;      /* Deep vegetation green */
+    --clay-red: 15 50% 40%;           /* Erosion control clay */
+    --stone-gray: 30 5% 50%;          /* Gravel/drainage stone */
+    
     /* GRADIENTS */
     --gradient-cyber: linear-gradient(135deg, hsl(142 76% 39% / 0.15), hsl(142 84% 47% / 0.05));
     --gradient-primary: linear-gradient(135deg, hsl(142 76% 39%), hsl(142 84% 47%));

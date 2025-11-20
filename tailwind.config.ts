@@ -55,6 +55,12 @@ export default {
           glow: "hsl(var(--terrain-glow))",
           dark: "hsl(var(--terrain-dark))",
         },
+        earth: {
+          brown: "hsl(var(--earth-brown))",
+          green: "hsl(var(--forest-green))",
+          red: "hsl(var(--clay-red))",
+          gray: "hsl(var(--stone-gray))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

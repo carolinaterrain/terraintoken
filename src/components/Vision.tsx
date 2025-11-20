@@ -1,5 +1,6 @@
 import { GlassCard } from "@/components/ui/glass-card";
 import { Target } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Vision = () => {
   return (
@@ -60,6 +61,29 @@ const Vision = () => {
             <p className="font-body text-lg font-bold text-foreground leading-relaxed mt-6 p-4 bg-primary/10 rounded-lg border-l-4 border-primary">
               We're not competing with DOGE or SHIB. We're creating an entirely new category: <span className="text-primary">Data Contribution Tokens</span>.
             </p>
+
+            {/* CTA */}
+            <div className="flex flex-col sm:flex-row gap-4 mt-8 justify-center">
+              <Button
+                size="lg"
+                className="font-display font-semibold"
+                asChild
+              >
+                <a href="https://t.me/terraintoken" target="_blank" rel="noopener noreferrer">
+                  Join the Mission 🚀
+                </a>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="font-display font-semibold border-primary"
+                asChild
+              >
+                <a href="/earn-trn">
+                  View Earning Dashboard 📊
+                </a>
+              </Button>
+            </div>
           </div>
         </GlassCard>
       </div>

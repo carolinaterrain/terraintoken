@@ -111,7 +111,7 @@ const Hero = () => {
             {/* Spinning Coin */}
             <img
               src={trnCoin}
-              alt="TRN Coin"
+              alt="TRN Terrain Token spinning coin with green glow effect"
               className="relative w-72 md:w-96 h-72 md:h-96 object-contain animate-float hover:rotate-[5deg] transition-transform duration-300 cursor-pointer"
             />
           </div>
@@ -125,7 +125,7 @@ const Hero = () => {
             <div className="relative flex-shrink-0">
               <img
                 src={terrainMascot}
-                alt="Terrain Goblin"
+                alt="Terrain Token goblin mascot with hardhat - official TRN cryptocurrency character"
                 className="w-16 h-16 md:w-20 md:h-20 animate-blink cursor-pointer"
                 onClick={handleGoblinClick}
                 onMouseEnter={handleGoblinHover}
