@@ -13,12 +13,12 @@ const Footer = () => {
           <GlassCard className="p-4 text-center">
             <TrendingUp className="w-5 h-5 text-primary mx-auto mb-2" />
             <p className="text-xs text-muted-foreground mb-1">Total Supply</p>
-            <p className="font-display text-sm font-bold text-primary">1B TRN</p>
+            <p className="font-display text-sm font-bold text-primary">10.43M TRN</p>
           </GlassCard>
           <GlassCard className="p-4 text-center">
             <Shield className="w-5 h-5 text-primary mx-auto mb-2" />
             <p className="text-xs text-muted-foreground mb-1">Circulating</p>
-            <p className="font-display text-sm font-bold text-primary">~550M TRN</p>
+            <p className="font-display text-sm font-bold text-primary">~5.2M TRN</p>
           </GlassCard>
           <GlassCard className="p-4 text-center">
             <Shield className="w-5 h-5 text-primary mx-auto mb-2" />
@@ -113,12 +113,18 @@ const Footer = () => {
               Upload & Earn
             </a>
             <a 
-              href="https://terrainvision-ai.com/analyze" 
+              href="/whitepaper" 
+              className="text-xs text-primary hover:underline font-medium"
+            >
+              Read Whitepaper
+            </a>
+            <a 
+              href="https://solscan.io/token/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump" 
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-primary hover:underline font-medium"
             >
-              Analyze Your Yard
+              View on Solscan
             </a>
           </div>
         </div>

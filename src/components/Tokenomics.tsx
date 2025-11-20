@@ -1,11 +1,12 @@
 import { GlassCard } from "@/components/ui/glass-card";
+import { Button } from "@/components/ui/button";
 import { Coins, Shield, Rocket, RefreshCw, Gift } from "lucide-react";
 
 const stats = [
   {
     icon: Coins,
     label: "Fixed Supply",
-    value: "1 Billion TRN",
+    value: "10.43M TRN",
     description: "No additional minting"
   },
   {
@@ -50,10 +51,22 @@ const Tokenomics = () => {
           <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto mb-2">
             Simple, transparent, and community-first token design
           </p>
-          <p className="font-body text-sm text-primary italic max-w-2xl mx-auto">
+          <p className="font-body text-sm text-primary italic max-w-2xl mx-auto mb-3">
             Unlike other meme coins, a portion of ecosystem growth funds REAL terrain projects through Carolina Terrain. 
             Your memes literally pay for French drains. This is the future. 💚
           </p>
+          <div className="flex justify-center mt-4">
+            <Button
+              variant="outline"
+              size="sm"
+              className="font-display"
+              asChild
+            >
+              <a href="/whitepaper">
+                Read Full Tokenomics in Whitepaper 📄
+              </a>
+            </Button>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto">

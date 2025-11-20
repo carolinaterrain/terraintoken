@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Copy } from "lucide-react";
+import { ArrowRight, Copy, FileText } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import confetti from "canvas-confetti";
@@ -219,9 +219,12 @@ const Hero = () => {
               variant="ghost"
               size="lg"
               className="font-display font-semibold w-full md:w-64 hover:bg-primary/10"
-              onClick={() => document.getElementById('roadmap')?.scrollIntoView({ behavior: 'smooth' })}
+              asChild
             >
-              View Roadmap
+              <a href="/whitepaper">
+                <FileText className="mr-2 h-5 w-5" />
+                Read Whitepaper
+              </a>
             </Button>
           </div>
 
