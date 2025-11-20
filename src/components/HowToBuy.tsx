@@ -36,7 +36,7 @@ const HowToBuy = () => {
   ];
   
   return (
-    <section className="py-20 px-4 relative overflow-hidden">
+    <section id="how-to-buy" className="py-20 px-4 relative overflow-hidden">
       {/* Background pattern */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <div className="absolute inset-0" style={{
