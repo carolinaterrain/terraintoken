@@ -17,21 +17,21 @@ const templates: Template[] = [
     id: "goblin-hodl",
     name: "Goblin HODL",
     category: "Classic Goblins",
-    imageUrl: "/src/assets/goblin-with-coin.png",
+    imageUrl: "/goblin-with-coin.png",
     description: "Perfect for HODL memes"
   },
   {
     id: "terrain-mascot",
     name: "Terrain Mascot",
     category: "Classic Goblins",
-    imageUrl: "/src/assets/terrain-mascot.png",
+    imageUrl: "/terrain-mascot.png",
     description: "The OG terrain goblin"
   },
   {
     id: "goblin-banner",
     name: "Goblin Banner",
     category: "Classic Goblins",
-    imageUrl: "/src/assets/goblin-banner.png",
+    imageUrl: "/goblin-banner.png",
     description: "Wide format for epic memes"
   },
   // Add more templates as needed
