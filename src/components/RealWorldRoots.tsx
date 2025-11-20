@@ -389,10 +389,23 @@ const RealWorldRoots = () => {
         <div className="mb-12">
           <h3 className="text-2xl font-bold text-center mb-6">📸 Real Work, Real Results</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <img src="/carolina-terrain-work-1.png" alt="Project 1" className="rounded-lg w-full" />
-            <img src="/carolina-terrain-work-2.png" alt="Project 2" className="rounded-lg w-full" />
-            <img src="/carolina-terrain-work-3.png" alt="Project 3" className="rounded-lg w-full" />
-            <img src="/carolina-terrain-work-4.png" alt="Project 4" className="rounded-lg w-full" />
+            <img src="/carolina-terrain-work-1.png" alt="Carolina Terrain drainage installation project - French drain system" className="rounded-lg w-full" />
+            <img src="/carolina-terrain-work-2.png" alt="Carolina Terrain hardscape installation - Unilock patio with lifetime warranty" className="rounded-lg w-full" />
+            <img src="/carolina-terrain-work-3.png" alt="Carolina Terrain landscaping project - erosion control and grading" className="rounded-lg w-full" />
+            <img src="/carolina-terrain-work-4.png" alt="Carolina Terrain stormwater management - catch basin and drainage system" className="rounded-lg w-full" />
+          </div>
+
+          {/* CTA after gallery */}
+          <div className="text-center mt-8">
+            <Button
+              size="lg"
+              className="font-display font-semibold"
+              asChild
+            >
+              <a href="https://carolinaterrain.com" target="_blank" rel="noopener noreferrer">
+                See Our Work Gallery 🏗️
+              </a>
+            </Button>
           </div>
         </div>
 
@@ -400,9 +413,9 @@ const RealWorldRoots = () => {
         <div className="mb-12">
           <h3 className="text-2xl font-bold text-center mb-6">🌱 Goblin-Approved Certifications</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <img src="/goblin-certified.png" alt="Certified Goblin" className="rounded-lg w-full" />
-            <img src="/goblin-drainage.png" alt="Drainage Goblin" className="rounded-lg w-full" />
-            <img src="/goblin-banner.png" alt="Goblin Banner" className="rounded-lg w-full" />
+            <img src="/goblin-certified.png" alt="Terrain Token goblin mascot with NDS certification badge - officially certified drainage contractor" className="rounded-lg w-full" />
+            <img src="/goblin-drainage.png" alt="Terrain Token goblin mascot inspecting French drain installation - professional drainage expertise" className="rounded-lg w-full" />
+            <img src="/goblin-banner.png" alt="Terrain Token official banner with goblin mascot - TRN cryptocurrency branding" className="rounded-lg w-full" />
           </div>
         </div>
 

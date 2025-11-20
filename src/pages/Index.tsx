@@ -26,6 +26,7 @@ import AnnouncementBanner from "@/components/AnnouncementBanner";
 import AnalyzeToEarnHero from "@/components/AnalyzeToEarnHero";
 import EcosystemFlow from "@/components/EcosystemFlow";
 import LiveProof from "@/components/LiveProof";
+import Transparency from "@/components/Transparency";
 
 const Index = () => {
   return (
@@ -45,6 +46,7 @@ const Index = () => {
       <EcosystemFlow />
       <Roadmap />
       <Tokenomics />
+      <Transparency />
       <LiveProof />
       <Vision />
       <div id="contest">

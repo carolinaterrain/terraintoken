@@ -1,5 +1,6 @@
 import { GlassCard } from "@/components/ui/glass-card";
 import { Sprout, TrendingUp, Brain, Bot } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import terrainMascot from "@/assets/terrain-mascot.png";
 
 const features = [
@@ -38,7 +39,7 @@ const About = () => {
           <div className="flex justify-center mb-6">
             <img 
               src={terrainMascot} 
-              alt="Terrain Mascot" 
+              alt="Terrain Token goblin mascot - official cryptocurrency character for TRN meme coin" 
               className="w-24 h-24 animate-float"
             />
           </div>
@@ -71,6 +72,19 @@ const About = () => {
               </GlassCard>
             );
           })}
+        </div>
+
+        {/* CTA to Start Earning */}
+        <div className="text-center mt-12">
+          <Button
+            size="lg"
+            className="font-display font-semibold"
+            asChild
+          >
+            <a href="/upload-project">
+              🚀 Start Earning TRN Now
+            </a>
+          </Button>
         </div>
       </div>
     </section>

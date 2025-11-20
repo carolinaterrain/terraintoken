@@ -1,4 +1,5 @@
-import { MessageCircle, Users, Twitter } from "lucide-react";
+import { MessageCircle, Users, Twitter, Shield, TrendingUp } from "lucide-react";
+import { GlassCard } from "@/components/ui/glass-card";
 import trnCoin from "@/assets/trn-coin.png";
 
 const Footer = () => {
@@ -6,11 +7,37 @@ const Footer = () => {
 
   return (
     <footer className="border-t border-border/50 bg-terrain-dark">
-      <div className="container mx-auto px-6 py-6">
+      {/* Transparency Mini Cards */}
+      <div className="container mx-auto px-6 py-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <GlassCard className="p-4 text-center">
+            <TrendingUp className="w-5 h-5 text-primary mx-auto mb-2" />
+            <p className="text-xs text-muted-foreground mb-1">Total Supply</p>
+            <p className="font-display text-sm font-bold text-primary">1B TRN</p>
+          </GlassCard>
+          <GlassCard className="p-4 text-center">
+            <Shield className="w-5 h-5 text-primary mx-auto mb-2" />
+            <p className="text-xs text-muted-foreground mb-1">Circulating</p>
+            <p className="font-display text-sm font-bold text-primary">~550M TRN</p>
+          </GlassCard>
+          <GlassCard className="p-4 text-center">
+            <Shield className="w-5 h-5 text-primary mx-auto mb-2" />
+            <p className="text-xs text-muted-foreground mb-1">Dev Holdings</p>
+            <p className="font-display text-sm font-bold text-primary">~1%</p>
+          </GlassCard>
+          <GlassCard className="p-4 text-center">
+            <Shield className="w-5 h-5 text-primary mx-auto mb-2" />
+            <p className="text-xs text-muted-foreground mb-1">Liquidity</p>
+            <p className="font-display text-sm font-bold text-primary">Community</p>
+          </GlassCard>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-6 py-6 border-t border-border/30">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           {/* Left: Logo + Copyright */}
           <div className="flex items-center gap-3">
-            <img src={trnCoin} alt="TRN" className="h-10 w-10" />
+            <img src={trnCoin} alt="TRN Terrain Token logo coin" className="h-10 w-10" />
             <div>
               <p className="font-display font-bold text-sm">Terrain Token</p>
               <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} • All rights reserved</p>
