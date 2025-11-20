@@ -14,9 +14,35 @@ const Footer = () => {
           
           <div>
             <h4 className="font-semibold mb-4">Contract</h4>
-            <p className="text-sm text-muted-foreground font-mono break-all">
-              [Contract Address Coming Soon]
-            </p>
+            <div className="space-y-2">
+              <p className="text-xs text-muted-foreground font-mono break-all select-all">
+                2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump
+              </p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText('2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump');
+                    const btn = document.getElementById('copy-contract-btn');
+                    if (btn) {
+                      btn.textContent = 'Copied!';
+                      setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+                    }
+                  }}
+                  id="copy-contract-btn"
+                  className="text-xs px-2 py-1 bg-primary/10 hover:bg-primary/20 text-primary rounded transition-colors"
+                >
+                  Copy
+                </button>
+                <a
+                  href="https://solscan.io/token/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs px-2 py-1 bg-primary/10 hover:bg-primary/20 text-primary rounded transition-colors"
+                >
+                  View on Solscan
+                </a>
+              </div>
+            </div>
           </div>
           
           <div>

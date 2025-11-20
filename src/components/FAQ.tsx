@@ -9,6 +9,10 @@ import { AlertTriangle } from "lucide-react";
 
 const faqs = [
   {
+    question: "How do I participate in the meme contest?",
+    answer: "Post your terrain-themed meme on Twitter/X with #TRNMemes and tag @carolinaterrain. Check the Contest Rules section for full details, prizes, and submission guidelines."
+  },
+  {
     question: "Is TRN an investment?",
     answer: "No. TRN is not an investment and carries no expectation of profit. It's a community token designed for entertainment and future ecosystem utilities."
   },
