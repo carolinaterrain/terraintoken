@@ -30,9 +30,22 @@ const Community = () => {
           Join the <span className="text-primary">Movement</span>
         </h2>
         
-        <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
+        <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
           Connect with our growing community of terrain enthusiasts, meme lovers, and future data contributors
         </p>
+        
+        <div className="mb-8">
+          <Button 
+            variant="hero" 
+            size="lg"
+            className="text-lg"
+            asChild
+          >
+            <a href="#contest">
+              View Contest Rules & Prizes 🏆
+            </a>
+          </Button>
+        </div>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
           {links.map((link, index) => {

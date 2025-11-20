@@ -43,7 +43,7 @@ const Hero = () => {
             className="text-lg"
             asChild
           >
-            <a href="https://pump.fun" target="_blank" rel="noopener noreferrer">
+            <a href="https://pump.fun/coin/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump" target="_blank" rel="noopener noreferrer">
               Buy TRN <ArrowRight className="ml-2" />
             </a>
           </Button>
