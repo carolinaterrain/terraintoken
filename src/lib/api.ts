@@ -57,19 +57,57 @@ export async function fetchTRNStats(): Promise<TokenStats | null> {
 // Fetch meme coin stats for the terrain report
 export async function fetchMemeStats(): Promise<MemeTokenStats[]> {
   const memeCoins = [
-    { symbol: "PEPE", address: "pepe-address", commentary: "Still hopping! 🐸" },
-    { symbol: "BONK", address: "bonk-address", commentary: "Much wow! 🐕" },
-    { symbol: "WIF", address: "wif-address", commentary: "Hat's off! 🎩" },
-    { symbol: "DOGE", address: "doge-address", commentary: "To the moon! 🚀" },
+    { symbol: "BONK", address: "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263", commentary: "Much wow! 🐕" },
+    { symbol: "WIF", address: "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm", commentary: "Hat's off! 🎩" },
+    { symbol: "POPCAT", address: "7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr", commentary: "Pop pop! 🐱" },
+    { symbol: "MYRO", address: "HhJpBhRRn4g56VsyLuT8DL5Bv31HkXqsrahTTUCZeZg4", commentary: "Good boy! 🐶" },
   ];
   
-  // Return mock data with randomized changes for demo
-  return memeCoins.map(coin => ({
-    symbol: coin.symbol,
-    price: "$" + (Math.random() * 0.01).toFixed(6),
-    change24h: (Math.random() - 0.5) * 20,
-    commentary: coin.commentary
-  }));
+  try {
+    const promises = memeCoins.map(async (coin) => {
+      try {
+        const response = await fetch(
+          `https://api.dexscreener.com/latest/dex/tokens/${coin.address}`
+        );
+        
+        if (!response.ok) throw new Error(`Failed to fetch ${coin.symbol}`);
+        
+        const data = await response.json();
+        const pair = data.pairs?.[0];
+        
+        if (!pair) throw new Error(`No pair found for ${coin.symbol}`);
+        
+        const price = parseFloat(pair.priceUsd || 0);
+        const change24h = parseFloat(pair.priceChange?.h24 || 0);
+        
+        return {
+          symbol: coin.symbol,
+          price: price < 0.01 ? `$${price.toFixed(6)}` : `$${price.toFixed(4)}`,
+          change24h,
+          commentary: coin.commentary
+        };
+      } catch (error) {
+        console.error(`Error fetching ${coin.symbol}:`, error);
+        return {
+          symbol: coin.symbol,
+          price: "$--",
+          change24h: 0,
+          commentary: coin.commentary
+        };
+      }
+    });
+    
+    return await Promise.all(promises);
+  } catch (error) {
+    console.error("Error fetching meme stats:", error);
+    // Return fallback data
+    return memeCoins.map(coin => ({
+      symbol: coin.symbol,
+      price: "$--",
+      change24h: 0,
+      commentary: coin.commentary
+    }));
+  }
 }
 
 function formatNumber(num: number): string {
