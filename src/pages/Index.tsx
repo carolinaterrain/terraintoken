@@ -6,6 +6,7 @@ import Roadmap from "@/components/Roadmap";
 import Tokenomics from "@/components/Tokenomics";
 import Vision from "@/components/Vision";
 import RealWorldRoots from "@/components/RealWorldRoots";
+import Founders from "@/components/Founders";
 import CompetitiveEdge from "@/components/CompetitiveEdge";
 import MemeGenerator from "@/components/MemeGenerator";
 import MemeHallOfFame from "@/components/MemeHallOfFame";
@@ -33,6 +34,7 @@ const Index = () => {
       <About />
       <MascotLore />
       <RealWorldRoots />
+      <Founders />
       <CompetitiveEdge />
       <Roadmap />
       <Tokenomics />
