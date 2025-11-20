@@ -1,62 +1,51 @@
 import { Card } from "@/components/ui/card";
 import { Check, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-
 const CompetitiveEdge = () => {
-  const comparison = [
-    {
-      feature: "Real Company Backing",
-      doge: false,
-      shib: false,
-      pepe: false,
-      trn: "Licensed NC Contractor (CL.1872)",
-    },
-    {
-      feature: "Physical Assets",
-      doge: false,
-      shib: false,
-      pepe: false,
-      trn: "700-gal Pressure Trailer + Equipment",
-    },
-    {
-      feature: "Professional Services",
-      doge: false,
-      shib: false,
-      pepe: false,
-      trn: "French Drains, Hardscaping, Design",
-    },
-    {
-      feature: "AI Integration",
-      doge: false,
-      shib: false,
-      pepe: false,
-      trn: "Terrain Vision AI (Phase 3-5)",
-    },
-    {
-      feature: "Industry Certifications",
-      doge: false,
-      shib: false,
-      pepe: false,
-      trn: "8 Professional Certifications",
-    },
-    {
-      feature: "Remote Services",
-      doge: false,
-      shib: false,
-      pepe: false,
-      trn: "Nationwide 2D/3D Design",
-    },
-    {
-      feature: "Utility Roadmap",
-      doge: "Unclear",
-      shib: "Unclear",
-      pepe: "None",
-      trn: "6-Phase Terrain Data Ecosystem",
-    },
-  ];
-
-  return (
-    <section className="py-20 px-4 bg-gradient-to-b from-background to-primary/5">
+  const comparison = [{
+    feature: "Real Company Backing",
+    doge: false,
+    shib: false,
+    pepe: false,
+    trn: "Licensed NC Contractor (CL.1872)"
+  }, {
+    feature: "Physical Assets",
+    doge: false,
+    shib: false,
+    pepe: false,
+    trn: "700-gal Pressure Trailer + Equipment"
+  }, {
+    feature: "Professional Services",
+    doge: false,
+    shib: false,
+    pepe: false,
+    trn: "French Drains, Hardscaping, Design"
+  }, {
+    feature: "AI Integration",
+    doge: false,
+    shib: false,
+    pepe: false,
+    trn: "Terrain Vision AI (Phase 3-5)"
+  }, {
+    feature: "Industry Certifications",
+    doge: false,
+    shib: false,
+    pepe: false,
+    trn: "8 Professional Certifications"
+  }, {
+    feature: "Remote Services",
+    doge: false,
+    shib: false,
+    pepe: false,
+    trn: "Nationwide 2D/3D Design"
+  }, {
+    feature: "Utility Roadmap",
+    doge: "Unclear",
+    shib: "Unclear",
+    pepe: "None",
+    trn: "6-Phase Terrain Data Ecosystem"
+  }];
+  return <section className="py-20 px-4 bg-gradient-to-b from-background to-primary/5">
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <Badge variant="outline" className="mb-4 text-lg px-6 py-2">
@@ -84,8 +73,7 @@ const CompetitiveEdge = () => {
                 </tr>
               </thead>
               <tbody>
-                {comparison.map((row, index) => (
-                  <tr key={index} className="border-b border-border hover:bg-muted/30 transition-colors">
+                {comparison.map((row, index) => <tr key={index} className="border-b border-border hover:bg-muted/30 transition-colors">
                     <td className="p-4 font-semibold">{row.feature}</td>
                     <td className="text-center p-4">
                       {row.doge === false ? <X className="w-5 h-5 text-destructive mx-auto" /> : <span className="text-muted-foreground text-sm">{row.doge}</span>}
@@ -97,14 +85,9 @@ const CompetitiveEdge = () => {
                       {row.pepe === false ? <X className="w-5 h-5 text-destructive mx-auto" /> : <span className="text-muted-foreground text-sm">{row.pepe}</span>}
                     </td>
                     <td className="text-center p-4 bg-primary/5">
-                      {typeof row.trn === "string" ? (
-                        <span className="text-primary font-semibold text-sm">{row.trn}</span>
-                      ) : (
-                        <Check className="w-5 h-5 text-primary mx-auto" />
-                      )}
+                      {typeof row.trn === "string" ? <span className="text-primary font-semibold text-sm">{row.trn}</span> : <Check className="w-5 h-5 text-primary mx-auto" />}
                     </td>
-                  </tr>
-                ))}
+                  </tr>)}
               </tbody>
             </table>
           </div>
@@ -127,7 +110,8 @@ const CompetitiveEdge = () => {
                 <span className="font-bold text-foreground">PEPE</span> meme'd in 2023.
               </p>
               <p className="text-xl font-semibold text-primary mt-6">
-                But in 2024, TRN said:<br />
+                But in 2025, TRN said:
+"What if a meme coin... actually DID something?"<br />
                 "What if a meme coin... actually DID something?"
               </p>
               <p className="text-lg mt-6">
@@ -169,8 +153,6 @@ const CompetitiveEdge = () => {
           The only meme coin where buying the dip funds ACTUAL CONSTRUCTION PROJECTS
         </p>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default CompetitiveEdge;
