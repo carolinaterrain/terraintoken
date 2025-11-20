@@ -1,7 +1,10 @@
-import { Home, Trophy, DollarSign, Map } from "lucide-react";
+import { Home, Trophy, DollarSign, Gift } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const MobileNav = () => {
+  const navigate = useNavigate();
+  
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -39,11 +42,11 @@ const MobileNav = () => {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => scrollToSection("roadmap")}
+          onClick={() => navigate("/earn-trn")}
           className="flex flex-col items-center gap-1 h-auto py-2"
         >
-          <Map className="w-5 h-5" />
-          <span className="text-xs">Roadmap</span>
+          <Gift className="w-5 h-5" />
+          <span className="text-xs">Earn</span>
         </Button>
         
         <Button

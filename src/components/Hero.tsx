@@ -176,7 +176,18 @@ const Hero = () => {
             <Button
               variant="default"
               size="lg"
-              className="font-display font-semibold w-full md:w-64 animate-glow-pulse"
+              className="font-display font-semibold w-full md:w-64"
+              asChild
+            >
+              <a href="/earn-trn">
+                <span className="mr-2">🌱</span>
+                Earn TRN Free
+              </a>
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="font-display font-semibold w-full md:w-64 border-primary hover:bg-primary/10"
               asChild
             >
               <a

@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
-import { Upload, X, ArrowLeft } from "lucide-react";
+import { Upload, X, ArrowLeft, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -27,6 +27,7 @@ const UploadProject = () => {
   const [earnedTRN, setEarnedTRN] = useState(0);
   const [goblinMessage, setGoblinMessage] = useState("");
   const [showRewardModal, setShowRewardModal] = useState(false);
+  const [uploadedMediaId, setUploadedMediaId] = useState("");
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
@@ -44,13 +45,13 @@ const UploadProject = () => {
   });
 
   // Calculate expected TRN reward
-  useState(() => {
+  useEffect(() => {
     let reward = 10; // Base upload
     if (dataConsent) reward += 50;
     if (walletAddress) reward += 5;
     if (category === 'erosion' || category === 'drainage') reward += 10;
     setExpectedTRN(reward);
-  });
+  }, [dataConsent, walletAddress, category]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -100,22 +101,36 @@ const UploadProject = () => {
 
       if (insertError) throw insertError;
 
+      setUploadedMediaId(insertData.id);
+
       // Calculate TRN rewards
       if (walletAddress && insertData) {
-        const { data: rewardData } = await supabase.functions.invoke('calculate-trn-reward', {
-          body: { 
-            mediaId: insertData.id,
-            walletAddress,
-            dataConsent,
-            category
-          }
-        });
+        try {
+          const { data: rewardData, error: rewardError } = await supabase.functions.invoke('calculate-trn-reward', {
+            body: { 
+              mediaId: insertData.id,
+              walletAddress,
+              dataConsent,
+              category
+            }
+          });
 
-        if (rewardData) {
-          setEarnedTRN(rewardData.totalTRN);
-          setGoblinMessage(rewardData.goblinMessage);
-          setShowRewardModal(true);
+          if (rewardError) {
+            console.error('Reward calculation error:', rewardError);
+          } else if (rewardData) {
+            setEarnedTRN(rewardData.totalTRN || 0);
+            setGoblinMessage(rewardData.goblinMessage || "TRN earned!");
+            setShowRewardModal(true);
+          }
+        } catch (err) {
+          console.error('Reward error:', err);
         }
+      } else {
+        toast({
+          title: "Upload Successful!",
+          description: "Your project has been added.",
+        });
+        navigate("/");
       }
 
       if (!walletAddress) {
@@ -271,18 +286,61 @@ const UploadProject = () => {
               />
             </div>
 
-            {/* Featured Toggle */}
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="featured"
-                checked={isFeatured}
-                onChange={(e) => setIsFeatured(e.target.checked)}
-                className="w-4 h-4"
-              />
-              <Label htmlFor="featured" className="cursor-pointer">
-                Mark as Featured
-              </Label>
+            {/* Earn TRN Section */}
+            <div className="border-t border-primary/20 pt-6 space-y-4">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="font-display text-xl font-bold">🌱 Earn TRN Rewards</h3>
+                <span className="text-primary font-bold text-lg">Up to {expectedTRN} TRN</span>
+              </div>
+              
+              <div>
+                <Label htmlFor="wallet">Solana Wallet Address (Optional)</Label>
+                <Input
+                  id="wallet"
+                  value={walletAddress}
+                  onChange={(e) => setWalletAddress(e.target.value)}
+                  placeholder="Enter your Solana wallet to earn TRN"
+                  className="mt-2"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Need a wallet? Get one at <a href="https://phantom.app" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Phantom.app</a>
+                </p>
+              </div>
+
+              <div className="p-4 rounded-lg bg-primary/5 border border-primary/20">
+                <div className="flex items-start gap-3">
+                  <input
+                    type="checkbox"
+                    id="dataConsent"
+                    checked={dataConsent}
+                    onChange={(e) => setDataConsent(e.target.checked)}
+                    className="w-5 h-5 mt-1 cursor-pointer"
+                  />
+                  <div className="flex-1">
+                    <Label htmlFor="dataConsent" className="cursor-pointer text-base">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span>Allow AI Training Use</span>
+                        <span className="inline-flex items-center px-2 py-1 rounded-full bg-primary text-primary-foreground text-xs font-bold">+50 TRN</span>
+                      </div>
+                      <p className="font-normal text-sm text-muted-foreground">
+                        Help improve our terrain AI models. Your photo will be anonymized and used for training.
+                      </p>
+                    </Label>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+                <h4 className="font-display font-bold mb-3">Estimated TRN Rewards</h4>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between"><span className="text-muted-foreground">Base Upload</span><span className="font-bold text-primary">+10 TRN</span></div>
+                  {dataConsent && <div className="flex justify-between animate-fade-in"><span className="text-muted-foreground">AI Training Consent</span><span className="font-bold text-primary">+50 TRN</span></div>}
+                  {walletAddress && <div className="flex justify-between animate-fade-in"><span className="text-muted-foreground">Wallet Provided</span><span className="font-bold text-primary">+5 TRN</span></div>}
+                  {(category === 'erosion' || category === 'drainage') && <div className="flex justify-between animate-fade-in"><span className="text-muted-foreground">High-Value Category</span><span className="font-bold text-primary">+10 TRN</span></div>}
+                  <div className="border-t border-primary/20 pt-2 mt-2"><div className="flex justify-between text-lg"><span className="font-bold">Total</span><span className="font-bold text-primary">{expectedTRN} TRN</span></div></div>
+                </div>
+                <p className="text-xs text-muted-foreground mt-3">Additional rewards: +25 TRN for validation, +15 TRN for social share</p>
+              </div>
             </div>
 
             {/* Submit Button */}
