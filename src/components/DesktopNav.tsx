@@ -24,6 +24,7 @@ const DesktopNav = () => {
     { id: "hero", label: "Home" },
     { id: "how-to-buy", label: "Mint" },
     { id: "roadmap", label: "Roadmap" },
+    { id: "founders", label: "Founders" },
     { id: "tokenomics", label: "Token Info" },
     { id: "community", label: "Community" },
   ];
