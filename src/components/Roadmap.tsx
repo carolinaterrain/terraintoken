@@ -1,6 +1,15 @@
 import { GlassCard } from "@/components/ui/glass-card";
 import { Sparkles, Users, Gift, Cpu, Database, Cog, CheckCircle } from "lucide-react";
 import terrainMascot from "@/assets/terrain-mascot.png";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
+} from "@/components/ui/carousel";
+import { useState, useEffect } from "react";
 
 const phases = [
   {
@@ -48,6 +57,19 @@ const phases = [
 ];
 
 const Roadmap = () => {
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+
+    setCurrent(api.selectedScrollSnap());
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
+
   return (
     <section id="roadmap" className="py-16 px-4 relative overflow-hidden">
       {/* Background Pattern */}
@@ -66,10 +88,16 @@ const Roadmap = () => {
           </p>
         </div>
         
-        {/* Horizontal Scroll Timeline */}
+        {/* Carousel Timeline */}
         <div className="relative">
-          {/* Walking Goblin */}
-          <div className="absolute left-[16.66%] top-[-60px] z-10 animate-float">
+          {/* Walking Goblin - Dynamically positioned */}
+          <div 
+            className="absolute top-[-60px] z-10 animate-float transition-all duration-700 ease-out"
+            style={{
+              left: `${(current / (phases.length - 1)) * 100}%`,
+              transform: "translateX(-50%)",
+            }}
+          >
             <img 
               src={terrainMascot} 
               alt="Goblin Walking" 
@@ -77,29 +105,26 @@ const Roadmap = () => {
             />
           </div>
 
-          {/* Timeline Container */}
-          <div className="overflow-x-auto pb-8 scrollbar-hide">
-            <div className="flex gap-6 min-w-max px-4">
+          {/* Carousel */}
+          <Carousel
+            setApi={setApi}
+            opts={{
+              align: "start",
+              loop: false,
+            }}
+            className="w-full max-w-6xl mx-auto"
+          >
+            <CarouselContent className="-ml-4">
               {phases.map((item, index) => {
                 const Icon = item.icon;
                 const isComplete = item.status === "complete";
                 const isCurrent = item.status === "current";
                 
                 return (
-                  <div key={index} className="relative">
-                    {/* Connection Line */}
-                    {index < phases.length - 1 && (
-                      <div 
-                        className={`absolute top-24 left-full w-6 h-0.5 ${
-                          isComplete ? "bg-primary" : "bg-border"
-                        }`}
-                      />
-                    )}
-
-                    {/* Phase Card */}
+                  <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
                     <GlassCard 
                       hover
-                      className={`min-w-[280px] w-[280px] h-[240px] p-6 relative transition-all ${
+                      className={`h-[240px] p-6 relative transition-all ${
                         isCurrent ? "border-primary/60 shadow-glow" : ""
                       } ${item.status === "future" ? "opacity-70" : ""}`}
                     >
@@ -140,27 +165,36 @@ const Roadmap = () => {
                         </p>
                       </div>
                     </GlassCard>
-                  </div>
+                  </CarouselItem>
                 );
               })}
-            </div>
-          </div>
+            </CarouselContent>
+            
+            {/* Navigation Buttons */}
+            <CarouselPrevious className="hidden md:flex -left-12" />
+            <CarouselNext className="hidden md:flex -right-12" />
+          </Carousel>
 
-          {/* Progress Indicator */}
-          <div className="flex justify-center gap-2 mt-6">
+          {/* Progress Dots */}
+          <div className="flex justify-center gap-2 mt-8">
             {phases.map((phase, index) => (
-              <div
+              <button
                 key={index}
-                className={`h-1 w-8 rounded-full transition-all ${
-                  phase.status === "complete"
-                    ? "bg-primary"
-                    : phase.status === "current"
-                    ? "bg-primary/50"
-                    : "bg-border"
+                onClick={() => api?.scrollTo(index)}
+                className={`h-2 rounded-full transition-all ${
+                  current === index
+                    ? "w-8 bg-primary"
+                    : "w-2 bg-border hover:bg-border/60"
                 }`}
+                aria-label={`Go to ${phase.phase}`}
               />
             ))}
           </div>
+
+          {/* Phase Counter */}
+          <p className="text-center text-sm text-muted-foreground mt-4">
+            {phases[current].phase} of {phases.length} — {phases[current].title}
+          </p>
         </div>
       </div>
     </section>

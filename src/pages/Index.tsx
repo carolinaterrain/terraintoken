@@ -39,10 +39,12 @@ const Index = () => {
       <Roadmap />
       <Tokenomics />
       <Vision />
-      <MemeGenerator />
-      <MemeHallOfFame />
-      <MemeFeed />
-      <ContestRules />
+      <div id="contest">
+        <MemeGenerator />
+        <MemeHallOfFame />
+        <MemeFeed />
+        <ContestRules />
+      </div>
       <Community />
       <FAQ />
       <Footer />

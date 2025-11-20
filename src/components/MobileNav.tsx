@@ -1,4 +1,4 @@
-import { Home, Trophy, DollarSign, Share2 } from "lucide-react";
+import { Home, Trophy, DollarSign, Map } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const MobileNav = () => {
@@ -39,6 +39,16 @@ const MobileNav = () => {
         <Button
           variant="ghost"
           size="sm"
+          onClick={() => scrollToSection("roadmap")}
+          className="flex flex-col items-center gap-1 h-auto py-2"
+        >
+          <Map className="w-5 h-5" />
+          <span className="text-xs">Roadmap</span>
+        </Button>
+        
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => scrollToSection("contest")}
           className="flex flex-col items-center gap-1 h-auto py-2"
         >
@@ -54,16 +64,6 @@ const MobileNav = () => {
         >
           <DollarSign className="w-5 h-5" />
           <span className="text-xs">Buy</span>
-        </Button>
-        
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleShare}
-          className="flex flex-col items-center gap-1 h-auto py-2"
-        >
-          <Share2 className="w-5 h-5" />
-          <span className="text-xs">Share</span>
         </Button>
       </div>
     </nav>
