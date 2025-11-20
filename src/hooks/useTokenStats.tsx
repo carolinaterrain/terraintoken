@@ -5,8 +5,10 @@ export function useTokenStats() {
   return useQuery({
     queryKey: ["token-stats"],
     queryFn: fetchTRNStats,
-    refetchInterval: 15000, // Refresh every 15 seconds
-    staleTime: 10000,
+    refetchInterval: 60000, // Refresh every 60 seconds
+    staleTime: 50000,
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
   });
 }
 
@@ -14,7 +16,9 @@ export function useMemeStats() {
   return useQuery({
     queryKey: ["meme-stats"],
     queryFn: fetchMemeStats,
-    refetchInterval: 30000, // Refresh every 30 seconds
-    staleTime: 20000,
+    refetchInterval: 300000, // Refresh every 5 minutes
+    staleTime: 240000,
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
   });
 }

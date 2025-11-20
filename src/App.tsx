@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,7 +7,6 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import SubmitMeme from "./pages/SubmitMeme";
 import GoblinCave from "./pages/GoblinCave";
-import LoadingScreen from "@/components/LoadingScreen";
 import MobileNav from "@/components/MobileNav";
 import ExitIntent from "@/components/ExitIntent";
 import PWAPrompt from "@/components/PWAPrompt";
@@ -38,19 +36,13 @@ const AppContent = () => {
 };
 
 const App = () => {
-  const [showLoading, setShowLoading] = useState(true);
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <PerformanceMonitor />
         <Toaster />
         <Sonner />
-        {showLoading ? (
-          <LoadingScreen onComplete={() => setShowLoading(false)} />
-        ) : (
-          <AppContent />
-        )}
+        <AppContent />
       </TooltipProvider>
     </QueryClientProvider>
   );

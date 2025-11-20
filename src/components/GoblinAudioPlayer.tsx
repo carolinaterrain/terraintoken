@@ -126,7 +126,7 @@ const GoblinAudioPlayer = () => {
         ref={audioRef}
         src="/audio/trn-anthem-loop.mp3"
         loop
-        preload="auto"
+        preload="none"
       />
 
       <div className="fixed bottom-4 right-4 z-40">
