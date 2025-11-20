@@ -1,25 +1,14 @@
 import { useState } from "react";
 import { TrendingUp, TrendingDown, Copy, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
-interface Stat {
-  label: string;
-  value: string;
-  change?: number; // percentage change (positive or negative)
-}
-
-// Manual stats - update these values as needed
-const stats: Stat[] = [
-  { label: "Market Cap", value: "$420,069", change: 15.3 },
-  { label: "Holders", value: "1,337", change: 8.7 },
-  { label: "24h Volume", value: "$69,420", change: -3.2 },
-  { label: "Price", value: "0.00042 SOL", change: 12.5 },
-  { label: "All-time High", value: "$1.23", change: 0 },
-];
+import { useTokenStats, useMemeStats } from "@/hooks/useTokenStats";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TokenStats = () => {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const { toast } = useToast();
+  const { data: stats, isLoading } = useTokenStats();
+  const { data: memeStats } = useMemeStats();
 
   const handleCopy = (value: string, label: string, index: number) => {
     navigator.clipboard.writeText(value);
@@ -31,12 +20,33 @@ const TokenStats = () => {
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
+  if (isLoading || !stats) {
+    return (
+      <div className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-primary/20">
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex gap-4">
+            {[1, 2, 3, 4].map((i) => <Skeleton key={i} className="h-12 w-32" />)}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const statsArray = [
+    { label: "Market Cap", value: stats.marketCap, change: stats.change24h },
+    { label: "Price", value: `$${stats.priceUsd}`, change: stats.change24h },
+    { label: "24h Vol", value: stats.volume24h, change: 0 },
+    { label: "Holders", value: stats.holders || "N/A", change: 0 },
+  ];
+
+  const goblinMood = stats.change24h > 0 ? "🎉" : stats.change24h < -5 ? "😱" : "🏄‍♂️";
+
   return (
     <div className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-primary/20 shadow-lg">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between overflow-x-auto scrollbar-hide">
           <div className="flex items-center gap-8 min-w-max">
-            {stats.map((stat, index) => (
+            {statsArray.map((stat, index) => (
               <button
                 key={index}
                 onClick={() => handleCopy(stat.value, stat.label, index)}
@@ -46,18 +56,10 @@ const TokenStats = () => {
                   <div className="text-xs text-muted-foreground">{stat.label}</div>
                   <div className="text-sm font-bold flex items-center gap-1">
                     {stat.value}
-                    {stat.change !== undefined && stat.change !== 0 && (
-                      <span
-                        className={`flex items-center text-xs ${
-                          stat.change > 0 ? "text-green-500" : "text-red-500"
-                        }`}
-                      >
-                        {stat.change > 0 ? (
-                          <TrendingUp className="w-3 h-3" />
-                        ) : (
-                          <TrendingDown className="w-3 h-3" />
-                        )}
-                        {Math.abs(stat.change)}%
+                    {stat.change !== 0 && (
+                      <span className={`flex items-center text-xs ${stat.change > 0 ? "text-green-500" : "text-red-500"}`}>
+                        {stat.change > 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                        {Math.abs(stat.change).toFixed(1)}%
                       </span>
                     )}
                   </div>
@@ -70,13 +72,26 @@ const TokenStats = () => {
               </button>
             ))}
           </div>
-
-          {/* Surfing goblin */}
-          <div className="ml-4 text-2xl animate-slide-right pointer-events-none">
-            🏄‍♂️
-          </div>
+          <div className="ml-4 text-2xl animate-slide-right pointer-events-none">{goblinMood}</div>
         </div>
       </div>
+      
+      {/* Meme Terrain Report */}
+      {memeStats && memeStats.length > 0 && (
+        <div className="bg-primary/5 border-t border-primary/10 overflow-hidden">
+          <div className="animate-scroll-left whitespace-nowrap py-2 px-4 flex gap-8">
+            {[...memeStats, ...memeStats].map((meme, i) => (
+              <span key={i} className="text-xs">
+                <strong>{meme.symbol}</strong> {meme.price} 
+                <span className={meme.change24h > 0 ? "text-green-500" : "text-red-500"}>
+                  {meme.change24h > 0 ? "↑" : "↓"}{Math.abs(meme.change24h).toFixed(1)}%
+                </span>
+                <span className="text-muted-foreground ml-2">{meme.commentary}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
