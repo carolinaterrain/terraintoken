@@ -36,8 +36,12 @@ const Tokenomics = () => {
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             <span className="text-primary">Tokenomics</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-2">
             Simple, transparent, and community-first token design
+          </p>
+          <p className="text-sm text-primary italic max-w-2xl mx-auto">
+            Unlike other meme coins, a portion of ecosystem growth funds REAL terrain projects through Carolina Terrain. 
+            Your memes literally pay for French drains. This is the future. 💚
           </p>
         </div>
         

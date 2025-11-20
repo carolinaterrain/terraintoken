@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Users, Twitter } from "lucide-react";
+import { MessageCircle, Users, Twitter, Sparkles } from "lucide-react";
 
 const links = [
   {
@@ -18,6 +18,12 @@ const links = [
     icon: Twitter,
     name: "Twitter / X",
     url: "https://x.com/carolinaterrain",
+    color: "hover:text-primary"
+  },
+  {
+    icon: Sparkles,
+    name: "Terrain Vision AI",
+    url: "https://terrainvision-ai.com",
     color: "hover:text-primary"
   }
 ];

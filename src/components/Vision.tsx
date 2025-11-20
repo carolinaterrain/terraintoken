@@ -27,6 +27,11 @@ const Vision = () => {
               premium analysis, and eventually a global terrain intelligence network. From memes to 
               meaningful data — we're building the future of ground-level intelligence.
             </p>
+            
+            <p className="text-md text-primary font-semibold italic leading-relaxed mt-6">
+              We're not here to compete with DOGE. We're here to REPLACE the entire concept of what a meme coin can be. 
+              From memeing to utility. From jokes to JOBS. From pumps to PUMPS (water pumps, that is). 🚰⛏️
+            </p>
           </div>
         </Card>
       </div>
