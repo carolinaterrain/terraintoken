@@ -51,7 +51,7 @@ const PWAPrompt = () => {
   if (!showPrompt) return null;
 
   return (
-    <div className="fixed bottom-20 md:bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-sm z-50 animate-slide-in-right">
+    <div className="fixed bottom-4 left-4 md:max-w-sm z-80 animate-slide-in-right">
       <div className="bg-card border-2 border-primary/30 rounded-lg p-4 shadow-2xl">
         <button
           onClick={handleDismiss}

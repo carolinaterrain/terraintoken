@@ -319,14 +319,14 @@ export const useEasterEggs = () => {
         onOpenChange={setShowShortcuts} 
       />
       {showBadge && (
-        <div className="fixed top-20 right-4 z-50 animate-bounce">
+        <div className="fixed bottom-24 md:bottom-20 right-4 z-60 animate-bounce">
           <div className="bg-primary/20 backdrop-blur-sm border border-primary/40 rounded-lg p-3 shadow-lg">
             <span className="text-2xl">🏅</span>
           </div>
         </div>
       )}
       {raveMode && (
-        <div className="fixed inset-0 pointer-events-none z-40 animate-pulse">
+        <div className="fixed inset-0 pointer-events-none z-30 animate-pulse">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-purple-500/20 to-blue-500/20" />
         </div>
       )}
