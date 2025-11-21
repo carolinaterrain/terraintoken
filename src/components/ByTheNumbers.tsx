@@ -1,60 +1,14 @@
-import { TrendingUp, MapPin, Shield, Cpu, Camera, Wrench } from "lucide-react";
-import { Card } from "@/components/ui/card";
+import { TrendingUp, MapPin, Shield, DollarSign, TrendingDown, Activity } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { MetricCard } from "@/components/transparency/MetricCard";
+import { RevenueChart, YearOverYearChart, ExpenseBreakdownChart } from "@/components/transparency/FinancialCharts";
+import { InteractiveTimeline } from "@/components/transparency/InteractiveTimeline";
+import { DownloadReports } from "@/components/transparency/DownloadReports";
+import { calculateMetrics, balanceSheet } from "@/lib/financialData";
 
 const ByTheNumbers = () => {
-  const metrics = [
-    {
-      icon: Wrench,
-      value: "1,100+",
-      label: "Completed Projects",
-      description: "Drainage & erosion control solutions",
-      color: "text-primary"
-    },
-    {
-      icon: MapPin,
-      value: "20 Miles",
-      label: "Service Radius",
-      description: "Around Waxhaw, NC",
-      color: "text-blue-500"
-    },
-    {
-      icon: Shield,
-      value: "CL.1872",
-      label: "Licensed Contractor",
-      description: "NC Landscape Contractor",
-      color: "text-green-500"
-    },
-    {
-      icon: TrendingUp,
-      value: "$2M+",
-      label: "Service Volume",
-      description: "2022-2025 operational activity",
-      color: "text-purple-500"
-    },
-    {
-      icon: Cpu,
-      value: "AI-Powered",
-      label: "TerrainVision™",
-      description: "Built from real job-site data",
-      color: "text-cyan-500"
-    },
-    {
-      icon: Camera,
-      value: "1000s",
-      label: "Documented Jobs",
-      description: "Photos & drone scans archived",
-      color: "text-orange-500"
-    }
-  ];
-
-  const timeline = [
-    { year: "2019", event: "Carolina Terrain Founded" },
-    { year: "2022", event: "Scaled to 6-figure monthly operations" },
-    { year: "2023", event: "Expanded team & equipment fleet" },
-    { year: "2024", event: "Invested in robotics & AI tooling" },
-    { year: "2025", event: "TRN Token community launched" }
-  ];
+  const metrics = calculateMetrics();
 
   return (
     <section id="by-the-numbers" className="py-20 px-6 bg-gradient-to-b from-background to-background/80 relative overflow-hidden">
@@ -71,99 +25,105 @@ const ByTheNumbers = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <Badge variant="outline" className="mb-4 border-primary/40">
-            💼 Operational Transparency
+            💼 Complete Financial Transparency
           </Badge>
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
             Carolina Terrain By The Numbers
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            A snapshot of the real-world business backing the TRN community
+            Real financial data from the business backing the TRN community
           </p>
           <p className="text-sm text-muted-foreground mt-2">
-            2019–2025
+            May 2022 – November 2025 • Sourced from QuickBooks Records
           </p>
         </div>
 
-        {/* Metrics Grid */}
+        {/* Key Metrics Grid - Animated */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {metrics.map((metric, index) => {
-            const Icon = metric.icon;
-            return (
-              <Card 
-                key={index} 
-                className="p-6 bg-card/50 backdrop-blur-sm border-primary/20 hover:border-primary/40 transition-all hover:scale-105 group"
-              >
-                <div className="flex items-start gap-4">
-                  <div className={`p-3 rounded-lg bg-background/80 ${metric.color} group-hover:scale-110 transition-transform`}>
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-display text-3xl font-bold mb-1">
-                      {metric.value}
-                    </div>
-                    <div className="font-semibold text-foreground mb-1">
-                      {metric.label}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      {metric.description}
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            );
-          })}
+          <MetricCard
+            icon={DollarSign}
+            label="Total Revenue"
+            value={metrics.totalRevenue}
+            prefix="$"
+            decimals={0}
+            description="May 2022 - Nov 2025"
+            trend="up"
+            trendValue={`${metrics.growthRate.toFixed(1)}%`}
+            color="text-green-500"
+          />
+          <MetricCard
+            icon={TrendingUp}
+            label="2025 Revenue (YTD)"
+            value={metrics.revenue2025YTD}
+            prefix="$"
+            decimals={0}
+            description="Already exceeded 2024!"
+            trend="up"
+            trendValue="11% over 2024"
+            color="text-blue-500"
+            delay={0.2}
+          />
+          <MetricCard
+            icon={Activity}
+            label="Avg Monthly Revenue"
+            value={metrics.avgMonthlyRevenue}
+            prefix="$"
+            decimals={0}
+            description="Across all periods"
+            color="text-purple-500"
+            delay={0.4}
+          />
+          <MetricCard
+            icon={TrendingDown}
+            label="Net Profit Margin"
+            value={metrics.netProfitMargin}
+            suffix="%"
+            decimals={1}
+            description="Strong profitability"
+            trend="up"
+            color="text-cyan-500"
+            delay={0.6}
+          />
+          <MetricCard
+            icon={Shield}
+            label="Total Assets"
+            value={balanceSheet.totalAssets}
+            prefix="$"
+            decimals={0}
+            description="Equipment & cash"
+            color="text-orange-500"
+            delay={0.8}
+          />
+          <MetricCard
+            icon={MapPin}
+            label="Equipment Value"
+            value={balanceSheet.equipmentValue}
+            prefix="$"
+            decimals={0}
+            description="Heavy machinery fleet"
+            color="text-pink-500"
+            delay={1.0}
+          />
         </div>
 
-        {/* Timeline */}
-        <Card className="p-8 bg-card/50 backdrop-blur-sm border-primary/20 mb-12">
-          <h3 className="font-display text-2xl font-bold mb-6 text-center">
-            Operational Growth Timeline
-          </h3>
-          <div className="space-y-4">
-            {timeline.map((item, index) => (
-              <div key={index} className="flex items-center gap-4 group">
-                <div className="flex-shrink-0 w-20 font-display text-xl font-bold text-primary group-hover:scale-110 transition-transform">
-                  {item.year}
-                </div>
-                <div className="flex-shrink-0 w-3 h-3 rounded-full bg-primary group-hover:scale-150 transition-transform" />
-                <div className="flex-1 text-foreground">
-                  {item.event}
-                </div>
-              </div>
-            ))}
+        {/* Interactive Charts */}
+        <div className="space-y-8 mb-16">
+          <RevenueChart />
+          <div className="grid md:grid-cols-2 gap-8">
+            <YearOverYearChart />
+            <ExpenseBreakdownChart />
           </div>
-        </Card>
+        </div>
 
-        {/* Investment Highlights */}
-        <Card className="p-8 bg-card/50 backdrop-blur-sm border-primary/20 mb-12">
-          <h3 className="font-display text-2xl font-bold mb-6 text-center">
-            Operational Investments
-          </h3>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <h4 className="font-semibold text-lg mb-3 text-primary">
-                🚜 Heavy Equipment Fleet
-              </h4>
-              <ul className="space-y-2 text-muted-foreground">
-                <li>• Kubota Excavator & Large Skidsteer</li>
-                <li>• Dodge Ram 2020 & 2025 work trucks</li>
-                <li>• Pressure washing & robotics equipment</li>
-                <li>• Specialized tools & machinery</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-lg mb-3 text-primary">
-                🤖 Technology & Innovation
-              </h4>
-              <ul className="space-y-2 text-muted-foreground">
-                <li>• TerrainVision™ AI development</li>
-                <li>• Drone scanning & mapping systems</li>
-                <li>• Project documentation database</li>
-                <li>• Automation & efficiency tools</li>
-              </ul>
-            </div>
-          </div>
-        </Card>
+        {/* Interactive Timeline */}
+        <div className="mb-12">
+          <InteractiveTimeline />
+        </div>
+
+        {/* Download Reports */}
+        <div className="mb-12">
+          <DownloadReports />
+        </div>
 
         {/* Critical Disclaimer */}
         <Card className="p-6 bg-muted/50 backdrop-blur-sm border-2 border-muted">
@@ -186,12 +146,16 @@ const ByTheNumbers = () => {
         </Card>
 
         {/* Additional Context */}
-        <div className="mt-8 text-center">
+        <div className="mt-8 text-center space-y-4">
           <p className="text-sm text-muted-foreground max-w-3xl mx-auto">
             Since 2019, Carolina Terrain has experienced consistent operational growth, reinvesting into equipment, 
-            team expansion, and cutting-edge technology. This transparency is provided to showcase the authentic 
-            foundation behind the TRN community culture.
+            team expansion, and cutting-edge technology. This complete financial disclosure demonstrates the authentic 
+            foundation behind the TRN community.
           </p>
+          <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+            <Shield className="w-4 h-4 text-primary" />
+            <span>All data verified from QuickBooks accounting records</span>
+          </div>
         </div>
       </div>
     </section>
