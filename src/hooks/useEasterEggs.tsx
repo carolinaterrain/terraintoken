@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
 import { useToast } from "@/hooks/use-toast";
+import { KeyboardShortcutsModal } from "@/components/KeyboardShortcutsModal";
 
 export const useEasterEggs = () => {
   const [goblinClicks, setGoblinClicks] = useState(0);
@@ -9,6 +10,11 @@ export const useEasterEggs = () => {
   const [typedKeys, setTypedKeys] = useState<string[]>([]);
   const [showBadge, setShowBadge] = useState(false);
   const [raveMode, setRaveMode] = useState(false);
+  const [showShortcuts, setShowShortcuts] = useState(false);
+  const [mascotClickCount, setMascotClickCount] = useState(0);
+  const [mascotBadgeUnlocked, setMascotBadgeUnlocked] = useState(() => {
+    return localStorage.getItem('trn-mascot-badge') === 'true';
+  });
   const { toast } = useToast();
 
   // Check for saved badge
@@ -19,28 +25,43 @@ export const useEasterEggs = () => {
     }
   }, []);
 
-  // Konami code listener
+  // Keyboard listener
   useEffect(() => {
     const konamiCode = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
     
     const handleKeyPress = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+        return;
+      }
+
+      // Handle '?' for shortcuts modal
+      if (e.key === '?' && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        setShowShortcuts(true);
+        return;
+      }
+
       const newKeys = [...typedKeys, e.key].slice(-10);
       setTypedKeys(newKeys);
 
-      // Check for ERODE
       const typed = newKeys.join("").toLowerCase();
+      
       if (typed.includes("erode")) {
         triggerScreenShake();
         setTypedKeys([]);
       }
 
-      // Check for VIBE
       if (typed.includes("vibe")) {
         triggerVibeMode();
         setTypedKeys([]);
       }
 
-      // Check for Konami code
+      if (typed.includes("drain")) {
+        triggerDrainMode();
+        setTypedKeys([]);
+      }
+
       if (newKeys.length === 10) {
         const match = newKeys.every((key, index) => key === konamiCode[index]);
         if (match) {
@@ -52,7 +73,15 @@ export const useEasterEggs = () => {
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [typedKeys]);
+  }, [typedKeys, mascotClickCount, mascotBadgeUnlocked]);
+
+  // Expose mascot click handler globally
+  useEffect(() => {
+    (window as any).handleMascotClickEasterEgg = handleMascotClickEasterEgg;
+    return () => {
+      delete (window as any).handleMascotClickEasterEgg;
+    };
+  }, [mascotClickCount, mascotBadgeUnlocked]);
 
   const triggerMudFart = () => {
     // Brown particle explosion
@@ -101,12 +130,48 @@ export const useEasterEggs = () => {
     }, 1500);
   };
 
+  const triggerDrainMode = () => {
+    // Screen tilt animation
+    document.body.style.transform = 'rotate(-2deg)';
+    document.body.style.transition = 'transform 0.3s ease-in-out';
+    
+    setTimeout(() => {
+      document.body.style.transform = 'rotate(2deg)';
+    }, 150);
+    
+    setTimeout(() => {
+      document.body.style.transform = 'rotate(0deg)';
+    }, 300);
+    
+    setTimeout(() => {
+      document.body.style.transform = '';
+      document.body.style.transition = '';
+    }, 600);
+    
+    // Water drop confetti
+    confetti({
+      particleCount: 50,
+      spread: 70,
+      origin: { y: 0 },
+      colors: ['#3b82f6', '#60a5fa', '#93c5fd'],
+      shapes: ['circle'],
+      gravity: 2,
+    });
+    
+    toast({
+      title: "💧 DRAIN MODE ACTIVATED",
+      description: "The water flows where you guide it...",
+    });
+    
+    localStorage.setItem('trn-drain-discovered', 'true');
+    const discoveries = parseInt(localStorage.getItem('trn-easter-egg-count') || '0');
+    localStorage.setItem('trn-easter-egg-count', String(discoveries + 1));
+  };
+
   const triggerVibeMode = () => {
-    // 1. Auto-play music
     const audioEvent = new CustomEvent('trn-audio-play');
     window.dispatchEvent(audioEvent);
     
-    // 2. Massive confetti burst
     const duration = 3000;
     const end = Date.now() + duration;
     const colors = ['#10b981', '#FFD700', '#34D399', '#FCD34D'];
@@ -133,23 +198,49 @@ export const useEasterEggs = () => {
     };
     frame();
     
-    // 3. Special toast
     toast({
       title: "✅ VIBE CHECK PASSED",
       description: "The terrain feels your energy. Music activated!",
       duration: 4000,
     });
     
-    // 4. Page pulse animation
     document.body.style.animation = 'gentle-pulse 1s ease-in-out';
     setTimeout(() => {
       document.body.style.animation = '';
     }, 1000);
     
-    // 5. Track discovery
     localStorage.setItem('trn-vibe-discovered', 'true');
     const discoveries = parseInt(localStorage.getItem('trn-easter-egg-count') || '0');
     localStorage.setItem('trn-easter-egg-count', String(discoveries + 1));
+  };
+
+  const handleMascotClickEasterEgg = () => {
+    const newCount = mascotClickCount + 1;
+    setMascotClickCount(newCount);
+    
+    if (newCount === 5 && !mascotBadgeUnlocked) {
+      confetti({
+        particleCount: 100,
+        spread: 160,
+        origin: { y: 0.6 },
+        colors: ['#10b981', '#FFD700'],
+      });
+      
+      toast({
+        title: "🏆 GOBLIN WHISPERER BADGE UNLOCKED!",
+        description: "You've earned the trust of Terro the Terrain Goblin",
+      });
+      
+      setMascotBadgeUnlocked(true);
+      localStorage.setItem('trn-mascot-badge', 'true');
+      const discoveries = parseInt(localStorage.getItem('trn-easter-egg-count') || '0');
+      localStorage.setItem('trn-easter-egg-count', String(discoveries + 1));
+    }
+    
+    // Reset counter after 2 seconds
+    setTimeout(() => {
+      setMascotClickCount(0);
+    }, 2000);
   };
 
   const triggerRaveMode = () => {
@@ -263,11 +354,24 @@ export const useEasterEggs = () => {
     return () => window.removeEventListener("scroll", handleScrollToBottom);
   }, []);
 
-  return {
-    handleGoblinClick,
-    handleCoinClick,
-    handleFooterClick,
-    showBadge,
-    raveMode,
-  };
+  return (
+    <>
+      <KeyboardShortcutsModal 
+        open={showShortcuts} 
+        onOpenChange={setShowShortcuts} 
+      />
+      {showBadge && (
+        <div className="fixed top-20 right-4 z-50 animate-bounce">
+          <div className="bg-primary/20 backdrop-blur-sm border border-primary/40 rounded-lg p-3 shadow-lg">
+            <span className="text-2xl">🏅</span>
+          </div>
+        </div>
+      )}
+      {raveMode && (
+        <div className="fixed inset-0 pointer-events-none z-40 animate-pulse">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-purple-500/20 to-blue-500/20" />
+        </div>
+      )}
+    </>
+  );
 };

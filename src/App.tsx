@@ -22,6 +22,7 @@ import HowTerrainTokenStarted from "./pages/blog/how-terrain-token-started";
 import WhyMemeCoinsNeedRealWorldBacking from "./pages/blog/why-meme-coins-need-real-world-backing";
 import AIPoweredDrainageAnalysisFuture from "./pages/blog/ai-powered-drainage-analysis-future";
 import TransparencyReportNovember2025 from "./pages/blog/transparency-report-november-2025";
+import TransparencyHub from "./pages/TransparencyHub";
 import MobileNav from "./components/MobileNav";
 import ThemeToggle from "./components/ThemeToggle";
 import AudioControl from "./components/AudioControl";
@@ -72,6 +73,7 @@ const AppContent = () => {
           <Route path="/blog/why-meme-coins-need-real-world-backing" element={<WhyMemeCoinsNeedRealWorldBacking />} />
           <Route path="/blog/ai-powered-drainage-analysis-future" element={<AIPoweredDrainageAnalysisFuture />} />
           <Route path="/blog/transparency-report-november-2025" element={<TransparencyReportNovember2025 />} />
+          <Route path="/transparency" element={<TransparencyHub />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <MobileNav />
