@@ -52,6 +52,18 @@ All colors MUST be HSL.
     --clay-red: 15 50% 40%;           /* Erosion control clay */
     --stone-gray: 30 5% 50%;          /* Gravel/drainage stone */
     
+    /* CHART COLORS - Goblin Treasury Edition */
+    --chart-1: 142 84% 47%;           /* #06FF8C - Emerald Revenue (bright goblin green) */
+    --chart-2: 15 85% 55%;            /* #F04823 - Clay Expenses (vibrant terracotta) */
+    --chart-3: 55 95% 50%;            /* #FFE600 - Gold Net Income (treasure gold) */
+    --chart-4: 280 65% 60%;           /* #A855F7 - Mystic Purple (operations) */
+    --chart-5: 200 85% 50%;           /* #0BC5EA - Crystal Blue (other) */
+    
+    /* Chart-specific design tokens */
+    --chart-grid: 142 20% 15%;        /* Subtle grid lines */
+    --chart-background: 0 0% 5%;      /* Dark chart background */
+    --chart-text: 0 0% 85%;           /* Readable text */
+    
     /* GRADIENTS */
     --gradient-cyber: linear-gradient(135deg, hsl(142 76% 39% / 0.15), hsl(142 84% 47% / 0.05));
     --gradient-primary: linear-gradient(135deg, hsl(142 76% 39%), hsl(142 84% 47%));
@@ -109,6 +121,15 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    /* Chart colors for light mode */
+    --chart-1: 142 76% 39%;           /* Deeper green for light mode */
+    --chart-2: 15 75% 45%;            /* Deeper red for light mode */
+    --chart-3: 45 90% 45%;            /* Deeper gold for light mode */
+    --chart-4: 280 60% 50%;           /* Deeper purple for light mode */
+    --chart-5: 200 80% 40%;           /* Deeper blue for light mode */
+    --chart-grid: 142 15% 80%;        /* Lighter grid for light mode */
+    --chart-text: 0 0% 20%;           /* Darker text for light mode */
   }
 
   .dark {
