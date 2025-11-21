@@ -15,7 +15,12 @@ import SubmitMeme from "./pages/SubmitMeme";
 import UploadTestimonial from "./pages/UploadTestimonial";
 import UploadProject from "./pages/UploadProject";
 import AdminDashboard from "./pages/AdminDashboard";
+import WaitlistDashboard from "./pages/WaitlistDashboard";
+import AnalyticsDashboard from "./pages/AnalyticsDashboard";
+import ABTestsDashboard from "./pages/ABTestsDashboard";
 import NotFound from "./pages/NotFound";
+import { AdminRoute } from "./components/AdminRoute";
+import { AnalyticsWrapper } from "./components/AnalyticsWrapper";
 import PressKit from "./pages/PressKit";
 import VideoUpdates from "./pages/VideoUpdates";
 import HowTerrainTokenStarted from "./pages/blog/how-terrain-token-started";
@@ -46,41 +51,46 @@ const AppContent = () => {
 
   return (
     <BrowserRouter>
-      <SkipToContent />
-      <ThemeToggle />
-      <AudioControl />
-      <ScrollToTop />
-      <Suspense fallback={
-        <div className="min-h-screen flex items-center justify-center bg-background">
-          <LoadingSpinner className="w-12 h-12" />
-        </div>
-      }>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/submit-meme" element={<SubmitMeme />} />
-          <Route path="/goblin-cave" element={<GoblinCave />} />
-          <Route path="/upload-project" element={<UploadProject />} />
-          <Route path="/upload-testimonial" element={<UploadTestimonial />} />
-          <Route path="/earn-trn" element={<EarnTRN />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/whitepaper" element={<Whitepaper />} />
-          <Route path="/updates" element={<Updates />} />
-          <Route path="/team" element={<Team />} />
-          <Route path="/press" element={<PressKit />} />
-          <Route path="/token-metadata" element={<TokenMetadata />} />
-          <Route path="/video-updates" element={<VideoUpdates />} />
-          <Route path="/blog/how-terrain-token-started" element={<HowTerrainTokenStarted />} />
-          <Route path="/blog/why-meme-coins-need-real-world-backing" element={<WhyMemeCoinsNeedRealWorldBacking />} />
-          <Route path="/blog/ai-powered-drainage-analysis-future" element={<AIPoweredDrainageAnalysisFuture />} />
-          <Route path="/blog/transparency-report-november-2025" element={<TransparencyReportNovember2025 />} />
-          <Route path="/transparency" element={<TransparencyHub />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <MobileNav />
-        <ExitIntent />
-        <PWAPrompt />
-        <GoodbyeWave />
-      </Suspense>
+      <AnalyticsWrapper>
+        <SkipToContent />
+        <ThemeToggle />
+        <AudioControl />
+        <ScrollToTop />
+        <Suspense fallback={
+          <div className="min-h-screen flex items-center justify-center bg-background">
+            <LoadingSpinner className="w-12 h-12" />
+          </div>
+        }>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/submit-meme" element={<SubmitMeme />} />
+            <Route path="/goblin-cave" element={<GoblinCave />} />
+            <Route path="/upload-project" element={<UploadProject />} />
+            <Route path="/upload-testimonial" element={<UploadTestimonial />} />
+            <Route path="/earn-trn" element={<EarnTRN />} />
+            <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+            <Route path="/admin/waitlist" element={<AdminRoute><WaitlistDashboard /></AdminRoute>} />
+            <Route path="/admin/analytics" element={<AdminRoute><AnalyticsDashboard /></AdminRoute>} />
+            <Route path="/admin/ab-tests" element={<AdminRoute><ABTestsDashboard /></AdminRoute>} />
+            <Route path="/whitepaper" element={<Whitepaper />} />
+            <Route path="/updates" element={<Updates />} />
+            <Route path="/team" element={<Team />} />
+            <Route path="/press" element={<PressKit />} />
+            <Route path="/token-metadata" element={<TokenMetadata />} />
+            <Route path="/video-updates" element={<VideoUpdates />} />
+            <Route path="/blog/how-terrain-token-started" element={<HowTerrainTokenStarted />} />
+            <Route path="/blog/why-meme-coins-need-real-world-backing" element={<WhyMemeCoinsNeedRealWorldBacking />} />
+            <Route path="/blog/ai-powered-drainage-analysis-future" element={<AIPoweredDrainageAnalysisFuture />} />
+            <Route path="/blog/transparency-report-november-2025" element={<TransparencyReportNovember2025 />} />
+            <Route path="/transparency" element={<TransparencyHub />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <MobileNav />
+          <ExitIntent />
+          <PWAPrompt />
+          <GoodbyeWave />
+        </Suspense>
+      </AnalyticsWrapper>
     </BrowserRouter>
   );
 };

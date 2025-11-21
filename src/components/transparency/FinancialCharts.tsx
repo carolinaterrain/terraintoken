@@ -176,6 +176,7 @@ export const RevenueChart = () => {
       </ChartContainer>
 
       {/* Strategic Investment Annotations */}
+      <div className="mb-8" />
       {strategicInvestments.map((investment, idx) => {
         const matchingMonth = chartData.find(d => d.fullMonth === investment.month);
         if (!matchingMonth || view !== "netIncome") return null;
@@ -206,6 +207,8 @@ export const RevenueChart = () => {
           </div>
         </div>
       )}
+
+      <div className="mb-8" />
     </Card>
   );
 };

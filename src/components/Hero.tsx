@@ -184,7 +184,7 @@ const Hero = () => {
 
           {/* Subtitle Tagline */}
           <p className="font-body text-base md:text-lg text-muted-foreground max-w-lg">
-            The first meme coin backed by NDS-certified drainage contractors. Memeing today, powering terrain intelligence tomorrow.
+            The only meme coin where you <span className="text-primary font-semibold">EARN by contributing</span>—not just by holding. <span className="text-primary font-semibold">TerrainVision AI is LIVE.</span>
           </p>
 
           {/* Contract Address with Copy + Verification */}

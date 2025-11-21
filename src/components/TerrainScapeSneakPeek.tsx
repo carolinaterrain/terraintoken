@@ -25,11 +25,15 @@ import {
 import { WaitlistModal } from "./WaitlistModal";
 import { WaitlistCounter } from "./WaitlistCounter";
 import { SocialShareButtons } from "./SocialShareButtons";
+import { useABTest } from "@/hooks/useABTest";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 export const TerrainScapeSneakPeek = () => {
   const [activeTab, setActiveTab] = useState("earn");
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
   const [referralCode, setReferralCode] = useState<string | undefined>();
+  const { variant: ctaVariant, trackEvent } = useABTest('waitlist_cta_text');
+  const { trackEvent: trackAnalytics } = useAnalytics();
 
   // Check for referral code in URL
   useEffect(() => {
@@ -38,10 +42,30 @@ export const TerrainScapeSneakPeek = () => {
     if (ref) {
       setReferralCode(ref);
     }
+
+    // Track section view
+    trackEvent('view');
+    trackAnalytics('terrainscape_view', { scroll_depth: window.scrollY });
   }, []);
 
+  const ctaText = {
+    A: 'Join the Waitlist',
+    B: 'Get Early Access',
+    C: 'Reserve Your Spot'
+  }[ctaVariant] || 'Join the Waitlist';
+
+  const handleCTAClick = () => {
+    trackEvent('click');
+    trackAnalytics('waitlist_cta_click', { 
+      button_text: ctaText, 
+      section: 'terrainscape_sneak_peek',
+      variant: ctaVariant
+    });
+    setIsWaitlistOpen(true);
+  };
+
   return (
-    <section id="terrainscape-sneak-peek" className="py-20 md:py-24 relative overflow-hidden">
+    <section id="terrainscape-sneak-peek" className="py-24 md:py-32 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
       <div 
@@ -80,7 +104,7 @@ export const TerrainScapeSneakPeek = () => {
         </div>
 
         {/* 3-Panel Explainer */}
-        <div className="grid md:grid-cols-3 gap-6 mb-20">
+        <div className="grid md:grid-cols-3 gap-6 mb-24">
           <GlassCard className="p-8 hover" onClick={() => {}}>
             <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mb-4">
               <Gamepad2 className="w-6 h-6 text-primary" />
@@ -167,7 +191,7 @@ export const TerrainScapeSneakPeek = () => {
         </div>
 
         {/* Interactive Tabbed Showcase */}
-        <GlassCard className="p-8 mb-20">
+        <GlassCard className="p-8 mb-24">
           <h3 className="text-3xl font-bold mb-8 text-center text-foreground">
             Interactive Feature Showcase
           </h3>
@@ -285,7 +309,7 @@ export const TerrainScapeSneakPeek = () => {
         </GlassCard>
 
         {/* Comparison Table */}
-        <GlassCard className="p-8 mb-20">
+        <GlassCard className="p-8 mb-24">
           <h3 className="text-3xl font-bold mb-8 text-center text-foreground">
             Traditional Education vs TerrainScape
           </h3>
@@ -518,10 +542,10 @@ export const TerrainScapeSneakPeek = () => {
               <Button 
                 size="lg" 
                 className="bg-primary hover:bg-primary/90 text-primary-foreground"
-                onClick={() => setIsWaitlistOpen(true)}
+                onClick={handleCTAClick}
               >
                 <Sparkles className="mr-2 w-5 h-5" />
-                Join Waitlist (Priority for TRN Holders)
+                {ctaText} (Priority for TRN Holders)
               </Button>
               <Button size="lg" variant="outline">
                 Watch Demo
