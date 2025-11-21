@@ -29,6 +29,7 @@ const DesktopNav = () => {
     { id: "roadmap", label: "Roadmap" },
     { id: "tokenomics", label: "Tokenomics" },
     { id: "whitepaper", label: "Whitepaper", isRoute: true },
+    { id: "video-updates", label: "Videos", isRoute: true },
     { id: "updates", label: "Blog", isRoute: true },
     { id: "team", label: "Team", isRoute: true },
     { id: "earn-trn", label: "Earn", isRoute: true },

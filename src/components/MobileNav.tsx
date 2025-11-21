@@ -1,4 +1,4 @@
-import { Home, Trophy, FileText, Users, Gift } from "lucide-react";
+import { Home, Video, FileText, Users, Gift } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -65,12 +65,12 @@ const MobileNav = () => {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => navigate("/whitepaper")}
-          aria-label="View whitepaper"
-          className={`flex flex-col items-center gap-1 h-auto py-2 px-2 ${location.pathname === '/whitepaper' ? 'text-primary' : ''}`}
+          onClick={() => navigate("/video-updates")}
+          aria-label="View video updates"
+          className={`flex flex-col items-center gap-1 h-auto py-2 px-2 ${location.pathname === '/video-updates' ? 'text-primary' : ''}`}
         >
-          <FileText className="w-5 h-5" />
-          <span className="text-xs">Docs</span>
+          <Video className="w-5 h-5" />
+          <span className="text-xs">Videos</span>
         </Button>
         
         <Button

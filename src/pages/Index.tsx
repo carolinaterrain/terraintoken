@@ -29,6 +29,7 @@ import AnalyzeToEarnHero from "@/components/AnalyzeToEarnHero";
 import EcosystemFlow from "@/components/EcosystemFlow";
 import LiveProof from "@/components/LiveProof";
 import Transparency from "@/components/Transparency";
+import { VideoUpdatesHub } from "@/components/VideoUpdatesHub";
 
 const Index = () => {
   return (
@@ -66,6 +67,7 @@ const Index = () => {
       <Tokenomics />
       <Transparency />
       <LiveProof />
+      <VideoUpdatesHub limit={6} showViewAll={true} />
       <Vision />
       <div id="contest">
         <MemeGenerator />
