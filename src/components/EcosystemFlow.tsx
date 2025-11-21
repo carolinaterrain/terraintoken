@@ -2,6 +2,7 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { ArrowRight, Upload, Brain, Coins, ShoppingBag, TrendingUp } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { Card } from "@/components/ui/card";
 
 const EcosystemFlow = () => {
   // Fetch top contributor
@@ -72,7 +73,34 @@ const EcosystemFlow = () => {
           </p>
         </div>
 
-        {/* Flow Diagram */}
+        {/* Interactive Mermaid Flow Diagram */}
+        <Card className="p-6 md:p-8 mb-12 bg-card/50 backdrop-blur-sm border-primary/20">
+          <h3 className="font-display text-2xl font-bold text-center mb-6">
+            Interactive Ecosystem Flow
+          </h3>
+          <div className="overflow-x-auto">
+            <div className="min-w-[800px]">
+              <pre className="text-xs">
+{`graph TD
+    A[👤 User Uploads Photo] -->|TerrainVision AI| B(🧠 AI Analyzes Image)
+    B -->|Drainage/Erosion/Grading| C{✅ Quality Check}
+    C -->|✓ Pass| D[💰 Earn 10-75+ TRN]
+    C -->|✗ Fail| E[🔄 Resubmit Better Photo]
+    D -->|Tokens Sent| F[👛 User Wallet]
+    F -->|💎 Spend TRN| G[🛒 Premium AI Features]
+    F -->|🤝 Hold| H[📊 Community Member]
+    G -->|📈 Usage Data| B
+    H -->|🔁 More Uploads| A
+    E -->|📸 New Upload| A`}
+              </pre>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground text-center mt-4">
+            Each upload trains the AI → Better AI = More value for TRN holders
+          </p>
+        </Card>
+
+        {/* Flow Diagram Cards */}
         <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-12">
           {steps.map((step, index) => {
             const Icon = step.icon;

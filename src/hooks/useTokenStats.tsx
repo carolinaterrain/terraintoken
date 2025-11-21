@@ -5,8 +5,8 @@ export function useTokenStats() {
   return useQuery({
     queryKey: ["token-stats"],
     queryFn: fetchTRNStats,
-    refetchInterval: 60000, // Refresh every 60 seconds
-    staleTime: 50000,
+    refetchInterval: 5000, // Refresh every 5 seconds for live updates
+    staleTime: 4000,
     refetchOnWindowFocus: false,
     refetchOnMount: true,
   });
