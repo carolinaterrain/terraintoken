@@ -86,6 +86,31 @@ All colors MUST be HSL.
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    --muted: 142 10% 90%;
+    --muted-foreground: 0 0% 40%;
+    --border: 142 20% 85%;
+    --input: 0 0% 90%;
+    --accent: 220 15% 20%;
+    --accent-foreground: 0 0% 98%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 142 76% 39%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
   .dark {
     --background: 0 0% 3%;
     --foreground: 0 0% 98%;
@@ -107,6 +132,7 @@ All colors MUST be HSL.
 
 body {
   @apply bg-background text-foreground font-body;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -116,6 +142,11 @@ h1, h2, h3, h4, h5, h6 {
 /* Smooth scroll behavior */
 html {
   scroll-behavior: smooth;
+}
+
+/* Smooth theme transitions */
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 }
 

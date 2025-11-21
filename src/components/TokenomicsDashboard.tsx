@@ -17,7 +17,7 @@ const allocations: TokenAllocation[] = [
     name: "DEX Liquidity",
     percentage: 50,
     amount: "5,215,959",
-    color: "hsl(142 76% 39%)",
+    color: "hsl(var(--primary))",
     description: "Locked liquidity pool",
     status: "Locked"
   },
@@ -25,7 +25,7 @@ const allocations: TokenAllocation[] = [
     name: "Treasury",
     percentage: 25,
     amount: "2,607,980",
-    color: "hsl(142 60% 25%)",
+    color: "hsl(var(--forest-green))",
     description: "Development & operations",
     status: "Multi-sig"
   },
@@ -33,7 +33,7 @@ const allocations: TokenAllocation[] = [
     name: "Community Rewards",
     percentage: 15,
     amount: "1,564,788",
-    color: "hsl(25 50% 35%)",
+    color: "hsl(var(--earth-brown))",
     description: "Airdrops & incentives",
     status: "Reserved"
   },
@@ -41,7 +41,7 @@ const allocations: TokenAllocation[] = [
     name: "Team",
     percentage: 10,
     amount: "1,043,192",
-    color: "hsl(30 5% 50%)",
+    color: "hsl(var(--stone-gray))",
     description: "12mo lock + quarterly vest",
     status: "Vested"
   }
