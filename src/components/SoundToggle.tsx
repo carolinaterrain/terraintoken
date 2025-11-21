@@ -42,15 +42,16 @@ const SoundToggle = () => {
         onClick={toggleSound}
         variant="outline"
         size="icon"
-        className={`rounded-full w-12 h-12 border-primary/30 hover:bg-primary/10 transition-all ${
+        className={`rounded-full w-12 h-12 border-primary/30 hover:bg-primary/10 transition-all hover:scale-110 active:scale-95 ${
           soundEnabled ? "shadow-glow animate-pulse" : ""
         }`}
-        aria-label="Toggle sound effects"
+        aria-label={soundEnabled ? "Mute sound effects" : "Enable sound effects"}
+        title={soundEnabled ? "Mute sound effects" : "Enable sound effects"}
       >
         {soundEnabled ? (
-          <Volume2 className="w-5 h-5 text-primary" />
+          <Volume2 className="w-5 h-5 text-primary transition-transform" />
         ) : (
-          <VolumeX className="w-5 h-5 text-muted-foreground" />
+          <VolumeX className="w-5 h-5 text-muted-foreground transition-transform" />
         )}
       </Button>
     </div>
