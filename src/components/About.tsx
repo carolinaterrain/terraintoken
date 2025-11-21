@@ -86,6 +86,22 @@ const About = () => {
             </a>
           </Button>
         </div>
+
+        {/* Our Mission Section */}
+        <GlassCard className="mt-12 p-8 text-center">
+          <h3 className="font-display text-2xl md:text-3xl font-bold mb-4">
+            Our <span className="text-primary">Mission</span>
+          </h3>
+          <p className="font-body text-lg text-muted-foreground max-w-3xl mx-auto mb-4">
+            To prove that digital currencies can be rooted in the physical world — not abstract speculation.
+          </p>
+          <p className="font-body text-md text-muted-foreground max-w-3xl mx-auto">
+            TerrainToken ties blockchain incentives to real work, real soil health, real stormwater improvements, and transparent land data.
+          </p>
+          <p className="font-body text-lg text-primary font-semibold mt-4 italic">
+            This is what happens when a drainage contractor builds a crypto project that actually means something.
+          </p>
+        </GlassCard>
       </div>
     </section>
   );

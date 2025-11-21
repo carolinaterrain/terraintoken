@@ -67,11 +67,21 @@ const Founders = () => {
                   Alex Purdy
                 </h3>
                 <p className="text-muted-foreground font-body">
-                  Co-Founder • Design & Strategy Lead
+                  CEO & Creator of TerrainToken
                 </p>
-                <Badge className="mt-2 bg-primary/20 border-primary text-primary font-mono text-xs">
-                  NC License CL.1872
-                </Badge>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  <Badge className="bg-primary/20 border-primary text-primary font-mono text-xs">
+                    NC License CL.1872
+                  </Badge>
+                  <a 
+                    href="https://www.linkedin.com/in/jamesapurdy/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-primary hover:text-primary/80 transition-colors text-sm underline"
+                  >
+                    LinkedIn →
+                  </a>
+                </div>
               </div>
             </div>
 
@@ -81,19 +91,23 @@ const Founders = () => {
                 <ul className="space-y-2 text-muted-foreground font-body">
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-1">•</span>
+                    <span>Creator of TerrainToken and the entire Terrain digital ecosystem</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary mt-1">•</span>
+                    <span>Architect of Terrain Vision AI, FlowGuardian, and platform design</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary mt-1">•</span>
+                    <span>Leads product vision, tokenomics, and software integration</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary mt-1">•</span>
                     <span>Designs engineered drainage systems using drone data & AI</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-1">•</span>
-                    <span>Creates 2D/3D plans, HOA packets, stormwater layouts</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary mt-1">•</span>
-                    <span>Develops internal systems: Terrain Vision AI, FlowCalc</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary mt-1">•</span>
-                    <span>Oversees strategy, branding, and client experience</span>
+                    <span>Oversees tech direction and long-term roadmap</span>
                   </li>
                 </ul>
               </div>
@@ -124,7 +138,7 @@ const Founders = () => {
                   Zac Hyman
                 </h3>
                 <p className="text-muted-foreground font-body">
-                  Co-Founder • Field Operations & Installation Lead
+                  COO - Chief Operating Officer
                 </p>
               </div>
             </div>
@@ -135,19 +149,23 @@ const Founders = () => {
                 <ul className="space-y-2 text-muted-foreground font-body">
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-1">•</span>
-                    <span>Leads field crews, grading, pipe installation & drainage builds</span>
+                    <span>Oversees daily operations across Carolina Terrain</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-1">•</span>
-                    <span>Manages on-site logistics, equipment & daily communication</span>
+                    <span>Coordinates field crews, manages project flow and installations</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-1">•</span>
-                    <span>Ensures design intent matches field execution</span>
+                    <span>Ensures physical infrastructure aligns with TRN utility model</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-1">•</span>
-                    <span>Maintains Carolina Terrain standards for quality & durability</span>
+                    <span>Leads grading, pipe installation, and drainage system execution</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary mt-1">•</span>
+                    <span>Keeps field execution tight, consistent, and scalable</span>
                   </li>
                 </ul>
               </div>
@@ -168,13 +186,13 @@ const Founders = () => {
           </h3>
           <div className="max-w-3xl mx-auto space-y-3 font-body text-muted-foreground">
             <p>
-              <strong className="text-foreground">Alex</strong> engineers the solution using drone data, slope analysis, and stormwater modeling.
+              <strong className="text-foreground">Alex</strong> creates the vision, software, and digital ecosystem.
             </p>
             <p>
-              <strong className="text-foreground">Zac</strong> builds the solution using grading precision, drainage experience, and installation mastery.
+              <strong className="text-foreground">Zac</strong> executes operations and keeps field work running smoothly.
             </p>
             <p className="text-lg font-semibold text-foreground pt-2">
-              One designs. One executes. Both guarantee long-term results.
+              One builds the future. One delivers the present. Both guarantee results.
             </p>
           </div>
         </GlassCard>
