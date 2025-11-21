@@ -129,6 +129,12 @@ const Footer = () => {
               Press Kit
             </a>
             <a 
+              href="/token-metadata" 
+              className="text-xs text-primary hover:underline font-medium"
+            >
+              Token Metadata
+            </a>
+            <a 
               href="https://solscan.io/token/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump" 
               target="_blank"
               rel="noopener noreferrer"

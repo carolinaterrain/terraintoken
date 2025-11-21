@@ -1,0 +1,28 @@
+{
+  "name": "Terrain Token",
+  "symbol": "TRN",
+  "description": "Terrain Token (TRN) powers the Carolina Terrain ecosystem – drainage-first landscaping backed by $2M+ annual revenue, Terrain Vision AI for stormwater intelligence, and future FlowGuardian technology. Built by real contractors, for real utility.",
+  "image": "https://terrainvision-ai.com/trn-coin.png",
+  "external_url": "https://terrainvision-ai.com/",
+  "extensions": {
+    "website": "https://terrainvision-ai.com/",
+    "twitter": "https://x.com/carolinaterrain",
+    "x": "https://x.com/carolinaterrain",
+    "telegram": "https://t.me/terraintoken",
+    "discord": "https://discord.gg/terraintoken",
+    "whitepaper": "https://terrainvision-ai.com/whitepaper",
+    "docs": "https://terrainvision-ai.com/trn",
+    "contact": "mailto:info@carolinaterrain.com"
+  },
+  "tags": [
+    "utility",
+    "stormwater",
+    "drainage",
+    "real-world-backing",
+    "ecosystem"
+  ],
+  "creator": {
+    "name": "Carolina Terrain",
+    "site": "https://terrainvision-ai.com/"
+  }
+}
