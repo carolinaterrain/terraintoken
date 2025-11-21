@@ -23,6 +23,8 @@ import PWAPrompt from "@/components/PWAPrompt";
 import GoodbyeWave from "@/components/GoodbyeWave";
 import PerformanceMonitor from "@/components/PerformanceMonitor";
 import SkipToContent from "@/components/SkipToContent";
+import SoundToggle from "@/components/SoundToggle";
+import ThemeToggle from "@/components/ThemeToggle";
 import { useEasterEggs } from "@/hooks/useEasterEggs";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 
@@ -54,6 +56,8 @@ const AppContent = () => {
   return (
     <BrowserRouter>
       <SkipToContent />
+      <ThemeToggle />
+      <SoundToggle />
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Index />} />
