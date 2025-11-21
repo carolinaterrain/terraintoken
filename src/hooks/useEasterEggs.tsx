@@ -34,6 +34,12 @@ export const useEasterEggs = () => {
         setTypedKeys([]);
       }
 
+      // Check for VIBE
+      if (typed.includes("vibe")) {
+        triggerVibeMode();
+        setTypedKeys([]);
+      }
+
       // Check for Konami code
       if (newKeys.length === 10) {
         const match = newKeys.every((key, index) => key === konamiCode[index]);
@@ -93,6 +99,57 @@ export const useEasterEggs = () => {
     setTimeout(() => {
       document.body.style.animation = "";
     }, 1500);
+  };
+
+  const triggerVibeMode = () => {
+    // 1. Auto-play music
+    const audioEvent = new CustomEvent('trn-audio-play');
+    window.dispatchEvent(audioEvent);
+    
+    // 2. Massive confetti burst
+    const duration = 3000;
+    const end = Date.now() + duration;
+    const colors = ['#10b981', '#FFD700', '#34D399', '#FCD34D'];
+    
+    const frame = () => {
+      confetti({
+        particleCount: 5,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0, y: 0.6 },
+        colors: colors,
+      });
+      confetti({
+        particleCount: 5,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1, y: 0.6 },
+        colors: colors,
+      });
+      
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    };
+    frame();
+    
+    // 3. Special toast
+    toast({
+      title: "✅ VIBE CHECK PASSED",
+      description: "The terrain feels your energy. Music activated!",
+      duration: 4000,
+    });
+    
+    // 4. Page pulse animation
+    document.body.style.animation = 'gentle-pulse 1s ease-in-out';
+    setTimeout(() => {
+      document.body.style.animation = '';
+    }, 1000);
+    
+    // 5. Track discovery
+    localStorage.setItem('trn-vibe-discovered', 'true');
+    const discoveries = parseInt(localStorage.getItem('trn-easter-egg-count') || '0');
+    localStorage.setItem('trn-easter-egg-count', String(discoveries + 1));
   };
 
   const triggerRaveMode = () => {

@@ -197,6 +197,17 @@ html {
   20%, 40%, 60%, 80% { transform: translateX(10px); }
 }
 
+@keyframes gentle-pulse {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.01);
+    opacity: 0.95;
+  }
+}
+
 @keyframes disco {
   0% { filter: hue-rotate(0deg); }
   100% { filter: hue-rotate(360deg); }

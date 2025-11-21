@@ -16,6 +16,7 @@ import ContestRules from "@/components/ContestRules";
 import Founders from "@/components/Founders";
 import Transparency from "@/components/Transparency";
 import Vision from "@/components/Vision";
+import OriginStory from "@/components/OriginStory";
 import SkipToContent from "@/components/SkipToContent";
 import SmartHeader from "@/components/SmartHeader";
 import ScrollProgress from "@/components/ScrollProgress";
@@ -91,6 +92,9 @@ const Index = () => {
             </div>
             <div className={spacing.section.compact}>
               <RealWorldRoots />
+            </div>
+            <div className={spacing.section.standard}>
+              <OriginStory />
             </div>
             <div className={spacing.section.standard}>
               <Founders />

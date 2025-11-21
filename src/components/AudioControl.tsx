@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { VolumeX } from "lucide-react";
@@ -17,6 +17,7 @@ const AudioControl = () => {
   const [isFirstVisit, setIsFirstVisit] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const hoverTimeoutRef = useRef<NodeJS.Timeout>();
+  const lastVolumeBeforeMute = useRef(volume);
   const { toast } = useToast();
 
   // Load preferences and check first visit
@@ -203,6 +204,95 @@ const AudioControl = () => {
     setError(null);
     handlePlay();
   };
+
+  // Keyboard Controls
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if user is typing in input/textarea
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+        return;
+      }
+
+      // Spacebar: Play/Pause
+      if (e.code === 'Space' && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        togglePlay();
+        toast({
+          title: isPlaying ? "⏸️ Music Paused" : "▶️ Music Playing",
+          description: "Press Space to toggle",
+          duration: 1500,
+        });
+      }
+
+      // M: Mute/Unmute
+      if (e.key === 'm' && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        if (volume === 0) {
+          // Unmute to last volume or 30%
+          const newVolume = lastVolumeBeforeMute.current > 0 ? lastVolumeBeforeMute.current : 30;
+          handleVolumeChange([newVolume]);
+          toast({
+            title: `🔊 Unmuted (${newVolume}%)`,
+            description: "Press M to toggle mute",
+            duration: 1500,
+          });
+        } else {
+          // Mute
+          lastVolumeBeforeMute.current = volume;
+          handleVolumeChange([0]);
+          toast({
+            title: "🔇 Muted",
+            description: "Press M to toggle mute",
+            duration: 1500,
+          });
+        }
+      }
+
+      // Arrow Up: Volume Up
+      if (e.key === 'ArrowUp' && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        const newVolume = Math.min(volume + 10, 100);
+        handleVolumeChange([newVolume]);
+        toast({
+          title: `🔊 Volume: ${newVolume}%`,
+          duration: 1000,
+        });
+      }
+
+      // Arrow Down: Volume Down
+      if (e.key === 'ArrowDown' && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        const newVolume = Math.max(volume - 10, 0);
+        handleVolumeChange([newVolume]);
+        toast({
+          title: `🔉 Volume: ${newVolume}%`,
+          duration: 1000,
+        });
+      }
+
+      // Ctrl+M: Toggle popup
+      if (e.key === 'm' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        setShowPopup(!showPopup);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isPlaying, volume, showPopup, toast]);
+
+  // Listen for VIBE easter egg custom event
+  useEffect(() => {
+    const handleVibeEvent = () => {
+      if (!isPlaying) {
+        handlePlay();
+      }
+    };
+    
+    window.addEventListener('trn-audio-play', handleVibeEvent);
+    return () => window.removeEventListener('trn-audio-play', handleVibeEvent);
+  }, [isPlaying]);
 
   return (
     <>
