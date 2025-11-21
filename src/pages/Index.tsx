@@ -28,6 +28,11 @@ import GoblinAudioPlayer from "@/components/GoblinAudioPlayer";
 import AccessibilityMenu from "@/components/AccessibilityMenu";
 import GoblinWisdom from "@/components/GoblinWisdom";
 import AnalyzeToEarnHero from "@/components/AnalyzeToEarnHero";
+import { CommunityBuzz } from "@/components/CommunityBuzz";
+import { SocialProofWall } from "@/components/SocialProofWall";
+import { VibeCheck } from "@/components/VibeCheck";
+import { OrganicDiscoveryCounter } from "@/components/OrganicDiscoveryCounter";
+import { AntiRugMeter } from "@/components/AntiRugMeter";
 import { spacing } from "@/lib/spacing";
 
 const Index = () => {
@@ -60,13 +65,27 @@ const Index = () => {
           {/* Group 1: Introduction */}
           <div className="bg-background">
             <Hero />
+            <CommunityBuzz />
             <AnalyzeToEarnHero />
             <div className={spacing.section.standard}>
               <HowToBuy />
             </div>
           </div>
 
-          {/* Group 2: Value Proposition */}
+          {/* Group 2: Social Proof & Trust */}
+          <SocialProofWall />
+          
+          <div className="bg-background">
+            <div className="container px-4 md:px-6 py-12 md:py-16">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <VibeCheck />
+                <OrganicDiscoveryCounter />
+                <AntiRugMeter />
+              </div>
+            </div>
+          </div>
+
+          {/* Group 3: Value Proposition */}
           <div className="bg-gradient-to-b from-background to-background/50">
             <div className={spacing.section.major}>
               <About />
@@ -82,7 +101,7 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Group 3: Mechanics */}
+          {/* Group 4: Mechanics */}
           <div className="bg-background">
             <div className={spacing.section.major}>
               <CompetitiveEdge />
@@ -95,7 +114,7 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Group 4: Details */}
+          {/* Group 5: Details */}
           <div className="bg-gradient-to-b from-background/50 to-background">
             <div className={spacing.section.major}>
               <Tokenomics />
@@ -108,7 +127,7 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Group 5: Media */}
+          {/* Group 6: Media */}
           <div className="bg-background" id="video-updates">
             <div className={spacing.section.major}>
               <VideoUpdatesHub limit={6} showViewAll={true} />
@@ -118,7 +137,7 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Group 6: Engagement */}
+          {/* Group 7: Engagement */}
           <div className="bg-gradient-to-b from-background to-background/50" id="contest">
             <div className={spacing.section.major}>
               <MemeGenerator />

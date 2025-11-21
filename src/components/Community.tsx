@@ -1,5 +1,7 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "./ui/button";
 import { MessageCircle, Users, Twitter, Sparkles } from "lucide-react";
+import { VibeCheck } from "./VibeCheck";
+import { OrganicDiscoveryCounter } from "./OrganicDiscoveryCounter";
 
 const links = [
   {
@@ -30,24 +32,24 @@ const links = [
 
 const Community = () => {
   return (
-    <section id="community" className="py-12 px-4 relative overflow-hidden">
-      <div 
-        className="absolute inset-0"
-        style={{ 
-          background: "linear-gradient(180deg, hsl(0 0% 4%), hsl(142 84% 47% / 0.05), hsl(0 0% 4%))",
-        }}
-      />
-      
-      <div className="container mx-auto text-center relative">
-        <h2 className="font-display text-4xl md:text-5xl font-bold mb-6">
-          Join the <span className="text-primary">Movement</span>
-        </h2>
+    <section id="community" className="py-20 bg-gradient-to-b from-background to-background/50">
+      <div className="container px-4 md:px-6">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+            Join the Movement
+          </h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-8">
+            Connect with fellow holders, share memes, and be part of building the future of real-world utility tokens
+          </p>
+          
+          {/* Live Community Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-12">
+            <VibeCheck />
+            <OrganicDiscoveryCounter />
+          </div>
+        </div>
         
-        <p className="font-body text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-          Connect with our growing community of terrain enthusiasts, meme lovers, and future data contributors
-        </p>
-        
-        <div className="mb-8">
+        <div className="mb-8 text-center">
           <Button 
             variant="default" 
             size="lg"
@@ -60,7 +62,7 @@ const Community = () => {
           </Button>
         </div>
         
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
           {links.map((link, index) => {
             const Icon = link.icon;
             return (
