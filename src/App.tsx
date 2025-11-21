@@ -17,6 +17,7 @@ import Whitepaper from "./pages/Whitepaper";
 import Updates from "./pages/Updates";
 import Team from "./pages/Team";
 import PressKit from "./pages/PressKit";
+import TokenMetadata from "./pages/TokenMetadata";
 import MobileNav from "@/components/MobileNav";
 import ExitIntent from "@/components/ExitIntent";
 import PWAPrompt from "@/components/PWAPrompt";
@@ -71,6 +72,7 @@ const AppContent = () => {
         <Route path="/updates" element={<Updates />} />
         <Route path="/team" element={<Team />} />
         <Route path="/press" element={<PressKit />} />
+        <Route path="/token-metadata" element={<TokenMetadata />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <MobileNav />
