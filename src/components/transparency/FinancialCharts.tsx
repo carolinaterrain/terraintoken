@@ -1,24 +1,31 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { LineChart, Line, AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { monthlyRevenue, getYoYComparison, getExpenseBreakdown } from "@/lib/financialData";
+import { LineChart, Line, AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from "recharts";
+import { monthlyRevenue, getYoYComparison, getExpenseBreakdown, strategicInvestments } from "@/lib/financialData";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart";
+import { getEquipmentTimelineMarkers } from "@/lib/equipmentData";
 import { useState } from "react";
+import { Info } from "lucide-react";
 
 export const RevenueChart = () => {
-  const [view, setView] = useState<"revenue" | "expenses" | "netIncome">("revenue");
+  const [view, setView] = useState<"revenue" | "expenses" | "netIncome" | "ebitda">("revenue");
+  const [showEquipmentMarkers, setShowEquipmentMarkers] = useState(true);
+  const equipmentMarkers = getEquipmentTimelineMarkers();
   
   const chartData = monthlyRevenue.map(m => ({
     month: m.month.split(" ")[0] + " '" + m.month.split(" ")[1].slice(-2),
     revenue: m.revenue,
     expenses: m.expenses,
     netIncome: m.netIncome,
+    ebitda: m.ebitda || (m.netIncome + (m.depreciation || 0)),
+    fullMonth: m.month,
   }));
 
   const chartConfig = {
     revenue: { label: "💚 Revenue", color: "hsl(var(--chart-1))" },
     expenses: { label: "🔴 Expenses", color: "hsl(var(--chart-2))" },
     netIncome: { label: "💰 Net Income", color: "hsl(var(--chart-3))" },
+    ebitda: { label: "💎 EBITDA", color: "hsl(var(--chart-5))" },
   };
 
   return (
@@ -51,6 +58,13 @@ export const RevenueChart = () => {
             onClick={() => setView("netIncome")}
           >
             💰 Net Income
+          </Badge>
+          <Badge 
+            variant={view === "ebitda" ? "default" : "outline"}
+            className="cursor-pointer transition-all hover:scale-105 min-h-[48px] px-4"
+            onClick={() => setView("ebitda")}
+          >
+            💎 EBITDA
           </Badge>
         </div>
       </div>
@@ -128,9 +142,70 @@ export const RevenueChart = () => {
                 animationEasing="ease-out"
               />
             )}
+            {view === "ebitda" && (
+              <Area 
+                type="monotone" 
+                dataKey="ebitda" 
+                stroke="hsl(var(--chart-5))" 
+                fillOpacity={1} 
+                fill="url(#colorNetIncome)" 
+                strokeWidth={3}
+                animationDuration={800}
+                animationEasing="ease-out"
+              />
+            )}
+            {/* Equipment Purchase Markers */}
+            {showEquipmentMarkers && equipmentMarkers.map((marker, idx) => (
+              <ReferenceLine 
+                key={idx}
+                x={marker.monthKey} 
+                stroke="hsl(var(--chart-3))" 
+                strokeDasharray="5 5"
+                strokeWidth={2}
+                label={{ 
+                  value: `🪙 $${(marker.cost / 1000).toFixed(0)}k`, 
+                  position: 'top',
+                  fill: 'hsl(var(--chart-3))',
+                  fontSize: 11,
+                  fontWeight: 'bold'
+                }}
+              />
+            ))}
           </AreaChart>
         </ResponsiveContainer>
       </ChartContainer>
+
+      {/* Strategic Investment Annotations */}
+      {strategicInvestments.map((investment, idx) => {
+        const matchingMonth = chartData.find(d => d.fullMonth === investment.month);
+        if (!matchingMonth || view !== "netIncome") return null;
+        
+        return (
+          <div key={idx} className="mt-4 p-4 rounded-lg bg-muted/50 border border-muted flex gap-3">
+            <div className="text-2xl">{investment.icon}</div>
+            <div>
+              <div className="font-semibold text-foreground mb-1">{investment.annotation}</div>
+              <div className="text-sm text-muted-foreground">{investment.details}</div>
+            </div>
+          </div>
+        );
+      })}
+
+      {/* EBITDA Explanation */}
+      {view === "ebitda" && (
+        <div className="mt-4 p-4 rounded-lg bg-muted/50 border border-muted flex gap-3">
+          <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+          <div>
+            <div className="font-semibold text-foreground mb-1">💎 What is EBITDA?</div>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              EBITDA (Earnings Before Interest, Taxes, Depreciation, Amortization) shows <span className="font-bold text-primary">
+              operational profitability</span> before accounting adjustments. Notice how August 2024 shows a loss in Net Income 
+              due to depreciation, but EBITDA reveals the business was actually <span className="font-bold text-primary">
+              profitable operationally</span>. This is the view investors use to assess true business health.
+            </p>
+          </div>
+        </div>
+      )}
     </Card>
   );
 };
