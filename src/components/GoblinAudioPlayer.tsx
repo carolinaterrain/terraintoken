@@ -174,7 +174,7 @@ const GoblinAudioPlayer = () => {
 
               {/* Track name */}
               <div className="text-xs text-muted-foreground">
-                Born From The Ground Down
+                Lofi Vibes - Chill Background Music
               </div>
 
               {/* Progress bar */}
@@ -236,7 +236,7 @@ const GoblinAudioPlayer = () => {
 
               {/* Footer */}
               <div className="text-[10px] text-center text-muted-foreground">
-                Goblin Certified™ Lo-Fi Hip-Hop
+                Music by chill_background from Pixabay
               </div>
             </div>
           )}
