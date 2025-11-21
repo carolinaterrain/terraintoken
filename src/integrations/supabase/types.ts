@@ -190,6 +190,74 @@ export type Database = {
         }
         Relationships: []
       }
+      terrainscape_waitlist: {
+        Row: {
+          beta_application: string | null
+          created_at: string | null
+          email: string
+          id: string
+          invited_at: string | null
+          is_trn_holder: boolean | null
+          metadata: Json | null
+          priority_score: number | null
+          referral_code: string
+          referred_by: string | null
+          signup_source: string | null
+          status: string | null
+          trn_balance: number | null
+          updated_at: string | null
+          utm_campaign: string | null
+          utm_source: string | null
+          wallet_address: string | null
+        }
+        Insert: {
+          beta_application?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          invited_at?: string | null
+          is_trn_holder?: boolean | null
+          metadata?: Json | null
+          priority_score?: number | null
+          referral_code: string
+          referred_by?: string | null
+          signup_source?: string | null
+          status?: string | null
+          trn_balance?: number | null
+          updated_at?: string | null
+          utm_campaign?: string | null
+          utm_source?: string | null
+          wallet_address?: string | null
+        }
+        Update: {
+          beta_application?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          invited_at?: string | null
+          is_trn_holder?: boolean | null
+          metadata?: Json | null
+          priority_score?: number | null
+          referral_code?: string
+          referred_by?: string | null
+          signup_source?: string | null
+          status?: string | null
+          trn_balance?: number | null
+          updated_at?: string | null
+          utm_campaign?: string | null
+          utm_source?: string | null
+          wallet_address?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "terrainscape_waitlist_referred_by_fkey"
+            columns: ["referred_by"]
+            isOneToOne: false
+            referencedRelation: "terrainscape_waitlist"
+            referencedColumns: ["referral_code"]
+          },
+        ]
+      }
       testimonials: {
         Row: {
           author_name: string
