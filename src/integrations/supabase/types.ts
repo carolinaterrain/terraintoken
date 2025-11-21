@@ -14,6 +14,163 @@ export type Database = {
   }
   public: {
     Tables: {
+      ab_test_assignments: {
+        Row: {
+          assigned_at: string | null
+          id: string
+          session_id: string
+          test_id: string | null
+          variant: string
+        }
+        Insert: {
+          assigned_at?: string | null
+          id?: string
+          session_id: string
+          test_id?: string | null
+          variant: string
+        }
+        Update: {
+          assigned_at?: string | null
+          id?: string
+          session_id?: string
+          test_id?: string | null
+          variant?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ab_test_assignments_test_id_fkey"
+            columns: ["test_id"]
+            isOneToOne: false
+            referencedRelation: "ab_tests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ab_test_events: {
+        Row: {
+          created_at: string | null
+          event_data: Json | null
+          event_type: string
+          id: string
+          session_id: string
+          test_id: string | null
+          variant: string
+        }
+        Insert: {
+          created_at?: string | null
+          event_data?: Json | null
+          event_type: string
+          id?: string
+          session_id: string
+          test_id?: string | null
+          variant: string
+        }
+        Update: {
+          created_at?: string | null
+          event_data?: Json | null
+          event_type?: string
+          id?: string
+          session_id?: string
+          test_id?: string | null
+          variant?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ab_test_events_test_id_fkey"
+            columns: ["test_id"]
+            isOneToOne: false
+            referencedRelation: "ab_tests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ab_tests: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          end_date: string | null
+          id: string
+          name: string
+          start_date: string | null
+          status: string | null
+          traffic_split: Json | null
+          updated_at: string | null
+          variants: Json
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          name: string
+          start_date?: string | null
+          status?: string | null
+          traffic_split?: Json | null
+          updated_at?: string | null
+          variants: Json
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          name?: string
+          start_date?: string | null
+          status?: string | null
+          traffic_split?: Json | null
+          updated_at?: string | null
+          variants?: Json
+        }
+        Relationships: []
+      }
+      analytics_events: {
+        Row: {
+          created_at: string | null
+          event_name: string
+          event_properties: Json | null
+          id: string
+          ip_address: string | null
+          page_url: string | null
+          referrer: string | null
+          session_id: string
+          user_agent: string | null
+          user_id: string | null
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_name: string
+          event_properties?: Json | null
+          id?: string
+          ip_address?: string | null
+          page_url?: string | null
+          referrer?: string | null
+          session_id: string
+          user_agent?: string | null
+          user_id?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          event_name?: string
+          event_properties?: Json | null
+          id?: string
+          ip_address?: string | null
+          page_url?: string | null
+          referrer?: string | null
+          session_id?: string
+          user_agent?: string | null
+          user_id?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Relationships: []
+      }
       contest_entries: {
         Row: {
           contest_category: string
@@ -85,6 +242,39 @@ export type Database = {
           quest_type?: string
           target_count?: number | null
           trn_reward?: number
+        }
+        Relationships: []
+      }
+      email_preferences: {
+        Row: {
+          created_at: string | null
+          id: string
+          marketing: boolean | null
+          trn_rewards: boolean | null
+          updated_at: string | null
+          user_email: string
+          waitlist_updates: boolean | null
+          weekly_digest: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          marketing?: boolean | null
+          trn_rewards?: boolean | null
+          updated_at?: string | null
+          user_email: string
+          waitlist_updates?: boolean | null
+          weekly_digest?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          marketing?: boolean | null
+          trn_rewards?: boolean | null
+          updated_at?: string | null
+          user_email?: string
+          waitlist_updates?: boolean | null
+          weekly_digest?: boolean | null
         }
         Relationships: []
       }
