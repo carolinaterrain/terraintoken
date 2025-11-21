@@ -32,6 +32,7 @@ const ContestRules = lazy(() => import("@/components/ContestRules"));
 const Founders = lazy(() => import("@/components/Founders"));
 const Transparency = lazy(() => import("@/components/Transparency"));
 const Vision = lazy(() => import("@/components/Vision"));
+const TerrainScapeSneakPeek = lazy(() => import("@/components/TerrainScapeSneakPeek").then(module => ({ default: module.TerrainScapeSneakPeek })));
 const OriginStory = lazy(() => import("@/components/OriginStory"));
 const LiveProof = lazy(() => import("@/components/LiveProof"));
 const CompetitiveEdge = lazy(() => import("@/components/CompetitiveEdge"));
@@ -159,6 +160,11 @@ const Index = () => {
                 <Vision />
               </div>
             </div>
+          </Suspense>
+
+          {/* TerrainScape Sneak Peek */}
+          <Suspense fallback={<LoadingSection />}>
+            <TerrainScapeSneakPeek />
           </Suspense>
 
           {/* Group 7: Engagement - Lazy loaded */}

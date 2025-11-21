@@ -1,6 +1,6 @@
 import { GlassCard } from "@/components/ui/glass-card";
 import { Progress } from "@/components/ui/progress";
-import { Sparkles, Users, Gift, Cpu, Database, Cog, CheckCircle, Clock, TrendingUp } from "lucide-react";
+import { Sparkles, Users, Gift, Cpu, Database, Cog, CheckCircle, Clock, TrendingUp, Gamepad2 } from "lucide-react";
 import terrainMascot from "@/assets/terrain-mascot.png";
 import {
   Carousel,
@@ -72,6 +72,16 @@ const phases = [
     progress: 0,
     timeline: "2027+",
     milestones: ["Robotics partnerships", "IoT integration", "Autonomous data collection", "Global expansion"]
+  },
+  {
+    phase: "Phase 6",
+    title: "TerrainScape MMO",
+    icon: Gamepad2,
+    description: "Launch educational play-to-earn game for global workforce training",
+    status: "future",
+    progress: 0,
+    timeline: "2026+",
+    milestones: ["Beta launch with 50 quests", "Job placement partnerships", "Mobile app (10 languages)", "100k+ active players"]
   }
 ];
 
