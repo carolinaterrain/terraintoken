@@ -9,13 +9,17 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
-        hero: "bg-primary text-primary-foreground hover:bg-terrain-glow hover:shadow-[0_0_30px_hsl(var(--terrain-glow)/0.5)] transition-all duration-300 font-semibold",
+        default:
+          "bg-primary text-primary-foreground shadow hover:bg-primary/90 transition-all duration-200 hover:scale-105 active:scale-98",
+        destructive:
+          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 transition-all duration-200",
+        outline:
+          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground transition-all duration-200",
+        secondary:
+          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 transition-all duration-200",
+        ghost: "hover:bg-accent hover:text-accent-foreground transition-all duration-200",
+        link: "text-primary underline-offset-4 hover:underline transition-all duration-150",
+        hero: "bg-gradient-to-r from-primary to-primary-glow text-primary-foreground shadow-lg hover:shadow-glow hover:scale-105 active:scale-98 transition-all duration-300 font-semibold",
         terrain: "bg-gradient-to-r from-primary to-terrain-glow text-primary-foreground hover:shadow-[0_0_30px_hsl(var(--terrain-glow)/0.5)] transition-all duration-300",
       },
       size: {

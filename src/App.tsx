@@ -1,58 +1,39 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { useEffect, lazy, Suspense } from "react";
 import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
-import SkipToContent from "@/components/SkipToContent";
-import SoundToggle from "@/components/SoundToggle";
-import ThemeToggle from "@/components/ThemeToggle";
-import { useEasterEggs } from "@/hooks/useEasterEggs";
-import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
-
-// Lazy load pages for better performance
-const NotFound = lazy(() => import("./pages/NotFound"));
-const SubmitMeme = lazy(() => import("./pages/SubmitMeme"));
-const GoblinCave = lazy(() => import("./pages/GoblinCave"));
-const UploadProject = lazy(() => import("./pages/UploadProject"));
-const UploadTestimonial = lazy(() => import("./pages/UploadTestimonial"));
-const EarnTRN = lazy(() => import("./pages/EarnTRN"));
-const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
-const Whitepaper = lazy(() => import("./pages/Whitepaper"));
-const Updates = lazy(() => import("./pages/Updates"));
-const Team = lazy(() => import("./pages/Team"));
-const PressKit = lazy(() => import("./pages/PressKit"));
-const TokenMetadata = lazy(() => import("./pages/TokenMetadata"));
-const VideoUpdates = lazy(() => import("./pages/VideoUpdates"));
-const MobileNav = lazy(() => import("@/components/MobileNav"));
-const ExitIntent = lazy(() => import("@/components/ExitIntent"));
-const PWAPrompt = lazy(() => import("@/components/PWAPrompt"));
-const GoodbyeWave = lazy(() => import("@/components/GoodbyeWave"));
-const PerformanceMonitor = lazy(() => import("@/components/PerformanceMonitor"));
+import EarnTRN from "./pages/EarnTRN";
+import GoblinCave from "./pages/GoblinCave";
+import Whitepaper from "./pages/Whitepaper";
+import TokenMetadata from "./pages/TokenMetadata";
+import Updates from "./pages/Updates";
+import Team from "./pages/Team";
+import SubmitMeme from "./pages/SubmitMeme";
+import UploadTestimonial from "./pages/UploadTestimonial";
+import UploadProject from "./pages/UploadProject";
+import AdminDashboard from "./pages/AdminDashboard";
+import NotFound from "./pages/NotFound";
+import PressKit from "./pages/PressKit";
+import VideoUpdates from "./pages/VideoUpdates";
+import MobileNav from "./components/MobileNav";
+import ThemeToggle from "./components/ThemeToggle";
+import SoundToggle from "./components/SoundToggle";
+import ExitIntent from "./components/ExitIntent";
+import PWAPrompt from "./components/PWAPrompt";
+import SkipToContent from "./components/SkipToContent";
+import GoodbyeWave from "./components/GoodbyeWave";
+import ScrollToTop from "./components/ScrollToTop";
+import ErrorBoundary from "./components/ErrorBoundary";
+import { LoadingSpinner } from "./components/ui/loading-spinner";
+import PerformanceMonitor from "./components/PerformanceMonitor";
+import { useEasterEggs } from "./hooks/useEasterEggs";
+import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
+import { lazy, Suspense } from "react";
 
 const queryClient = new QueryClient();
-
-const ScrollToTop = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    // Scroll to top on route change
-    window.scrollTo(0, 0);
-    
-    // Handle state-based scrolling (from DesktopNav)
-    if (location.state?.scrollTo) {
-      setTimeout(() => {
-        const element = document.getElementById(location.state.scrollTo);
-        element?.scrollIntoView({ behavior: "smooth" });
-      }, 100);
-    }
-  }, [location]);
-
-  return null;
-};
 
 const AppContent = () => {
   useEasterEggs();
@@ -96,18 +77,20 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <HelmetProvider>
-        <TooltipProvider>
-          <Suspense fallback={null}>
-            <PerformanceMonitor />
-          </Suspense>
-          <Toaster />
-          <Sonner />
-          <AppContent />
-        </TooltipProvider>
-      </HelmetProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <HelmetProvider>
+          <TooltipProvider>
+            <Suspense fallback={null}>
+              <PerformanceMonitor />
+            </Suspense>
+            <Toaster />
+            <Sonner />
+            <AppContent />
+          </TooltipProvider>
+        </HelmetProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 };
 

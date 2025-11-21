@@ -37,51 +37,79 @@ const MobileNav = () => {
     }
   };
 
+  const handleNavClick = (action: () => void) => {
+    // Haptic feedback on mobile
+    if ('vibrate' in navigator) {
+      navigator.vibrate(10);
+    }
+    action();
+  };
+
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-t border-primary/20 shadow-lg">
+    <nav 
+      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-t border-primary/20 shadow-lg safe-area-bottom"
+      role="navigation"
+      aria-label="Mobile navigation"
+    >
       <div className="flex items-center justify-around py-2 px-2">
         <Button
           variant="ghost"
           size="sm"
-          onClick={handleHomeClick}
+          onClick={() => handleNavClick(handleHomeClick)}
           aria-label="Go to home page"
-          className={`flex flex-col items-center gap-1 h-auto py-2 px-2 ${location.pathname === '/' ? 'text-primary' : ''}`}
+          className={`flex flex-col items-center gap-1 h-auto py-3 px-3 min-h-[48px] min-w-[48px] transition-all ${
+            location.pathname === '/' 
+              ? 'text-primary bg-primary/10' 
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
         >
           <Home className="w-5 h-5" />
-          <span className="text-xs">Home</span>
+          <span className="text-xs font-medium">Home</span>
         </Button>
         
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => navigate("/earn-trn")}
+          onClick={() => handleNavClick(() => navigate("/earn-trn"))}
           aria-label="Navigate to Earn TRN page"
-          className={`flex flex-col items-center gap-1 h-auto py-2 px-2 ${location.pathname === '/earn-trn' ? 'text-primary' : ''}`}
+          className={`flex flex-col items-center gap-1 h-auto py-3 px-3 min-h-[48px] min-w-[48px] transition-all ${
+            location.pathname === '/earn-trn' 
+              ? 'text-primary bg-primary/10' 
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
         >
           <Gift className="w-5 h-5" />
-          <span className="text-xs">Earn</span>
+          <span className="text-xs font-medium">Earn</span>
         </Button>
         
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => navigate("/video-updates")}
+          onClick={() => handleNavClick(() => navigate("/video-updates"))}
           aria-label="View video updates"
-          className={`flex flex-col items-center gap-1 h-auto py-2 px-2 ${location.pathname === '/video-updates' ? 'text-primary' : ''}`}
+          className={`flex flex-col items-center gap-1 h-auto py-3 px-3 min-h-[48px] min-w-[48px] transition-all ${
+            location.pathname === '/video-updates' 
+              ? 'text-primary bg-primary/10' 
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
         >
           <Video className="w-5 h-5" />
-          <span className="text-xs">Videos</span>
+          <span className="text-xs font-medium">Videos</span>
         </Button>
         
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => navigate("/team")}
+          onClick={() => handleNavClick(() => navigate("/team"))}
           aria-label="View team page"
-          className={`flex flex-col items-center gap-1 h-auto py-2 px-2 ${location.pathname === '/team' ? 'text-primary' : ''}`}
+          className={`flex flex-col items-center gap-1 h-auto py-3 px-3 min-h-[48px] min-w-[48px] transition-all ${
+            location.pathname === '/team' 
+              ? 'text-primary bg-primary/10' 
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
         >
           <Users className="w-5 h-5" />
-          <span className="text-xs">Team</span>
+          <span className="text-xs font-medium">Team</span>
         </Button>
       </div>
     </nav>

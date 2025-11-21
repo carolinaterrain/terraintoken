@@ -22,10 +22,10 @@ export const VideoCard = ({ video, onClick }: VideoCardProps) => {
   };
 
   return (
-    <GlassCard 
-      hover 
-      className="overflow-hidden cursor-pointer group"
+    <GlassCard
+      hover
       onClick={onClick}
+      className="group cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-glow focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2"
     >
       <div className="relative aspect-video bg-muted overflow-hidden">
         <video

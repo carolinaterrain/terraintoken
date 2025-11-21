@@ -1,35 +1,34 @@
 import { Helmet } from "react-helmet-async";
 import Hero from "@/components/Hero";
-import TokenStats from "@/components/TokenStats";
-import HowToBuy from "@/components/HowToBuy";
 import About from "@/components/About";
 import Roadmap from "@/components/Roadmap";
 import Tokenomics from "@/components/Tokenomics";
-import Vision from "@/components/Vision";
-import RealWorldRoots from "@/components/RealWorldRoots";
-import Founders from "@/components/Founders";
-import CompetitiveEdge from "@/components/CompetitiveEdge";
-import MemeGenerator from "@/components/MemeGenerator";
-import MemeHallOfFame from "@/components/MemeHallOfFame";
-import MemeFeed from "@/components/MemeFeed";
-import ContestRules from "@/components/ContestRules";
 import Community from "@/components/Community";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
-import GoblinWisdom from "@/components/GoblinWisdom";
+import HowToBuy from "@/components/HowToBuy";
+import MascotLore from "@/components/MascotLore";
+import RealWorldRoots from "@/components/RealWorldRoots";
+import MemeGenerator from "@/components/MemeGenerator";
+import MemeFeed from "@/components/MemeFeed";
+import MemeHallOfFame from "@/components/MemeHallOfFame";
+import ContestRules from "@/components/ContestRules";
+import Founders from "@/components/Founders";
+import Transparency from "@/components/Transparency";
+import Vision from "@/components/Vision";
+import SkipToContent from "@/components/SkipToContent";
+import SmartHeader from "@/components/SmartHeader";
+import ScrollProgress from "@/components/ScrollProgress";
+import LiveProof from "@/components/LiveProof";
+import CompetitiveEdge from "@/components/CompetitiveEdge";
+import EcosystemFlow from "@/components/EcosystemFlow";
+import { VideoUpdatesHub } from "@/components/VideoUpdatesHub";
 import SoundToggle from "@/components/SoundToggle";
 import GoblinAudioPlayer from "@/components/GoblinAudioPlayer";
-import MascotLore from "@/components/MascotLore";
-import DesktopNav from "@/components/DesktopNav";
-import ScrollProgress from "@/components/ScrollProgress";
 import AccessibilityMenu from "@/components/AccessibilityMenu";
-import SkipToContent from "@/components/SkipToContent";
-import AnnouncementBanner from "@/components/AnnouncementBanner";
+import GoblinWisdom from "@/components/GoblinWisdom";
 import AnalyzeToEarnHero from "@/components/AnalyzeToEarnHero";
-import EcosystemFlow from "@/components/EcosystemFlow";
-import LiveProof from "@/components/LiveProof";
-import Transparency from "@/components/Transparency";
-import { VideoUpdatesHub } from "@/components/VideoUpdatesHub";
+import { spacing } from "@/lib/spacing";
 
 const Index = () => {
   return (
@@ -47,42 +46,102 @@ const Index = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@carolinaterrain" />
       </Helmet>
+      
       <div className="min-h-screen bg-background">
         <SkipToContent />
-        <AnnouncementBanner />
         <ScrollProgress />
-        <DesktopNav />
-        <main id="main-content">
-          <Hero />
-          <AnalyzeToEarnHero />
-      <TokenStats />
-      <HowToBuy />
-      <About />
-      <MascotLore />
-      <RealWorldRoots />
-      <Founders />
-      <CompetitiveEdge />
-      <EcosystemFlow />
-      <Roadmap />
-      <Tokenomics />
-      <Transparency />
-      <LiveProof />
-      <VideoUpdatesHub limit={6} showViewAll={true} />
-      <Vision />
-      <div id="contest">
-        <MemeGenerator />
-        <MemeHallOfFame />
-        <MemeFeed />
-        <ContestRules />
-      </div>
-      <Community />
-      <FAQ />
-        <Footer />
-        </main>
-        <GoblinWisdom />
+        <SmartHeader />
         <SoundToggle />
         <GoblinAudioPlayer />
         <AccessibilityMenu />
+        <GoblinWisdom />
+
+        <main id="main-content" className="relative z-10">
+          {/* Group 1: Introduction */}
+          <div className="bg-background">
+            <Hero />
+            <AnalyzeToEarnHero />
+            <div className={spacing.section.standard}>
+              <HowToBuy />
+            </div>
+          </div>
+
+          {/* Group 2: Value Proposition */}
+          <div className="bg-gradient-to-b from-background to-background/50">
+            <div className={spacing.section.major}>
+              <About />
+            </div>
+            <div className={spacing.section.compact}>
+              <MascotLore />
+            </div>
+            <div className={spacing.section.compact}>
+              <RealWorldRoots />
+            </div>
+            <div className={spacing.section.standard}>
+              <Founders />
+            </div>
+          </div>
+
+          {/* Group 3: Mechanics */}
+          <div className="bg-background">
+            <div className={spacing.section.major}>
+              <CompetitiveEdge />
+            </div>
+            <div className={spacing.section.compact}>
+              <EcosystemFlow />
+            </div>
+            <div className={spacing.section.major}>
+              <Roadmap />
+            </div>
+          </div>
+
+          {/* Group 4: Details */}
+          <div className="bg-gradient-to-b from-background/50 to-background">
+            <div className={spacing.section.major}>
+              <Tokenomics />
+            </div>
+            <div className={spacing.section.standard}>
+              <Transparency />
+            </div>
+            <div className={spacing.section.standard}>
+              <LiveProof />
+            </div>
+          </div>
+
+          {/* Group 5: Media */}
+          <div className="bg-background" id="video-updates">
+            <div className={spacing.section.major}>
+              <VideoUpdatesHub limit={6} showViewAll={true} />
+            </div>
+            <div className={spacing.section.standard}>
+              <Vision />
+            </div>
+          </div>
+
+          {/* Group 6: Engagement */}
+          <div className="bg-gradient-to-b from-background to-background/50" id="contest">
+            <div className={spacing.section.major}>
+              <MemeGenerator />
+            </div>
+            <div className={spacing.section.compact}>
+              <MemeHallOfFame />
+            </div>
+            <div className={spacing.section.compact}>
+              <MemeFeed />
+            </div>
+            <div className={spacing.section.standard}>
+              <ContestRules />
+            </div>
+            <div className={spacing.section.major}>
+              <Community />
+            </div>
+            <div className={spacing.section.major}>
+              <FAQ />
+            </div>
+          </div>
+        </main>
+
+        <Footer />
       </div>
     </>
   );
