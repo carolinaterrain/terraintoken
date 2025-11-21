@@ -15,7 +15,9 @@ export const GlassCard = ({ children, className, hover = false, onClick }: Glass
         "bg-card/40 backdrop-blur-xl border border-primary/20",
         "shadow-[0_8px_32px_hsl(var(--primary)/0.1)]",
         "rounded-lg",
-        hover && "transition-all duration-300 hover:border-primary/40 hover:shadow-[0_8px_32px_hsl(var(--primary)/0.2)]",
+        "transition-all duration-300",
+        hover && "hover:border-primary/40 hover:shadow-[0_8px_32px_hsl(var(--primary)/0.2)] hover:-translate-y-1",
+        onClick && "cursor-pointer active:scale-[0.99]",
         className
       )}
       onClick={onClick}
