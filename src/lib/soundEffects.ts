@@ -73,27 +73,29 @@ function createSequence(frequencies: number[], noteDuration: number) {
 // Sound Effects Library
 export const SoundEffects = {
   // UI Interactions
-  buttonClick: createTone(880, 0.05, 'sine'),       // High click
-  buttonHover: createTone(440, 0.03, 'sine'),       // Soft hover
+  buttonClick: createTone(880, 0.05, 'sine'),
+  buttonHover: createTone(440, 0.03, 'sine'),
   
   // Navigation
-  pageTransition: createTone(523, 0.15, 'triangle'), // C note
-  scrollSection: createTone(659, 0.08, 'sine'),      // E note
+  pageTransition: createTone(523, 0.15, 'triangle'),
+  scrollSection: createTone(659, 0.08, 'sine'),
+  pageWhoosh: createTone(440, 0.2, 'triangle'),
   
   // Token Interactions
-  coinClink: createTone(1046, 0.1, 'triangle'),     // High C
-  tokenEarn: createChord([523, 659, 784], 0.2),     // C-E-G chord (major)
+  coinClink: createTone(1046, 0.1, 'triangle'),
+  tokenEarn: createChord([523, 659, 784], 0.2),
+  priceUpdate: createTone(987, 0.08, 'sine'),
   
   // Success/Error
-  success: createChord([523, 659, 784], 0.3),       // Major chord
-  error: createTone(220, 0.2, 'sawtooth'),          // Low warning
+  success: createChord([523, 659, 784], 0.3),
+  error: createTone(220, 0.2, 'sawtooth'),
+  formSuccess: createChord([659, 784, 988], 0.25),
+  formError: createTone(185, 0.25, 'sawtooth'),
   
   // Easter Eggs
-  secretFound: createChord([880, 1046, 1318], 0.4), // High celebration
-  achievement: createSequence([523, 659, 784, 1046], 0.1), // Ascending scale
-  
-  // VIBE Mode
-  vibeMode: createSequence([523, 659, 784, 1046, 1318], 0.08), // Fast ascending
+  secretFound: createChord([880, 1046, 1318], 0.4),
+  achievement: createSequence([523, 659, 784, 1046], 0.1),
+  vibeMode: createSequence([523, 659, 784, 1046, 1318], 0.08),
 };
 
 // Utility: Play sound with optional delay
