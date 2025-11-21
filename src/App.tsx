@@ -20,7 +20,7 @@ import PressKit from "./pages/PressKit";
 import VideoUpdates from "./pages/VideoUpdates";
 import MobileNav from "./components/MobileNav";
 import ThemeToggle from "./components/ThemeToggle";
-import SoundToggle from "./components/SoundToggle";
+import AudioControl from "./components/AudioControl";
 import ExitIntent from "./components/ExitIntent";
 import PWAPrompt from "./components/PWAPrompt";
 import SkipToContent from "./components/SkipToContent";
@@ -43,7 +43,7 @@ const AppContent = () => {
     <BrowserRouter>
       <SkipToContent />
       <ThemeToggle />
-      <SoundToggle />
+      <AudioControl />
       <ScrollToTop />
       <Suspense fallback={
         <div className="min-h-screen flex items-center justify-center bg-background">

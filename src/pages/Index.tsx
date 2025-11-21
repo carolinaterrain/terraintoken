@@ -23,8 +23,6 @@ import LiveProof from "@/components/LiveProof";
 import CompetitiveEdge from "@/components/CompetitiveEdge";
 import EcosystemFlow from "@/components/EcosystemFlow";
 import { VideoUpdatesHub } from "@/components/VideoUpdatesHub";
-import SoundToggle from "@/components/SoundToggle";
-import GoblinAudioPlayer from "@/components/GoblinAudioPlayer";
 import AccessibilityMenu from "@/components/AccessibilityMenu";
 import GoblinWisdom from "@/components/GoblinWisdom";
 import AnalyzeToEarnHero from "@/components/AnalyzeToEarnHero";
@@ -53,12 +51,10 @@ const Index = () => {
       </Helmet>
       
       <div className="min-h-screen bg-background">
-        <SkipToContent />
-        <ScrollProgress />
-        <SmartHeader />
-        <SoundToggle />
-        <GoblinAudioPlayer />
-        <AccessibilityMenu />
+      <SkipToContent />
+      <ScrollProgress />
+      <SmartHeader />
+      <AccessibilityMenu />
         <GoblinWisdom />
 
         <main id="main-content" className="relative z-10">
