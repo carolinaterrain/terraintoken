@@ -131,36 +131,17 @@ export const useEasterEggs = () => {
   };
 
   const triggerDrainMode = () => {
-    // Screen tilt animation
-    document.body.style.transform = 'rotate(-2deg)';
-    document.body.style.transition = 'transform 0.3s ease-in-out';
-    
-    setTimeout(() => {
-      document.body.style.transform = 'rotate(2deg)';
-    }, 150);
-    
-    setTimeout(() => {
-      document.body.style.transform = 'rotate(0deg)';
-    }, 300);
-    
-    setTimeout(() => {
-      document.body.style.transform = '';
-      document.body.style.transition = '';
-    }, 600);
-    
-    // Water drop confetti
+    // Water drop confetti only - no screen tilt
     confetti({
       particleCount: 50,
-      spread: 70,
-      origin: { y: 0 },
-      colors: ['#3b82f6', '#60a5fa', '#93c5fd'],
-      shapes: ['circle'],
-      gravity: 2,
+      spread: 60,
+      origin: { y: 0.8 },
+      colors: ['#0EA5E9', '#06B6D4', '#22D3EE']
     });
     
     toast({
-      title: "💧 DRAIN MODE ACTIVATED",
-      description: "The water flows where you guide it...",
+      title: "🌊 DRAIN Mode Activated",
+      description: "Everything flows downhill...",
     });
     
     localStorage.setItem('trn-drain-discovered', 'true');
@@ -172,42 +153,19 @@ export const useEasterEggs = () => {
     const audioEvent = new CustomEvent('trn-audio-play');
     window.dispatchEvent(audioEvent);
     
-    const duration = 3000;
-    const end = Date.now() + duration;
-    const colors = ['#10b981', '#FFD700', '#34D399', '#FCD34D'];
-    
-    const frame = () => {
-      confetti({
-        particleCount: 5,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0, y: 0.6 },
-        colors: colors,
-      });
-      confetti({
-        particleCount: 5,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1, y: 0.6 },
-        colors: colors,
-      });
-      
-      if (Date.now() < end) {
-        requestAnimationFrame(frame);
-      }
-    };
-    frame();
+    // Simplified confetti - less particles
+    confetti({
+      particleCount: 30,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#10b981', '#FFD700', '#34D399']
+    });
     
     toast({
       title: "✅ VIBE CHECK PASSED",
       description: "The terrain feels your energy. Music activated!",
       duration: 4000,
     });
-    
-    document.body.style.animation = 'gentle-pulse 1s ease-in-out';
-    setTimeout(() => {
-      document.body.style.animation = '';
-    }, 1000);
     
     localStorage.setItem('trn-vibe-discovered', 'true');
     const discoveries = parseInt(localStorage.getItem('trn-easter-egg-count') || '0');

@@ -11,7 +11,6 @@ import heroBackground from "@/assets/hero-terrain-grid.jpg";
 
 const Hero = () => {
   const { toast } = useToast();
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
   const [goblinPhrase, setGoblinPhrase] = useState("");
   const contractAddress = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
@@ -24,22 +23,10 @@ const Hero = () => {
     "Paper hands cause erosion! 💎",
   ];
   
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-  
-  const parallaxX = (mousePosition.x - window.innerWidth / 2) / 50;
-  const parallaxY = (mousePosition.y - window.innerHeight / 2) / 50;
-  
   const handleGoblinClick = () => {
     confetti({
-      particleCount: 100,
-      spread: 70,
+      particleCount: 50,
+      spread: 50,
       origin: { y: 0.6 },
       colors: ['#00C46A', '#06FF8C', '#22c55e']
     });
@@ -76,7 +63,7 @@ const Hero = () => {
       {/* Background Layers - Edge to Edge */}
       <div className="absolute inset-0 pointer-events-none">
         <div 
-          className="absolute inset-0 opacity-20 animate-grid-shift"
+          className="absolute inset-0 opacity-20"
           style={{ background: "var(--terrain-grid)" }}
         />
         <div 
@@ -85,7 +72,6 @@ const Hero = () => {
             backgroundImage: `url(${heroBackground})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            transform: `translate(${parallaxX * 0.5}px, ${parallaxY * 0.5}px)`,
           }}
         />
         <div 
@@ -99,20 +85,15 @@ const Hero = () => {
         
         {/* LEFT SIDE - TRN Coin with Glow */}
         <div className="flex items-center justify-center relative order-2 md:order-1">
-          <div 
-            className="relative"
-            style={{
-              transform: `translate(${parallaxX}px, ${parallaxY}px)`,
-            }}
-          >
+          <div className="relative">
             {/* Glow effect */}
-            <div className="absolute inset-0 blur-3xl bg-primary/30 animate-glow-pulse" />
+            <div className="absolute inset-0 blur-3xl bg-primary/20" />
             
             {/* Spinning Coin */}
             <img
               src={trnCoin}
               alt="TRN coin"
-              className="relative w-72 md:w-96 h-72 md:h-96 object-contain animate-float hover:rotate-[5deg] transition-transform duration-300 cursor-pointer"
+              className="relative w-72 md:w-96 h-72 md:h-96 object-contain animate-float"
             />
           </div>
         </div>
