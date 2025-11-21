@@ -59,6 +59,10 @@ const faqs = [
   {
     question: "How do I buy TRN?",
     answer: "TRN is available on pump.fun and other decentralized exchanges. Check our official social channels for the latest trading information and contract address."
+  },
+  {
+    question: "When will TerrainScape launch?",
+    answer: "TerrainScape is currently in closed beta with 2,847+ people on the waitlist. Public beta launches Q1 2026. Early access is prioritized for TRN holders who join the waitlist now. Join at terraintoken.com to secure your spot!"
   }
 ];
 

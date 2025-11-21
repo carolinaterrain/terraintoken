@@ -25,19 +25,16 @@ const Vision = () => {
             </div>
             
             <h3 className="font-display text-2xl font-bold mb-4 text-primary">
-              From Speculation to Contribution: The Meme Coin Revolution
+              The Future is NOW: Analyze-to-Earn Goes Live
             </h3>
             
             <p className="font-body text-lg text-muted-foreground leading-relaxed">
-              Other meme coins ask you to <span className="font-semibold">HODL and hope</span>. We ask you to <span className="text-primary font-semibold">CONTRIBUTE and earn</span>.
-            </p>
-            
-            <p className="font-body text-lg text-muted-foreground leading-relaxed mt-4">
-              Every photo uploaded trains our AI. Every analysis improves our intelligence. Every contribution earns you <span className="text-primary font-semibold">TRN</span>.
+              We're not promising utility in 2026. <span className="text-primary font-semibold">TerrainVision AI is LIVE RIGHT NOW</span>. 
+              Upload photos of drainage problems, get instant AI analysis, earn TRN tokens. No roadmap promises—actual functionality.
             </p>
             
             <p className="font-body text-xl font-bold text-primary leading-relaxed mt-6">
-              This isn't a roadmap promise for 2026. This is LIVE, RIGHT NOW.
+              While other meme coins PROMISE features, TRN DELIVERS them. ⛏️
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 mb-6">
