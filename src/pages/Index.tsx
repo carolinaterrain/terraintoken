@@ -32,6 +32,7 @@ import { SocialProofWall } from "@/components/SocialProofWall";
 import { VibeCheck } from "@/components/VibeCheck";
 import { OrganicDiscoveryCounter } from "@/components/OrganicDiscoveryCounter";
 import { AntiRugMeter } from "@/components/AntiRugMeter";
+import ByTheNumbers from "@/components/ByTheNumbers";
 import { spacing } from "@/lib/spacing";
 
 const Index = () => {
@@ -121,6 +122,9 @@ const Index = () => {
             </div>
             <div className={spacing.section.standard}>
               <Transparency />
+            </div>
+            <div className={spacing.section.standard}>
+              <ByTheNumbers />
             </div>
             <div className={spacing.section.standard}>
               <LiveProof />
