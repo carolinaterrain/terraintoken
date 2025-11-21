@@ -43,8 +43,44 @@ export const DepreciationSchedule = () => {
         </div>
       </div>
 
-      {/* Depreciation Table */}
-      <div className="overflow-x-auto rounded-lg border border-border/50 mb-6">
+      {/* Mobile Card Layout */}
+      <div className="md:hidden space-y-4 mb-6">
+        {majorEquipment.map((eq, index) => {
+          const depreciationPercent = (eq.totalDepreciation / eq.initialCost) * 100;
+          return (
+            <Card key={index} className="p-4 bg-background/80 border border-border/50">
+              <div className="flex items-start justify-between mb-3">
+                <div>
+                  <h4 className="font-semibold text-lg">{eq.name}</h4>
+                  <p className="text-xs text-muted-foreground">
+                    {eq.purchaseDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                  </p>
+                </div>
+                <Badge variant={depreciationPercent > 0 ? "secondary" : "outline"}>
+                  {depreciationPercent.toFixed(0)}%
+                </Badge>
+              </div>
+              <div className="space-y-2">
+                <div className="flex justify-between py-2 border-b border-border/30">
+                  <span className="text-sm text-muted-foreground">Purchase Cost</span>
+                  <span className="font-mono font-semibold">${eq.initialCost.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b border-border/30">
+                  <span className="text-sm text-muted-foreground">Current Value</span>
+                  <span className="font-mono font-semibold text-chart-1">${eq.currentValue.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between py-2">
+                  <span className="text-sm text-muted-foreground">Depreciation</span>
+                  <span className="font-mono font-semibold text-chart-2">${eq.totalDepreciation.toLocaleString()}</span>
+                </div>
+              </div>
+            </Card>
+          );
+        })}
+      </div>
+
+      {/* Desktop Table Layout */}
+      <div className="hidden md:block overflow-x-auto rounded-lg border border-border/50 mb-6">
         <Table>
           <TableHeader>
             <TableRow className="bg-muted/50">

@@ -10,6 +10,7 @@ import { InventoryCapitalCard } from "@/components/transparency/InventoryCapital
 import { FinancialHealthScore } from "@/components/transparency/FinancialHealthScore";
 import { DepreciationSchedule } from "@/components/transparency/DepreciationSchedule";
 import { calculateMetrics, balanceSheet } from "@/lib/financialData";
+import { FinancialDisclosureCard } from "@/components/FinancialDisclosureCard";
 
 const ByTheNumbers = () => {
   const metrics = calculateMetrics();
@@ -26,6 +27,9 @@ const ByTheNumbers = () => {
       />
 
       <div className="container mx-auto max-w-6xl relative z-10">
+        {/* Financial Disclosure - Always visible */}
+        <FinancialDisclosureCard />
+        
         {/* Header */}
         <div className="text-center mb-16">
           <Badge variant="outline" className="mb-4 border-primary/40">

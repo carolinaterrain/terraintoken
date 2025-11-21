@@ -77,8 +77,45 @@ const CompetitiveEdge = () => {
           </p>
         </div>
 
-        {/* Comparison Table */}
-        <div className="max-w-6xl mx-auto mb-12">
+        {/* Mobile Accordion View */}
+        <div className="md:hidden space-y-4 max-w-2xl mx-auto mb-12">
+          <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/20">
+            <h3 className="font-bold text-lg mb-3 text-primary">🌱 TRN Features</h3>
+            <div className="space-y-2">
+              {comparison.map((row, index) => (
+                <div key={index} className="py-2 border-b border-border/30 last:border-0">
+                  <div className="text-sm font-semibold mb-1">{row.feature}</div>
+                  <div className="text-sm text-primary">
+                    {typeof row.trn === "string" ? row.trn : "✓ Yes"}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+          
+          <Card className="p-4 bg-card/50 backdrop-blur-sm">
+            <h3 className="font-bold text-lg mb-3">🐕 Other Meme Coins</h3>
+            <div className="space-y-3">
+              {comparison.map((row, index) => (
+                <div key={index} className="py-2 border-b border-border/30 last:border-0">
+                  <div className="text-sm font-semibold mb-1">{row.feature}</div>
+                  <div className="flex gap-4 text-sm text-muted-foreground">
+                    <span>DOGE: {row.doge === false ? "✗" : row.doge}</span>
+                    <span>SHIB: {row.shib === false ? "✗" : row.shib}</span>
+                    <span>PEPE: {row.pepe === false ? "✗" : row.pepe}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+          
+          <p className="text-xs text-muted-foreground text-center mt-2">
+            💡 Swipe cards to compare →
+          </p>
+        </div>
+
+        {/* Desktop Comparison Table */}
+        <div className="hidden md:block max-w-6xl mx-auto mb-12">
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>

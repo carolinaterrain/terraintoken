@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Copy, FileText } from "lucide-react";
+import { ArrowRight, Copy, FileText, TrendingUp, TrendingDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import confetti from "canvas-confetti";
@@ -8,12 +8,15 @@ import ContractVerificationBadge from "./ContractVerificationBadge";
 import terrainMascot from "@/assets/terrain-mascot.png";
 import trnCoin from "@/assets/trn-coin.png";
 import heroBackground from "@/assets/hero-terrain-grid.jpg";
+import { useTokenStats } from "@/hooks/useTokenStats";
 
 const Hero = () => {
   const { toast } = useToast();
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
   const [goblinPhrase, setGoblinPhrase] = useState("");
+  const [priceUpdated, setPriceUpdated] = useState(false);
   const contractAddress = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+  const { data: tokenStats } = useTokenStats();
   
   const goblinPhrases = [
     "Ready to erode? 🌱",
@@ -54,6 +57,15 @@ const Hero = () => {
       });
     }
   };
+
+  // Pulse animation on price update
+  useEffect(() => {
+    if (tokenStats?.priceUsd) {
+      setPriceUpdated(true);
+      const timer = setTimeout(() => setPriceUpdated(false), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [tokenStats?.priceUsd]);
   
   return (
     <section 
@@ -79,6 +91,38 @@ const Hero = () => {
           style={{ background: "var(--gradient-dark)" }}
         />
       </div>
+
+      {/* Live Price Ticker */}
+      {tokenStats && (
+        <div className="absolute top-20 left-0 right-0 bg-gradient-to-r from-chart-1/20 via-chart-3/20 to-chart-1/20 border-y border-primary/20 backdrop-blur-sm z-20">
+          <div className="container mx-auto px-4 py-3">
+            <div className="flex items-center justify-center gap-4 md:gap-8 text-xs md:text-sm flex-wrap">
+              <div className="flex items-center gap-2">
+                <span className="text-muted-foreground font-semibold">LIVE PRICE</span>
+                <span className={`font-bold text-xl md:text-2xl text-chart-3 transition-transform ${priceUpdated ? 'scale-110' : 'scale-100'}`}>
+                  ${tokenStats.priceUsd}
+                </span>
+                <span className={`flex items-center gap-1 font-semibold ${tokenStats.change24h >= 0 ? "text-green-500" : "text-red-500"}`}>
+                  {tokenStats.change24h >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+                  {tokenStats.change24h >= 0 ? "+" : ""}{tokenStats.change24h.toFixed(2)}%
+                </span>
+              </div>
+              <div className="hidden md:flex items-center gap-2">
+                <span className="text-muted-foreground">VOL 24H:</span>
+                <span className="font-semibold">{tokenStats.volume24h}</span>
+              </div>
+              <div className="hidden md:flex items-center gap-2">
+                <span className="text-muted-foreground">MCAP:</span>
+                <span className="font-semibold">{tokenStats.marketCap}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-xs text-muted-foreground font-semibold">LIVE</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Content - 50/50 Split Layout */}
       <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10">

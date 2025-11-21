@@ -13,7 +13,6 @@ import { SocialProofWall } from "@/components/SocialProofWall";
 import { VibeCheck } from "@/components/VibeCheck";
 import { OrganicDiscoveryCounter } from "@/components/OrganicDiscoveryCounter";
 import { AntiRugMeter } from "@/components/AntiRugMeter";
-import { RiskDisclosureBanner } from "@/components/RiskDisclosureBanner";
 import { QuickStartGuide } from "@/components/QuickStartGuide";
 import { spacing } from "@/lib/spacing";
 
@@ -65,7 +64,6 @@ const Index = () => {
       </Helmet>
       
       <div className="min-h-screen bg-background">
-      <RiskDisclosureBanner />
       <SkipToContent />
       <ScrollProgress />
       <SmartHeader />
