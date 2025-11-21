@@ -9,6 +9,8 @@ export interface MonthlyData {
   supplies: number;
   labor: number;
   advertising: number;
+  depreciation?: number;
+  ebitda?: number;
 }
 
 export interface BalanceSheetData {
@@ -36,7 +38,7 @@ export const monthlyRevenue: MonthlyData[] = [
   { month: "Mar 2023", date: new Date(2023, 2), revenue: 56858.23, expenses: 19693.89, netIncome: 37028.02, supplies: 14731.27, labor: 3797.73, advertising: 682.44 },
   { month: "Apr 2023", date: new Date(2023, 3), revenue: 19986.26, expenses: 15890.56, netIncome: 3938.61, supplies: 6997.68, labor: 6050, advertising: 975.69 },
   { month: "May 2023", date: new Date(2023, 4), revenue: 39444.44, expenses: 17943.56, netIncome: 21302.12, supplies: 8496.82, labor: 6270, advertising: 1444.99 },
-  { month: "Jun 2023", date: new Date(2023, 5), revenue: 43449.82, expenses: 50820.41, netIncome: -7370.59, supplies: 27072.96, labor: 10145, advertising: 1689.74 },
+  { month: "Jun 2023", date: new Date(2023, 5), revenue: 43449.82, expenses: 50820.41, netIncome: -7370.59, supplies: 27072.96, labor: 10145, advertising: 1689.74, depreciation: 0, ebitda: -7370.59 },
   { month: "Jul 2023", date: new Date(2023, 6), revenue: 47830.55, expenses: 49333.32, netIncome: -1674.01, supplies: 25482.29, labor: 12220.02, advertising: 1611.70 },
   { month: "Aug 2023", date: new Date(2023, 7), revenue: 51695.69, expenses: 20853.18, netIncome: 28524.99, supplies: 5778.71, labor: 7690, advertising: 1169.45 },
   { month: "Sep 2023", date: new Date(2023, 8), revenue: 31429.93, expenses: 27469.88, netIncome: 3960.05, supplies: 11233.92, labor: 6188.25, advertising: 1382.27 },
@@ -50,7 +52,7 @@ export const monthlyRevenue: MonthlyData[] = [
   { month: "May 2024", date: new Date(2024, 4), revenue: 59682.34, expenses: 51314.33, netIncome: 22191.24, supplies: 24144.02, labor: 8760, advertising: 4686.11 },
   { month: "Jun 2024", date: new Date(2024, 5), revenue: 89095.71, expenses: 36601.39, netIncome: 32699.18, supplies: 13889.95, labor: 11629, advertising: 3784.80 },
   { month: "Jul 2024", date: new Date(2024, 6), revenue: 50943.85, expenses: 55468.17, netIncome: 15616.74, supplies: 33815.59, labor: 9750, advertising: 4761.80 },
-  { month: "Aug 2024", date: new Date(2024, 7), revenue: 24742.58, expenses: 34361.32, netIncome: -237644.56, supplies: 12169.84, labor: 5490, advertising: 4205.41 },
+  { month: "Aug 2024", date: new Date(2024, 7), revenue: 24742.58, expenses: 34361.32, netIncome: -237644.56, supplies: 12169.84, labor: 5490, advertising: 4205.41, depreciation: 227835.82, ebitda: -9808.74 },
   { month: "Sep 2024", date: new Date(2024, 8), revenue: 32750.17, expenses: 57793.12, netIncome: -688.61, supplies: 26271.76, labor: 11366, advertising: 4031.38 },
   { month: "Oct 2024", date: new Date(2024, 9), revenue: 32103.72, expenses: 32748.14, netIncome: 5382.00, supplies: 15729.17, labor: 4640, advertising: 3487.30 },
   { month: "Nov 2024", date: new Date(2024, 10), revenue: 77531.08, expenses: 26190.70, netIncome: 18328.39, supplies: 8636.76, labor: 6960, advertising: 3294.44 },
@@ -163,3 +165,21 @@ export const getExpenseBreakdown = () => {
     { name: "Operations & Other", value: otherExpenses, percentage: (otherExpenses / totalExpenses) * 100, color: "hsl(var(--chart-4))" },
   ];
 };
+
+// Strategic investment annotations for negative months
+export const strategicInvestments = [
+  {
+    month: "Jun 2023",
+    netIncome: -7370.59,
+    annotation: "Strategic Investment Month",
+    details: "Kubota Excavator purchased for $44,431 • Operating profit (excl. equipment): +$37,060",
+    icon: "🏗️"
+  },
+  {
+    month: "Aug 2024", 
+    netIncome: -237644.56,
+    annotation: "Tax Optimization Month",
+    details: "Section 179 Depreciation • Actual operating profit: +$30k • This is smart accounting!",
+    icon: "💡"
+  }
+];

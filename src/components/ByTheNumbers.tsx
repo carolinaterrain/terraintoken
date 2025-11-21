@@ -5,6 +5,10 @@ import { MetricCard } from "@/components/transparency/MetricCard";
 import { RevenueChart, YearOverYearChart, ExpenseBreakdownChart } from "@/components/transparency/FinancialCharts";
 import { InteractiveTimeline } from "@/components/transparency/InteractiveTimeline";
 import { DownloadReports } from "@/components/transparency/DownloadReports";
+import { EquipmentROITracker } from "@/components/transparency/EquipmentROITracker";
+import { InventoryCapitalCard } from "@/components/transparency/InventoryCapitalCard";
+import { FinancialHealthScore } from "@/components/transparency/FinancialHealthScore";
+import { DepreciationSchedule } from "@/components/transparency/DepreciationSchedule";
 import { calculateMetrics, balanceSheet } from "@/lib/financialData";
 
 const ByTheNumbers = () => {
@@ -113,6 +117,22 @@ const ByTheNumbers = () => {
             <YearOverYearChart />
             <ExpenseBreakdownChart />
           </div>
+        </div>
+
+        {/* Financial Health Score */}
+        <div className="mb-16">
+          <FinancialHealthScore />
+        </div>
+
+        {/* Equipment ROI & Inventory */}
+        <div className="grid md:grid-cols-2 gap-8 mb-16">
+          <EquipmentROITracker />
+          <InventoryCapitalCard />
+        </div>
+
+        {/* Depreciation Schedule */}
+        <div className="mb-16">
+          <DepreciationSchedule />
         </div>
 
         {/* Interactive Timeline */}
