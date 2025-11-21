@@ -119,7 +119,7 @@ const Hero = () => {
               
               {/* Speech Bubble */}
               {showSpeechBubble && (
-                <div className="absolute -top-12 left-16 md:left-20 bg-card border border-primary rounded-lg px-3 py-2 text-sm whitespace-nowrap animate-fade-in-up shadow-glow z-10 max-w-[200px] md:max-w-none">
+                <div className="absolute -top-12 left-16 md:left-20 bg-card border border-primary rounded-lg px-3 py-2 text-sm whitespace-nowrap animate-fade-in-up shadow-glow z-50 max-w-[200px] md:max-w-none pointer-events-none">
                   {goblinPhrase}
                 </div>
               )}

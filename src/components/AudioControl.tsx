@@ -305,10 +305,8 @@ const AudioControl = () => {
 
       <div 
         className={cn(
-          "fixed z-50 transition-all duration-300",
-          "top-4 right-4",
-          "md:top-4 md:right-4",
-          "sm:bottom-4 sm:right-4 sm:top-auto"
+          "fixed z-45 transition-all duration-300",
+          "bottom-4 right-4 md:top-20 md:bottom-auto"
         )}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
