@@ -26,6 +26,7 @@ const Updates = lazy(() => import("./pages/Updates"));
 const Team = lazy(() => import("./pages/Team"));
 const PressKit = lazy(() => import("./pages/PressKit"));
 const TokenMetadata = lazy(() => import("./pages/TokenMetadata"));
+const VideoUpdates = lazy(() => import("./pages/VideoUpdates"));
 const MobileNav = lazy(() => import("@/components/MobileNav"));
 const ExitIntent = lazy(() => import("@/components/ExitIntent"));
 const PWAPrompt = lazy(() => import("@/components/PWAPrompt"));
@@ -81,6 +82,7 @@ const AppContent = () => {
           <Route path="/team" element={<Team />} />
           <Route path="/press" element={<PressKit />} />
           <Route path="/token-metadata" element={<TokenMetadata />} />
+          <Route path="/video-updates" element={<VideoUpdates />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <MobileNav />
