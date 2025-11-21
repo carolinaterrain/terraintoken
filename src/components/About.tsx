@@ -39,7 +39,7 @@ const About = () => {
           <div className="flex justify-center mb-6">
             <img 
               src={terrainMascot} 
-              alt="Terrain Token goblin mascot - official cryptocurrency character for TRN meme coin" 
+              alt="TRN mascot" 
               className="w-24 h-24 animate-float"
             />
           </div>

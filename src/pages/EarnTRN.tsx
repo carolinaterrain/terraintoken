@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import ScrollProgress from "@/components/ScrollProgress";
+import BackToHome from "@/components/BackToHome";
 import EarnHero from "@/components/earn/EarnHero";
 import HowItWorks from "@/components/earn/HowItWorks";
 import DailyQuests from "@/components/earn/DailyQuests";
@@ -23,23 +23,12 @@ const EarnTRN = () => {
         />
       </Helmet>
 
+      <ScrollProgress />
       <AnnouncementBanner />
       <DesktopNav />
       
-      <div className="min-h-screen bg-gradient-to-b from-background to-background/50 pt-16">
-        <div className="container mx-auto px-4 py-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="mb-4"
-            asChild
-          >
-            <a href="/">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Home
-            </a>
-          </Button>
-        </div>
+      <main id="main-content" className="min-h-screen bg-gradient-to-b from-background to-background/50 pt-16">
+        <BackToHome />
         <EarnHero />
         <HowItWorks />
         <DailyQuests />
@@ -48,7 +37,7 @@ const EarnTRN = () => {
         <AchievementBadges />
         <WeeklyContests />
         <LegalDisclaimers />
-      </div>
+      </main>
     </>
   );
 };

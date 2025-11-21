@@ -69,9 +69,12 @@ const Countdown = () => {
         ))}
       </div>
       
-      <h3 className="text-xl md:text-2xl font-bold text-primary mb-4 animate-pulse-glow">
+      <h3 className="text-xl md:text-2xl font-bold text-primary mb-2 animate-pulse-glow">
         🏆 First Meme Contest Ends In:
       </h3>
+      <p className="text-sm text-muted-foreground mb-4">
+        Submit your best TRN memes for a chance to win rewards!
+      </p>
       
       <div className="inline-flex gap-3 md:gap-6 bg-gradient-to-r from-primary/10 via-terrain-glow/10 to-primary/10 backdrop-blur-sm border border-primary/30 rounded-2xl px-6 py-4 shadow-glow">
         <TimeUnit value={timeLeft.days} label="Days" />

@@ -2,11 +2,14 @@ import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { MessageCircle } from "lucide-react";
 import { useActiveSection } from "@/hooks/useActiveSection";
+import { useNavigate, useLocation } from "react-router-dom";
 import trnCoin from "@/assets/trn-coin.png";
 
 const DesktopNav = () => {
   const [scrolled, setScrolled] = useState(false);
   const activeSection = useActiveSection();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,15 +25,13 @@ const DesktopNav = () => {
 
   const navItems = [
     { id: "hero", label: "Home" },
-    { id: "how-to-buy", label: "Mint" },
     { id: "about", label: "About" },
     { id: "roadmap", label: "Roadmap" },
-    { id: "founders", label: "Founders" },
-    { id: "tokenomics", label: "Token Info" },
+    { id: "tokenomics", label: "Tokenomics" },
     { id: "whitepaper", label: "Whitepaper", isRoute: true },
-    { id: "contest", label: "Contest" },
-    { id: "community", label: "Community" },
-    { id: "earn-trn", label: "Earn TRN", isRoute: true },
+    { id: "updates", label: "Blog", isRoute: true },
+    { id: "team", label: "Team", isRoute: true },
+    { id: "earn-trn", label: "Earn", isRoute: true },
   ];
 
   return (
@@ -61,34 +62,28 @@ const DesktopNav = () => {
                 key={item.id}
                 onClick={() => {
                   if (item.isRoute) {
-                    window.location.href = `/${item.id}`;
+                    navigate(`/${item.id}`);
                   } else {
-                    // If not on homepage, navigate there first
-                    if (window.location.pathname !== '/') {
-                      window.location.href = `/#${item.id}`;
+                    if (location.pathname !== '/') {
+                      navigate('/', { state: { scrollTo: item.id } });
                     } else {
                       scrollToSection(item.id);
                     }
                   }
                 }}
-                className={`px-4 py-2 text-sm font-medium transition-all relative ${
-                  activeSection === item.id
+                aria-label={`Navigate to ${item.label}`}
+                className={`px-3 py-2 text-sm font-medium transition-all relative hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded ${
+                  activeSection === item.id || location.pathname === `/${item.id}`
                     ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground"
                 }`}
               >
                 {item.label}
-                {activeSection === item.id && (
+                {(activeSection === item.id || location.pathname === `/${item.id}`) && (
                   <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
                 )}
               </button>
             ))}
-            <button
-              className="px-4 py-2 text-sm font-medium text-muted-foreground/50 cursor-not-allowed"
-              disabled
-            >
-              AI <span className="text-xs ml-1">(Soon)</span>
-            </button>
           </div>
 
           {/* Right CTAs */}
@@ -96,15 +91,16 @@ const DesktopNav = () => {
             <Button
               variant="default"
               size="sm"
-              className="font-display font-semibold animate-glow-pulse"
+              className="font-display font-semibold"
               asChild
             >
               <a
                 href="https://pump.fun/coin/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Mint TRN tokens on Pump.fun"
               >
-                Mint on Pump.fun
+                Mint TRN
               </a>
             </Button>
             <Button variant="outline" size="icon" asChild>
@@ -112,6 +108,7 @@ const DesktopNav = () => {
                 href="https://t.me/terraintoken"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Join Terrain Token Telegram community"
               >
                 <MessageCircle className="h-4 w-4" />
               </a>

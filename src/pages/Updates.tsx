@@ -5,6 +5,7 @@ import { Helmet } from "react-helmet-async";
 import DesktopNav from "@/components/DesktopNav";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
+import BackToHome from "@/components/BackToHome";
 
 interface BlogPost {
   id: string;
@@ -81,7 +82,8 @@ const Updates = () => {
       <ScrollProgress />
       <DesktopNav />
 
-      <div className="min-h-screen bg-background pt-32 pb-20">
+      <main id="main-content" className="min-h-screen bg-background pt-32 pb-20">
+        <BackToHome />
         <div className="container mx-auto px-4 max-w-6xl">
           {/* Hero */}
           <div className="text-center mb-16">
@@ -192,7 +194,7 @@ const Updates = () => {
             </GlassCard>
           </div>
         </div>
-      </div>
+      </main>
 
       <Footer />
     </>
