@@ -1,9 +1,10 @@
-import { Home, Trophy, DollarSign, Gift } from "lucide-react";
+import { Home, Trophy, FileText, Users, Gift } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const MobileNav = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -38,12 +39,13 @@ const MobileNav = () => {
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-t border-primary/20 shadow-lg">
-      <div className="flex items-center justify-around py-2 px-4">
+      <div className="flex items-center justify-around py-2 px-2">
         <Button
           variant="ghost"
           size="sm"
           onClick={handleHomeClick}
-          className="flex flex-col items-center gap-1 h-auto py-2"
+          aria-label="Go to home page"
+          className={`flex flex-col items-center gap-1 h-auto py-2 px-2 ${location.pathname === '/' ? 'text-primary' : ''}`}
         >
           <Home className="w-5 h-5" />
           <span className="text-xs">Home</span>
@@ -53,7 +55,8 @@ const MobileNav = () => {
           variant="ghost"
           size="sm"
           onClick={() => navigate("/earn-trn")}
-          className="flex flex-col items-center gap-1 h-auto py-2"
+          aria-label="Navigate to Earn TRN page"
+          className={`flex flex-col items-center gap-1 h-auto py-2 px-2 ${location.pathname === '/earn-trn' ? 'text-primary' : ''}`}
         >
           <Gift className="w-5 h-5" />
           <span className="text-xs">Earn</span>
@@ -62,21 +65,23 @@ const MobileNav = () => {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => scrollToSection("contest")}
-          className="flex flex-col items-center gap-1 h-auto py-2"
+          onClick={() => navigate("/whitepaper")}
+          aria-label="View whitepaper"
+          className={`flex flex-col items-center gap-1 h-auto py-2 px-2 ${location.pathname === '/whitepaper' ? 'text-primary' : ''}`}
         >
-          <Trophy className="w-5 h-5" />
-          <span className="text-xs">Contest</span>
+          <FileText className="w-5 h-5" />
+          <span className="text-xs">Docs</span>
         </Button>
         
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => scrollToSection("how-to-buy")}
-          className="flex flex-col items-center gap-1 h-auto py-2"
+          onClick={() => navigate("/team")}
+          aria-label="View team page"
+          className={`flex flex-col items-center gap-1 h-auto py-2 px-2 ${location.pathname === '/team' ? 'text-primary' : ''}`}
         >
-          <DollarSign className="w-5 h-5" />
-          <span className="text-xs">Buy</span>
+          <Users className="w-5 h-5" />
+          <span className="text-xs">Team</span>
         </Button>
       </div>
     </nav>

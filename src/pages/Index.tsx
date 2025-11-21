@@ -22,6 +22,7 @@ import MascotLore from "@/components/MascotLore";
 import DesktopNav from "@/components/DesktopNav";
 import ScrollProgress from "@/components/ScrollProgress";
 import AccessibilityMenu from "@/components/AccessibilityMenu";
+import SkipToContent from "@/components/SkipToContent";
 import AnnouncementBanner from "@/components/AnnouncementBanner";
 import AnalyzeToEarnHero from "@/components/AnalyzeToEarnHero";
 import EcosystemFlow from "@/components/EcosystemFlow";
@@ -31,11 +32,13 @@ import Transparency from "@/components/Transparency";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SkipToContent />
       <AnnouncementBanner />
       <ScrollProgress />
       <DesktopNav />
-      <Hero />
-      <AnalyzeToEarnHero />
+      <main id="main-content">
+        <Hero />
+        <AnalyzeToEarnHero />
       <TokenStats />
       <HowToBuy />
       <About />
@@ -58,6 +61,7 @@ const Index = () => {
       <Community />
       <FAQ />
       <Footer />
+      </main>
       <GoblinWisdom />
       <SoundToggle />
       <GoblinAudioPlayer />

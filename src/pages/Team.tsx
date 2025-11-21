@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import DesktopNav from "@/components/DesktopNav";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
+import BackToHome from "@/components/BackToHome";
 import { Users, Target, Award, Shield, Linkedin, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import zachHyman from "@/assets/zac-hyman.jpg";
@@ -84,7 +85,8 @@ const Team = () => {
       <ScrollProgress />
       <DesktopNav />
 
-      <div className="min-h-screen bg-background pt-32 pb-20">
+      <main id="main-content" className="min-h-screen bg-background pt-32 pb-20">
+        <BackToHome />
         <div className="container mx-auto px-4 max-w-6xl">
           {/* Hero */}
           <div className="text-center mb-16">
@@ -199,11 +201,12 @@ const Team = () => {
             </div>
           </div>
         </div>
-      </div>
+      </main>
 
       <Footer />
     </>
   );
 };
+
 
 export default Team;

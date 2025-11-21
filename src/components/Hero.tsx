@@ -111,7 +111,7 @@ const Hero = () => {
             {/* Spinning Coin */}
             <img
               src={trnCoin}
-              alt="TRN Terrain Token spinning coin with green glow effect"
+              alt="TRN coin"
               className="relative w-72 md:w-96 h-72 md:h-96 object-contain animate-float hover:rotate-[5deg] transition-transform duration-300 cursor-pointer"
             />
           </div>
@@ -122,18 +122,23 @@ const Hero = () => {
           {/* Goblin + Title Row */}
           <div className="flex items-center gap-4">
             {/* Goblin Mascot */}
-            <div className="relative flex-shrink-0">
+            <div className="relative flex-shrink-0 group">
               <img
                 src={terrainMascot}
-                alt="Terrain Token goblin mascot with hardhat - official TRN cryptocurrency character"
+                alt="TRN mascot"
                 className="w-16 h-16 md:w-20 md:h-20 animate-blink cursor-pointer"
                 onClick={handleGoblinClick}
                 onMouseEnter={handleGoblinHover}
               />
               
+              {/* Hint tooltip */}
+              <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-xs text-muted-foreground whitespace-nowrap pointer-events-none">
+                Click me! 🎉
+              </div>
+              
               {/* Speech Bubble */}
               {showSpeechBubble && (
-                <div className="absolute -top-12 left-16 md:left-20 bg-card border border-primary rounded-lg px-3 py-2 text-sm whitespace-nowrap animate-fade-in-up shadow-glow z-10">
+                <div className="absolute -top-12 left-16 md:left-20 bg-card border border-primary rounded-lg px-3 py-2 text-sm whitespace-nowrap animate-fade-in-up shadow-glow z-10 max-w-[200px] md:max-w-none">
                   {goblinPhrase}
                 </div>
               )}
@@ -161,9 +166,10 @@ const Hero = () => {
           <div className="flex flex-col gap-2 w-full md:w-auto">
             <button
               onClick={copyContractAddress}
-              className="flex items-center gap-2 px-4 py-2 bg-card/50 border border-primary/20 rounded-lg hover:border-primary/40 transition-all group w-full md:w-auto"
+              aria-label="Copy contract address to clipboard"
+              className="flex items-center gap-2 px-4 py-2 bg-card/50 border border-primary/20 rounded-lg hover:border-primary/40 transition-all group w-full md:w-auto focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
             >
-              <span className="font-mono text-xs text-foreground/80 truncate">
+              <span className="font-mono text-xs md:text-sm text-foreground/80 truncate max-w-[200px] md:max-w-none">
                 {contractAddress}
               </span>
               <Copy className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
@@ -171,7 +177,7 @@ const Hero = () => {
             <ContractVerificationBadge />
           </div>
 
-          {/* Perfect Button Stack - Same Width, Aligned */}
+          {/* CTA Buttons */}
           <div className="flex flex-col w-full md:w-auto gap-3 mt-2">
             <Button
               variant="default"
@@ -181,13 +187,13 @@ const Hero = () => {
             >
               <a href="/earn-trn">
                 <span className="mr-2">🌱</span>
-                Earn TRN Free
+                Start Earning TRN
               </a>
             </Button>
             <Button
               variant="outline"
               size="lg"
-              className="font-display font-semibold w-full md:w-64 border-primary hover:bg-primary/10"
+              className="font-display font-semibold w-full md:w-64"
               asChild
             >
               <a
@@ -195,35 +201,20 @@ const Hero = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Mint on Pump.fun
+                Buy TRN
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
-            </Button>
-
-            <Button
-              variant="outline"
-              size="lg"
-              className="font-display font-semibold w-full md:w-64 border-primary/30 hover:border-primary"
-              asChild
-            >
-              <a
-                href="https://t.me/terraintoken"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Join Telegram
               </a>
             </Button>
 
             <Button
               variant="ghost"
               size="lg"
-              className="font-display font-semibold w-full md:w-64 hover:bg-primary/10"
+              className="font-display font-semibold w-full md:w-64"
               asChild
             >
               <a href="/whitepaper">
                 <FileText className="mr-2 h-5 w-5" />
-                Read Whitepaper
+                Whitepaper
               </a>
             </Button>
           </div>
