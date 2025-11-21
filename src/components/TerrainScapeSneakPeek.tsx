@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { GlassCard } from "./ui/glass-card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -22,9 +22,23 @@ import {
   XCircle,
   Sparkles
 } from "lucide-react";
+import { WaitlistModal } from "./WaitlistModal";
+import { WaitlistCounter } from "./WaitlistCounter";
+import { SocialShareButtons } from "./SocialShareButtons";
 
 export const TerrainScapeSneakPeek = () => {
   const [activeTab, setActiveTab] = useState("earn");
+  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
+  const [referralCode, setReferralCode] = useState<string | undefined>();
+
+  // Check for referral code in URL
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('ref');
+    if (ref) {
+      setReferralCode(ref);
+    }
+  }, []);
 
   return (
     <section id="terrainscape-sneak-peek" className="py-20 md:py-24 relative overflow-hidden">
@@ -500,15 +514,22 @@ export const TerrainScapeSneakPeek = () => {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                Join Waitlist
-                <ArrowRight className="ml-2 w-4 h-4" />
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
+              <Button 
+                size="lg" 
+                className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                onClick={() => setIsWaitlistOpen(true)}
+              >
+                <Sparkles className="mr-2 w-5 h-5" />
+                Join Waitlist (Priority for TRN Holders)
               </Button>
               <Button size="lg" variant="outline">
                 Watch Demo
+                <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </div>
+
+            <WaitlistCounter />
 
             <div className="flex flex-wrap gap-4 justify-center mt-6">
               <Button variant="ghost" size="sm">
@@ -517,6 +538,15 @@ export const TerrainScapeSneakPeek = () => {
               <Button variant="ghost" size="sm">
                 💬 Join Discord
               </Button>
+            </div>
+
+            {/* Social Sharing */}
+            <div className="mt-8 pt-8 border-t border-border">
+              <SocialShareButtons
+                title="🎮 TerrainScape: The First Educational Play-to-Earn MMO"
+                description="Learn drainage engineering, earn TRN tokens, and get hired by real companies. Join the waitlist now!"
+                hashtags={['TerrainToken', 'TRN', 'TerrainScape', 'PlayToEarn', 'Web3Gaming']}
+              />
             </div>
           </GlassCard>
         </div>
@@ -589,6 +619,13 @@ export const TerrainScapeSneakPeek = () => {
           </div>
         </div>
       </div>
+
+      {/* Waitlist Modal */}
+      <WaitlistModal 
+        isOpen={isWaitlistOpen} 
+        onClose={() => setIsWaitlistOpen(false)}
+        referralCode={referralCode}
+      />
     </section>
   );
 };
