@@ -1,205 +1,134 @@
 import { Helmet } from "react-helmet-async";
-import { lazy, Suspense } from "react";
-import Hero from "@/components/Hero";
-import HowToBuy from "@/components/HowToBuy";
+import { Suspense, lazy } from "react";
 import SkipToContent from "@/components/SkipToContent";
-import SmartHeader from "@/components/SmartHeader";
 import ScrollProgress from "@/components/ScrollProgress";
+import SmartHeader from "@/components/SmartHeader";
 import AccessibilityMenu from "@/components/AccessibilityMenu";
-import GoblinWisdom from "@/components/GoblinWisdom";
-import AnalyzeToEarnHero from "@/components/AnalyzeToEarnHero";
-import { CommunityBuzz } from "@/components/CommunityBuzz";
-import { SocialProofWall } from "@/components/SocialProofWall";
-import { VibeCheck } from "@/components/VibeCheck";
-import { OrganicDiscoveryCounter } from "@/components/OrganicDiscoveryCounter";
-import { AntiRugMeter } from "@/components/AntiRugMeter";
-import { QuickStartGuide } from "@/components/QuickStartGuide";
-import { spacing } from "@/lib/spacing";
+import Hero from "@/components/Hero";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useTabPersistence } from "@/hooks/useTabPersistence";
+import { useTabAnalytics } from "@/hooks/useTabAnalytics";
 
-// Lazy load below-fold components for performance
+const QuickStartGuide = lazy(() => import("@/components/QuickStartGuide").then(m => ({ default: m.QuickStartGuide })));
+const CommunityBuzz = lazy(() => import("@/components/CommunityBuzz").then(m => ({ default: m.CommunityBuzz })));
+const AnalyzeToEarnHero = lazy(() => import("@/components/AnalyzeToEarnHero"));
+const HowToBuy = lazy(() => import("@/components/HowToBuy"));
+const SocialProofWall = lazy(() => import("@/components/SocialProofWall").then(m => ({ default: m.SocialProofWall })));
+const VibeCheck = lazy(() => import("@/components/VibeCheck").then(m => ({ default: m.VibeCheck })));
+const OrganicDiscoveryCounter = lazy(() => import("@/components/OrganicDiscoveryCounter").then(m => ({ default: m.OrganicDiscoveryCounter })));
+const AntiRugMeter = lazy(() => import("@/components/AntiRugMeter").then(m => ({ default: m.AntiRugMeter })));
 const About = lazy(() => import("@/components/About"));
-const Roadmap = lazy(() => import("@/components/Roadmap"));
 const Tokenomics = lazy(() => import("@/components/Tokenomics"));
-const SponsorPOP = lazy(() => import("@/components/SponsorPOP"));
-const Community = lazy(() => import("@/components/Community"));
-const FAQ = lazy(() => import("@/components/FAQ"));
-const Footer = lazy(() => import("@/components/Footer"));
-const MascotLore = lazy(() => import("@/components/MascotLore"));
-const RealWorldRoots = lazy(() => import("@/components/RealWorldRoots"));
-const MemeGenerator = lazy(() => import("@/components/MemeGenerator"));
-const MemeFeed = lazy(() => import("@/components/MemeFeed"));
-const MemeHallOfFame = lazy(() => import("@/components/MemeHallOfFame"));
-const ContestRules = lazy(() => import("@/components/ContestRules"));
-const Founders = lazy(() => import("@/components/Founders"));
-const Transparency = lazy(() => import("@/components/Transparency"));
-const Vision = lazy(() => import("@/components/Vision"));
-const TerrainScapeSneakPeek = lazy(() => import("@/components/TerrainScapeSneakPeek").then(module => ({ default: module.TerrainScapeSneakPeek })));
-const OriginStory = lazy(() => import("@/components/OriginStory"));
-const LiveProof = lazy(() => import("@/components/LiveProof"));
+const Roadmap = lazy(() => import("@/components/Roadmap"));
 const CompetitiveEdge = lazy(() => import("@/components/CompetitiveEdge"));
 const EcosystemFlow = lazy(() => import("@/components/EcosystemFlow"));
-const VideoUpdatesHub = lazy(() => import("@/components/VideoUpdatesHub").then(module => ({ default: module.VideoUpdatesHub })));
 const ByTheNumbers = lazy(() => import("@/components/ByTheNumbers"));
+const Transparency = lazy(() => import("@/components/Transparency"));
+const Founders = lazy(() => import("@/components/Founders"));
+const OriginStory = lazy(() => import("@/components/OriginStory"));
+const RealWorldRoots = lazy(() => import("@/components/RealWorldRoots"));
+const MascotLore = lazy(() => import("@/components/MascotLore"));
+const LiveProof = lazy(() => import("@/components/LiveProof"));
+const Community = lazy(() => import("@/components/Community"));
+const SponsorPOP = lazy(() => import("@/components/SponsorPOP"));
+const VideoUpdatesHub = lazy(() => import("@/components/VideoUpdatesHub").then(m => ({ default: m.VideoUpdatesHub })));
+const Vision = lazy(() => import("@/components/Vision"));
+const TerrainScapeSneakPeek = lazy(() => import("@/components/TerrainScapeSneakPeek").then(m => ({ default: m.TerrainScapeSneakPeek })));
+const MemeGenerator = lazy(() => import("@/components/MemeGenerator"));
+const MemeHallOfFame = lazy(() => import("@/components/MemeHallOfFame"));
+const MemeFeed = lazy(() => import("@/components/MemeFeed"));
+const ContestRules = lazy(() => import("@/components/ContestRules"));
+const FAQ = lazy(() => import("@/components/FAQ"));
+const Footer = lazy(() => import("@/components/Footer"));
 
-// Loading component
 const LoadingSection = () => (
-  <div className="py-20 flex items-center justify-center">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+  <div className="container mx-auto px-4 py-12 space-y-8">
+    <Skeleton className="h-12 w-3/4 mx-auto" />
+    <Skeleton className="h-64 w-full" />
   </div>
 );
 
 const Index = () => {
+  const [activeTab, setActiveTab] = useTabPersistence('homepage', 'overview');
+  useTabAnalytics('homepage', activeTab);
+
   return (
     <>
       <Helmet>
-        <title>Terrain Token (TRN) - Real-World Utility Token for Stormwater Intelligence</title>
-        <meta 
-          name="description" 
-          content="Terrain Token (TRN) powers the Carolina Terrain ecosystem - $2M+ annual revenue drainage business, Terrain Vision AI, and FlowGuardian stormwater intelligence." 
-        />
-        <meta property="og:title" content="Terrain Token (TRN) - Real-World Utility Token" />
-        <meta property="og:description" content="Backed by real revenue and real-world utility in stormwater intelligence." />
-        <meta property="og:image" content="https://terrainvision-ai.com/og-terrain.png" />
-        <meta property="og:url" content="https://terrainvision-ai.com/" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@carolinaterrain" />
+        <title>Terrain Token (TRN) - Real Business Backing Real Utility</title>
+        <meta name="description" content="TRN is the first memecoin backed by a profitable landscaping business." />
       </Helmet>
       
-      <div className="min-h-screen bg-background">
       <SkipToContent />
       <ScrollProgress />
       <SmartHeader />
       <AccessibilityMenu />
-        <GoblinWisdom />
 
-        <main id="main-content" className="relative z-10 mt-[var(--banner-height,0)]" style={{ "--banner-height": "0px" } as React.CSSProperties}>
-          {/* Group 1: Introduction - Above fold, no lazy loading */}
-          <div className="bg-background">
-            <Hero />
-            <QuickStartGuide />
-            <CommunityBuzz />
-            <AnalyzeToEarnHero />
-            <div className={spacing.section.standard}>
-              <HowToBuy />
+      <main id="main-content">
+        <Hero />
+        
+        <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-xl border-b">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <div className="container mx-auto">
+              <TabsList className="w-full justify-start h-auto p-0 bg-transparent border-0 rounded-none">
+                <TabsTrigger value="overview" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-6 py-4">Overview</TabsTrigger>
+                <TabsTrigger value="token-details" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-6 py-4">Token Details</TabsTrigger>
+                <TabsTrigger value="community" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-6 py-4">Community</TabsTrigger>
+                <TabsTrigger value="resources" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-6 py-4">Resources</TabsTrigger>
+              </TabsList>
             </div>
-          </div>
+          </Tabs>
+        </div>
 
-          {/* Group 2: Social Proof & Trust */}
-          <SocialProofWall />
-          
-          <div className="bg-background">
-            <div className="container px-4 md:px-6 py-12 md:py-16">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <VibeCheck />
-                <OrganicDiscoveryCounter />
-                <AntiRugMeter />
-              </div>
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsContent value="overview" className="mt-0">
+            <Suspense fallback={<LoadingSection />}><QuickStartGuide /></Suspense>
+            <Suspense fallback={<LoadingSection />}><CommunityBuzz /></Suspense>
+            <Suspense fallback={<LoadingSection />}><AnalyzeToEarnHero /></Suspense>
+            <Suspense fallback={<LoadingSection />}><HowToBuy /></Suspense>
+            <Suspense fallback={<LoadingSection />}><SocialProofWall /></Suspense>
+            <div className="grid md:grid-cols-3 gap-6 container mx-auto px-4 py-12">
+              <Suspense fallback={<Skeleton className="h-48" />}><VibeCheck /></Suspense>
+              <Suspense fallback={<Skeleton className="h-48" />}><OrganicDiscoveryCounter /></Suspense>
+              <Suspense fallback={<Skeleton className="h-48" />}><AntiRugMeter /></Suspense>
             </div>
-          </div>
+          </TabsContent>
 
-          {/* Group 3: Value Proposition - Lazy loaded */}
-          <Suspense fallback={<LoadingSection />}>
-            <div className="bg-gradient-to-b from-background to-background/50">
-              <div className={spacing.section.major}>
-                <About />
-              </div>
-              <div className={spacing.section.compact}>
-                <MascotLore />
-              </div>
-              <div className={spacing.section.compact}>
-                <RealWorldRoots />
-              </div>
-              <div className={spacing.section.standard}>
-                <OriginStory />
-              </div>
-              <div className={spacing.section.standard}>
-                <Founders />
-              </div>
-            </div>
-          </Suspense>
+          <TabsContent value="token-details" className="mt-0">
+            <Suspense fallback={<LoadingSection />}><About /></Suspense>
+            <Suspense fallback={<LoadingSection />}><Tokenomics /></Suspense>
+            <Suspense fallback={<LoadingSection />}><Roadmap /></Suspense>
+            <Suspense fallback={<LoadingSection />}><CompetitiveEdge /></Suspense>
+            <Suspense fallback={<LoadingSection />}><EcosystemFlow /></Suspense>
+            <Suspense fallback={<LoadingSection />}><ByTheNumbers /></Suspense>
+            <Suspense fallback={<LoadingSection />}><Transparency /></Suspense>
+          </TabsContent>
 
-          {/* Group 4: Mechanics - Lazy loaded */}
-          <Suspense fallback={<LoadingSection />}>
-            <div className="bg-background">
-              <div className={spacing.section.major}>
-                <CompetitiveEdge />
-              </div>
-              <div className={spacing.section.compact}>
-                <EcosystemFlow />
-              </div>
-              <div className={spacing.section.major}>
-                <Roadmap />
-              </div>
-            </div>
-          </Suspense>
+          <TabsContent value="community" className="mt-0">
+            <Suspense fallback={<LoadingSection />}><Founders /></Suspense>
+            <Suspense fallback={<LoadingSection />}><OriginStory /></Suspense>
+            <Suspense fallback={<LoadingSection />}><RealWorldRoots /></Suspense>
+            <Suspense fallback={<LoadingSection />}><MascotLore /></Suspense>
+            <Suspense fallback={<LoadingSection />}><LiveProof /></Suspense>
+            <Suspense fallback={<LoadingSection />}><Community /></Suspense>
+            <Suspense fallback={<LoadingSection />}><SponsorPOP /></Suspense>
+          </TabsContent>
 
-          {/* Group 5: Details - Lazy loaded */}
-          <Suspense fallback={<LoadingSection />}>
-            <div className="bg-gradient-to-b from-background/50 to-background">
-          <div className={spacing.section.major}>
-            <Tokenomics />
-          </div>
-          <div className={spacing.section.standard}>
-            <SponsorPOP />
-          </div>
-          <div className={spacing.section.standard}>
-            <Transparency />
-              </div>
-              <div className={spacing.section.standard}>
-                <ByTheNumbers />
-              </div>
-              <div className={spacing.section.standard}>
-                <LiveProof />
-              </div>
-            </div>
-          </Suspense>
+          <TabsContent value="resources" className="mt-0">
+            <Suspense fallback={<LoadingSection />}><VideoUpdatesHub limit={6} showViewAll={true} showFilters={false} /></Suspense>
+            <Suspense fallback={<LoadingSection />}><Vision /></Suspense>
+            <Suspense fallback={<LoadingSection />}><TerrainScapeSneakPeek /></Suspense>
+            <Suspense fallback={<LoadingSection />}><MemeGenerator /></Suspense>
+            <Suspense fallback={<LoadingSection />}><MemeHallOfFame /></Suspense>
+            <Suspense fallback={<LoadingSection />}><MemeFeed /></Suspense>
+            <Suspense fallback={<LoadingSection />}><ContestRules /></Suspense>
+            <Suspense fallback={<LoadingSection />}><FAQ /></Suspense>
+          </TabsContent>
+        </Tabs>
+      </main>
 
-          {/* Group 6: Media - Lazy loaded */}
-          <Suspense fallback={<LoadingSection />}>
-            <div className="bg-background" id="video-updates">
-              <div className={spacing.section.major}>
-                <VideoUpdatesHub limit={6} showViewAll={true} />
-              </div>
-              <div className={spacing.section.standard}>
-                <Vision />
-              </div>
-            </div>
-          </Suspense>
-
-          {/* TerrainScape Sneak Peek */}
-          <Suspense fallback={<LoadingSection />}>
-            <TerrainScapeSneakPeek />
-          </Suspense>
-
-          {/* Group 7: Engagement - Lazy loaded */}
-          <Suspense fallback={<LoadingSection />}>
-            <div className="bg-gradient-to-b from-background to-background/50" id="contest">
-              <div className={spacing.section.major}>
-                <MemeGenerator />
-              </div>
-              <div className={spacing.section.compact}>
-                <MemeHallOfFame />
-              </div>
-              <div className={spacing.section.compact}>
-                <MemeFeed />
-              </div>
-              <div className={spacing.section.standard}>
-                <ContestRules />
-              </div>
-              <div className={spacing.section.major}>
-                <Community />
-              </div>
-              <div className={spacing.section.major}>
-                <FAQ />
-              </div>
-            </div>
-          </Suspense>
-        </main>
-
-        <Suspense fallback={<LoadingSection />}>
-          <Footer />
-        </Suspense>
-      </div>
+      <Suspense fallback={<div className="h-64" />}><Footer /></Suspense>
     </>
   );
 };
