@@ -4,7 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 const getSessionId = () => {
   let sessionId = sessionStorage.getItem("analytics_session_id");
   if (!sessionId) {
-    sessionId = `session_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+    // Use crypto.randomUUID for secure session IDs
+    sessionId = `session_${crypto.randomUUID()}`;
     sessionStorage.setItem("analytics_session_id", sessionId);
   }
   return sessionId;
@@ -67,13 +68,21 @@ export const useABTest = (testName: string) => {
         // Assign new variant
         const newVariant = selectVariant(testData.traffic_split as Record<string, number>);
         
-        await supabase.from("ab_test_assignments").insert({
-          test_id: testData.id,
-          session_id: sessionId,
-          variant: newVariant,
-        });
+        // Use upsert to handle race conditions
+        const { data: assignmentData } = await supabase
+          .from("ab_test_assignments")
+          .upsert({
+            test_id: testData.id,
+            session_id: sessionId,
+            variant: newVariant,
+          }, {
+            onConflict: 'test_id,session_id',
+            ignoreDuplicates: false
+          })
+          .select()
+          .maybeSingle();
 
-        setVariant(newVariant);
+        setVariant(assignmentData?.variant || newVariant);
       }
     } catch (error) {
       console.error("Error assigning A/B test variant:", error);

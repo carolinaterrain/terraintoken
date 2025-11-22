@@ -2,3 +2,9 @@ project_id = "dihbqhofqfcvjgpzmskx"
 
 [functions.calculate-trn-reward]
 verify_jwt = true
+
+[functions.upload-project-media]
+verify_jwt = false
+
+[functions.submit-meme-entry]
+verify_jwt = false
