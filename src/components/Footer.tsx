@@ -93,6 +93,12 @@ const Footer = () => {
           </p>
           <div className="flex items-center justify-center flex-wrap gap-x-6 gap-y-3 mt-3">
             <a 
+              href="/risk-disclosure" 
+              className="text-xs text-yellow-400 hover:underline font-medium"
+            >
+              ⚠️ Risk Disclosure
+            </a>
+            <a 
               href="/earn-trn" 
               className="text-xs text-primary hover:underline font-medium"
             >

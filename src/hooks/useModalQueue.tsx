@@ -1,9 +1,10 @@
 import { create } from 'zustand';
 
 export type ModalType = 
-  | 'risk-banner'
-  | 'pwa-prompt'
-  | 'waitlist-exit';
+  | 'waitlist-exit'
+  | 'waitlist-transparency'
+  | 'waitlist-earn'
+  | 'waitlist-team';
 
 interface ModalState {
   activeModal: ModalType | null;
@@ -18,9 +19,10 @@ interface ModalState {
 
 // Priority order (higher index = higher priority)
 const MODAL_PRIORITY: Record<ModalType, number> = {
-  'risk-banner': 5,
-  'waitlist-exit': 4,
-  'pwa-prompt': 3,
+  'waitlist-exit': 10,          // Homepage exit intent (highest)
+  'waitlist-transparency': 8,    // Contextual prompts (medium)
+  'waitlist-earn': 8,
+  'waitlist-team': 8,
 };
 
 // Minimum delay between modals (ms)
