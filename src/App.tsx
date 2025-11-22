@@ -41,6 +41,7 @@ const MobileNav = lazy(() => import("./components/MobileNav"));
 const ThemeToggle = lazy(() => import("./components/ThemeToggle"));
 const AudioControl = lazy(() => import("./components/AudioControl"));
 const ExitIntent = lazy(() => import("./components/ExitIntent"));
+const WaitlistExitIntent = lazy(() => import("./components/WaitlistExitIntent").then(m => ({ default: m.WaitlistExitIntent })));
 const PWAPrompt = lazy(() => import("./components/PWAPrompt"));
 const SkipToContent = lazy(() => import("./components/SkipToContent"));
 const GoodbyeWave = lazy(() => import("./components/GoodbyeWave"));
@@ -95,6 +96,7 @@ const AppContent = () => {
           </Routes>
           <MobileNav />
           <ExitIntent />
+          <WaitlistExitIntent />
           <PWAPrompt />
           <GoodbyeWave />
         </AnalyticsWrapper>
