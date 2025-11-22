@@ -34,10 +34,10 @@ export const InventoryCapitalCard = () => {
         </Badge>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Pie Chart */}
-        <div className="flex items-center justify-center">
-          <ChartContainer config={{}} className="h-[200px] w-full">
+        <div className="flex items-center justify-center order-2 md:order-1">
+          <ChartContainer config={{}} className="h-[250px] md:h-[200px] w-full min-w-[250px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -79,7 +79,7 @@ export const InventoryCapitalCard = () => {
         </div>
 
         {/* Category Breakdown */}
-        <div className="space-y-4">
+        <div className="space-y-4 order-1 md:order-2">
           <div className="text-center md:text-left mb-4">
             <div className="font-display text-4xl font-bold text-primary mb-1">
               ${(latest.total / 1000).toFixed(1)}k

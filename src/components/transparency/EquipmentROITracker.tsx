@@ -61,7 +61,7 @@ export const EquipmentROITracker = () => {
       </div>
 
       {/* Key Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <div className="p-4 rounded-lg bg-background/80 border border-border/50">
           <div className="text-xs text-muted-foreground mb-1">Total Invested</div>
           <div className="font-bold text-xl text-chart-3">${(equipmentValue.totalInitialCost / 1000).toFixed(0)}k</div>
@@ -80,8 +80,9 @@ export const EquipmentROITracker = () => {
         </div>
       </div>
 
-      <ChartContainer config={chartConfig} className="h-[300px] md:h-[400px]">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="w-full overflow-x-auto">
+        <ChartContainer config={chartConfig} className="h-[250px] md:h-[400px] min-w-[300px]">
+          <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={chartData}>
             <defs>
               <linearGradient id="colorInvestment" x1="0" y1="0" x2="0" y2="1">
@@ -132,6 +133,7 @@ export const EquipmentROITracker = () => {
           </AreaChart>
         </ResponsiveContainer>
       </ChartContainer>
+      </div>
 
       {/* Explanation */}
       <div className="mt-6 p-4 rounded-lg bg-muted/50 border border-muted">
