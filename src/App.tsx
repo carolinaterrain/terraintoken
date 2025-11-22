@@ -41,11 +41,9 @@ const AnalyticsWrapper = lazy(() => import("./components/AnalyticsWrapper").then
 const MobileNav = lazy(() => import("./components/MobileNav"));
 const ThemeToggle = lazy(() => import("./components/ThemeToggle"));
 const AudioControl = lazy(() => import("./components/AudioControl"));
-const ExitIntent = lazy(() => import("./components/ExitIntent"));
 const WaitlistExitIntent = lazy(() => import("./components/WaitlistExitIntent").then(m => ({ default: m.WaitlistExitIntent })));
 const PWAPrompt = lazy(() => import("./components/PWAPrompt"));
 const SkipToContent = lazy(() => import("./components/SkipToContent"));
-const GoodbyeWave = lazy(() => import("./components/GoodbyeWave"));
 const ScrollToTop = lazy(() => import("./components/ScrollToTop"));
 const PerformanceMonitor = lazy(() => import("./components/PerformanceMonitor"));
 const KeyboardNav = lazy(() => import("./components/KeyboardNav").then(m => ({ default: m.KeyboardNav })));
@@ -103,10 +101,8 @@ const AppContent = () => {
             <Route path="*" element={<NotFound />} />
           </Routes>
           <MobileNav />
-          <ExitIntent />
           <WaitlistExitIntent />
           <PWAPrompt />
-          <GoodbyeWave />
         </AnalyticsWrapper>
       </Suspense>
     </BrowserRouter>

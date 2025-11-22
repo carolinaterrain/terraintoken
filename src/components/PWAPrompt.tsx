@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useModalQueue } from "@/hooks/useModalQueue";
 
 const PWAPrompt = () => {
@@ -50,47 +57,38 @@ const PWAPrompt = () => {
     localStorage.setItem("pwa-dismissed", "true");
   };
 
-  if (!showPrompt) return null;
-
   return (
-    <div className="fixed bottom-4 left-4 md:max-w-sm z-80 animate-slide-in-right">
-      <div className="bg-card border-2 border-primary/30 rounded-lg p-4 shadow-2xl">
-        <button
-          onClick={handleDismiss}
-          className="absolute top-2 right-2 text-muted-foreground hover:text-foreground"
-        >
-          <X className="w-4 h-4" />
-        </button>
+    <Dialog open={showPrompt} onOpenChange={(open) => !open && handleDismiss()}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-3 text-xl">
+            <span className="text-3xl">📲</span>
+            Install TRN Token
+          </DialogTitle>
+          <DialogDescription>
+            Get quick access to the erosion revolution! 🌱⛏️
+          </DialogDescription>
+        </DialogHeader>
         
-        <div className="flex items-start gap-3">
-          <div className="text-3xl">📲</div>
-          <div className="flex-1">
-            <h3 className="font-bold text-foreground mb-1">
-              Install TRN Token
-            </h3>
-            <p className="text-sm text-muted-foreground mb-3">
-              Get quick access to the erosion revolution! 🌱⛏️
-            </p>
-            <div className="flex gap-2">
-              <Button
-                onClick={handleInstall}
-                size="sm"
-                className="bg-primary hover:bg-primary/90"
-              >
-                Install
-              </Button>
-              <Button
-                onClick={handleDismiss}
-                size="sm"
-                variant="ghost"
-              >
-                Maybe later
-              </Button>
-            </div>
-          </div>
+        <div className="flex flex-col gap-3 mt-4">
+          <Button
+            onClick={handleInstall}
+            size="lg"
+            className="w-full"
+          >
+            Install Now
+          </Button>
+          <Button
+            onClick={handleDismiss}
+            size="lg"
+            variant="outline"
+            className="w-full"
+          >
+            Maybe Later
+          </Button>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 

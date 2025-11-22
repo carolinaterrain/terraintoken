@@ -82,21 +82,13 @@ export const WaitlistExitIntent = () => {
 
   return (
     <Dialog open={showModal} onOpenChange={(open) => !open && dismissModal('waitlist-exit', false)}>
-      <DialogContent className="sm:max-w-md bg-gradient-to-br from-background via-background to-primary/5 border-2 border-primary/20">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute right-4 top-4"
-          onClick={() => dismissModal('waitlist-exit', false)}
-        >
-          <X className="h-4 w-4" />
-        </Button>
-        
+      <DialogContent className="sm:max-w-md bg-gradient-to-br from-background via-background to-primary/5 border-2 border-primary/20 z-[95]">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-display">
+          <DialogTitle className="flex flex-col items-center gap-2 text-2xl text-center font-display">
+            <span className="text-5xl">🥺</span>
             Wait! Don't Leave Empty-Handed 🌱
           </DialogTitle>
-          <DialogDescription className="text-base">
+          <DialogDescription className="text-base text-center">
             Join <span className="font-bold text-foreground">1,000+</span> early adopters waiting for TerrainScape—the AI-powered drainage game where you earn TRN by analyzing real terrain.
           </DialogDescription>
         </DialogHeader>

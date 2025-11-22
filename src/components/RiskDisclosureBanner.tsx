@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AlertTriangle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useModalQueue } from "@/hooks/useModalQueue";
@@ -6,14 +6,29 @@ import { useModalQueue } from "@/hooks/useModalQueue";
 export const RiskDisclosureBanner = () => {
   const { activeModal, requestModal, dismissModal } = useModalQueue();
   const isVisible = activeModal === 'risk-banner';
+  const [bannerHeight, setBannerHeight] = useState(0);
 
   useEffect(() => {
     const dismissed = localStorage.getItem("trn-risk-banner-dismissed");
     if (!dismissed) {
-      // Request to show banner immediately on page load (highest priority)
       requestModal('risk-banner');
     }
   }, [requestModal]);
+
+  useEffect(() => {
+    if (isVisible) {
+      const bannerEl = document.getElementById('risk-banner');
+      if (bannerEl) {
+        setBannerHeight(bannerEl.offsetHeight);
+        document.body.style.paddingTop = `${bannerEl.offsetHeight}px`;
+      }
+    } else {
+      document.body.style.paddingTop = '0';
+    }
+    return () => {
+      document.body.style.paddingTop = '0';
+    };
+  }, [isVisible]);
 
   const handleDismiss = () => {
     dismissModal('risk-banner', true);
@@ -23,7 +38,10 @@ export const RiskDisclosureBanner = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[100] bg-gradient-to-r from-red-500/95 to-orange-500/95 backdrop-blur-lg border-b-2 border-red-400/50 shadow-2xl animate-in slide-in-from-top duration-500">
+    <div 
+      id="risk-banner"
+      className="fixed top-0 left-0 right-0 z-[100] bg-gradient-to-r from-red-500/95 to-orange-500/95 backdrop-blur-lg border-b-2 border-red-400/50 shadow-2xl animate-slide-in-from-top"
+    >
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-start md:items-center gap-3 justify-between">
           <div className="flex items-start gap-3 flex-1">
