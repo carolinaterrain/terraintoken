@@ -4,46 +4,50 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { HelmetProvider } from "react-helmet-async";
-import Index from "./pages/Index";
-import EarnTRN from "./pages/EarnTRN";
-import GoblinCave from "./pages/GoblinCave";
-import Whitepaper from "./pages/Whitepaper";
-import TokenMetadata from "./pages/TokenMetadata";
-import Updates from "./pages/Updates";
-import Team from "./pages/Team";
-import SubmitMeme from "./pages/SubmitMeme";
-import UploadTestimonial from "./pages/UploadTestimonial";
-import UploadProject from "./pages/UploadProject";
-import AdminDashboard from "./pages/AdminDashboard";
-import WaitlistDashboard from "./pages/WaitlistDashboard";
-import AnalyticsDashboard from "./pages/AnalyticsDashboard";
-import ABTestsDashboard from "./pages/ABTestsDashboard";
-import NotFound from "./pages/NotFound";
-import { AdminRoute } from "./components/AdminRoute";
-import { AnalyticsWrapper } from "./components/AnalyticsWrapper";
-import PressKit from "./pages/PressKit";
-import VideoUpdates from "./pages/VideoUpdates";
-import HowTerrainTokenStarted from "./pages/blog/how-terrain-token-started";
-import WhyMemeCoinsNeedRealWorldBacking from "./pages/blog/why-meme-coins-need-real-world-backing";
-import AIPoweredDrainageAnalysisFuture from "./pages/blog/ai-powered-drainage-analysis-future";
-import TransparencyReportNovember2025 from "./pages/blog/transparency-report-november-2025";
-import TransparencyHub from "./pages/TransparencyHub";
-import MobileNav from "./components/MobileNav";
-import ThemeToggle from "./components/ThemeToggle";
-import AudioControl from "./components/AudioControl";
-import ExitIntent from "./components/ExitIntent";
-import PWAPrompt from "./components/PWAPrompt";
-import SkipToContent from "./components/SkipToContent";
-import GoodbyeWave from "./components/GoodbyeWave";
-import ScrollToTop from "./components/ScrollToTop";
-import ErrorBoundary from "./components/ErrorBoundary";
+import { lazy, Suspense } from "react";
 import { LoadingSpinner } from "./components/ui/loading-spinner";
-import PerformanceMonitor from "./components/PerformanceMonitor";
-import { KeyboardNav } from "./components/KeyboardNav";
-import { LiveAnnouncer } from "./components/LiveAnnouncer";
+import ErrorBoundary from "./components/ErrorBoundary";
 import { useEasterEggs } from "./hooks/useEasterEggs";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
-import { lazy, Suspense } from "react";
+
+// Lazy load all pages for optimal code splitting
+const Index = lazy(() => import("./pages/Index"));
+const EarnTRN = lazy(() => import("./pages/EarnTRN"));
+const GoblinCave = lazy(() => import("./pages/GoblinCave"));
+const Whitepaper = lazy(() => import("./pages/Whitepaper"));
+const TokenMetadata = lazy(() => import("./pages/TokenMetadata"));
+const Updates = lazy(() => import("./pages/Updates"));
+const Team = lazy(() => import("./pages/Team"));
+const SubmitMeme = lazy(() => import("./pages/SubmitMeme"));
+const UploadTestimonial = lazy(() => import("./pages/UploadTestimonial"));
+const UploadProject = lazy(() => import("./pages/UploadProject"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const WaitlistDashboard = lazy(() => import("./pages/WaitlistDashboard"));
+const AnalyticsDashboard = lazy(() => import("./pages/AnalyticsDashboard"));
+const ABTestsDashboard = lazy(() => import("./pages/ABTestsDashboard"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const PressKit = lazy(() => import("./pages/PressKit"));
+const VideoUpdates = lazy(() => import("./pages/VideoUpdates"));
+const TransparencyHub = lazy(() => import("./pages/TransparencyHub"));
+const HowTerrainTokenStarted = lazy(() => import("./pages/blog/how-terrain-token-started"));
+const WhyMemeCoinsNeedRealWorldBacking = lazy(() => import("./pages/blog/why-meme-coins-need-real-world-backing"));
+const AIPoweredDrainageAnalysisFuture = lazy(() => import("./pages/blog/ai-powered-drainage-analysis-future"));
+const TransparencyReportNovember2025 = lazy(() => import("./pages/blog/transparency-report-november-2025"));
+
+// Lazy load components
+const AdminRoute = lazy(() => import("./components/AdminRoute").then(m => ({ default: m.AdminRoute })));
+const AnalyticsWrapper = lazy(() => import("./components/AnalyticsWrapper").then(m => ({ default: m.AnalyticsWrapper })));
+const MobileNav = lazy(() => import("./components/MobileNav"));
+const ThemeToggle = lazy(() => import("./components/ThemeToggle"));
+const AudioControl = lazy(() => import("./components/AudioControl"));
+const ExitIntent = lazy(() => import("./components/ExitIntent"));
+const PWAPrompt = lazy(() => import("./components/PWAPrompt"));
+const SkipToContent = lazy(() => import("./components/SkipToContent"));
+const GoodbyeWave = lazy(() => import("./components/GoodbyeWave"));
+const ScrollToTop = lazy(() => import("./components/ScrollToTop"));
+const PerformanceMonitor = lazy(() => import("./components/PerformanceMonitor"));
+const KeyboardNav = lazy(() => import("./components/KeyboardNav").then(m => ({ default: m.KeyboardNav })));
+const LiveAnnouncer = lazy(() => import("./components/LiveAnnouncer").then(m => ({ default: m.LiveAnnouncer })));
 
 const queryClient = new QueryClient();
 
@@ -53,18 +57,18 @@ const AppContent = () => {
 
   return (
     <BrowserRouter>
-      <AnalyticsWrapper>
-        <SkipToContent />
-        <KeyboardNav />
-        <LiveAnnouncer />
-        <ThemeToggle />
-        <AudioControl />
-        <ScrollToTop />
-        <Suspense fallback={
-          <div className="min-h-screen flex items-center justify-center bg-background">
-            <LoadingSpinner className="w-12 h-12" />
-          </div>
-        }>
+      <Suspense fallback={
+        <div className="min-h-screen flex items-center justify-center bg-background">
+          <LoadingSpinner className="w-12 h-12" />
+        </div>
+      }>
+        <AnalyticsWrapper>
+          <SkipToContent />
+          <KeyboardNav />
+          <LiveAnnouncer />
+          <ThemeToggle />
+          <AudioControl />
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/submit-meme" element={<SubmitMeme />} />
@@ -93,8 +97,8 @@ const AppContent = () => {
           <ExitIntent />
           <PWAPrompt />
           <GoodbyeWave />
-        </Suspense>
-      </AnalyticsWrapper>
+        </AnalyticsWrapper>
+      </Suspense>
     </BrowserRouter>
   );
 };
