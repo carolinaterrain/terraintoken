@@ -8,31 +8,36 @@ import { supabase } from "@/integrations/supabase/client";
 const ONBOARDING_STEPS = [
   {
     id: 0,
-    title: "Welcome to Terrain Token! 🎉",
+    title: "Welcome to Terrain Token!",
+    emoji: "🎉",
     description: "The meme coin backed by real-world drainage business. Let's get you started!",
     action: "Next",
   },
   {
     id: 1,
-    title: "Earn TRN by Contributing 💰",
+    title: "Earn TRN by Contributing",
+    emoji: "💰",
     description: "Upload project photos, share on social media, and earn rewards in TRN tokens!",
     action: "Show Me How",
   },
   {
     id: 2,
-    title: "Track Your Progress 📊",
+    title: "Track Your Progress",
+    emoji: "📊",
     description: "Watch your earnings grow, unlock achievements, and climb the leaderboard!",
     action: "Let's Go",
   },
   {
     id: 3,
-    title: "Join the Community 🌟",
+    title: "Join the Community",
+    emoji: "🌟",
     description: "Join our waitlist for TerrainScape - the upcoming P2E game!",
     action: "Join Waitlist",
   },
   {
     id: 4,
-    title: "You're All Set! ✅",
+    title: "You're All Set!",
+    emoji: "✅",
     description: "Start exploring and earning TRN tokens today. Good luck!",
     action: "Start Earning",
   },
@@ -136,9 +141,9 @@ export const ProgressiveOnboarding = () => {
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md px-4"
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[calc(100%-2rem)] sm:w-full max-w-md"
           >
-            <Card className="relative overflow-hidden border-2 border-primary/20 shadow-2xl">
+            <Card className="relative overflow-hidden border-2 border-primary/30 shadow-2xl bg-card/95 backdrop-blur-sm">
               <Button
                 variant="ghost"
                 size="icon"
@@ -173,10 +178,15 @@ export const ProgressiveOnboarding = () => {
                   exit={{ opacity: 0, x: -20 }}
                   className="text-center space-y-4"
                 >
-                  <h3 className="text-2xl font-bold text-foreground">
-                    {step.title}
-                  </h3>
-                  <p className="text-muted-foreground">
+                  <div className="space-y-2">
+                    <div className="text-4xl md:text-5xl mb-2">
+                      {step.emoji}
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-foreground leading-tight px-2">
+                      {step.title}
+                    </h3>
+                  </div>
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed px-2">
                     {step.description}
                   </p>
                 </motion.div>
