@@ -15,9 +15,31 @@ const getUTMParam = (param: string) => {
   return urlParams.get(param) || undefined;
 };
 
+// Event queue for batching
+const eventQueue: any[] = [];
+let flushTimeout: NodeJS.Timeout;
+
+const flushEvents = async () => {
+  if (eventQueue.length === 0) return;
+  
+  const events = [...eventQueue];
+  eventQueue.length = 0;
+  
+  try {
+    await supabase.from('analytics_events').insert(events);
+  } catch (error) {
+    console.error('Failed to flush analytics events:', error);
+  }
+};
+
+// Flush on page unload
+if (typeof window !== 'undefined') {
+  window.addEventListener('beforeunload', flushEvents);
+}
+
 export const useAnalytics = () => {
   const trackPageView = useCallback((pageName: string) => {
-    supabase.from("analytics_events").insert({
+    eventQueue.push({
       session_id: getSessionId(),
       event_name: "page_view",
       page_url: window.location.href,
@@ -27,11 +49,20 @@ export const useAnalytics = () => {
       utm_source: getUTMParam("utm_source"),
       utm_medium: getUTMParam("utm_medium"),
       utm_campaign: getUTMParam("utm_campaign"),
+      created_at: new Date().toISOString(),
     });
+
+    // Flush after 5 seconds or 10 events
+    clearTimeout(flushTimeout);
+    if (eventQueue.length >= 10) {
+      flushEvents();
+    } else {
+      flushTimeout = setTimeout(flushEvents, 5000);
+    }
   }, []);
 
   const trackEvent = useCallback((eventName: string, properties?: any) => {
-    supabase.from("analytics_events").insert({
+    eventQueue.push({
       session_id: getSessionId(),
       event_name: eventName,
       page_url: window.location.href,
@@ -40,7 +71,16 @@ export const useAnalytics = () => {
       utm_source: getUTMParam("utm_source"),
       utm_medium: getUTMParam("utm_medium"),
       utm_campaign: getUTMParam("utm_campaign"),
+      created_at: new Date().toISOString(),
     });
+
+    // Flush after 5 seconds or 10 events
+    clearTimeout(flushTimeout);
+    if (eventQueue.length >= 10) {
+      flushEvents();
+    } else {
+      flushTimeout = setTimeout(flushEvents, 5000);
+    }
   }, []);
 
   return { trackPageView, trackEvent };

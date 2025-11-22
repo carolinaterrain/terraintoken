@@ -39,6 +39,8 @@ import ScrollToTop from "./components/ScrollToTop";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { LoadingSpinner } from "./components/ui/loading-spinner";
 import PerformanceMonitor from "./components/PerformanceMonitor";
+import { KeyboardNav } from "./components/KeyboardNav";
+import { LiveAnnouncer } from "./components/LiveAnnouncer";
 import { useEasterEggs } from "./hooks/useEasterEggs";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
 import { lazy, Suspense } from "react";
@@ -53,6 +55,8 @@ const AppContent = () => {
     <BrowserRouter>
       <AnalyticsWrapper>
         <SkipToContent />
+        <KeyboardNav />
+        <LiveAnnouncer />
         <ThemeToggle />
         <AudioControl />
         <ScrollToTop />
