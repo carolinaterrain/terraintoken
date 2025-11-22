@@ -114,7 +114,7 @@ export const VideoModal = ({ video, isOpen, onClose }: VideoModalProps) => {
             size="sm"
             asChild
           >
-            <a href="https://t.me/terraintoken" target="_blank" rel="noopener noreferrer">
+            <a href="https://t.me/+s6385WFOp21lOGZh" target="_blank" rel="noopener noreferrer">
               <ExternalLink className="w-4 h-4 mr-2" />
               Discuss on Telegram
             </a>

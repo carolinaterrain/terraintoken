@@ -103,7 +103,7 @@ const DesktopNav = () => {
             </Button>
             <Button variant="outline" size="icon" asChild>
               <a
-                href="https://t.me/terraintoken"
+                href="https://t.me/+s6385WFOp21lOGZh"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Join Terrain Token Telegram community"
