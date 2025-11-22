@@ -20,6 +20,7 @@ import { spacing } from "@/lib/spacing";
 const About = lazy(() => import("@/components/About"));
 const Roadmap = lazy(() => import("@/components/Roadmap"));
 const Tokenomics = lazy(() => import("@/components/Tokenomics"));
+const SponsorPOP = lazy(() => import("@/components/SponsorPOP"));
 const Community = lazy(() => import("@/components/Community"));
 const FAQ = lazy(() => import("@/components/FAQ"));
 const Footer = lazy(() => import("@/components/Footer"));
@@ -135,11 +136,14 @@ const Index = () => {
           {/* Group 5: Details - Lazy loaded */}
           <Suspense fallback={<LoadingSection />}>
             <div className="bg-gradient-to-b from-background/50 to-background">
-              <div className={spacing.section.major}>
-                <Tokenomics />
-              </div>
-              <div className={spacing.section.standard}>
-                <Transparency />
+          <div className={spacing.section.major}>
+            <Tokenomics />
+          </div>
+          <div className={spacing.section.standard}>
+            <SponsorPOP />
+          </div>
+          <div className={spacing.section.standard}>
+            <Transparency />
               </div>
               <div className={spacing.section.standard}>
                 <ByTheNumbers />
