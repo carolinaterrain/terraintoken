@@ -52,7 +52,6 @@ const KeyboardNav = lazy(() => import("./components/KeyboardNav").then(m => ({ d
 const LiveAnnouncer = lazy(() => import("./components/LiveAnnouncer").then(m => ({ default: m.LiveAnnouncer })));
 const HeatMapTracker = lazy(() => import("./components/HeatMapTracker").then(m => ({ default: m.HeatMapTracker })));
 const SocialProofNotifications = lazy(() => import("./components/SocialProofNotifications").then(m => ({ default: m.SocialProofNotifications })));
-const ProgressiveOnboarding = lazy(() => import("./components/ProgressiveOnboarding").then(m => ({ default: m.ProgressiveOnboarding })));
 
 const queryClient = new QueryClient();
 
@@ -76,7 +75,6 @@ const AppContent = () => {
           <RouteInitializer />
           <HeatMapTracker />
           <SocialProofNotifications />
-          <ProgressiveOnboarding />
           <SkipToContent />
           <KeyboardNav />
           <LiveAnnouncer />
