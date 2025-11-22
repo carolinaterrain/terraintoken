@@ -319,8 +319,31 @@ html {
 
 /* Accessibility - Focus Styles */
 :focus-visible {
-  outline: 2px solid hsl(var(--primary));
+  outline: 3px solid hsl(var(--primary)) !important;
+  outline-offset: 3px !important;
+  border-radius: 4px;
+}
+
+:focus-within {
+  outline: 2px solid hsl(var(--primary) / 0.3);
   outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 /* Accessibility Modes */
@@ -368,4 +391,133 @@ html {
 
 .animate-disco {
   will-change: filter;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+  /* Reset backgrounds to white */
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Keep primary color for branding */
+  .text-primary,
+  h1, h2, h3 {
+    color: #00C46A !important;
+  }
+
+  /* Hide non-essential elements */
+  nav,
+  footer,
+  .no-print,
+  button:not(.print-button),
+  .animate-*,
+  [role="navigation"],
+  [role="banner"],
+  .theme-toggle,
+  .audio-control,
+  .mobile-nav,
+  .scroll-to-top,
+  .exit-intent,
+  .pwa-prompt {
+    display: none !important;
+  }
+
+  /* Show content only */
+  body {
+    margin: 0;
+    padding: 20px;
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+
+  /* Page breaks */
+  section,
+  .financial-chart {
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+
+  /* Charts - ensure visibility */
+  svg {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Tables */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  table, th, td {
+    border: 1px solid #ddd !important;
+  }
+
+  th, td {
+    padding: 8px;
+    text-align: left;
+  }
+
+  /* Links - show URLs */
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #666;
+  }
+
+  a[href^="#"]:after,
+  a[href^="javascript:"]:after {
+    content: "";
+  }
+
+  /* Ensure cards stack vertically */
+  .grid {
+    display: block !important;
+  }
+
+  .grid > * {
+    margin-bottom: 20px;
+  }
+
+  /* Headers for reports */
+  .print-header {
+    border-bottom: 2px solid #00C46A;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+  }
+
+  .print-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 10pt;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+  }
+}
+
+/* Print utility classes */
+.print-only {
+  display: none;
+}
+
+@media print {
+  .print-only {
+    display: block !important;
+  }
+  
+  .screen-only {
+    display: none !important;
+  }
 }

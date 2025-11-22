@@ -1,7 +1,8 @@
 import { GlassCard } from "@/components/ui/glass-card";
 import { Progress } from "@/components/ui/progress";
 import { Lock, Users, Gift, Coins, TrendingUp, PieChart, CheckCircle } from "lucide-react";
-import { useState } from "react";
+import { useState, memo } from "react";
+import { usePieSlice } from "@/lib/chartUtils";
 
 interface TokenAllocation {
   name: string;
@@ -47,19 +48,9 @@ const allocations: TokenAllocation[] = [
   }
 ];
 
-const TokenomicsDashboard = () => {
+const TokenomicsDashboard = memo(() => {
   const [hoveredSlice, setHoveredSlice] = useState<number | null>(null);
   const totalSupply = 10431918;
-
-  // Calculate SVG pie chart slices
-  const calculateSlice = (percentage: number, startPercentage: number) => {
-    const radius = 100;
-    const circumference = 2 * Math.PI * radius;
-    const offset = (startPercentage / 100) * circumference;
-    const dashArray = `${(percentage / 100) * circumference} ${circumference}`;
-    
-    return { offset, dashArray };
-  };
 
   let cumulativePercentage = 0;
 
@@ -74,7 +65,22 @@ const TokenomicsDashboard = () => {
         <div className="flex flex-col md:flex-row items-center justify-center gap-12">
           {/* Pie Chart */}
           <div className="relative">
-            <svg width="280" height="280" viewBox="0 0 280 280" className="transform -rotate-90">
+            <svg 
+              width="280" 
+              height="280" 
+              viewBox="0 0 280 280" 
+              className="transform -rotate-90"
+              role="img"
+              aria-label="Token distribution pie chart showing 50% DEX Liquidity, 25% Treasury, 15% Community Rewards, and 10% Team allocation"
+            >
+              <title>Token Distribution</title>
+              <desc>
+                Pie chart displaying TRN token allocation across four categories:
+                50% allocated to DEX Liquidity (5.2M tokens),
+                25% to Treasury (2.6M tokens),
+                15% to Community Rewards (1.5M tokens),
+                and 10% to Team with vesting (1M tokens).
+              </desc>
               <circle
                 cx="140"
                 cy="140"
@@ -85,7 +91,7 @@ const TokenomicsDashboard = () => {
                 opacity="0.1"
               />
               {allocations.map((alloc, index) => {
-                const slice = calculateSlice(alloc.percentage, cumulativePercentage);
+                const slice = usePieSlice(alloc.percentage, cumulativePercentage);
                 const isHovered = hoveredSlice === index;
                 const result = (
                   <circle
@@ -125,11 +131,21 @@ const TokenomicsDashboard = () => {
             {allocations.map((alloc, index) => (
               <div
                 key={index}
+                role="button"
+                tabIndex={0}
+                aria-pressed={hoveredSlice === index}
+                aria-label={`${alloc.name}: ${alloc.percentage}% of total supply`}
                 className={`flex items-center gap-3 p-3 rounded-lg transition-all cursor-pointer ${
                   hoveredSlice === index ? 'bg-background/50 border border-primary/30' : 'bg-background/20'
                 }`}
                 onMouseEnter={() => setHoveredSlice(index)}
                 onMouseLeave={() => setHoveredSlice(null)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setHoveredSlice(hoveredSlice === index ? null : index);
+                  }
+                }}
               >
                 <div
                   className="w-4 h-4 rounded-full flex-shrink-0"
@@ -239,6 +255,8 @@ const TokenomicsDashboard = () => {
       </div>
     </div>
   );
-};
+});
+
+TokenomicsDashboard.displayName = 'TokenomicsDashboard';
 
 export default TokenomicsDashboard;
