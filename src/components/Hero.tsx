@@ -18,6 +18,11 @@ const Hero = () => {
   const contractAddress = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
   const { data: tokenStats } = useTokenStats();
   
+  const price = tokenStats?.priceUsd ?? "$0.00";
+  const change24h = tokenStats?.change24h ?? 0;
+  const volume24h = tokenStats?.volume24h ?? "$0";
+  const marketCap = tokenStats?.marketCap ?? "$0";
+  
   const goblinPhrases = [
     "Ready to erode? 🌱",
     "Drainage awaits! ⛏️",
@@ -60,12 +65,12 @@ const Hero = () => {
 
   // Pulse animation on price update
   useEffect(() => {
-    if (tokenStats?.priceUsd) {
+    if (price !== "$0.00") {
       setPriceUpdated(true);
       const timer = setTimeout(() => setPriceUpdated(false), 500);
       return () => clearTimeout(timer);
     }
-  }, [tokenStats?.priceUsd]);
+  }, [price]);
   
   return (
     <section 
@@ -100,20 +105,20 @@ const Hero = () => {
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground font-semibold">LIVE PRICE</span>
                 <span className={`font-bold text-xl md:text-2xl text-chart-3 transition-transform ${priceUpdated ? 'scale-110' : 'scale-100'}`}>
-                  ${tokenStats.priceUsd}
+                  {price}
                 </span>
-                <span className={`flex items-center gap-1 font-semibold ${tokenStats.change24h >= 0 ? "text-green-500" : "text-red-500"}`}>
-                  {tokenStats.change24h >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
-                  {tokenStats.change24h >= 0 ? "+" : ""}{tokenStats.change24h.toFixed(2)}%
+                <span className={`flex items-center gap-1 font-semibold ${change24h >= 0 ? "text-green-500" : "text-red-500"}`}>
+                  {change24h >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+                  {change24h >= 0 ? "+" : ""}{change24h.toFixed(2)}%
                 </span>
               </div>
               <div className="hidden md:flex items-center gap-2">
                 <span className="text-muted-foreground">VOL 24H:</span>
-                <span className="font-semibold">{tokenStats.volume24h}</span>
+                <span className="font-semibold">{volume24h}</span>
               </div>
               <div className="hidden md:flex items-center gap-2">
                 <span className="text-muted-foreground">MCAP:</span>
-                <span className="font-semibold">{tokenStats.marketCap}</span>
+                <span className="font-semibold">{marketCap}</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
@@ -254,6 +259,27 @@ const Hero = () => {
           {/* Countdown Timer */}
           <div className="mt-2">
             <Countdown />
+          </div>
+
+          {/* Inline Waitlist CTA */}
+          <div className="mt-8 p-6 bg-gradient-to-br from-primary/10 via-chart-3/10 to-primary/5 border-2 border-primary/30 rounded-xl backdrop-blur-sm">
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">🎮</span>
+                <h3 className="font-display text-xl font-bold">Join TerrainScape Waitlist</h3>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Be first to play the AI-powered drainage game. <span className="text-primary font-semibold">1,000+</span> already waiting.
+              </p>
+              <Button
+                variant="default"
+                size="lg"
+                className="font-semibold w-full"
+                asChild
+              >
+                <a href="#community">🌱 Secure Beta Access</a>
+              </Button>
+            </div>
           </div>
         </div>
       </div>

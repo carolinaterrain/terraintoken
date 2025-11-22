@@ -5,12 +5,12 @@ export function useTokenStats() {
   return useQuery({
     queryKey: ["token-stats"],
     queryFn: fetchTRNStats,
-    refetchInterval: 30000, // Refresh every 30 seconds (reduced from 5s for performance)
-    staleTime: 25000,
-    gcTime: 300000, // Keep in cache for 5 minutes
-    refetchOnWindowFocus: true,
-    refetchOnMount: true,
-    retry: 3,
+    refetchInterval: 60000, // Refresh every 1 minute (optimized from 30s)
+    staleTime: 55000, // Consider data stale after 55 seconds
+    gcTime: 600000, // Keep in cache for 10 minutes
+    refetchOnWindowFocus: false, // Don't refetch on window focus to reduce API calls
+    refetchOnMount: false, // Don't refetch on mount if data exists
+    retry: 2, // Reduce retries from 3 to 2
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
 }

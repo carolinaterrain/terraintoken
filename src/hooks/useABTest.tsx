@@ -64,6 +64,15 @@ export const useABTest = (testName: string) => {
 
       if (existingAssignment) {
         setVariant(existingAssignment.variant);
+        
+        // Auto-track view event for existing assignment
+        await supabase.from("ab_test_events").insert({
+          test_id: testData.id,
+          session_id: sessionId,
+          variant: existingAssignment.variant,
+          event_type: "view",
+          event_data: null,
+        });
       } else {
         // Assign new variant
         const newVariant = selectVariant(testData.traffic_split as Record<string, number>);
@@ -83,6 +92,15 @@ export const useABTest = (testName: string) => {
           .maybeSingle();
 
         setVariant(assignmentData?.variant || newVariant);
+        
+        // Auto-track view event for new assignment
+        await supabase.from("ab_test_events").insert({
+          test_id: testData.id,
+          session_id: sessionId,
+          variant: assignmentData?.variant || newVariant,
+          event_type: "view",
+          event_data: null,
+        });
       }
     } catch (error) {
       console.error("Error assigning A/B test variant:", error);
