@@ -56,10 +56,14 @@ const ProgressiveOnboarding = lazy(() => import("./components/ProgressiveOnboard
 
 const queryClient = new QueryClient();
 
+const RouteInitializer = () => {
+  useRouteModals();
+  return null;
+};
+
 const AppContent = () => {
   useEasterEggs();
   useKeyboardShortcuts();
-  useRouteModals();
 
   return (
     <BrowserRouter>
@@ -69,6 +73,7 @@ const AppContent = () => {
         </div>
       }>
         <AnalyticsWrapper>
+          <RouteInitializer />
           <HeatMapTracker />
           <SocialProofNotifications />
           <ProgressiveOnboarding />
