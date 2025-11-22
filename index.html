@@ -4,6 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Terrain Token (TRN) - First Meme Coin Backed by Real Drainage Contractors</title>
+    
+    <!-- DNS Prefetch & Preconnect for Critical Resources -->
+    <link rel="dns-prefetch" href="https://api.dexscreener.com" />
+    <link rel="dns-prefetch" href="https://dihbqhofqfcvjgpzmskx.supabase.co" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://api.dexscreener.com" crossorigin />
+    
+    <!-- Preload Critical Assets -->
+    <link rel="preload" as="image" href="/trn-coin.png" fetchpriority="high" />
+    <link rel="preload" as="image" href="/terrain-mascot.png" fetchpriority="high" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" />
+    
     <meta name="description" content="Born from the ground down — the first meme coin backed by NDS-certified drainage contractors. Earn TRN by uploading yard photos. Join the terrain revolution." />
     <meta name="author" content="Terrain Token" />
     <meta name="keywords" content="Terrain Token, TRN, Solana meme coin, AI terrain analysis, drainage crypto, landscaping blockchain, Carolina Terrain, stormwater management token, earn crypto, analyze to earn, Pump.fun" />
@@ -30,10 +43,8 @@
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <meta name="theme-color" content="#10b981" />
     
-    <!-- Google Fonts - Goblin Typography -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <!-- Google Fonts with Optimization -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
     
     <!-- Structured Data for SEO -->
     <script type="application/ld+json">
@@ -68,15 +79,22 @@
 
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="/src/main.tsx" defer></script>
     
-    <!-- Service Worker Registration -->
+    <!-- Service Worker Registration - Deferred -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js')
-            .then(reg => console.log('Service Worker registered:', reg.scope))
-            .catch(err => console.error('Service Worker registration failed:', err));
+          // Defer SW registration to not block initial render
+          setTimeout(() => {
+            navigator.serviceWorker.register('/sw.js')
+              .then(reg => {
+                console.log('Service Worker registered:', reg.scope);
+                // Check for updates every hour
+                setInterval(() => reg.update(), 3600000);
+              })
+              .catch(err => console.error('SW registration failed:', err));
+          }, 2000);
         });
       }
     </script>

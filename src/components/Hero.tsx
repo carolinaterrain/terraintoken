@@ -136,8 +136,12 @@ const Hero = () => {
             {/* Spinning Coin */}
             <img
               src={trnCoin}
-              alt="TRN coin"
+              alt="TRN coin spinning animation representing Terrain Token"
               className="relative w-72 md:w-96 h-72 md:h-96 object-contain animate-float"
+              width="384"
+              height="384"
+              loading="eager"
+              fetchPriority="high"
             />
           </div>
         </div>
@@ -150,8 +154,11 @@ const Hero = () => {
             <div className="relative flex-shrink-0 group">
               <img
                 src={terrainMascot}
-                alt="TRN mascot"
+                alt="Terrain Token goblin mascot - click for surprise"
                 className="w-16 h-16 md:w-20 md:h-20 animate-blink cursor-pointer"
+                width="80"
+                height="80"
+                loading="eager"
                 onClick={handleGoblinClick}
                 onMouseEnter={handleGoblinHover}
               />
