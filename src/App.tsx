@@ -29,6 +29,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const PressKit = lazy(() => import("./pages/PressKit"));
 const VideoUpdates = lazy(() => import("./pages/VideoUpdates"));
 const TransparencyHub = lazy(() => import("./pages/TransparencyHub"));
+const FunnelAnalytics = lazy(() => import("./pages/FunnelAnalytics"));
 const HowTerrainTokenStarted = lazy(() => import("./pages/blog/how-terrain-token-started"));
 const WhyMemeCoinsNeedRealWorldBacking = lazy(() => import("./pages/blog/why-meme-coins-need-real-world-backing"));
 const AIPoweredDrainageAnalysisFuture = lazy(() => import("./pages/blog/ai-powered-drainage-analysis-future"));
@@ -49,6 +50,9 @@ const ScrollToTop = lazy(() => import("./components/ScrollToTop"));
 const PerformanceMonitor = lazy(() => import("./components/PerformanceMonitor"));
 const KeyboardNav = lazy(() => import("./components/KeyboardNav").then(m => ({ default: m.KeyboardNav })));
 const LiveAnnouncer = lazy(() => import("./components/LiveAnnouncer").then(m => ({ default: m.LiveAnnouncer })));
+const HeatMapTracker = lazy(() => import("./components/HeatMapTracker").then(m => ({ default: m.HeatMapTracker })));
+const SocialProofNotifications = lazy(() => import("./components/SocialProofNotifications").then(m => ({ default: m.SocialProofNotifications })));
+const ProgressiveOnboarding = lazy(() => import("./components/ProgressiveOnboarding").then(m => ({ default: m.ProgressiveOnboarding })));
 
 const queryClient = new QueryClient();
 
@@ -64,6 +68,9 @@ const AppContent = () => {
         </div>
       }>
         <AnalyticsWrapper>
+          <HeatMapTracker />
+          <SocialProofNotifications />
+          <ProgressiveOnboarding />
           <SkipToContent />
           <KeyboardNav />
           <LiveAnnouncer />
@@ -92,6 +99,7 @@ const AppContent = () => {
             <Route path="/blog/ai-powered-drainage-analysis-future" element={<AIPoweredDrainageAnalysisFuture />} />
             <Route path="/blog/transparency-report-november-2025" element={<TransparencyReportNovember2025 />} />
             <Route path="/transparency" element={<TransparencyHub />} />
+            <Route path="/funnel-analytics" element={<AdminRoute><FunnelAnalytics /></AdminRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <MobileNav />

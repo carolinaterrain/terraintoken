@@ -123,6 +123,66 @@ export type Database = {
         }
         Relationships: []
       }
+      achievement_definitions: {
+        Row: {
+          description: string
+          icon: string
+          id: string
+          name: string
+          rarity: string | null
+          requirement_type: string
+          requirement_value: number
+          trn_reward: number
+        }
+        Insert: {
+          description: string
+          icon: string
+          id: string
+          name: string
+          rarity?: string | null
+          requirement_type: string
+          requirement_value: number
+          trn_reward?: number
+        }
+        Update: {
+          description?: string
+          icon?: string
+          id?: string
+          name?: string
+          rarity?: string | null
+          requirement_type?: string
+          requirement_value?: number
+          trn_reward?: number
+        }
+        Relationships: []
+      }
+      activity_notifications: {
+        Row: {
+          activity_type: string
+          created_at: string
+          id: string
+          message: string
+          metadata: Json | null
+          user_identifier: string
+        }
+        Insert: {
+          activity_type: string
+          created_at?: string
+          id?: string
+          message: string
+          metadata?: Json | null
+          user_identifier: string
+        }
+        Update: {
+          activity_type?: string
+          created_at?: string
+          id?: string
+          message?: string
+          metadata?: Json | null
+          user_identifier?: string
+        }
+        Relationships: []
+      }
       analytics_events: {
         Row: {
           created_at: string | null
@@ -278,6 +338,81 @@ export type Database = {
         }
         Relationships: []
       }
+      funnel_events: {
+        Row: {
+          completed: boolean | null
+          created_at: string
+          id: string
+          metadata: Json | null
+          session_id: string
+          step_name: string
+          step_order: number
+          time_spent_seconds: number | null
+        }
+        Insert: {
+          completed?: boolean | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          session_id: string
+          step_name: string
+          step_order: number
+          time_spent_seconds?: number | null
+        }
+        Update: {
+          completed?: boolean | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          session_id?: string
+          step_name?: string
+          step_order?: number
+          time_spent_seconds?: number | null
+        }
+        Relationships: []
+      }
+      heat_map_events: {
+        Row: {
+          created_at: string
+          element_class: string | null
+          element_id: string | null
+          event_type: string
+          id: string
+          page_url: string
+          session_id: string
+          viewport_height: number | null
+          viewport_width: number | null
+          x_position: number | null
+          y_position: number | null
+        }
+        Insert: {
+          created_at?: string
+          element_class?: string | null
+          element_id?: string | null
+          event_type: string
+          id?: string
+          page_url: string
+          session_id: string
+          viewport_height?: number | null
+          viewport_width?: number | null
+          x_position?: number | null
+          y_position?: number | null
+        }
+        Update: {
+          created_at?: string
+          element_class?: string | null
+          element_id?: string | null
+          event_type?: string
+          id?: string
+          page_url?: string
+          session_id?: string
+          viewport_height?: number | null
+          viewport_width?: number | null
+          x_position?: number | null
+          y_position?: number | null
+        }
+        Relationships: []
+      }
       meme_submissions: {
         Row: {
           caption: string | null
@@ -320,6 +455,36 @@ export type Database = {
           status?: string | null
           x_handle?: string | null
           x_post_url?: string | null
+        }
+        Relationships: []
+      }
+      onboarding_progress: {
+        Row: {
+          completed: boolean | null
+          completed_at: string | null
+          completed_steps: number[] | null
+          current_step: number | null
+          id: string
+          session_id: string
+          started_at: string
+        }
+        Insert: {
+          completed?: boolean | null
+          completed_at?: string | null
+          completed_steps?: number[] | null
+          current_step?: number | null
+          id?: string
+          session_id: string
+          started_at?: string
+        }
+        Update: {
+          completed?: boolean | null
+          completed_at?: string | null
+          completed_steps?: number[] | null
+          current_step?: number | null
+          id?: string
+          session_id?: string
+          started_at?: string
         }
         Relationships: []
       }
@@ -380,6 +545,36 @@ export type Database = {
         }
         Relationships: []
       }
+      push_subscriptions: {
+        Row: {
+          created_at: string
+          endpoint: string
+          id: string
+          keys: Json
+          last_used: string | null
+          session_id: string
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          endpoint: string
+          id?: string
+          keys: Json
+          last_used?: string | null
+          session_id: string
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          endpoint?: string
+          id?: string
+          keys?: Json
+          last_used?: string | null
+          session_id?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       rate_limit_tracker: {
         Row: {
           created_at: string | null
@@ -398,6 +593,36 @@ export type Database = {
           endpoint?: string
           id?: string
           ip_address?: string
+        }
+        Relationships: []
+      }
+      referral_tracking: {
+        Row: {
+          conversion_value: number | null
+          converted: boolean | null
+          id: string
+          metadata: Json | null
+          referred_at: string
+          referred_email: string
+          referrer_code: string
+        }
+        Insert: {
+          conversion_value?: number | null
+          converted?: boolean | null
+          id?: string
+          metadata?: Json | null
+          referred_at?: string
+          referred_email: string
+          referrer_code: string
+        }
+        Update: {
+          conversion_value?: number | null
+          converted?: boolean | null
+          id?: string
+          metadata?: Json | null
+          referred_at?: string
+          referred_email?: string
+          referrer_code?: string
         }
         Relationships: []
       }
