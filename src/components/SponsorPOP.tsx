@@ -113,7 +113,7 @@ const SponsorPOP = () => {
         </GlassCard>
 
         {/* CTA */}
-        <div className="flex justify-center">
+        <div className="flex flex-col items-center gap-4">
           <Button 
             size="lg"
             variant="default"
@@ -130,6 +130,15 @@ const SponsorPOP = () => {
               <ExternalLink className="w-4 h-4" />
             </a>
           </Button>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Badge variant="outline" className="bg-primary/5 border-primary/20 text-primary">
+              ✨ No Login Required
+            </Badge>
+            <span>•</span>
+            <span>No credit card</span>
+            <span>•</span>
+            <span>Instant results</span>
+          </div>
         </div>
       </div>
     </section>
