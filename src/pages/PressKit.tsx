@@ -201,7 +201,7 @@ const PressKit = () => {
               </p>
               <div className="space-y-2">
                 <p className="font-bold">Email: <a href="mailto:info@carolinaterrain.com" className="text-primary hover:underline">info@carolinaterrain.com</a></p>
-                <p className="font-bold">Telegram: <a href="https://t.me/terraintoken" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">@terraintoken</a></p>
+                <p className="font-bold">Telegram: <a href="https://t.me/+s6385WFOp21lOGZh" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">@terraintoken</a></p>
                 <p className="font-bold">Twitter: <a href="https://x.com/carolinaterrain" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">@carolinaterrain</a></p>
               </div>
             </GlassCard>

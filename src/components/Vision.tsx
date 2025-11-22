@@ -66,7 +66,7 @@ const Vision = () => {
                 className="font-display font-semibold"
                 asChild
               >
-                <a href="https://t.me/terraintoken" target="_blank" rel="noopener noreferrer">
+                <a href="https://t.me/+s6385WFOp21lOGZh" target="_blank" rel="noopener noreferrer">
                   Join the Mission 🚀
                 </a>
               </Button>

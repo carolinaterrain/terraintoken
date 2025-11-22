@@ -7,7 +7,7 @@ const links = [
   {
     icon: MessageCircle,
     name: "Telegram",
-    url: "https://t.me/terraintoken",
+    url: "https://t.me/+s6385WFOp21lOGZh",
     color: "hover:text-[#0088cc]"
   },
   {
