@@ -29,7 +29,7 @@ export const RevenueChart = () => {
   };
 
   return (
-    <Card className="p-6 md:p-8 bg-card/50 backdrop-blur-sm border-primary/20">
+    <Card className="p-6 md:p-8 lg:p-10 bg-card/50 backdrop-blur-sm border-primary/20">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
         <div>
           <h3 className="font-display text-2xl md:text-3xl font-bold mb-2 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent" style={{ textShadow: '0 0 20px hsl(var(--primary-glow) / 0.3)' }}>
@@ -69,8 +69,9 @@ export const RevenueChart = () => {
         </div>
       </div>
 
-      <ChartContainer config={chartConfig} className="h-[300px] md:h-[450px]">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="w-full overflow-x-auto">
+        <ChartContainer config={chartConfig} className="h-[300px] md:h-[450px] min-w-[300px]">
+          <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={chartData}>
             <defs>
               <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
@@ -174,9 +175,9 @@ export const RevenueChart = () => {
           </AreaChart>
         </ResponsiveContainer>
       </ChartContainer>
+      </div>
 
       {/* Strategic Investment Annotations */}
-      <div className="mb-8" />
       {strategicInvestments.map((investment, idx) => {
         const matchingMonth = chartData.find(d => d.fullMonth === investment.month);
         if (!matchingMonth || view !== "netIncome") return null;
@@ -207,8 +208,6 @@ export const RevenueChart = () => {
           </div>
         </div>
       )}
-
-      <div className="mb-8" />
     </Card>
   );
 };
@@ -223,16 +222,17 @@ export const YearOverYearChart = () => {
   };
 
   return (
-    <Card className="p-6 md:p-8 bg-card/50 backdrop-blur-sm border-primary/20">
+    <Card className="p-6 md:p-8 lg:p-10 bg-card/50 backdrop-blur-sm border-primary/20">
       <div className="mb-6">
         <h3 className="font-display text-2xl md:text-3xl font-bold mb-2 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent" style={{ textShadow: '0 0 20px hsl(var(--primary-glow) / 0.3)' }}>
           Year-over-Year Comparison
         </h3>
         <p className="text-sm text-muted-foreground">Annual Performance Trends</p>
       </div>
-      <ChartContainer config={chartConfig} className="h-[300px] md:h-[400px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={yoyData} barGap={8} barCategoryGap="20%">
+      <div className="w-full overflow-x-auto">
+        <ChartContainer config={chartConfig} className="h-[300px] md:h-[400px] min-w-[300px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={yoyData} barGap={8} barCategoryGap="20%">
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--chart-grid))" opacity={0.15} />
             <XAxis 
               dataKey="year" 
@@ -275,6 +275,7 @@ export const YearOverYearChart = () => {
           </BarChart>
         </ResponsiveContainer>
       </ChartContainer>
+      </div>
     </Card>
   );
 };
@@ -291,15 +292,16 @@ export const ExpenseBreakdownChart = () => {
   ];
 
   return (
-    <Card className="p-6 md:p-8 bg-card/50 backdrop-blur-sm border-primary/20">
+    <Card className="p-6 md:p-8 lg:p-10 bg-card/50 backdrop-blur-sm border-primary/20">
       <div className="mb-6">
         <h3 className="font-display text-2xl md:text-3xl font-bold mb-2 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent" style={{ textShadow: '0 0 20px hsl(var(--primary-glow) / 0.3)' }}>
           Expense Breakdown
         </h3>
         <p className="text-sm text-muted-foreground">Cost Distribution Analysis</p>
       </div>
-      <div className="grid md:grid-cols-2 gap-6">
-        <ChartContainer config={{}} className="h-[300px] md:h-[400px]">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="flex items-center justify-center">
+          <ChartContainer config={{}} className="h-[300px] md:h-[400px] w-full min-w-[300px]">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -347,6 +349,7 @@ export const ExpenseBreakdownChart = () => {
             </PieChart>
           </ResponsiveContainer>
         </ChartContainer>
+        </div>
 
         <div className="grid grid-cols-1 gap-3">
           {expenseData.map((item, index) => (

@@ -115,27 +115,27 @@ const ByTheNumbers = () => {
         </div>
 
         {/* Interactive Charts */}
-        <div className="space-y-8 mb-16">
+        <div className="space-y-12 md:space-y-16 mb-16">
           <RevenueChart />
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             <YearOverYearChart />
             <ExpenseBreakdownChart />
           </div>
         </div>
 
         {/* Financial Health Score */}
-        <div className="mb-16">
+        <div className="mb-16 md:mb-20">
           <FinancialHealthScore />
         </div>
 
         {/* Equipment ROI & Inventory */}
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-16 md:mb-20">
           <EquipmentROITracker />
           <InventoryCapitalCard />
         </div>
 
         {/* Depreciation Schedule */}
-        <div className="mb-16">
+        <div className="mb-16 md:mb-20">
           <DepreciationSchedule />
         </div>
 
