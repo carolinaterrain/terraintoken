@@ -33,6 +33,24 @@ export const waitlistSchema = z.object({
 export type WaitlistInput = z.infer<typeof waitlistSchema>;
 
 /**
+ * TRN reward calculation validation schema
+ */
+export const trnRewardSchema = z.object({
+  mediaId: z.string().uuid('Invalid media ID format'),
+  walletAddress: z.string()
+    .min(32, 'Wallet address too short')
+    .max(44, 'Wallet address too long')
+    .regex(/^[1-9A-HJ-NP-Za-km-z]+$/, 'Invalid Solana wallet address format')
+    .optional(),
+  dataConsent: z.boolean(),
+  category: z.enum(['drainage', 'erosion', 'grading', 'retaining-wall', 'other'], {
+    errorMap: () => ({ message: 'Invalid category' })
+  })
+});
+
+export type TRNRewardInput = z.infer<typeof trnRewardSchema>;
+
+/**
  * Validate and sanitize input
  */
 export function validateInput<T>(

@@ -121,6 +121,21 @@ const SubmitMeme = () => {
     setIsSubmitting(true);
     
     try {
+      // Check rate limit first
+      const { data: rateLimitData, error: rateLimitError } = await supabase.functions.invoke('submit-meme-entry', {
+        body: {}
+      });
+
+      if (rateLimitError || !rateLimitData?.success) {
+        toast({
+          title: "Rate Limit Exceeded",
+          description: "You've submitted too many memes recently. Please try again later.",
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
       // Upload image to Supabase Storage
       const fileExt = imageFile.name.split(".").pop();
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;

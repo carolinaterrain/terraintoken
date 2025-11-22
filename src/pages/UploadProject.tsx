@@ -120,6 +120,21 @@ const UploadProject = () => {
     setIsSubmitting(true);
 
     try {
+      // Check rate limit first
+      const { data: rateLimitData, error: rateLimitError } = await supabase.functions.invoke('upload-project-media', {
+        body: {}
+      });
+
+      if (rateLimitError || !rateLimitData?.success) {
+        toast({
+          title: "Rate Limit Exceeded",
+          description: "You've uploaded too many projects recently. Please try again later.",
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
       // Upload image to Supabase Storage
       const fileExt = imageFile.name.split('.').pop();
       const fileName = `${Date.now()}.${fileExt}`;

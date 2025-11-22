@@ -380,6 +380,27 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limit_tracker: {
+        Row: {
+          created_at: string | null
+          endpoint: string
+          id: string
+          ip_address: string
+        }
+        Insert: {
+          created_at?: string | null
+          endpoint: string
+          id?: string
+          ip_address: string
+        }
+        Update: {
+          created_at?: string | null
+          endpoint?: string
+          id?: string
+          ip_address?: string
+        }
+        Relationships: []
+      }
       terrainscape_waitlist: {
         Row: {
           beta_application: string | null
@@ -673,6 +694,7 @@ export type Database = {
       }
     }
     Functions: {
+      cleanup_rate_limits: { Args: never; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
