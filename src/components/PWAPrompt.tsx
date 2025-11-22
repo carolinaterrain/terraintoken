@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useModalQueue } from "@/hooks/useModalQueue";
 
 const PWAPrompt = () => {
-  const [showPrompt, setShowPrompt] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const { activeModal, requestModal, dismissModal } = useModalQueue();
+  const showPrompt = activeModal === 'pwa-prompt';
 
   useEffect(() => {
     const dismissed = localStorage.getItem("pwa-dismissed");
@@ -17,16 +19,16 @@ const PWAPrompt = () => {
 
     window.addEventListener("beforeinstallprompt", handler);
 
-    // Show prompt after 30 seconds
+    // Request to show prompt after 30 seconds
     const timer = setTimeout(() => {
-      if (!dismissed) setShowPrompt(true);
+      if (!dismissed) requestModal('pwa-prompt');
     }, 30000);
 
     return () => {
       window.removeEventListener("beforeinstallprompt", handler);
       clearTimeout(timer);
     };
-  }, []);
+  }, [requestModal]);
 
   const handleInstall = async () => {
     if (!deferredPrompt) return;
@@ -39,12 +41,12 @@ const PWAPrompt = () => {
     }
     
     setDeferredPrompt(null);
-    setShowPrompt(false);
+    dismissModal('pwa-prompt', true);
     localStorage.setItem("pwa-dismissed", "true");
   };
 
   const handleDismiss = () => {
-    setShowPrompt(false);
+    dismissModal('pwa-prompt', true);
     localStorage.setItem("pwa-dismissed", "true");
   };
 

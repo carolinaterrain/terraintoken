@@ -1,26 +1,26 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { AlertTriangle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useModalQueue } from "@/hooks/useModalQueue";
 
 export const RiskDisclosureBanner = () => {
-  const [isVisible, setIsVisible] = useState(true);
-  const [isDismissed, setIsDismissed] = useState(false);
+  const { activeModal, requestModal, dismissModal } = useModalQueue();
+  const isVisible = activeModal === 'risk-banner';
 
   useEffect(() => {
     const dismissed = localStorage.getItem("trn-risk-banner-dismissed");
-    if (dismissed === "true") {
-      setIsVisible(false);
-      setIsDismissed(true);
+    if (!dismissed) {
+      // Request to show banner immediately on page load (highest priority)
+      requestModal('risk-banner');
     }
-  }, []);
+  }, [requestModal]);
 
   const handleDismiss = () => {
-    setIsVisible(false);
-    setIsDismissed(true);
+    dismissModal('risk-banner', true);
     localStorage.setItem("trn-risk-banner-dismissed", "true");
   };
 
-  if (!isVisible || isDismissed) return null;
+  if (!isVisible) return null;
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] bg-gradient-to-r from-red-500/95 to-orange-500/95 backdrop-blur-lg border-b-2 border-red-400/50 shadow-2xl animate-in slide-in-from-top duration-500">
