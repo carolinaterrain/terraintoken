@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useModalQueue } from "@/hooks/useModalQueue";
 
 const GoodbyeWave = () => {
-  const [show, setShow] = useState(false);
+  const { activeModal, requestModal, clearActiveModal } = useModalQueue();
+  const show = activeModal === 'goodbye-wave';
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -9,14 +11,14 @@ const GoodbyeWave = () => {
       const link = target.closest("a");
       
       if (link && link.hostname !== window.location.hostname && link.href.startsWith("http")) {
-        setShow(true);
-        setTimeout(() => setShow(false), 1000);
+        requestModal('goodbye-wave');
+        setTimeout(() => clearActiveModal(), 1000);
       }
     };
 
     document.addEventListener("click", handleClick);
     return () => document.removeEventListener("click", handleClick);
-  }, []);
+  }, [requestModal, clearActiveModal]);
 
   if (!show) return null;
 

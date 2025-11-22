@@ -5,41 +5,40 @@ import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { X } from "lucide-react";
+import { useModalQueue } from "@/hooks/useModalQueue";
 
 export const WaitlistExitIntent = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [hasShown, setHasShown] = useState(false);
+  const { activeModal, requestModal, dismissModal } = useModalQueue();
+  const showModal = activeModal === 'waitlist-exit';
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
-    const handleMouseLeave = (e: MouseEvent) => {
-      // Only trigger if mouse leaves from top of page (not scrolling)
-      if (e.clientY <= 10 && !hasShown) {
-        setShowModal(true);
-        setHasShown(true);
-        localStorage.setItem("exit_intent_shown", "true");
-      }
-    };
-
     // Check if already shown in this browser
     const alreadyShown = localStorage.getItem("exit_intent_shown");
-    if (alreadyShown) {
-      setHasShown(true);
-      return;
-    }
+    if (alreadyShown) return;
 
-    // Wait 5 seconds before enabling (let them read first)
+    // Wait 45 seconds before enabling (let them read first)
     const timer = setTimeout(() => {
-      document.addEventListener("mouseleave", handleMouseLeave);
-    }, 5000);
+      const handleMouseLeave = (e: MouseEvent) => {
+        // Only trigger if mouse leaves from top of page
+        if (e.clientY <= 10 && !alreadyShown) {
+          requestModal('waitlist-exit');
+          localStorage.setItem("exit_intent_shown", "true");
+          document.removeEventListener("mouseleave", handleMouseLeave);
+        }
+      };
 
-    return () => {
-      clearTimeout(timer);
-      document.removeEventListener("mouseleave", handleMouseLeave);
-    };
-  }, [hasShown]);
+      document.addEventListener("mouseleave", handleMouseLeave);
+      
+      return () => {
+        document.removeEventListener("mouseleave", handleMouseLeave);
+      };
+    }, 45000);
+
+    return () => clearTimeout(timer);
+  }, [requestModal]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,7 +66,7 @@ export const WaitlistExitIntent = () => {
         description: `You're #${data.position} in line for TerrainScape!`,
       });
 
-      setShowModal(false);
+      dismissModal('waitlist-exit', true);
       setEmail("");
     } catch (error: any) {
       console.error("Waitlist error:", error);
@@ -82,13 +81,13 @@ export const WaitlistExitIntent = () => {
   };
 
   return (
-    <Dialog open={showModal} onOpenChange={setShowModal}>
+    <Dialog open={showModal} onOpenChange={(open) => !open && dismissModal('waitlist-exit', false)}>
       <DialogContent className="sm:max-w-md bg-gradient-to-br from-background via-background to-primary/5 border-2 border-primary/20">
         <Button
           variant="ghost"
           size="icon"
           className="absolute right-4 top-4"
-          onClick={() => setShowModal(false)}
+          onClick={() => dismissModal('waitlist-exit', false)}
         >
           <X className="h-4 w-4" />
         </Button>

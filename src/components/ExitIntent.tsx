@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -7,34 +7,37 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { useModalQueue } from "@/hooks/useModalQueue";
 
 const ExitIntent = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [hasShown, setHasShown] = useState(false);
+  const { activeModal, requestModal, dismissModal } = useModalQueue();
+  const showModal = activeModal === 'exit-intent';
 
   useEffect(() => {
+    const dismissed = localStorage.getItem("exit-intent-dismissed");
+    if (dismissed) return;
+
     const handleMouseLeave = (e: MouseEvent) => {
-      if (e.clientY <= 0 && !hasShown) {
-        setShowModal(true);
-        setHasShown(true);
+      if (e.clientY <= 0 && !dismissed) {
+        requestModal('exit-intent');
+        localStorage.setItem("exit-intent-dismissed", "true");
       }
     };
 
     document.addEventListener("mouseleave", handleMouseLeave);
     return () => document.removeEventListener("mouseleave", handleMouseLeave);
-  }, [hasShown]);
+  }, [requestModal]);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
-      setShowModal(false);
+      dismissModal('exit-intent', false);
     }
   };
 
   return (
-    <Dialog open={showModal} onOpenChange={setShowModal}>
+    <Dialog open={showModal} onOpenChange={(open) => !open && dismissModal('exit-intent', false)}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-2xl text-center">
@@ -72,7 +75,7 @@ const ExitIntent = () => {
           </Button>
           
           <Button
-            onClick={() => setShowModal(false)}
+            onClick={() => dismissModal('exit-intent', false)}
             className="w-full"
             variant="ghost"
           >
