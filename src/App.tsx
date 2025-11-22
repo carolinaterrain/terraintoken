@@ -9,6 +9,7 @@ import { LoadingSpinner } from "./components/ui/loading-spinner";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { useEasterEggs } from "./hooks/useEasterEggs";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
+import { useRouteModals } from "./hooks/useRouteModals";
 
 // Lazy load all pages for optimal code splitting
 const Index = lazy(() => import("./pages/Index"));
@@ -34,6 +35,7 @@ const HowTerrainTokenStarted = lazy(() => import("./pages/blog/how-terrain-token
 const WhyMemeCoinsNeedRealWorldBacking = lazy(() => import("./pages/blog/why-meme-coins-need-real-world-backing"));
 const AIPoweredDrainageAnalysisFuture = lazy(() => import("./pages/blog/ai-powered-drainage-analysis-future"));
 const TransparencyReportNovember2025 = lazy(() => import("./pages/blog/transparency-report-november-2025"));
+const RiskDisclosure = lazy(() => import("./pages/RiskDisclosure"));
 
 // Lazy load components
 const AdminRoute = lazy(() => import("./components/AdminRoute").then(m => ({ default: m.AdminRoute })));
@@ -41,8 +43,8 @@ const AnalyticsWrapper = lazy(() => import("./components/AnalyticsWrapper").then
 const MobileNav = lazy(() => import("./components/MobileNav"));
 const ThemeToggle = lazy(() => import("./components/ThemeToggle"));
 const AudioControl = lazy(() => import("./components/AudioControl"));
-const WaitlistExitIntent = lazy(() => import("./components/WaitlistExitIntent").then(m => ({ default: m.WaitlistExitIntent })));
-const PWAPrompt = lazy(() => import("./components/PWAPrompt"));
+const RiskFooterBar = lazy(() => import("./components/RiskFooterBar").then(m => ({ default: m.RiskFooterBar })));
+const PWAInstallBadge = lazy(() => import("./components/PWAInstallBadge").then(m => ({ default: m.PWAInstallBadge })));
 const SkipToContent = lazy(() => import("./components/SkipToContent"));
 const ScrollToTop = lazy(() => import("./components/ScrollToTop"));
 const PerformanceMonitor = lazy(() => import("./components/PerformanceMonitor"));
@@ -57,6 +59,7 @@ const queryClient = new QueryClient();
 const AppContent = () => {
   useEasterEggs();
   useKeyboardShortcuts();
+  useRouteModals();
 
   return (
     <BrowserRouter>
@@ -97,12 +100,13 @@ const AppContent = () => {
             <Route path="/blog/ai-powered-drainage-analysis-future" element={<AIPoweredDrainageAnalysisFuture />} />
             <Route path="/blog/transparency-report-november-2025" element={<TransparencyReportNovember2025 />} />
             <Route path="/transparency" element={<TransparencyHub />} />
+            <Route path="/risk-disclosure" element={<RiskDisclosure />} />
             <Route path="/funnel-analytics" element={<AdminRoute><FunnelAnalytics /></AdminRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <MobileNav />
-          <WaitlistExitIntent />
-          <PWAPrompt />
+          <RiskFooterBar />
+          <PWAInstallBadge />
         </AnalyticsWrapper>
       </Suspense>
     </BrowserRouter>

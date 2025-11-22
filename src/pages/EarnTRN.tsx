@@ -11,6 +11,8 @@ import WeeklyContests from "@/components/earn/WeeklyContests";
 import LegalDisclaimers from "@/components/earn/LegalDisclaimers";
 import AnnouncementBanner from "@/components/AnnouncementBanner";
 import DesktopNav from "@/components/DesktopNav";
+import Footer from "@/components/Footer";
+import { ContextualWaitlistModal } from "@/components/ContextualWaitlistModal";
 
 const EarnTRN = () => {
   return (
@@ -38,6 +40,16 @@ const EarnTRN = () => {
         <WeeklyContests />
         <LegalDisclaimers />
       </main>
+
+      <Footer />
+      
+      {/* Contextual waitlist prompt after engagement */}
+      <ContextualWaitlistModal
+        modalType="waitlist-earn"
+        title="Ready to Earn TRN? 💰"
+        description="Join the TerrainScape waitlist and get early access to earning TRN by analyzing real drainage problems."
+        emoji="🎮"
+      />
     </>
   );
 };

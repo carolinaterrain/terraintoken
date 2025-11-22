@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTabPersistence } from "@/hooks/useTabPersistence";
 import { useTabAnalytics } from "@/hooks/useTabAnalytics";
+import { WaitlistExitIntent } from "@/components/WaitlistExitIntent";
 
 const QuickStartGuide = lazy(() => import("@/components/QuickStartGuide").then(m => ({ default: m.QuickStartGuide })));
 const CommunityBuzz = lazy(() => import("@/components/CommunityBuzz").then(m => ({ default: m.CommunityBuzz })));
@@ -151,6 +152,9 @@ const Index = () => {
       </main>
 
       <Suspense fallback={<div className="h-64" />}><Footer /></Suspense>
+      
+      {/* Homepage-only pop-up */}
+      <WaitlistExitIntent />
     </>
   );
 };

@@ -7,6 +7,7 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { TrendingUp, Users, DollarSign, Calendar, Download, ExternalLink } from "lucide-react";
+import { ContextualWaitlistModal } from "@/components/ContextualWaitlistModal";
 
 const TransparencyHub = () => {
   const reports = [
@@ -213,6 +214,14 @@ const TransparencyHub = () => {
       </main>
 
       <Footer />
+      
+      {/* Contextual waitlist prompt after engagement */}
+      <ContextualWaitlistModal
+        modalType="waitlist-transparency"
+        title="Impressed by Our Transparency? 📊"
+        description="Join the TerrainScape waitlist and be part of the most transparent meme token project. Early access to earn TRN rewards."
+        emoji="💎"
+      />
     </>
   );
 };
