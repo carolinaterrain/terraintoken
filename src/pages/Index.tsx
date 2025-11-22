@@ -70,19 +70,41 @@ const Index = () => {
         
         <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-xl border-b">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <div className="container mx-auto">
-              <TabsList className="w-full justify-start h-auto p-0 bg-transparent border-0 rounded-none">
-                <TabsTrigger value="overview" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-6 py-4">Overview</TabsTrigger>
-                <TabsTrigger value="token-details" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-6 py-4">Token Details</TabsTrigger>
-                <TabsTrigger value="community" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-6 py-4">Community</TabsTrigger>
-                <TabsTrigger value="resources" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-6 py-4">Resources</TabsTrigger>
+            <div className="container mx-auto overflow-x-auto scrollbar-hide">
+              <TabsList className="w-max min-w-full justify-start h-auto p-0 bg-transparent border-0 rounded-none">
+                <TabsTrigger 
+                  value="overview" 
+                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-4 md:px-6 py-4 min-h-[48px] text-sm md:text-base whitespace-nowrap"
+                >
+                  <span className="hidden sm:inline">Overview</span>
+                  <span className="sm:hidden">Home</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="token-details" 
+                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-4 md:px-6 py-4 min-h-[48px] text-sm md:text-base whitespace-nowrap"
+                >
+                  <span className="hidden sm:inline">Token Details</span>
+                  <span className="sm:hidden">Token</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="community" 
+                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-4 md:px-6 py-4 min-h-[48px] text-sm md:text-base whitespace-nowrap"
+                >
+                  Community
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="resources" 
+                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-4 md:px-6 py-4 min-h-[48px] text-sm md:text-base whitespace-nowrap"
+                >
+                  Resources
+                </TabsTrigger>
               </TabsList>
             </div>
           </Tabs>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsContent value="overview" className="mt-0">
+          <TabsContent value="overview" className="mt-0 animate-in fade-in-50 duration-300">
             <Suspense fallback={<LoadingSection />}><QuickStartGuide /></Suspense>
             <Suspense fallback={<LoadingSection />}><CommunityBuzz /></Suspense>
             <Suspense fallback={<LoadingSection />}><AnalyzeToEarnHero /></Suspense>
@@ -95,7 +117,7 @@ const Index = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="token-details" className="mt-0">
+          <TabsContent value="token-details" className="mt-0 animate-in fade-in-50 duration-300">
             <Suspense fallback={<LoadingSection />}><About /></Suspense>
             <Suspense fallback={<LoadingSection />}><Tokenomics /></Suspense>
             <Suspense fallback={<LoadingSection />}><Roadmap /></Suspense>
@@ -105,7 +127,7 @@ const Index = () => {
             <Suspense fallback={<LoadingSection />}><Transparency /></Suspense>
           </TabsContent>
 
-          <TabsContent value="community" className="mt-0">
+          <TabsContent value="community" className="mt-0 animate-in fade-in-50 duration-300">
             <Suspense fallback={<LoadingSection />}><Founders /></Suspense>
             <Suspense fallback={<LoadingSection />}><OriginStory /></Suspense>
             <Suspense fallback={<LoadingSection />}><RealWorldRoots /></Suspense>
@@ -115,7 +137,7 @@ const Index = () => {
             <Suspense fallback={<LoadingSection />}><SponsorPOP /></Suspense>
           </TabsContent>
 
-          <TabsContent value="resources" className="mt-0">
+          <TabsContent value="resources" className="mt-0 animate-in fade-in-50 duration-300">
             <Suspense fallback={<LoadingSection />}><VideoUpdatesHub limit={6} showViewAll={true} showFilters={false} /></Suspense>
             <Suspense fallback={<LoadingSection />}><Vision /></Suspense>
             <Suspense fallback={<LoadingSection />}><TerrainScapeSneakPeek /></Suspense>

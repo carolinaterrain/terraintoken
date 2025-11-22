@@ -275,12 +275,23 @@ html {
 
 @keyframes scale-in {
   0% {
+    transform: scale(0.95);
     opacity: 0;
-    transform: scale(0.9);
   }
   100% {
-    opacity: 1;
     transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-from-top {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
@@ -311,6 +322,19 @@ html {
 
 .animate-scale-in {
   animation: scale-in 0.4s ease-out;
+}
+
+.animate-slide-in-from-top {
+  animation: slide-in-from-top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 .shadow-glow {

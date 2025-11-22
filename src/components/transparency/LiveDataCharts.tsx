@@ -75,11 +75,14 @@ export const LiveDataCharts = () => {
               <XAxis 
                 dataKey="date" 
                 stroke="hsl(var(--muted-foreground))"
-                fontSize={12}
+                fontSize={10}
+                angle={-45}
+                textAnchor="end"
+                height={60}
               />
               <YAxis 
                 stroke="hsl(var(--muted-foreground))"
-                fontSize={12}
+                fontSize={10}
               />
               <Tooltip 
                 contentStyle={{
@@ -120,11 +123,14 @@ export const LiveDataCharts = () => {
               <XAxis 
                 dataKey="date" 
                 stroke="hsl(var(--muted-foreground))"
-                fontSize={12}
+                fontSize={10}
+                angle={-45}
+                textAnchor="end"
+                height={60}
               />
               <YAxis 
                 stroke="hsl(var(--muted-foreground))"
-                fontSize={12}
+                fontSize={10}
               />
               <Tooltip 
                 contentStyle={{
