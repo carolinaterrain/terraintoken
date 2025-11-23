@@ -98,21 +98,61 @@ All colors MUST be HSL.
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
+  /* LIGHT MODE - Complete theme override */
   .light {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 10%;
-    --card: 0 0% 98%;
+    /* PRIMARY - Keep goblin green */
+    --primary: 142 76% 39%;
+    --primary-foreground: 0 0% 98%;
+    --primary-glow: 142 84% 47%;
+    
+    /* LIGHT BACKGROUNDS */
+    --background: 0 0% 100%;          /* Pure white */
+    --foreground: 0 0% 10%;           /* Dark text */
+    
+    --card: 0 0% 98%;                 /* Light gray cards */
     --card-foreground: 0 0% 10%;
+    
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 10%;
-    --muted: 142 10% 90%;
-    --muted-foreground: 0 0% 40%;
-    --border: 142 20% 85%;
-    --input: 0 0% 90%;
-    --accent: 220 15% 20%;
+    
+    /* LIGHT ACCENTS */
+    --accent: 220 15% 20%;            /* Dark accent for light mode */
     --accent-foreground: 0 0% 98%;
-    --secondary: 0 0% 96%;
+    
+    --secondary: 0 0% 96%;            /* Very light gray */
     --secondary-foreground: 142 76% 39%;
+    
+    --muted: 142 10% 90%;             /* Light muted */
+    --muted-foreground: 0 0% 40%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 142 20% 85%;            /* Light borders */
+    --input: 0 0% 90%;
+    --ring: 142 76% 39%;
+    
+    /* TERRAIN SYSTEM */
+    --terrain-glow: 142 84% 47%;
+    --terrain-dark: 0 0% 96%;         /* Light version */
+    
+    /* EARTHY COLORS */
+    --earth-brown: 25 50% 35%;
+    --forest-green: 142 60% 25%;
+    --clay-red: 15 50% 40%;
+    --stone-gray: 30 5% 50%;
+    
+    /* CHART COLORS - Light mode optimized */
+    --chart-1: 142 76% 39%;           /* Deeper green */
+    --chart-2: 15 75% 45%;            /* Deeper red */
+    --chart-3: 45 90% 45%;            /* Deeper gold */
+    --chart-4: 280 60% 50%;           /* Deeper purple */
+    --chart-5: 200 80% 40%;           /* Deeper blue */
+    --chart-grid: 142 15% 80%;        /* Light grid */
+    --chart-background: 0 0% 98%;     /* Light chart bg */
+    --chart-text: 0 0% 20%;           /* Dark text */
+    
+    /* SIDEBAR */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -121,20 +161,63 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    
-    /* Chart colors for light mode */
-    --chart-1: 142 76% 39%;           /* Deeper green for light mode */
-    --chart-2: 15 75% 45%;            /* Deeper red for light mode */
-    --chart-3: 45 90% 45%;            /* Deeper gold for light mode */
-    --chart-4: 280 60% 50%;           /* Deeper purple for light mode */
-    --chart-5: 200 80% 40%;           /* Deeper blue for light mode */
-    --chart-grid: 142 15% 80%;        /* Lighter grid for light mode */
-    --chart-text: 0 0% 20%;           /* Darker text for light mode */
   }
 
+  /* DARK MODE - Explicit complete theme */
   .dark {
-    --background: 0 0% 3%;
-    --foreground: 0 0% 98%;
+    /* PRIMARY - Keep goblin green */
+    --primary: 142 76% 39%;
+    --primary-foreground: 0 0% 98%;
+    --primary-glow: 142 84% 47%;
+    
+    /* DARK BACKGROUNDS */
+    --background: 0 0% 4%;            /* Deep soil */
+    --foreground: 0 0% 98%;           /* Light text */
+    
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 98%;
+    
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 98%;
+    
+    /* DARK ACCENTS */
+    --accent: 220 15% 85%;            /* Metallic silver */
+    --accent-foreground: 0 0% 10%;
+    
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 142 76% 39%;
+    
+    --muted: 142 10% 20%;
+    --muted-foreground: 0 0% 60%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 142 20% 15%;
+    --input: 0 0% 15%;
+    --ring: 142 76% 39%;
+    
+    /* TERRAIN SYSTEM */
+    --terrain-glow: 142 84% 47%;
+    --terrain-dark: 0 0% 6%;
+    
+    /* EARTHY COLORS */
+    --earth-brown: 25 50% 35%;
+    --forest-green: 142 60% 25%;
+    --clay-red: 15 50% 40%;
+    --stone-gray: 30 5% 50%;
+    
+    /* CHART COLORS - Dark mode optimized */
+    --chart-1: 142 84% 47%;           /* Bright goblin green */
+    --chart-2: 15 85% 55%;            /* Vibrant terracotta */
+    --chart-3: 55 95% 50%;            /* Treasure gold */
+    --chart-4: 280 65% 60%;           /* Mystic purple */
+    --chart-5: 200 85% 50%;           /* Crystal blue */
+    --chart-grid: 142 20% 15%;        /* Subtle grid */
+    --chart-background: 0 0% 5%;      /* Dark chart bg */
+    --chart-text: 0 0% 85%;           /* Light text */
+    
+    /* SIDEBAR */
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
