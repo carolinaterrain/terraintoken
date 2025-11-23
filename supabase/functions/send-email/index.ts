@@ -9,13 +9,18 @@ const corsHeaders = {
 };
 
 interface EmailRequest {
-  email_type: "waitlist_confirmation" | "waitlist_approved" | "trn_reward";
+  email_type: "waitlist_confirmation" | "waitlist_approved" | "trn_reward" | "redemption_approved" | "invoice_code_generated" | "referral_reward_approved";
   to_email: string;
   data: {
     referral_code?: string;
     position?: number;
     trn_amount?: number;
     reward_type?: string;
+    discount_usd?: number;
+    tier?: string;
+    code?: string;
+    invoice_number?: string;
+    reward_tier?: string;
   };
 }
 
@@ -105,6 +110,67 @@ const handler = async (req: Request): Promise<Response> => {
           </html>
         `;
         subject = `You Earned ${data.trn_amount} TRN Tokens!`;
+        break;
+
+      case "redemption_approved":
+        html = `
+          <!DOCTYPE html>
+          <html>
+            <body style="background-color: #0f0f0f; color: #e5e5e5; font-family: sans-serif; padding: 40px;">
+              <h1 style="color: #22c55e;">Your TRN Redemption is Approved! 🎉</h1>
+              <p>Great news! Your redemption of ${data.trn_amount?.toLocaleString()} TRN has been approved.</p>
+              <p><strong>Discount Value:</strong> $${data.discount_usd?.toLocaleString()}</p>
+              <p><strong>Tier:</strong> ${data.tier}</p>
+              <p>Our team will contact you shortly at the email or phone you provided to schedule your service.</p>
+              <p style="margin-top: 40px; color: #898989; font-size: 12px;">
+                Carolina Terrain & Outdoor Solutions<br>
+                Backed by Real Work, Built on Real Value
+              </p>
+            </body>
+          </html>
+        `;
+        subject = `Your ${data.trn_amount?.toLocaleString()} TRN Redemption is Approved!`;
+        break;
+
+      case "invoice_code_generated":
+        html = `
+          <!DOCTYPE html>
+          <html>
+            <body style="background-color: #0f0f0f; color: #e5e5e5; font-family: sans-serif; padding: 40px;">
+              <h1 style="color: #22c55e;">Invoice Code Generated</h1>
+              <p>A new invoice code has been created for invoice #${data.invoice_number}.</p>
+              <div style="background-color: #1a1a1a; border-radius: 8px; border: 1px solid #22c55e; padding: 24px; margin: 32px 0; text-align: center;">
+                <p style="color: #a3a3a3; font-size: 14px; margin: 0 0 8px 0;">Invoice Code:</p>
+                <p style="color: #22c55e; font-size: 28px; font-weight: bold; letter-spacing: 2px; margin: 0;">${data.code}</p>
+              </div>
+              <p><strong>TRN Reward:</strong> ${data.trn_amount?.toLocaleString()} TRN</p>
+              <p>Share this code with your customer to reward them with TRN tokens!</p>
+            </body>
+          </html>
+        `;
+        subject = `Invoice Code Generated - ${data.invoice_number}`;
+        break;
+
+      case "referral_reward_approved":
+        html = `
+          <!DOCTYPE html>
+          <html>
+            <body style="background-color: #0f0f0f; color: #e5e5e5; font-family: sans-serif; padding: 40px;">
+              <h1 style="color: #22c55e;">Referral Reward Approved! 🎊</h1>
+              <p>Congratulations! Your referral reward has been approved.</p>
+              <p><strong>Reward Amount:</strong> ${data.trn_amount?.toLocaleString()} TRN</p>
+              <p><strong>Reward Tier:</strong> ${data.reward_tier}</p>
+              <p>Your TRN tokens will be distributed to your wallet shortly.</p>
+              <p>Keep referring friends to earn more rewards!</p>
+              <div style="text-align: center; margin: 32px 0;">
+                <a href="${siteUrl}/refer" style="background-color: #22c55e; border-radius: 8px; color: #0f0f0f; font-size: 16px; font-weight: bold; text-decoration: none; display: inline-block; padding: 16px 32px;">
+                  View Referral Dashboard
+                </a>
+              </div>
+            </body>
+          </html>
+        `;
+        subject = `You Earned ${data.trn_amount?.toLocaleString()} TRN from Referrals!`;
         break;
 
       default:

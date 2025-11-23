@@ -77,15 +77,41 @@ export function RedemptionsTab() {
   };
 
   const updateStatus = async (id: string, status: string) => {
+    const redemption = redemptions.find(r => r.id === id);
+    
     const { error } = await supabase
       .from("trn_redemptions")
-      .update({ status, updated_at: new Date().toISOString() })
+      .update({ 
+        status, 
+        updated_at: new Date().toISOString(),
+        ...(status === 'completed' && { completed_at: new Date().toISOString() }),
+      })
       .eq("id", id);
 
     if (error) {
       toast.error("Failed to update status");
     } else {
       toast.success(`Redemption ${status}`);
+      
+      // Send email notification if approved
+      if (status === 'approved' && redemption) {
+        try {
+          await supabase.functions.invoke('send-email', {
+            body: {
+              email_type: 'redemption_approved',
+              to_email: redemption.email,
+              data: {
+                trn_amount: redemption.trn_amount,
+                discount_usd: redemption.discount_usd,
+                tier: redemption.tier,
+              },
+            },
+          });
+        } catch (emailError) {
+          console.error('Failed to send approval email:', emailError);
+        }
+      }
+      
       fetchRedemptions();
       fetchStats();
     }
