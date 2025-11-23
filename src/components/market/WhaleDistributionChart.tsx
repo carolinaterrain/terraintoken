@@ -7,7 +7,6 @@ import { Loader2 } from "lucide-react";
 const TIER_COLORS = {
   shrimp: "#94a3b8",
   crab: "#64748b",
-  octopus: "#475569",
   fish: "#334155",
   dolphin: "#22c55e",
   shark: "#fbbf24",
@@ -18,7 +17,6 @@ const TIER_COLORS = {
 const TIER_EMOJIS = {
   shrimp: "🦐",
   crab: "🦀",
-  octopus: "🐙",
   fish: "🐟",
   dolphin: "🐬",
   shark: "🦈",

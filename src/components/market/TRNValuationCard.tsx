@@ -19,16 +19,16 @@ export function TRNValuationCard() {
     queryKey: ["trn-valuation"],
     queryFn: async () => {
       // Fetch real data
-      const [waitlistResult, statsResult] = await Promise.all([
+      const [waitlistResult, snapshotResult] = await Promise.all([
         supabase.from("terrainscape_waitlist").select("*", { count: "exact", head: true }),
-        supabase.from("user_stats").select("*", { count: "exact", head: true }),
+        supabase.from("holder_snapshots").select("total_holders").order("snapshot_date", { ascending: false }).limit(1).single(),
       ]);
 
       // Mock business data (replace with actual data sources)
       const data: ValuationData = {
         monthlyRevenue: 25000, // Replace with actual Jobber API or manual entry
         equipmentValue: 150000, // From inventory data
-        holderCount: statsResult.count || 1137,
+        holderCount: snapshotResult.data?.total_holders || 1137,
         waitlistSize: waitlistResult.count || 2847,
         circulatingSupply: 1000000000, // 1B TRN
         marketPrice: 0.00000123, // From DexScreener
