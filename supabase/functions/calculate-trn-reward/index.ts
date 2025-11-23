@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { trnRewardSchema, validateInput } from "../_shared/validation.ts";
+import { checkRateLimit, getClientIP } from "../_shared/rate-limit.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -13,6 +14,30 @@ serve(async (req) => {
   }
 
   try {
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+
+    // Rate limiting: 10 reward calculations per hour per IP
+    const clientIP = getClientIP(req);
+    const rateLimitResult = await checkRateLimit(clientIP, {
+      endpoint: 'calculate-trn-reward',
+      windowMs: 3600000,
+      maxRequests: 10
+    }, supabaseUrl, supabaseKey);
+
+    if (!rateLimitResult.allowed) {
+      return new Response(
+        JSON.stringify({ error: 'Rate limit exceeded. Try again later.', retryAfter: rateLimitResult.retryAfter }),
+        { 
+          status: 429, 
+          headers: { 
+            ...corsHeaders, 
+            'Content-Type': 'application/json',
+            'Retry-After': rateLimitResult.retryAfter?.toString() || '3600'
+          } 
+        }
+      );
+    }
     // Verify authentication
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
@@ -44,9 +69,7 @@ serve(async (req) => {
 
     console.log('Calculating TRN reward for:', { mediaId, walletAddress, category, dataConsent });
 
-    // Initialize Supabase client
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    // Initialize Supabase client (already initialized for rate limiting)
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Validate the media exists and hasn't been rewarded yet
