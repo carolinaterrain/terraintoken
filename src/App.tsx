@@ -46,7 +46,6 @@ const UnifiedAdminDashboard = lazy(() => import("./pages/UnifiedAdminDashboard")
 const AdminRoute = lazy(() => import("./components/AdminRoute").then(m => ({ default: m.AdminRoute })));
 const AnalyticsWrapper = lazy(() => import("./components/AnalyticsWrapper").then(m => ({ default: m.AnalyticsWrapper })));
 const MobileNav = lazy(() => import("./components/MobileNav"));
-const ThemeToggle = lazy(() => import("./components/ThemeToggle"));
 const AudioControl = lazy(() => import("./components/AudioControl"));
 const RiskFooterBar = lazy(() => import("./components/RiskFooterBar").then(m => ({ default: m.RiskFooterBar })));
 const PWAInstallBadge = lazy(() => import("./components/PWAInstallBadge").then(m => ({ default: m.PWAInstallBadge })));
@@ -83,7 +82,6 @@ const AppContent = () => {
           <SkipToContent />
           <KeyboardNav />
           <LiveAnnouncer />
-          <ThemeToggle />
           <AudioControl />
           <ScrollToTop />
           <Routes>

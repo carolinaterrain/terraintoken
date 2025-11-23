@@ -395,7 +395,7 @@ export const TerrainScapeSneakPeek = () => {
             <h3 className="text-2xl font-bold mb-4 text-center text-foreground">Educational</h3>
             <p className="text-center text-muted-foreground mb-4">Learn Real Skills</p>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>• Drainage engineering curriculum by Master Alex Purden</li>
+              <li>• Drainage engineering curriculum by Master Alex Purdy</li>
               <li>• Quiz-based skill verification</li>
               <li>• Hands-on project simulations</li>
               <li>• Industry certification upon Master rank</li>
@@ -506,7 +506,7 @@ export const TerrainScapeSneakPeek = () => {
                 Let's dig in. ⛏️"
               </blockquote>
               <p className="text-right text-sm text-muted-foreground mt-4">
-                — Alex Purden, Founder<br />
+                — Alex Purdy, Founder<br />
                 Carolina Terrain LLC & TerrainScape
               </p>
             </div>
