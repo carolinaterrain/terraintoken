@@ -616,6 +616,30 @@ export type Database = {
         }
         Relationships: []
       }
+      market_chat: {
+        Row: {
+          created_at: string | null
+          id: string
+          message: string
+          user_wallet: string
+          username: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          message: string
+          user_wallet: string
+          username?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          message?: string
+          user_wallet?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
       market_predictions: {
         Row: {
           actual_price: number | null
@@ -730,6 +754,36 @@ export type Database = {
           id?: string
           session_id?: string
           started_at?: string
+        }
+        Relationships: []
+      }
+      portfolio_holdings: {
+        Row: {
+          created_at: string | null
+          id: string
+          notes: string | null
+          purchase_date: string
+          purchase_price: number
+          quantity: number
+          user_wallet: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          purchase_date?: string
+          purchase_price: number
+          quantity: number
+          user_wallet: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          purchase_date?: string
+          purchase_price?: number
+          quantity?: number
+          user_wallet?: string
         }
         Relationships: []
       }

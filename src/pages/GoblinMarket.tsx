@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { useGoblinMarketData, useHolderProgress } from "@/hooks/useGoblinMarketData";
 import { GoblinStatsBar } from "@/components/market/GoblinStatsBar";
@@ -18,6 +18,9 @@ import { GovernanceVoting } from "@/components/market/GovernanceVoting";
 import { WalletConnect } from "@/components/market/WalletConnect";
 import { PricePredictionGame } from "@/components/market/PricePredictionGame";
 import { LiveViewersCounter } from "@/components/market/LiveViewersCounter";
+import { PortfolioTracker } from "@/components/market/PortfolioTracker";
+import { AchievementTracker } from "@/components/market/AchievementTracker";
+import { SocialChatLayer } from "@/components/market/SocialChatLayer";
 import BackToHome from "@/components/BackToHome";
 
 const GoblinMarket = () => {
@@ -26,6 +29,18 @@ const GoblinMarket = () => {
   const [walletAddress, setWalletAddress] = useState<string | null>(
     localStorage.getItem("connectedWallet")
   );
+
+  // Listen for wallet connection changes
+  useEffect(() => {
+    const handleWalletChange = (event: CustomEvent) => {
+      setWalletAddress(event.detail);
+    };
+
+    window.addEventListener("walletChanged", handleWalletChange as EventListener);
+    return () => {
+      window.removeEventListener("walletChanged", handleWalletChange as EventListener);
+    };
+  }, []);
 
   const isLoading = isLoadingMarket || isLoadingHolders;
 
@@ -113,8 +128,17 @@ const GoblinMarket = () => {
             />
           </div>
 
-          {/* Market Sentiment & Holder Quest */}
+          {/* Portfolio & Achievements */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <PortfolioTracker 
+              walletAddress={walletAddress || undefined}
+              currentPrice={parseFloat(marketStats.priceUsd)}
+            />
+            <AchievementTracker walletAddress={walletAddress || undefined} />
+          </div>
+
+          {/* Social Features & Market Sentiment */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <MarketSentiment
               priceChange24h={marketStats.priceChange24h}
               volume24h={marketStats.volume24h}
@@ -127,6 +151,7 @@ const GoblinMarket = () => {
                 milestones={holderProgress.milestones}
               />
             </div>
+            <SocialChatLayer walletAddress={walletAddress || undefined} />
           </div>
 
           {/* Trading History */}

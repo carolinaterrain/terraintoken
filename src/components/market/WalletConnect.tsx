@@ -32,6 +32,9 @@ export const WalletConnect = () => {
       setWalletAddress(mockAddress);
       localStorage.setItem("connectedWallet", mockAddress);
       
+      // Emit custom event for parent components
+      window.dispatchEvent(new CustomEvent("walletChanged", { detail: mockAddress }));
+      
       // Track connection in database
       await supabase.from("wallet_connections").upsert({
         wallet_address: mockAddress,
@@ -59,6 +62,9 @@ export const WalletConnect = () => {
     setWalletAddress(null);
     setTrnBalance(0);
     localStorage.removeItem("connectedWallet");
+    
+    // Emit custom event for parent components
+    window.dispatchEvent(new CustomEvent("walletChanged", { detail: null }));
     
     toast({
       title: "Wallet Disconnected",
