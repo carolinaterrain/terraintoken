@@ -105,6 +105,18 @@ const Footer = () => {
               Earn TRN Dashboard
             </a>
             <a 
+              href="/redeem-trn" 
+              className="text-xs text-primary hover:underline font-medium"
+            >
+              💎 Redeem TRN
+            </a>
+            <a 
+              href="/claim-reward" 
+              className="text-xs text-primary hover:underline font-medium"
+            >
+              🎁 Claim Invoice Reward
+            </a>
+            <a 
               href="/upload-project" 
               className="text-xs text-primary hover:underline font-medium"
             >

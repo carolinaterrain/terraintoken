@@ -29,6 +29,7 @@ const Transparency = lazy(() => import("@/components/Transparency"));
 const Founders = lazy(() => import("@/components/Founders"));
 const OriginStory = lazy(() => import("@/components/OriginStory"));
 const RealWorldRoots = lazy(() => import("@/components/RealWorldRoots"));
+const RealUtility = lazy(() => import("@/components/RealUtility"));
 const MascotLore = lazy(() => import("@/components/MascotLore"));
 const LiveProof = lazy(() => import("@/components/LiveProof"));
 const Community = lazy(() => import("@/components/Community"));
@@ -109,6 +110,7 @@ const Index = () => {
             <Suspense fallback={<LoadingSection />}><QuickStartGuide /></Suspense>
             <Suspense fallback={<LoadingSection />}><CommunityBuzz /></Suspense>
             <Suspense fallback={<LoadingSection />}><AnalyzeToEarnHero /></Suspense>
+            <Suspense fallback={<LoadingSection />}><RealUtility /></Suspense>
             <Suspense fallback={<LoadingSection />}><HowToBuy /></Suspense>
             <Suspense fallback={<LoadingSection />}><SocialProofWall /></Suspense>
             <div className="grid md:grid-cols-3 gap-6 container mx-auto px-4 py-12">

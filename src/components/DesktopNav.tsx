@@ -30,6 +30,7 @@ const DesktopNav = () => {
     { id: "video-updates", label: "Videos", isRoute: true },
     { id: "updates", label: "Blog", isRoute: true },
     { id: "earn-trn", label: "Earn", isRoute: true },
+    { id: "redeem-trn", label: "Redeem", isRoute: true },
   ];
 
   return (
