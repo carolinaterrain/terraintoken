@@ -17,6 +17,7 @@ const EarnTRN = lazy(() => import("./pages/EarnTRN"));
 const RedeemTRN = lazy(() => import("./pages/RedeemTRN"));
 const ClaimInvoiceReward = lazy(() => import("./pages/ClaimInvoiceReward"));
 const GoblinCave = lazy(() => import("./pages/GoblinCave"));
+const GoblinMarket = lazy(() => import("./pages/GoblinMarket"));
 const Whitepaper = lazy(() => import("./pages/Whitepaper"));
 const TokenMetadata = lazy(() => import("./pages/TokenMetadata"));
 const Updates = lazy(() => import("./pages/Updates"));
@@ -92,6 +93,7 @@ const AppContent = () => {
             <Route path="/earn-trn" element={<EarnTRN />} />
             <Route path="/redeem-trn" element={<RedeemTRN />} />
             <Route path="/claim-reward" element={<ClaimInvoiceReward />} />
+            <Route path="/market" element={<GoblinMarket />} />
             <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
             <Route path="/admin/waitlist" element={<AdminRoute><WaitlistDashboard /></AdminRoute>} />
             <Route path="/admin/analytics" element={<AdminRoute><AnalyticsDashboard /></AdminRoute>} />
