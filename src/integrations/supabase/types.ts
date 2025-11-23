@@ -371,6 +371,89 @@ export type Database = {
         }
         Relationships: []
       }
+      governance_proposals: {
+        Row: {
+          category: string
+          created_at: string
+          created_by_wallet: string
+          description: string
+          end_date: string
+          id: string
+          start_date: string
+          status: string
+          title: string
+          total_voting_power: number
+          updated_at: string
+          votes_against: number
+          votes_for: number
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          created_by_wallet: string
+          description: string
+          end_date: string
+          id?: string
+          start_date?: string
+          status?: string
+          title: string
+          total_voting_power?: number
+          updated_at?: string
+          votes_against?: number
+          votes_for?: number
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by_wallet?: string
+          description?: string
+          end_date?: string
+          id?: string
+          start_date?: string
+          status?: string
+          title?: string
+          total_voting_power?: number
+          updated_at?: string
+          votes_against?: number
+          votes_for?: number
+        }
+        Relationships: []
+      }
+      governance_votes: {
+        Row: {
+          created_at: string
+          id: string
+          proposal_id: string
+          vote_choice: string
+          voter_wallet: string
+          voting_power: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          proposal_id: string
+          vote_choice: string
+          voter_wallet: string
+          voting_power: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          proposal_id?: string
+          vote_choice?: string
+          voter_wallet?: string
+          voting_power?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "governance_votes_proposal_id_fkey"
+            columns: ["proposal_id"]
+            isOneToOne: false
+            referencedRelation: "governance_proposals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       heat_map_events: {
         Row: {
           created_at: string

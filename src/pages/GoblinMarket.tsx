@@ -11,6 +11,9 @@ import { LiveHolderTracker } from "@/components/market/LiveHolderTracker";
 import { PriceAlerts } from "@/components/market/PriceAlerts";
 import { MarketSentiment } from "@/components/market/MarketSentiment";
 import { TradingHistoryFeed } from "@/components/market/TradingHistoryFeed";
+import { TopHoldersLeaderboard } from "@/components/market/TopHoldersLeaderboard";
+import { PricePredictionChart } from "@/components/market/PricePredictionChart";
+import { GovernanceVoting } from "@/components/market/GovernanceVoting";
 import BackToHome from "@/components/BackToHome";
 
 const GoblinMarket = () => {
@@ -106,6 +109,15 @@ const GoblinMarket = () => {
 
           {/* Trading History */}
           <TradingHistoryFeed />
+
+          {/* Advanced Analytics Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <TopHoldersLeaderboard />
+            <PricePredictionChart />
+          </div>
+
+          {/* Governance Section */}
+          <GovernanceVoting />
 
           {/* Market Intelligence */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
