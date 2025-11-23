@@ -38,3 +38,6 @@ verify_jwt = false
 
 [functions.fetch-trn-transactions]
 verify_jwt = false
+
+[functions.check-price-alerts]
+verify_jwt = false
