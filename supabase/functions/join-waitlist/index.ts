@@ -103,10 +103,37 @@ serve(async (req) => {
     }
 
     // Parse and validate input
-    const body = await req.json();
+    let body;
+    try {
+      body = await req.json();
+    } catch (error) {
+      console.error('JSON parse error:', error);
+      return new Response(
+        JSON.stringify({ 
+          error: 'Invalid JSON in request body',
+          details: 'Request body must be valid JSON'
+        }),
+        { 
+          status: 400, 
+          headers: { 
+            ...corsHeaders, 
+            ...securityHeaders,
+            'Content-Type': 'application/json' 
+          } 
+        }
+      );
+    }
+
+    console.log('Received waitlist request:', { 
+      email: body.email, 
+      hasWallet: !!body.wallet_address,
+      hasReferral: !!body.referral_code 
+    });
+
     const validation = validateInput(waitlistSchema, body);
 
     if (!validation.success) {
+      console.error('Validation failed:', validation.errors);
       return new Response(
         JSON.stringify({ 
           error: 'Invalid input', 
@@ -127,6 +154,13 @@ serve(async (req) => {
     }
 
     const { email, wallet_address, referral_code, beta_application, utm_source, utm_campaign } = validation.data;
+
+    console.log('Validated input:', { 
+      email, 
+      hasWallet: !!wallet_address,
+      referredBy: referral_code || 'none',
+      utm_source: utm_source || 'none'
+    });
 
     // Check if already registered
     const { data: existing } = await supabase
