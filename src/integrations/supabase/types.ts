@@ -413,6 +413,33 @@ export type Database = {
         }
         Relationships: []
       }
+      holder_snapshots: {
+        Row: {
+          created_at: string | null
+          holder_addresses: Json
+          holder_balances: Json
+          id: string
+          snapshot_date: string
+          total_holders: number
+        }
+        Insert: {
+          created_at?: string | null
+          holder_addresses: Json
+          holder_balances: Json
+          id?: string
+          snapshot_date: string
+          total_holders: number
+        }
+        Update: {
+          created_at?: string | null
+          holder_addresses?: Json
+          holder_balances?: Json
+          id?: string
+          snapshot_date?: string
+          total_holders?: number
+        }
+        Relationships: []
+      }
       invoice_codes: {
         Row: {
           code: string
@@ -638,6 +665,45 @@ export type Database = {
           endpoint?: string
           id?: string
           ip_address?: string
+        }
+        Relationships: []
+      }
+      referral_rewards: {
+        Row: {
+          approved_at: string | null
+          created_at: string | null
+          id: string
+          paid_at: string | null
+          referred_email: string
+          referrer_code: string
+          reward_type: string
+          status: string
+          trn_amount: number
+          verification_data: Json | null
+        }
+        Insert: {
+          approved_at?: string | null
+          created_at?: string | null
+          id?: string
+          paid_at?: string | null
+          referred_email: string
+          referrer_code: string
+          reward_type: string
+          status?: string
+          trn_amount: number
+          verification_data?: Json | null
+        }
+        Update: {
+          approved_at?: string | null
+          created_at?: string | null
+          id?: string
+          paid_at?: string | null
+          referred_email?: string
+          referrer_code?: string
+          reward_type?: string
+          status?: string
+          trn_amount?: number
+          verification_data?: Json | null
         }
         Relationships: []
       }

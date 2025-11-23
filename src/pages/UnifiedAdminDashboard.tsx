@@ -5,9 +5,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useTabPersistence } from "@/hooks/useTabPersistence";
 import { useTabAnalytics } from "@/hooks/useTabAnalytics";
 import { supabase } from "@/integrations/supabase/client";
-import { LayoutDashboard, Image, Users, BarChart3, TestTube2, Filter, Activity } from "lucide-react";
+import { LayoutDashboard, Image, Users, BarChart3, TestTube2, Filter, Activity, Gift, DollarSign, UserPlus } from "lucide-react";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Card } from "@/components/ui/card";
+import { RedemptionsTab } from "@/components/admin/RedemptionsTab";
+import { InvoiceCodesTab } from "@/components/admin/InvoiceCodesTab";
+import { ReferralsTab } from "@/components/admin/ReferralsTab";
 
 const ScrollProgress = lazy(() => import("@/components/ScrollProgress"));
 const SmartHeader = lazy(() => import("@/components/SmartHeader"));
@@ -126,6 +129,18 @@ const UnifiedAdminDashboard = () => {
                   <Activity className="w-4 h-4" />
                   Heat Maps
                 </TabsTrigger>
+                <TabsTrigger value="redemptions" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-6 py-4 gap-2">
+                  <DollarSign className="w-4 h-4" />
+                  Redemptions
+                </TabsTrigger>
+                <TabsTrigger value="invoicecodes" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-6 py-4 gap-2">
+                  <Gift className="w-4 h-4" />
+                  Invoice Codes
+                </TabsTrigger>
+                <TabsTrigger value="referrals" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-6 py-4 gap-2">
+                  <UserPlus className="w-4 h-4" />
+                  Referrals
+                </TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
@@ -228,6 +243,27 @@ const UnifiedAdminDashboard = () => {
                   <h3 className="text-xl font-bold mb-4">Heat Map Analysis</h3>
                   <p className="text-muted-foreground">Heat map visualization coming soon...</p>
                 </Card>
+              </Suspense>
+            </TabsContent>
+
+            {/* Redemptions Tab */}
+            <TabsContent value="redemptions">
+              <Suspense fallback={<LoadingSection />}>
+                <RedemptionsTab />
+              </Suspense>
+            </TabsContent>
+
+            {/* Invoice Codes Tab */}
+            <TabsContent value="invoicecodes">
+              <Suspense fallback={<LoadingSection />}>
+                <InvoiceCodesTab />
+              </Suspense>
+            </TabsContent>
+
+            {/* Referrals Tab */}
+            <TabsContent value="referrals">
+              <Suspense fallback={<LoadingSection />}>
+                <ReferralsTab />
               </Suspense>
             </TabsContent>
           </Tabs>

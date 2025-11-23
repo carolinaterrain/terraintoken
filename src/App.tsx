@@ -39,6 +39,8 @@ const WhyMemeCoinsNeedRealWorldBacking = lazy(() => import("./pages/blog/why-mem
 const AIPoweredDrainageAnalysisFuture = lazy(() => import("./pages/blog/ai-powered-drainage-analysis-future"));
 const TransparencyReportNovember2025 = lazy(() => import("./pages/blog/transparency-report-november-2025"));
 const RiskDisclosure = lazy(() => import("./pages/RiskDisclosure"));
+const ReferralDashboard = lazy(() => import("./pages/ReferralDashboard"));
+const UnifiedAdminDashboard = lazy(() => import("./pages/UnifiedAdminDashboard"));
 
 // Lazy load components
 const AdminRoute = lazy(() => import("./components/AdminRoute").then(m => ({ default: m.AdminRoute })));
@@ -95,9 +97,11 @@ const AppContent = () => {
             <Route path="/claim-reward" element={<ClaimInvoiceReward />} />
             <Route path="/market" element={<GoblinMarket />} />
             <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+            <Route path="/admin/unified" element={<AdminRoute><UnifiedAdminDashboard /></AdminRoute>} />
             <Route path="/admin/waitlist" element={<AdminRoute><WaitlistDashboard /></AdminRoute>} />
             <Route path="/admin/analytics" element={<AdminRoute><AnalyticsDashboard /></AdminRoute>} />
             <Route path="/admin/ab-tests" element={<AdminRoute><ABTestsDashboard /></AdminRoute>} />
+            <Route path="/refer" element={<ReferralDashboard />} />
             <Route path="/whitepaper" element={<Whitepaper />} />
             <Route path="/updates" element={<Updates />} />
             <Route path="/team" element={<Team />} />
