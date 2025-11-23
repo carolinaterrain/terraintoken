@@ -19,7 +19,7 @@ interface PriceDataPoint {
 }
 
 const DEXSCREENER_API = "https://api.dexscreener.com/latest/dex";
-const TRN_PAIR_ADDRESS = "GwXzGeZFF4jK1PqzVd17MHioY7pqSET7r6UY7RS1pump"; // Solana pair
+const TRN_PAIR_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"; // Correct Solana pair
 
 export function useGoblinMarketData() {
   return useQuery({
@@ -30,10 +30,6 @@ export function useGoblinMarketData() {
       
       const data = await response.json();
       const pair = data.pair;
-      
-      // Generate mock candlestick data based on current price
-      const currentPrice = parseFloat(pair.priceUsd);
-      const priceData: PriceDataPoint[] = generateMockCandlesticks(currentPrice, 24);
       
       const stats: TokenStats = {
         priceUsd: pair.priceUsd,
@@ -46,48 +42,11 @@ export function useGoblinMarketData() {
       
       return {
         stats,
-        priceData,
-        support: currentPrice * 0.85, // Goblin Floor (15% below current)
-        resistance: currentPrice * 1.25, // Dragon Ceiling (25% above current)
       };
     },
     refetchInterval: 60000, // Refresh every minute
     staleTime: 50000,
   });
-}
-
-// Generate realistic-looking candlestick data
-function generateMockCandlesticks(basePrice: number, count: number): PriceDataPoint[] {
-  const data: PriceDataPoint[] = [];
-  const now = Date.now();
-  const hourInMs = 3600000;
-  
-  let price = basePrice * 0.92; // Start slightly lower
-  
-  for (let i = count; i >= 0; i--) {
-    const volatility = 0.02 + Math.random() * 0.03; // 2-5% volatility
-    const trend = Math.random() > 0.5 ? 1 : -1;
-    
-    const open = price;
-    const change = price * volatility * trend;
-    const close = Math.max(price + change, basePrice * 0.5); // Don't go below 50% of base
-    
-    const high = Math.max(open, close) * (1 + Math.random() * 0.02);
-    const low = Math.min(open, close) * (1 - Math.random() * 0.02);
-    
-    data.push({
-      timestamp: now - (i * hourInMs),
-      open,
-      high,
-      low,
-      close,
-      volume: Math.random() * 50000 + 10000,
-    });
-    
-    price = close;
-  }
-  
-  return data;
 }
 
 export function useHolderProgress() {
