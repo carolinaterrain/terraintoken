@@ -25,19 +25,32 @@ import { SocialChatLayer } from "@/components/market/SocialChatLayer";
 import { JupiterSwap } from "@/components/market/JupiterSwap";
 import { LivePurchaseFeed } from "@/components/market/LivePurchaseFeed";
 import { PurchaseLeaderboard } from "@/components/market/PurchaseLeaderboard";
+import { WhaleAlerts } from "@/components/market/WhaleAlerts";
+import { ReferralSystem } from "@/components/market/ReferralSystem";
+import { FiatOnRamp } from "@/components/market/FiatOnRamp";
+import { PriceAlertNotifications } from "@/components/market/PriceAlertNotifications";
+import { useNotificationService } from "@/components/market/NotificationStatus";
 import BackToHome from "@/components/BackToHome";
 
 const GoblinMarket = () => {
   const { data: marketData, isLoading: isLoadingMarket } = useGoblinMarketData();
   const { data: holderData, isLoading: isLoadingHolders } = useHolderProgress();
-  const [walletAddress, setWalletAddress] = useState<string | null>(
-    localStorage.getItem("connectedWallet")
-  );
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [solBalance, setSOLBalance] = useState<number>(0);
+
+  // Enable background notification checking
+  useNotificationService();
 
   // Listen for wallet connection changes
   useEffect(() => {
     const handleWalletChange = (event: CustomEvent) => {
-      setWalletAddress(event.detail);
+      const address = event.detail;
+      setWalletAddress(address);
+      
+      // Also get SOL balance if available
+      if (event.detail && typeof event.detail === 'object' && 'solBalance' in event.detail) {
+        setSOLBalance(event.detail.solBalance);
+      }
     };
 
     window.addEventListener("walletChanged", handleWalletChange as EventListener);
@@ -132,6 +145,9 @@ const GoblinMarket = () => {
             />
           </div>
 
+          {/* Price Alert Notifications */}
+          <PriceAlertNotifications />
+
           {/* Portfolio & Achievements */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <PortfolioTracker 
@@ -182,8 +198,17 @@ const GoblinMarket = () => {
             <LivePurchaseFeed />
           </div>
 
+          {/* Fiat On-Ramp Alert */}
+          <FiatOnRamp walletAddress={walletAddress || undefined} solBalance={solBalance} />
+
           {/* Purchase Leaderboard */}
           <PurchaseLeaderboard />
+
+          {/* Whale Alerts & Referral System */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <WhaleAlerts />
+            <ReferralSystem walletAddress={walletAddress || undefined} />
+          </div>
 
           {/* Utility & Disclaimer */}
           <UtilityHookSection />

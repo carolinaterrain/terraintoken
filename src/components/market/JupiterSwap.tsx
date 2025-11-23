@@ -106,7 +106,11 @@ export const JupiterSwap = () => {
     if (!publicKey) return;
 
     try {
-      const { error } = await supabase.from("trn_purchases").insert({
+      // Check for referral code in URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const referralCode = urlParams.get("ref");
+
+      const purchaseData: any = {
         wallet_address: publicKey.toBase58(),
         amount_trn: tier.estimatedTRN,
         amount_sol: tier.dollarAmount / 100, // Rough estimate
@@ -115,10 +119,51 @@ export const JupiterSwap = () => {
         metadata: {
           tier_name: tier.name,
           timestamp: new Date().toISOString(),
+          referral_code: referralCode || null,
         },
-      });
+      };
+
+      const { error } = await supabase.from("trn_purchases").insert(purchaseData);
 
       if (error) throw error;
+
+      // Process referral if exists
+      if (referralCode) {
+        const bonusAmount = tier.estimatedTRN * 0.02; // 2% bonus for buyer
+        const referrerBonus = tier.estimatedTRN * 0.01; // 1% for referrer
+
+        // Find referrer
+        const { data: referrer } = await supabase
+          .from("referral_codes")
+          .select("*")
+          .eq("referral_code", referralCode)
+          .single();
+
+        if (referrer) {
+          // Insert redemption
+          await supabase.from("referral_redemptions").insert({
+            referrer_wallet: referrer.wallet_address,
+            referee_wallet: publicKey.toBase58(),
+            referral_code: referralCode,
+            bonus_amount: bonusAmount,
+            purchase_amount: tier.estimatedTRN,
+          });
+
+          // Update referrer stats
+          await supabase
+            .from("referral_codes")
+            .update({
+              total_referrals: referrer.total_referrals + 1,
+              total_bonus_trn: referrer.total_bonus_trn + referrerBonus,
+            })
+            .eq("wallet_address", referrer.wallet_address);
+
+          toast({
+            title: "🎁 Referral Bonus!",
+            description: `You got ${(bonusAmount / 1000000).toFixed(2)}M extra TRN!`,
+          });
+        }
+      }
 
       // Update leaderboard via edge function
       await supabase.functions.invoke("upsert-leaderboard-stats", {
@@ -127,6 +172,19 @@ export const JupiterSwap = () => {
           p_trn_amount: tier.estimatedTRN,
         },
       });
+
+      // Check for whale alert (5M+ TRN)
+      if (tier.estimatedTRN >= 5000000) {
+        await supabase.from("whale_alerts").insert({
+          wallet_address: publicKey.toBase58(),
+          amount_trn: tier.estimatedTRN,
+          alert_type: "large_purchase",
+          metadata: {
+            transaction_signature: txSignature,
+            tier: tier.id,
+          },
+        });
+      }
     } catch (error) {
       console.error("Error tracking purchase:", error);
     }

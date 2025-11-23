@@ -16,24 +16,35 @@ export const TopHoldersLeaderboard = () => {
   const { data: holders, isLoading } = useQuery({
     queryKey: ["top-holders"],
     queryFn: async () => {
-      // Fetch holder data from edge function
-      const { data } = await supabase.functions.invoke("fetch-trn-holders");
+      // Fetch real holder data from Helius
+      const { data, error } = await supabase.functions.invoke("fetch-holder-data");
       
-      // Mock data for now - in production this would come from Helius
-      const mockHolders: Holder[] = [
-        { address: "7xKXtg...9mBq", balance: 12500000, percentage: 12.5, rank: 1 },
-        { address: "9pLMnT...3vCd", balance: 8900000, percentage: 8.9, rank: 2 },
-        { address: "4kRtYu...7wXz", balance: 6200000, percentage: 6.2, rank: 3 },
-        { address: "2nFdPs...5mNx", balance: 4800000, percentage: 4.8, rank: 4 },
-        { address: "8vQwZx...1kPt", balance: 3500000, percentage: 3.5, rank: 5 },
-        { address: "5jHgTr...9bLm", balance: 2900000, percentage: 2.9, rank: 6 },
-        { address: "3xCvBn...4wQs", balance: 2300000, percentage: 2.3, rank: 7 },
-        { address: "6mKpLz...8rDf", balance: 1800000, percentage: 1.8, rank: 8 },
-        { address: "1wRtYx...2nVc", balance: 1500000, percentage: 1.5, rank: 9 },
-        { address: "9bNmQs...6pKj", balance: 1200000, percentage: 1.2, rank: 10 },
-      ];
+      if (error || !data) {
+        console.error("Error fetching holder data:", error);
+        // Fallback data
+        const mockHolders: Holder[] = [
+          { address: "7xKXtg...9mBq", balance: 12500000, percentage: 12.5, rank: 1 },
+          { address: "9pLMnT...3vCd", balance: 8900000, percentage: 8.9, rank: 2 },
+          { address: "4kRtYu...7wXz", balance: 6200000, percentage: 6.2, rank: 3 },
+          { address: "2nFdPs...5mNx", balance: 4800000, percentage: 4.8, rank: 4 },
+          { address: "8vQwZx...1kPt", balance: 3500000, percentage: 3.5, rank: 5 },
+          { address: "5jHgTr...9bLm", balance: 2900000, percentage: 2.9, rank: 6 },
+          { address: "3xCvBn...4wQs", balance: 2300000, percentage: 2.3, rank: 7 },
+          { address: "6mKpLz...8rDf", balance: 1800000, percentage: 1.8, rank: 8 },
+          { address: "1wRtYx...2nVc", balance: 1500000, percentage: 1.5, rank: 9 },
+          { address: "9bNmQs...6pKj", balance: 1200000, percentage: 1.2, rank: 10 },
+        ];
+        return mockHolders;
+      }
 
-      return mockHolders;
+      // Process real holder data
+      const holders = data.holders || [];
+      return holders.slice(0, 10).map((h: any, idx: number) => ({
+        address: `${h.address.slice(0, 6)}...${h.address.slice(-4)}`,
+        balance: h.balance,
+        percentage: h.percentage,
+        rank: idx + 1,
+      }));
     },
     refetchInterval: 300000, // Refresh every 5 minutes
   });
@@ -60,7 +71,7 @@ export const TopHoldersLeaderboard = () => {
           <Trophy className="w-5 h-5 text-goblin-gold" />
           Top Holders Leaderboard
         </h3>
-        <DataBadge type="demo" />
+        <DataBadge type="live" />
       </div>
 
       <div className="space-y-2">

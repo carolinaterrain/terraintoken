@@ -20,9 +20,14 @@ export const WalletConnect = () => {
       trackWalletConnection(publicKey.toBase58());
       fetchBalances(publicKey);
       
-      // Emit wallet changed event
+      // Emit wallet changed event with SOL balance
       window.dispatchEvent(
-        new CustomEvent("walletChanged", { detail: publicKey.toBase58() })
+        new CustomEvent("walletChanged", { 
+          detail: {
+            address: publicKey.toBase58(),
+            solBalance: solBalance
+          }
+        })
       );
     } else {
       setTrnBalance(0);

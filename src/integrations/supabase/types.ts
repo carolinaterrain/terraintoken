@@ -970,6 +970,63 @@ export type Database = {
         }
         Relationships: []
       }
+      referral_codes: {
+        Row: {
+          created_at: string | null
+          id: string
+          referral_code: string
+          total_bonus_trn: number | null
+          total_referrals: number | null
+          wallet_address: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          referral_code: string
+          total_bonus_trn?: number | null
+          total_referrals?: number | null
+          wallet_address: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          referral_code?: string
+          total_bonus_trn?: number | null
+          total_referrals?: number | null
+          wallet_address?: string
+        }
+        Relationships: []
+      }
+      referral_redemptions: {
+        Row: {
+          bonus_amount: number
+          id: string
+          purchase_amount: number
+          redeemed_at: string | null
+          referee_wallet: string
+          referral_code: string
+          referrer_wallet: string
+        }
+        Insert: {
+          bonus_amount: number
+          id?: string
+          purchase_amount: number
+          redeemed_at?: string | null
+          referee_wallet: string
+          referral_code: string
+          referrer_wallet: string
+        }
+        Update: {
+          bonus_amount?: number
+          id?: string
+          purchase_amount?: number
+          redeemed_at?: string | null
+          referee_wallet?: string
+          referral_code?: string
+          referrer_wallet?: string
+        }
+        Relationships: []
+      }
       referral_rewards: {
         Row: {
           approved_at: string | null
@@ -1413,6 +1470,33 @@ export type Database = {
           first_connected_at?: string | null
           id?: string
           last_seen_at?: string | null
+          wallet_address?: string
+        }
+        Relationships: []
+      }
+      whale_alerts: {
+        Row: {
+          alert_type: string
+          amount_trn: number
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          wallet_address: string
+        }
+        Insert: {
+          alert_type: string
+          amount_trn: number
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          wallet_address: string
+        }
+        Update: {
+          alert_type?: string
+          amount_trn?: number
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
           wallet_address?: string
         }
         Relationships: []
