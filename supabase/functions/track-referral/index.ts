@@ -1,10 +1,19 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { checkRateLimit, getClientIP } from "../_shared/rate-limit.ts";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+const referralSchema = z.object({
+  referrer_code: z.string().min(1).max(50),
+  referred_email: z.string().email().max(255),
+  action: z.enum(['signup', 'conversion']),
+  conversion_value: z.number().min(0).optional()
+});
 
 interface ReferralRequest {
   referrer_code: string;
@@ -19,12 +28,43 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
+    const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+    
+    // Rate limiting: 20 referral actions per hour per IP
+    const clientIP = getClientIP(req);
+    const rateLimitResult = await checkRateLimit(clientIP, {
+      endpoint: 'track-referral',
+      windowMs: 3600000,
+      maxRequests: 20
+    }, supabaseUrl, supabaseKey);
 
-    const { referrer_code, referred_email, action, conversion_value }: ReferralRequest = await req.json();
+    if (!rateLimitResult.allowed) {
+      return new Response(
+        JSON.stringify({ error: 'Rate limit exceeded', retryAfter: rateLimitResult.retryAfter }),
+        { 
+          status: 429, 
+          headers: { 
+            ...corsHeaders, 
+            'Content-Type': 'application/json',
+            'Retry-After': rateLimitResult.retryAfter?.toString() || '3600'
+          } 
+        }
+      );
+    }
+
+    // Validate input
+    const body = await req.json();
+    const validation = referralSchema.safeParse(body);
+    
+    if (!validation.success) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid input', details: validation.error.errors }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    const supabaseClient = createClient(supabaseUrl, supabaseKey);
+    const { referrer_code, referred_email, action, conversion_value } = validation.data;
 
     if (action === 'signup') {
       // Track new referral

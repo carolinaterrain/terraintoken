@@ -1,10 +1,16 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { checkRateLimit, getClientIP } from "../_shared/rate-limit.ts";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-api-key',
 };
+
+const achievementCheckSchema = z.object({
+  wallet_address: z.string().regex(/^[1-9A-HJ-NP-Za-km-z]{32,44}$/, 'Invalid Solana wallet address')
+});
 
 interface AchievementCheckRequest {
   wallet_address: string;
@@ -16,12 +22,55 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
+    const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+    
+    // API Key verification for cron jobs
+    const apiKey = req.headers.get('x-api-key');
+    const expectedApiKey = Deno.env.get('CHECK_ACHIEVEMENTS_API_KEY');
+    
+    if (!apiKey || apiKey !== expectedApiKey) {
+      console.error('Invalid or missing API key');
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
-    const { wallet_address }: AchievementCheckRequest = await req.json();
+    // Rate limiting: 60 checks per hour per IP (for manual triggers)
+    const clientIP = getClientIP(req);
+    const rateLimitResult = await checkRateLimit(clientIP, {
+      endpoint: 'check-achievements',
+      windowMs: 3600000,
+      maxRequests: 60
+    }, supabaseUrl, supabaseKey);
+
+    if (!rateLimitResult.allowed) {
+      return new Response(
+        JSON.stringify({ error: 'Rate limit exceeded', retryAfter: rateLimitResult.retryAfter }),
+        { 
+          status: 429, 
+          headers: { 
+            ...corsHeaders, 
+            'Content-Type': 'application/json',
+            'Retry-After': rateLimitResult.retryAfter?.toString() || '3600'
+          } 
+        }
+      );
+    }
+
+    // Validate input
+    const body = await req.json();
+    const validation = achievementCheckSchema.safeParse(body);
+    
+    if (!validation.success) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid wallet address', details: validation.error.errors }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    const supabaseClient = createClient(supabaseUrl, supabaseKey);
+    const { wallet_address } = validation.data;
 
     // Get user stats
     const { data: stats } = await supabaseClient
