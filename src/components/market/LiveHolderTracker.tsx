@@ -1,6 +1,7 @@
 import { Users, TrendingUp } from "lucide-react";
 import { useLiveHolderCount } from "@/hooks/useLiveHolderCount";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DataBadge } from "./DataBadge";
 
 export const LiveHolderTracker = () => {
   const { data, isLoading } = useLiveHolderCount();
@@ -21,11 +22,14 @@ export const LiveHolderTracker = () => {
             <Users className="w-6 h-6 text-goblin-green" />
           </div>
           <div>
-            <h3 className="text-sm text-muted-foreground">Live Holder Count</h3>
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm text-muted-foreground">Live Holder Count</h3>
+              <DataBadge type="live" className="scale-75" />
+            </div>
             <p className="text-3xl font-bold text-goblin-green">{holderCount.toLocaleString()}</p>
           </div>
         </div>
-        <div className="flex items-center gap-1 text-goblin-green">
+        <div className="flex items-center gap-1 text-goblin-green animate-pulse">
           <TrendingUp className="w-4 h-4" />
           <span className="text-sm font-semibold">Live</span>
         </div>

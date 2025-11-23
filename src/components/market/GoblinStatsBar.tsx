@@ -1,5 +1,6 @@
 import { ArrowUpRight, ArrowDownRight, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { DataBadge } from "./DataBadge";
 
 interface GoblinStatsBarProps {
   price: number;
@@ -23,8 +24,11 @@ export const GoblinStatsBar = ({
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         {/* Price Section */}
         <div className="flex-1">
-          <div className="text-xs uppercase tracking-[0.2em] text-goblin-gold/70 font-display mb-1">
-            Terrain Token · TRN
+          <div className="flex items-center gap-2 mb-1">
+            <div className="text-xs uppercase tracking-[0.2em] text-goblin-gold/70 font-display">
+              Terrain Token · TRN
+            </div>
+            <DataBadge type="live" className="scale-90" />
           </div>
           <div className="flex items-end gap-3">
             <span className="text-4xl lg:text-5xl font-bold text-goblin-gold font-display">

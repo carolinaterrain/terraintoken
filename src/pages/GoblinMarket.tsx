@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useGoblinMarketData, useHolderProgress } from "@/hooks/useGoblinMarketData";
 import { GoblinStatsBar } from "@/components/market/GoblinStatsBar";
@@ -14,11 +15,17 @@ import { TradingHistoryFeed } from "@/components/market/TradingHistoryFeed";
 import { TopHoldersLeaderboard } from "@/components/market/TopHoldersLeaderboard";
 import { PricePredictionChart } from "@/components/market/PricePredictionChart";
 import { GovernanceVoting } from "@/components/market/GovernanceVoting";
+import { WalletConnect } from "@/components/market/WalletConnect";
+import { PricePredictionGame } from "@/components/market/PricePredictionGame";
+import { LiveViewersCounter } from "@/components/market/LiveViewersCounter";
 import BackToHome from "@/components/BackToHome";
 
 const GoblinMarket = () => {
   const { data: marketData, isLoading: isLoadingMarket } = useGoblinMarketData();
   const { data: holderData, isLoading: isLoadingHolders } = useHolderProgress();
+  const [walletAddress, setWalletAddress] = useState<string | null>(
+    localStorage.getItem("connectedWallet")
+  );
 
   const isLoading = isLoadingMarket || isLoadingHolders;
 
@@ -62,7 +69,13 @@ const GoblinMarket = () => {
       <div className="min-h-screen bg-background">
         {/* Header */}
         <div className="container mx-auto px-4 py-6">
-          <BackToHome />
+          <div className="flex items-center justify-between">
+            <BackToHome />
+            <div className="flex items-center gap-4">
+              <LiveViewersCounter />
+              <WalletConnect />
+            </div>
+          </div>
         </div>
 
         {/* Main Content */}
@@ -90,10 +103,14 @@ const GoblinMarket = () => {
           {/* Chart */}
           <DexScreenerChart />
 
-          {/* New Features Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Engagement Features Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <LiveHolderTracker />
             <PriceAlerts currentPrice={parseFloat(marketStats.priceUsd)} />
+            <PricePredictionGame 
+              currentPrice={parseFloat(marketStats.priceUsd)}
+              walletAddress={walletAddress || undefined}
+            />
           </div>
 
           {/* Market Sentiment & Holder Quest */}

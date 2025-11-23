@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { TrendingUp, Activity } from "lucide-react";
 import { useGoblinMarketData } from "@/hooks/useGoblinMarketData";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DataBadge } from "./DataBadge";
 
 export const PricePredictionChart = () => {
   const { data: marketData, isLoading } = useGoblinMarketData();
@@ -91,10 +92,7 @@ export const PricePredictionChart = () => {
           <Activity className="w-5 h-5 text-terrain-purple" />
           Price Analysis & Prediction
         </h3>
-        <div className="flex items-center gap-1 text-terrain-purple">
-          <TrendingUp className="w-4 h-4" />
-          <span className="text-xs">7-Day Forecast</span>
-        </div>
+        <DataBadge type="demo" />
       </div>
 
       <ResponsiveContainer width="100%" height={350}>
