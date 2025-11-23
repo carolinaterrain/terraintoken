@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { Loader2 } from "lucide-react";
 import { useGoblinMarketData, useHolderProgress } from "@/hooks/useGoblinMarketData";
 import { GoblinStatsBar } from "@/components/market/GoblinStatsBar";
-import { GoblinMarketChart } from "@/components/market/GoblinMarketChart";
+import { DexScreenerChart } from "@/components/market/DexScreenerChart";
 import { HolderQuestBar } from "@/components/market/HolderQuestBar";
 import { UtilityHookSection } from "@/components/market/UtilityHookSection";
 import { WhaleDistributionChart } from "@/components/market/WhaleDistributionChart";
@@ -76,12 +76,7 @@ const GoblinMarket = () => {
           />
 
           {/* Chart */}
-          <GoblinMarketChart
-            data={marketData.priceData}
-            support={marketData.support}
-            resistance={marketData.resistance}
-            currentPrice={parseFloat(marketData.stats.priceUsd)}
-          />
+          <DexScreenerChart />
 
           {/* Holder Quest */}
           <HolderQuestBar
