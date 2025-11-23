@@ -3,7 +3,6 @@ import { Suspense, lazy } from "react";
 import SkipToContent from "@/components/SkipToContent";
 import ScrollProgress from "@/components/ScrollProgress";
 import SmartHeader from "@/components/SmartHeader";
-import AccessibilityMenu from "@/components/AccessibilityMenu";
 import Hero from "@/components/Hero";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -64,7 +63,6 @@ const Index = () => {
       <SkipToContent />
       <ScrollProgress />
       <SmartHeader />
-      <AccessibilityMenu />
 
       <main id="main-content">
         <Hero />
