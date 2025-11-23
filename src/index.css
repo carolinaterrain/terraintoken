@@ -45,6 +45,13 @@ All colors MUST be HSL.
     /* TERRAIN SYSTEM */
     --terrain-glow: 142 84% 47%;
     --terrain-dark: 0 0% 6%;
+    --terrain-shadow: 0 0% 8%;
+    --terrain-deep: 0 0% 5%;
+    --terrain-purple: 280 65% 60%;
+    
+    /* GOBLIN COLORS */
+    --goblin-green: 142 76% 39%;
+    --goblin-gold: 45 95% 50%;
     
     /* EARTHY TERRAIN COLORS */
     --earth-brown: 25 50% 35%;        /* Soil brown */
@@ -135,6 +142,13 @@ All colors MUST be HSL.
     /* TERRAIN SYSTEM */
     --terrain-glow: 142 84% 47%;
     --terrain-dark: 0 0% 96%;         /* Light version */
+    --terrain-shadow: 0 0% 92%;
+    --terrain-deep: 0 0% 94%;
+    --terrain-purple: 280 60% 50%;
+    
+    /* GOBLIN COLORS */
+    --goblin-green: 142 76% 39%;
+    --goblin-gold: 45 90% 45%;
     
     /* EARTHY COLORS */
     --earth-brown: 25 50% 35%;
@@ -200,6 +214,13 @@ All colors MUST be HSL.
     /* TERRAIN SYSTEM */
     --terrain-glow: 142 84% 47%;
     --terrain-dark: 0 0% 6%;
+    --terrain-shadow: 0 0% 8%;
+    --terrain-deep: 0 0% 5%;
+    --terrain-purple: 280 65% 60%;
+    
+    /* GOBLIN COLORS */
+    --goblin-green: 142 76% 39%;
+    --goblin-gold: 45 95% 50%;
     
     /* EARTHY COLORS */
     --earth-brown: 25 50% 35%;

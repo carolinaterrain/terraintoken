@@ -54,6 +54,13 @@ export default {
         terrain: {
           glow: "hsl(var(--terrain-glow))",
           dark: "hsl(var(--terrain-dark))",
+          shadow: "hsl(var(--terrain-shadow))",
+          deep: "hsl(var(--terrain-deep))",
+          purple: "hsl(var(--terrain-purple))",
+        },
+        goblin: {
+          green: "hsl(var(--goblin-green))",
+          gold: "hsl(var(--goblin-gold))",
         },
         earth: {
           brown: "hsl(var(--earth-brown))",

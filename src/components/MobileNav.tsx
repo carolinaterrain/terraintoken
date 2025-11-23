@@ -1,4 +1,4 @@
-import { Home, Video, FileText, Users, Gift } from "lucide-react";
+import { Home, Video, FileText, Users, Gift, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -80,6 +80,21 @@ const MobileNav = () => {
         >
           <Gift className="w-5 h-5" />
           <span className="text-xs font-medium">Earn</span>
+        </Button>
+        
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => handleNavClick(() => navigate("/market"))}
+          aria-label="View Goblin Market"
+          className={`flex flex-col items-center gap-1 h-auto py-3 px-3 min-h-[48px] min-w-[48px] transition-all ${
+            location.pathname === '/market' 
+              ? 'text-primary bg-primary/10' 
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          <TrendingUp className="w-5 h-5" />
+          <span className="text-xs font-medium">Market</span>
         </Button>
         
         <Button
