@@ -9,7 +9,6 @@ import { LoadingSpinner } from "./components/ui/loading-spinner";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { useEasterEggs } from "./hooks/useEasterEggs";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
-import { useRouteModals } from "./hooks/useRouteModals";
 
 // Lazy load all pages for optimal code splitting
 const Index = lazy(() => import("./pages/Index"));
@@ -54,15 +53,9 @@ const ScrollToTop = lazy(() => import("./components/ScrollToTop"));
 const PerformanceMonitor = lazy(() => import("./components/PerformanceMonitor"));
 const KeyboardNav = lazy(() => import("./components/KeyboardNav").then(m => ({ default: m.KeyboardNav })));
 const LiveAnnouncer = lazy(() => import("./components/LiveAnnouncer").then(m => ({ default: m.LiveAnnouncer })));
-const HeatMapTracker = lazy(() => import("./components/HeatMapTracker").then(m => ({ default: m.HeatMapTracker })));
-const SocialProofNotifications = lazy(() => import("./components/SocialProofNotifications").then(m => ({ default: m.SocialProofNotifications })));
 
 const queryClient = new QueryClient();
 
-const RouteInitializer = () => {
-  useRouteModals();
-  return null;
-};
 
 const AppContent = () => {
   useEasterEggs();
@@ -76,9 +69,6 @@ const AppContent = () => {
         </div>
       }>
         <AnalyticsWrapper>
-          <RouteInitializer />
-          <HeatMapTracker />
-          <SocialProofNotifications />
           <SkipToContent />
           <KeyboardNav />
           <LiveAnnouncer />
