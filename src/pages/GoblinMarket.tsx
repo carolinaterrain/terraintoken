@@ -5,6 +5,8 @@ import { GoblinStatsBar } from "@/components/market/GoblinStatsBar";
 import { GoblinMarketChart } from "@/components/market/GoblinMarketChart";
 import { HolderQuestBar } from "@/components/market/HolderQuestBar";
 import { UtilityHookSection } from "@/components/market/UtilityHookSection";
+import { WhaleDistributionChart } from "@/components/market/WhaleDistributionChart";
+import { TRNValuationCard } from "@/components/market/TRNValuationCard";
 import BackToHome from "@/components/BackToHome";
 
 const GoblinMarket = () => {
@@ -87,6 +89,12 @@ const GoblinMarket = () => {
             target={holderData.target}
             milestones={holderData.milestones}
           />
+
+          {/* Market Intelligence */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <WhaleDistributionChart />
+            <TRNValuationCard />
+          </div>
 
           {/* Utility & Disclaimer */}
           <UtilityHookSection />
