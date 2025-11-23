@@ -647,9 +647,11 @@ export type Database = {
           current_price: number
           id: string
           points_earned: number | null
+          points_multiplier: number | null
           predicted_at: string
           prediction_type: string
           resolved_at: string | null
+          streak_count: number | null
           target_date: string
           user_wallet: string
           was_correct: boolean | null
@@ -660,9 +662,11 @@ export type Database = {
           current_price: number
           id?: string
           points_earned?: number | null
+          points_multiplier?: number | null
           predicted_at?: string
           prediction_type: string
           resolved_at?: string | null
+          streak_count?: number | null
           target_date: string
           user_wallet: string
           was_correct?: boolean | null
@@ -673,9 +677,11 @@ export type Database = {
           current_price?: number
           id?: string
           points_earned?: number | null
+          points_multiplier?: number | null
           predicted_at?: string
           prediction_type?: string
           resolved_at?: string | null
+          streak_count?: number | null
           target_date?: string
           user_wallet?: string
           was_correct?: boolean | null
@@ -784,6 +790,78 @@ export type Database = {
           purchase_price?: number
           quantity?: number
           user_wallet?: string
+        }
+        Relationships: []
+      }
+      prediction_challenges: {
+        Row: {
+          active: boolean | null
+          badge_icon: string
+          challenge_id: string
+          created_at: string | null
+          description: string
+          id: string
+          name: string
+          requirement_type: string
+          requirement_value: number
+          trn_reward: number | null
+        }
+        Insert: {
+          active?: boolean | null
+          badge_icon: string
+          challenge_id: string
+          created_at?: string | null
+          description: string
+          id?: string
+          name: string
+          requirement_type: string
+          requirement_value: number
+          trn_reward?: number | null
+        }
+        Update: {
+          active?: boolean | null
+          badge_icon?: string
+          challenge_id?: string
+          created_at?: string | null
+          description?: string
+          id?: string
+          name?: string
+          requirement_type?: string
+          requirement_value?: number
+          trn_reward?: number | null
+        }
+        Relationships: []
+      }
+      prediction_tournaments: {
+        Row: {
+          created_at: string | null
+          description: string
+          end_date: string
+          id: string
+          name: string
+          prize_pool: Json
+          start_date: string
+          status: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description: string
+          end_date: string
+          id?: string
+          name: string
+          prize_pool: Json
+          start_date: string
+          status?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string
+          end_date?: string
+          id?: string
+          name?: string
+          prize_pool?: Json
+          start_date?: string
+          status?: string | null
         }
         Relationships: []
       }
@@ -1203,6 +1281,53 @@ export type Database = {
         }
         Relationships: []
       }
+      tournament_entries: {
+        Row: {
+          accuracy_rate: number | null
+          correct_predictions: number | null
+          created_at: string | null
+          final_rank: number | null
+          id: string
+          prize_won: number | null
+          total_points: number | null
+          total_predictions: number | null
+          tournament_id: string
+          user_wallet: string
+        }
+        Insert: {
+          accuracy_rate?: number | null
+          correct_predictions?: number | null
+          created_at?: string | null
+          final_rank?: number | null
+          id?: string
+          prize_won?: number | null
+          total_points?: number | null
+          total_predictions?: number | null
+          tournament_id: string
+          user_wallet: string
+        }
+        Update: {
+          accuracy_rate?: number | null
+          correct_predictions?: number | null
+          created_at?: string | null
+          final_rank?: number | null
+          id?: string
+          prize_won?: number | null
+          total_points?: number | null
+          total_predictions?: number | null
+          tournament_id?: string
+          user_wallet?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tournament_entries_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "prediction_tournaments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       trn_purchases: {
         Row: {
           amount_sol: number
@@ -1358,6 +1483,50 @@ export type Database = {
         }
         Relationships: []
       }
+      user_challenge_progress: {
+        Row: {
+          challenge_id: string
+          claimed: boolean | null
+          claimed_at: string | null
+          completed: boolean | null
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          progress: number | null
+          user_wallet: string
+        }
+        Insert: {
+          challenge_id: string
+          claimed?: boolean | null
+          claimed_at?: string | null
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          progress?: number | null
+          user_wallet: string
+        }
+        Update: {
+          challenge_id?: string
+          claimed?: boolean | null
+          claimed_at?: string | null
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          progress?: number | null
+          user_wallet?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_challenge_progress_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "prediction_challenges"
+            referencedColumns: ["challenge_id"]
+          },
+        ]
+      }
       user_quest_progress: {
         Row: {
           completed: boolean | null
@@ -1503,6 +1672,20 @@ export type Database = {
       }
     }
     Views: {
+      prediction_user_stats: {
+        Row: {
+          accuracy_percentage: number | null
+          active_days: number | null
+          best_streak: number | null
+          correct_predictions: number | null
+          highest_multiplier: number | null
+          incorrect_predictions: number | null
+          lifetime_points: number | null
+          total_predictions: number | null
+          user_wallet: string | null
+        }
+        Relationships: []
+      }
       terrain_contributors_leaderboard: {
         Row: {
           badges_earned: number | null

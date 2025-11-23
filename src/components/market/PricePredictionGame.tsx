@@ -53,6 +53,33 @@ export const PricePredictionGame = ({ currentPrice, walletAddress }: PricePredic
     return predDate.toDateString() === today.toDateString();
   });
 
+  // Calculate community consensus
+  const { data: todayStats } = useQuery({
+    queryKey: ["today-prediction-stats"],
+    queryFn: async () => {
+      const today = new Date().toISOString().split("T")[0];
+      const { data } = await supabase
+        .from("market_predictions")
+        .select("prediction_type")
+        .gte("predicted_at", today);
+
+      if (!data || data.length === 0) return null;
+
+      const total = data.length;
+      const bull = data.filter((p) => p.prediction_type === "bull").length;
+      const bear = data.filter((p) => p.prediction_type === "bear").length;
+      const stable = data.filter((p) => p.prediction_type === "stable").length;
+
+      return {
+        bull: Math.round((bull / total) * 100),
+        bear: Math.round((bear / total) * 100),
+        stable: Math.round((stable / total) * 100),
+        total,
+      };
+    },
+    refetchInterval: 30000, // Update every 30s
+  });
+
   const submitPrediction = async (type: "bull" | "bear" | "stable") => {
     if (!walletAddress) {
       toast({
@@ -75,18 +102,42 @@ export const PricePredictionGame = ({ currentPrice, walletAddress }: PricePredic
       const targetDate = new Date();
       targetDate.setHours(targetDate.getHours() + 24);
 
+      // Calculate current streak
+      const { data: recentPredictions } = await supabase
+        .from("market_predictions")
+        .select("was_correct")
+        .eq("user_wallet", walletAddress)
+        .not("was_correct", "is", null)
+        .order("predicted_at", { ascending: false })
+        .limit(10);
+
+      let currentStreak = 0;
+      if (recentPredictions) {
+        for (const pred of recentPredictions) {
+          if (pred.was_correct) currentStreak++;
+          else break;
+        }
+      }
+
+      const multiplier = currentStreak >= 10 ? 5 : currentStreak >= 5 ? 2 : 1;
+
       await supabase.from("market_predictions").insert({
         user_wallet: walletAddress,
         prediction_type: type,
         current_price: currentPrice,
         target_date: targetDate.toISOString(),
+        streak_count: currentStreak,
+        points_multiplier: multiplier,
       });
 
       setSelectedPrediction(type);
 
       toast({
-        title: "🎯 Prediction Locked In!",
-        description: `You predicted ${type.toUpperCase()}. Check back in 24h to see if you won!`,
+        title: multiplier > 1 ? "🔥 Streak Bonus Active!" : "🎯 Prediction Locked In!",
+        description:
+          multiplier > 1
+            ? `${multiplier}x multiplier active! ${currentStreak}-day streak`
+            : `You predicted ${type.toUpperCase()}. Check back in 24h!`,
       });
     } catch (error) {
       toast({
@@ -106,9 +157,33 @@ export const PricePredictionGame = ({ currentPrice, walletAddress }: PricePredic
         <Badge className="bg-goblin-gold text-black">+100 Points</Badge>
       </div>
 
-      <p className="text-sm text-muted-foreground mb-4">
+      <p className="text-sm text-muted-foreground mb-2">
         Will TRN price go up, down, or stay stable in 24 hours?
       </p>
+
+      {/* Community Consensus */}
+      {todayStats && (
+        <div className="bg-terrain-shadow/50 rounded-lg p-3 mb-4">
+          <div className="text-xs font-bold mb-2">🌐 Community Consensus</div>
+          <div className="space-y-1">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-goblin-green">🐂 BULL</span>
+              <span className="font-bold">{todayStats.bull}%</span>
+            </div>
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-goblin-gold">➖ STABLE</span>
+              <span className="font-bold">{todayStats.stable}%</span>
+            </div>
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-destructive">🐻 BEAR</span>
+              <span className="font-bold">{todayStats.bear}%</span>
+            </div>
+          </div>
+          <div className="text-xs text-muted-foreground mt-2 text-center">
+            {todayStats.total} goblins predicted today
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-3 gap-2 mb-4">
         <Button
