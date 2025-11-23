@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 interface TokenStats {
   priceUsd: string;
@@ -53,13 +54,16 @@ export function useHolderProgress() {
   return useQuery({
     queryKey: ["holder-progress"],
     queryFn: async () => {
-      // Placeholder - replace with real on-chain holder count
+      // Fetch real holder count from edge function
+      const { data } = await supabase.functions.invoke("fetch-trn-holders");
+      const holderCount = data?.holderCount || 1137;
+      
       return {
-        current: 1137,
+        current: holderCount,
         target: 5000,
         milestones: [500, 1000, 2500, 5000],
       };
     },
-    refetchInterval: 300000, // Refresh every 5 minutes
+    refetchInterval: 120000, // Refresh every 2 minutes
   });
 }

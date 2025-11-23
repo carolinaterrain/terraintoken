@@ -32,3 +32,9 @@ verify_jwt = false
 
 [functions.check-achievements]
 verify_jwt = false
+
+[functions.fetch-trn-holders]
+verify_jwt = false
+
+[functions.fetch-trn-transactions]
+verify_jwt = false

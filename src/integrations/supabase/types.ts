@@ -560,6 +560,39 @@ export type Database = {
         }
         Relationships: []
       }
+      price_alerts: {
+        Row: {
+          alert_type: string
+          created_at: string
+          id: string
+          is_active: boolean
+          target_price: number
+          triggered_at: string | null
+          updated_at: string
+          user_email: string
+        }
+        Insert: {
+          alert_type: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          target_price: number
+          triggered_at?: string | null
+          updated_at?: string
+          user_email: string
+        }
+        Update: {
+          alert_type?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          target_price?: number
+          triggered_at?: string | null
+          updated_at?: string
+          user_email?: string
+        }
+        Relationships: []
+      }
       project_media: {
         Row: {
           ai_validation_score: number | null

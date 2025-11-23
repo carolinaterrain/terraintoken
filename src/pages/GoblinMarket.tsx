@@ -7,6 +7,10 @@ import { HolderQuestBar } from "@/components/market/HolderQuestBar";
 import { UtilityHookSection } from "@/components/market/UtilityHookSection";
 import { WhaleDistributionChart } from "@/components/market/WhaleDistributionChart";
 import { TRNValuationCard } from "@/components/market/TRNValuationCard";
+import { LiveHolderTracker } from "@/components/market/LiveHolderTracker";
+import { PriceAlerts } from "@/components/market/PriceAlerts";
+import { MarketSentiment } from "@/components/market/MarketSentiment";
+import { TradingHistoryFeed } from "@/components/market/TradingHistoryFeed";
 import BackToHome from "@/components/BackToHome";
 
 const GoblinMarket = () => {
@@ -78,12 +82,30 @@ const GoblinMarket = () => {
           {/* Chart */}
           <DexScreenerChart />
 
-          {/* Holder Quest */}
-          <HolderQuestBar
-            current={holderData.current}
-            target={holderData.target}
-            milestones={holderData.milestones}
-          />
+          {/* New Features Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <LiveHolderTracker />
+            <PriceAlerts currentPrice={parseFloat(marketData.stats.priceUsd)} />
+          </div>
+
+          {/* Market Sentiment & Holder Quest */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <MarketSentiment
+              priceChange24h={marketData.stats.priceChange24h}
+              volume24h={marketData.stats.volume24h}
+              holders={holderData.current}
+            />
+            <div>
+              <HolderQuestBar
+                current={holderData.current}
+                target={holderData.target}
+                milestones={holderData.milestones}
+              />
+            </div>
+          </div>
+
+          {/* Trading History */}
+          <TradingHistoryFeed />
 
           {/* Market Intelligence */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
