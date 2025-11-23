@@ -18,6 +18,9 @@ import { PricePredictionChart } from "@/components/market/PricePredictionChart";
 import { GovernanceVoting } from "@/components/market/GovernanceVoting";
 import { WalletConnect } from "@/components/market/WalletConnect";
 import { PricePredictionGame } from "@/components/market/PricePredictionGame";
+import { PredictionChallenges } from "@/components/market/PredictionChallenges";
+import { PredictionTournament } from "@/components/market/PredictionTournament";
+import { PredictionInsightsDashboard } from "@/components/market/PredictionInsightsDashboard";
 import { LiveViewersCounter } from "@/components/market/LiveViewersCounter";
 import { PortfolioTracker } from "@/components/market/PortfolioTracker";
 import { AchievementTracker } from "@/components/market/AchievementTracker";
@@ -144,6 +147,15 @@ const GoblinMarket = () => {
               walletAddress={walletAddress || undefined}
             />
           </div>
+
+          {/* Prediction Tournament & Challenges */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <PredictionTournament walletAddress={walletAddress || undefined} />
+            <PredictionChallenges walletAddress={walletAddress || undefined} />
+          </div>
+
+          {/* Prediction Insights */}
+          <PredictionInsightsDashboard walletAddress={walletAddress || undefined} />
 
           {/* Price Alert Notifications */}
           <PriceAlertNotifications />
