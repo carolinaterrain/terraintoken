@@ -298,7 +298,7 @@ const AudioControl = () => {
     <>
       <audio
         ref={audioRef}
-        src="/audio/trn-anthem-loop.mp3"
+        src="/audio/rise-of-the-terrain.mp3"
         loop
         preload="metadata"
       />
@@ -348,10 +348,10 @@ const AudioControl = () => {
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <span className="text-lg">🎵</span>
-                <span className="text-sm font-medium">TRN Anthem</span>
+                <span className="text-sm font-medium">Rise of the Terrain</span>
               </div>
               <div className="text-xs text-muted-foreground">
-                Lofi Background Mix
+                Official Theme Song
               </div>
             </div>
 

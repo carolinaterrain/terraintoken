@@ -1,6 +1,18 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { Resend } from "https://esm.sh/resend@4.0.0";
+import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
+import { checkRateLimit, getClientIP } from '../_shared/rate-limit.ts';
+
+// DexScreener response validation
+const dexResponseSchema = z.object({
+  pair: z.object({
+    priceUsd: z.string().regex(/^\d+(\.\d+)?$/)
+  })
+});
+
+// Email validation
+const emailSchema = z.string().email().max(255);
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -22,12 +34,37 @@ serve(async (req) => {
       throw new Error('Email configuration missing');
     }
 
+    // Rate limiting
+    const clientIP = getClientIP(req);
+    const rateLimitResult = await checkRateLimit(clientIP, {
+      endpoint: 'check-price-alerts',
+      windowMs: 60000, // 1 minute
+      maxRequests: 1
+    }, SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!);
+    
+    if (!rateLimitResult.allowed) {
+      return new Response(
+        JSON.stringify({ 
+          error: 'Rate limit exceeded',
+          retryAfter: rateLimitResult.retryAfter 
+        }),
+        { 
+          status: 429, 
+          headers: { 
+            ...corsHeaders, 
+            'Content-Type': 'application/json',
+            'Retry-After': rateLimitResult.retryAfter?.toString() || '60'
+          } 
+        }
+      );
+    }
+
     const resend = new Resend(RESEND_API_KEY);
     const supabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!);
 
     console.log('Checking price alerts...');
 
-    // Get current TRN price from DexScreener
+    // Get current TRN price from DexScreener with validation
     const priceResponse = await fetch(
       'https://api.dexscreener.com/latest/dex/pairs/solana/EMrpbqAmruGBfkejNXQPZVTkuFHt7pc6DUeHRfN8qSQV'
     );
@@ -37,7 +74,13 @@ serve(async (req) => {
     }
 
     const priceData = await priceResponse.json();
-    const currentPrice = parseFloat(priceData.pair.priceUsd);
+    const dexValidation = dexResponseSchema.safeParse(priceData);
+    
+    if (!dexValidation.success) {
+      throw new Error('Invalid DexScreener API response');
+    }
+    
+    const currentPrice = parseFloat(dexValidation.data.pair.priceUsd);
 
     console.log(`Current TRN price: $${currentPrice}`);
 
@@ -58,6 +101,13 @@ serve(async (req) => {
 
     // Check each alert
     for (const alert of alerts || []) {
+      // Validate email before sending
+      const emailValidation = emailSchema.safeParse(alert.user_email);
+      if (!emailValidation.success) {
+        console.error('Invalid email address:', alert.user_email);
+        continue;
+      }
+      
       let shouldTrigger = false;
 
       if (alert.alert_type === 'above' && currentPrice >= alert.target_price) {

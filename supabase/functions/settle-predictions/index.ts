@@ -1,8 +1,22 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
+import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
+
+// Input validation schema
+const settleInputSchema = z.object({
+  force: z.boolean().optional(),
+  apiKey: z.string().optional()
+});
+
+// DexScreener response validation
+const dexResponseSchema = z.object({
+  pairs: z.array(z.object({
+    priceUsd: z.string().regex(/^\d+(\.\d+)?$/)
+  })).min(1)
+});
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-api-key',
 };
 
 interface DexScreenerResponse {
@@ -17,18 +31,51 @@ Deno.serve(async (req) => {
   }
 
   try {
+    // Validate input
+    const body = await req.json().catch(() => ({}));
+    const validation = settleInputSchema.safeParse(body);
+    
+    if (!validation.success) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid input', details: validation.error.issues }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Verify API key for security (only allow calls with valid key)
+    const apiKey = validation.data.apiKey || req.headers.get('x-api-key');
+    const validApiKey = Deno.env.get('SETTLE_PREDICTIONS_API_KEY');
+    
+    if (apiKey !== validApiKey) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized - API key required' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     console.log('Starting prediction settlement process...');
 
-    // Fetch current TRN price from DexScreener
+    // Fetch current TRN price from DexScreener with validation
     const dexResponse = await fetch(
-      'https://api.dexscreener.com/latest/dex/tokens/CxV6jzfs7br69VqcJVLxG5nTTjWX5dy5h2Z3pump'
+      'https://api.dexscreener.com/latest/dex/tokens/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump'
     );
-    const dexData: DexScreenerResponse = await dexResponse.json();
-    const currentPrice = parseFloat(dexData.pairs?.[0]?.priceUsd || '0');
+    
+    if (!dexResponse.ok) {
+      throw new Error(`DexScreener API error: ${dexResponse.status}`);
+    }
+    
+    const dexData = await dexResponse.json();
+    const dexValidation = dexResponseSchema.safeParse(dexData);
+    
+    if (!dexValidation.success) {
+      throw new Error('Invalid DexScreener API response format');
+    }
+    
+    const currentPrice = parseFloat(dexValidation.data.pairs[0].priceUsd);
 
     if (!currentPrice) {
       throw new Error('Failed to fetch current price');

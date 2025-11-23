@@ -3,6 +3,12 @@ project_id = "dihbqhofqfcvjgpzmskx"
 [functions.calculate-trn-reward]
 verify_jwt = true
 
+[functions.settle-predictions]
+verify_jwt = false
+
+[functions.upsert-leaderboard-stats]
+verify_jwt = false
+
 [functions.upload-project-media]
 verify_jwt = false
 

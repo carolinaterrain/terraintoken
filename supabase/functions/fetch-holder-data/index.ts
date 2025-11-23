@@ -1,4 +1,14 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
+import { checkRateLimit, getClientIP } from '../_shared/rate-limit.ts';
+
+// Helius API response validation
+const heliusResponseSchema = z.object({
+  result: z.array(z.object({
+    owner: z.string(),
+    amount: z.number(),
+  }))
+});
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -11,6 +21,34 @@ serve(async (req) => {
   }
 
   try {
+    // Rate limiting
+    const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
+    const SUPABASE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const clientIP = getClientIP(req);
+    
+    const rateLimitResult = await checkRateLimit(clientIP, {
+      endpoint: 'fetch-holder-data',
+      windowMs: 3600000, // 1 hour
+      maxRequests: 60
+    }, SUPABASE_URL, SUPABASE_KEY);
+    
+    if (!rateLimitResult.allowed) {
+      return new Response(
+        JSON.stringify({ 
+          error: 'Rate limit exceeded',
+          retryAfter: rateLimitResult.retryAfter 
+        }),
+        { 
+          status: 429, 
+          headers: { 
+            ...corsHeaders, 
+            'Content-Type': 'application/json',
+            'Retry-After': rateLimitResult.retryAfter?.toString() || '3600'
+          } 
+        }
+      );
+    }
+
     const HELIUS_API_KEY = Deno.env.get('HELIUS_API_KEY');
     const TRN_MINT_ADDRESS = 'GwXzGeZFF4jK1PqzVd17MHioY7pqSET7r6UY7RS1pump';
 
@@ -30,7 +68,15 @@ serve(async (req) => {
     }
 
     const data = await response.json();
-    const holderData = data.result || [];
+    
+    // Validate response structure
+    const validation = heliusResponseSchema.safeParse(data);
+    if (!validation.success) {
+      console.error('Invalid Helius API response:', validation.error);
+      throw new Error('Invalid API response format');
+    }
+    
+    const holderData = validation.data.result || [];
 
     const holders = holderData
       .filter((h: any) => h.amount >= 1)
