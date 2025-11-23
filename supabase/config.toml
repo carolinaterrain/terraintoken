@@ -41,3 +41,12 @@ verify_jwt = false
 
 [functions.check-price-alerts]
 verify_jwt = false
+
+[functions.check-whale-purchases]
+verify_jwt = false
+
+[functions.upsert-leaderboard-stats]
+verify_jwt = false
+
+[functions.fetch-holder-data]
+verify_jwt = false
