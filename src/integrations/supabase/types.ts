@@ -413,6 +413,51 @@ export type Database = {
         }
         Relationships: []
       }
+      invoice_codes: {
+        Row: {
+          code: string
+          created_at: string
+          customer_email: string | null
+          customer_name: string | null
+          expires_at: string
+          id: string
+          invoice_amount: number | null
+          invoice_number: string
+          redeemed_at: string | null
+          redeemed_by_wallet: string | null
+          status: string
+          trn_reward: number
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          customer_email?: string | null
+          customer_name?: string | null
+          expires_at?: string
+          id?: string
+          invoice_amount?: number | null
+          invoice_number: string
+          redeemed_at?: string | null
+          redeemed_by_wallet?: string | null
+          status?: string
+          trn_reward?: number
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          customer_email?: string | null
+          customer_name?: string | null
+          expires_at?: string
+          id?: string
+          invoice_amount?: number | null
+          invoice_number?: string
+          redeemed_at?: string | null
+          redeemed_by_wallet?: string | null
+          status?: string
+          trn_reward?: number
+        }
+        Relationships: []
+      }
       meme_submissions: {
         Row: {
           caption: string | null
@@ -733,6 +778,60 @@ export type Database = {
         }
         Relationships: []
       }
+      trn_redemptions: {
+        Row: {
+          admin_notes: string | null
+          completed_at: string | null
+          created_at: string
+          discount_usd: number
+          email: string
+          id: string
+          notes: string | null
+          phone: string | null
+          preferred_contact: string | null
+          service_type: string | null
+          status: string
+          tier: string
+          trn_amount: number
+          updated_at: string
+          wallet_address: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          completed_at?: string | null
+          created_at?: string
+          discount_usd: number
+          email: string
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          preferred_contact?: string | null
+          service_type?: string | null
+          status?: string
+          tier: string
+          trn_amount: number
+          updated_at?: string
+          wallet_address: string
+        }
+        Update: {
+          admin_notes?: string | null
+          completed_at?: string | null
+          created_at?: string
+          discount_usd?: number
+          email?: string
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          preferred_contact?: string | null
+          service_type?: string | null
+          status?: string
+          tier?: string
+          trn_amount?: number
+          updated_at?: string
+          wallet_address?: string
+        }
+        Relationships: []
+      }
       trn_rewards: {
         Row: {
           claimed_at: string | null
@@ -920,6 +1019,7 @@ export type Database = {
     }
     Functions: {
       cleanup_rate_limits: { Args: never; Returns: undefined }
+      expire_old_invoice_codes: { Args: never; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
