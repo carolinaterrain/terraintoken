@@ -877,6 +877,48 @@ export type Database = {
         }
         Relationships: []
       }
+      purchase_leaderboard: {
+        Row: {
+          achievements: Json | null
+          biggest_purchase_trn: number | null
+          consecutive_days: number | null
+          created_at: string | null
+          fastest_buy_seconds: number | null
+          id: string
+          last_purchase_date: string | null
+          total_purchases: number | null
+          total_trn_purchased: number | null
+          updated_at: string | null
+          wallet_address: string
+        }
+        Insert: {
+          achievements?: Json | null
+          biggest_purchase_trn?: number | null
+          consecutive_days?: number | null
+          created_at?: string | null
+          fastest_buy_seconds?: number | null
+          id?: string
+          last_purchase_date?: string | null
+          total_purchases?: number | null
+          total_trn_purchased?: number | null
+          updated_at?: string | null
+          wallet_address: string
+        }
+        Update: {
+          achievements?: Json | null
+          biggest_purchase_trn?: number | null
+          consecutive_days?: number | null
+          created_at?: string | null
+          fastest_buy_seconds?: number | null
+          id?: string
+          last_purchase_date?: string | null
+          total_purchases?: number | null
+          total_trn_purchased?: number | null
+          updated_at?: string | null
+          wallet_address?: string
+        }
+        Relationships: []
+      }
       push_subscriptions: {
         Row: {
           created_at: string
@@ -1101,6 +1143,39 @@ export type Database = {
           review_date?: string | null
           review_text?: string
           sort_order?: number | null
+        }
+        Relationships: []
+      }
+      trn_purchases: {
+        Row: {
+          amount_sol: number
+          amount_trn: number
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          purchase_tier: string
+          transaction_signature: string | null
+          wallet_address: string
+        }
+        Insert: {
+          amount_sol: number
+          amount_trn: number
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          purchase_tier: string
+          transaction_signature?: string | null
+          wallet_address: string
+        }
+        Update: {
+          amount_sol?: number
+          amount_trn?: number
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          purchase_tier?: string
+          transaction_signature?: string | null
+          wallet_address?: string
         }
         Relationships: []
       }

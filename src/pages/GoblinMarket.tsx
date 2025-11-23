@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { useGoblinMarketData, useHolderProgress } from "@/hooks/useGoblinMarketData";
+import { SolanaWalletProvider } from "@/providers/WalletProvider";
 import { GoblinStatsBar } from "@/components/market/GoblinStatsBar";
 import { DexScreenerChart } from "@/components/market/DexScreenerChart";
 import { HolderQuestBar } from "@/components/market/HolderQuestBar";
@@ -21,6 +22,9 @@ import { LiveViewersCounter } from "@/components/market/LiveViewersCounter";
 import { PortfolioTracker } from "@/components/market/PortfolioTracker";
 import { AchievementTracker } from "@/components/market/AchievementTracker";
 import { SocialChatLayer } from "@/components/market/SocialChatLayer";
+import { JupiterSwap } from "@/components/market/JupiterSwap";
+import { LivePurchaseFeed } from "@/components/market/LivePurchaseFeed";
+import { PurchaseLeaderboard } from "@/components/market/PurchaseLeaderboard";
 import BackToHome from "@/components/BackToHome";
 
 const GoblinMarket = () => {
@@ -72,7 +76,7 @@ const GoblinMarket = () => {
   }
 
   return (
-    <>
+    <SolanaWalletProvider>
       <Helmet>
         <title>Goblin Market - Live TRN Price & Trading | Terrain Token</title>
         <meta
@@ -172,11 +176,20 @@ const GoblinMarket = () => {
             <TRNValuationCard />
           </div>
 
+          {/* Jupiter Swap & Purchase Features */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <JupiterSwap />
+            <LivePurchaseFeed />
+          </div>
+
+          {/* Purchase Leaderboard */}
+          <PurchaseLeaderboard />
+
           {/* Utility & Disclaimer */}
           <UtilityHookSection />
         </main>
       </div>
-    </>
+    </SolanaWalletProvider>
   );
 };
 
