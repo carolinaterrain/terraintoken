@@ -999,6 +999,7 @@ export type Database = {
           created_at: string | null
           fastest_buy_seconds: number | null
           id: string
+          is_public: boolean | null
           last_purchase_date: string | null
           total_purchases: number | null
           total_trn_purchased: number | null
@@ -1012,6 +1013,7 @@ export type Database = {
           created_at?: string | null
           fastest_buy_seconds?: number | null
           id?: string
+          is_public?: boolean | null
           last_purchase_date?: string | null
           total_purchases?: number | null
           total_trn_purchased?: number | null
@@ -1025,6 +1027,7 @@ export type Database = {
           created_at?: string | null
           fastest_buy_seconds?: number | null
           id?: string
+          is_public?: boolean | null
           last_purchase_date?: string | null
           total_purchases?: number | null
           total_trn_purchased?: number | null
