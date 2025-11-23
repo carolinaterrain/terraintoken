@@ -4,11 +4,12 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { AdminAnalyticsCard } from "./AdminAnalyticsCard";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Copy, Download, Gift } from "lucide-react";
+import { Copy, Download, Gift, TrendingUp, Users } from "lucide-react";
 
 interface InvoiceCode {
   id: string;
@@ -205,19 +206,22 @@ export function InvoiceCodesTab() {
   return (
     <div className="space-y-6">
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="p-6">
-          <div className="text-sm text-muted-foreground mb-2">Total Codes Generated</div>
-          <div className="text-3xl font-bold text-goblin-gold">{stats.totalGenerated}</div>
-        </Card>
-        <Card className="p-6">
-          <div className="text-sm text-muted-foreground mb-2">Redemption Rate</div>
-          <div className="text-3xl font-bold text-terrain-purple">{stats.redemptionRate.toFixed(1)}%</div>
-        </Card>
-        <Card className="p-6">
-          <div className="text-sm text-muted-foreground mb-2">TRN Distributed</div>
-          <div className="text-3xl font-bold text-goblin-green">{stats.totalDistributed.toLocaleString()}</div>
-        </Card>
+      <div className="grid gap-4 md:grid-cols-3">
+        <AdminAnalyticsCard
+          title="Total Codes Generated"
+          value={stats.totalGenerated.toLocaleString()}
+          icon={<Gift className="h-4 w-4 text-muted-foreground" />}
+        />
+        <AdminAnalyticsCard
+          title="Redemption Rate"
+          value={`${stats.redemptionRate.toFixed(1)}%`}
+          icon={<TrendingUp className="h-4 w-4 text-muted-foreground" />}
+        />
+        <AdminAnalyticsCard
+          title="TRN Distributed"
+          value={stats.totalDistributed.toLocaleString()}
+          icon={<Users className="h-4 w-4 text-muted-foreground" />}
+        />
       </div>
 
       {/* Generators */}

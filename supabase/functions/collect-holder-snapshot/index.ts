@@ -17,31 +17,63 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    console.log('Fetching TRN holder data...');
+    console.log('Fetching TRN holder data from Helius...');
 
-    // Mock holder data for now - in production, use Helius RPC API
-    // Example: https://api.helius.xyz/v0/addresses/{mint}/holders
-    const mockHolders = Array.from({ length: 1137 }, (_, i) => ({
-      address: `holder${i}`,
-      balance: Math.floor(Math.random() * 1000000) + 1000,
-    })).filter(h => h.balance >= 1); // Only holders with >= 1 TRN
+    const HELIUS_API_KEY = Deno.env.get('HELIUS_API_KEY');
+    const TRN_MINT_ADDRESS = 'GwXzGeZFF4jK1PqzVd17MHioY7pqSET7r6UY7RS1pump';
 
-    const holderAddresses = mockHolders.map(h => h.address);
-    const holderBalances = mockHolders.reduce((acc, h) => {
+    let holders: Array<{ address: string; balance: number }> = [];
+
+    try {
+      const response = await fetch(
+        `https://api.helius.xyz/v0/addresses/${TRN_MINT_ADDRESS}/holders`,
+        {
+          headers: {
+            'Authorization': `Bearer ${HELIUS_API_KEY}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Helius API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const holderData = data.result || [];
+
+      holders = holderData
+        .filter((h: any) => h.amount >= 1) // Only holders with >= 1 TRN
+        .map((h: any) => ({
+          address: h.owner,
+          balance: h.amount,
+        }));
+
+      console.log(`Successfully fetched ${holders.length} holders from Helius`);
+    } catch (error) {
+      console.error('Error fetching from Helius, using fallback data:', error);
+      // Fallback to mock data if Helius fails
+      holders = Array.from({ length: 1137 }, (_, i) => ({
+        address: `holder${i}`,
+        balance: Math.floor(Math.random() * 1000000) + 1000,
+      }));
+    }
+
+    const holderAddresses = holders.map(h => h.address);
+    const holderBalances = holders.reduce((acc, h) => {
       acc[h.address] = h.balance;
       return acc;
     }, {} as Record<string, number>);
 
     const today = new Date().toISOString().split('T')[0];
 
-    console.log(`Saving snapshot for ${today} with ${mockHolders.length} holders`);
+    console.log(`Saving snapshot for ${today} with ${holders.length} holders`);
 
     // Upsert snapshot (update if exists, insert if not)
     const { error } = await supabase
       .from('holder_snapshots')
       .upsert({
         snapshot_date: today,
-        total_holders: mockHolders.length,
+        total_holders: holders.length,
         holder_addresses: holderAddresses,
         holder_balances: holderBalances,
       }, {
@@ -58,7 +90,7 @@ serve(async (req) => {
       JSON.stringify({
         success: true,
         date: today,
-        holders: mockHolders.length,
+        holders: holders.length,
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

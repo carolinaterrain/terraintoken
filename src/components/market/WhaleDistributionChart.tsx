@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
-import { useQuery } from "@tanstack/react-query";
+import { useHolderDistribution } from "@/hooks/useHolderDistribution";
 import { Loader2 } from "lucide-react";
 
 const TIER_COLORS = {
@@ -27,24 +27,7 @@ const TIER_EMOJIS = {
 };
 
 export function WhaleDistributionChart() {
-  const { data: distribution, isLoading } = useQuery({
-    queryKey: ["whale-distribution"],
-    queryFn: async () => {
-      // Mock data for now - replace with actual Helius API call
-      const mockData = [
-        { tier: "shrimp", count: 687, percentage: 68.7, range: "<10K" },
-        { tier: "crab", count: 156, percentage: 15.6, range: "10K-100K" },
-        { tier: "octopus", count: 78, percentage: 7.8, range: "100K-500K" },
-        { tier: "fish", count: 34, percentage: 3.4, range: "500K-1M" },
-        { tier: "dolphin", count: 23, percentage: 2.3, range: "1M-5M" },
-        { tier: "shark", count: 12, percentage: 1.2, range: "5M-10M" },
-        { tier: "whale", count: 7, percentage: 0.7, range: "10M-50M" },
-        { tier: "humpback", count: 3, percentage: 0.3, range: ">50M" },
-      ];
-      return mockData;
-    },
-    refetchInterval: 3600000, // Refresh hourly
-  });
+  const { data, isLoading } = useHolderDistribution();
 
   if (isLoading) {
     return (
@@ -56,9 +39,22 @@ export function WhaleDistributionChart() {
     );
   }
 
-  const top10Percentage = distribution
-    ? distribution.slice(-3).reduce((sum, tier) => sum + tier.percentage, 0)
-    : 0;
+  if (!data) {
+    return null;
+  }
+
+  // Transform data for chart
+  const distribution = [
+    { tier: "shrimp", count: data.tiers.shrimp, percentage: (data.tiers.shrimp / data.totalHolders) * 100, range: "<10K" },
+    { tier: "crab", count: data.tiers.crab, percentage: (data.tiers.crab / data.totalHolders) * 100, range: "10K-100K" },
+    { tier: "fish", count: data.tiers.fish, percentage: (data.tiers.fish / data.totalHolders) * 100, range: "100K-500K" },
+    { tier: "dolphin", count: data.tiers.dolphin, percentage: (data.tiers.dolphin / data.totalHolders) * 100, range: "500K-1M" },
+    { tier: "shark", count: data.tiers.shark, percentage: (data.tiers.shark / data.totalHolders) * 100, range: "1M-5M" },
+    { tier: "whale", count: data.tiers.whale, percentage: (data.tiers.whale / data.totalHolders) * 100, range: "5M-10M" },
+    { tier: "humpback", count: data.tiers.humpback, percentage: (data.tiers.humpback / data.totalHolders) * 100, range: ">10M" },
+  ];
+
+  const top10Percentage = data.top10Percentage;
 
   const isHealthy = top10Percentage < 30;
 

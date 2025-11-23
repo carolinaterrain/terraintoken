@@ -3,10 +3,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { AdminAnalyticsCard } from "./AdminAnalyticsCard";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { CheckCircle, XCircle, ExternalLink } from "lucide-react";
+import { CheckCircle, XCircle, ExternalLink, TrendingUp, Users, DollarSign } from "lucide-react";
 
 interface ReferralReward {
   id: string;
@@ -74,6 +75,7 @@ export function ReferralsTab() {
   };
 
   const updateStatus = async (id: string, status: "approved" | "rejected" | "paid") => {
+    const reward = rewards.find(r => r.id === id);
     const updates: any = { status };
     if (status === "approved") updates.approved_at = new Date().toISOString();
     if (status === "paid") updates.paid_at = new Date().toISOString();
@@ -84,6 +86,25 @@ export function ReferralsTab() {
       toast.error("Failed to update status");
     } else {
       toast.success(`Reward ${status}`);
+      
+      // Send email notification if approved
+      if (status === 'approved' && reward) {
+        try {
+          await supabase.functions.invoke('send-email', {
+            body: {
+              email_type: 'referral_reward_approved',
+              to_email: reward.referred_email,
+              data: {
+                trn_amount: reward.trn_amount,
+                reward_tier: reward.reward_type,
+              },
+            },
+          });
+        } catch (emailError) {
+          console.error('Failed to send reward email:', emailError);
+        }
+      }
+      
       fetchRewards();
       fetchStats();
     }
@@ -111,19 +132,22 @@ export function ReferralsTab() {
   return (
     <div className="space-y-6">
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="p-6">
-          <div className="text-sm text-muted-foreground mb-2">Total Rewards</div>
-          <div className="text-3xl font-bold text-goblin-gold">{stats.totalRewards}</div>
-        </Card>
-        <Card className="p-6">
-          <div className="text-sm text-muted-foreground mb-2">Pending Review</div>
-          <div className="text-3xl font-bold text-terrain-purple">{stats.pendingRewards}</div>
-        </Card>
-        <Card className="p-6">
-          <div className="text-sm text-muted-foreground mb-2">TRN Paid Out</div>
-          <div className="text-3xl font-bold text-goblin-green">{stats.totalPaid.toLocaleString()}</div>
-        </Card>
+      <div className="grid gap-4 md:grid-cols-3">
+        <AdminAnalyticsCard
+          title="Total Rewards"
+          value={stats.totalRewards.toLocaleString()}
+          icon={<Users className="h-4 w-4 text-muted-foreground" />}
+        />
+        <AdminAnalyticsCard
+          title="Pending Review"
+          value={stats.pendingRewards.toLocaleString()}
+          icon={<TrendingUp className="h-4 w-4 text-muted-foreground" />}
+        />
+        <AdminAnalyticsCard
+          title="TRN Paid Out"
+          value={stats.totalPaid.toLocaleString()}
+          icon={<DollarSign className="h-4 w-4 text-muted-foreground" />}
+        />
       </div>
 
       {/* Reward Tiers Config */}
