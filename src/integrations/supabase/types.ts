@@ -733,6 +733,42 @@ export type Database = {
         }
         Relationships: []
       }
+      nft_achievements: {
+        Row: {
+          achievement_id: string
+          id: string
+          metadata: Json | null
+          minted_at: string | null
+          nft_description: string
+          nft_image_url: string
+          nft_name: string
+          rarity: string
+          user_wallet: string
+        }
+        Insert: {
+          achievement_id: string
+          id?: string
+          metadata?: Json | null
+          minted_at?: string | null
+          nft_description: string
+          nft_image_url: string
+          nft_name: string
+          rarity?: string
+          user_wallet: string
+        }
+        Update: {
+          achievement_id?: string
+          id?: string
+          metadata?: Json | null
+          minted_at?: string | null
+          nft_description?: string
+          nft_image_url?: string
+          nft_name?: string
+          rarity?: string
+          user_wallet?: string
+        }
+        Relationships: []
+      }
       onboarding_progress: {
         Row: {
           completed: boolean | null
@@ -1672,6 +1708,22 @@ export type Database = {
       }
     }
     Views: {
+      prediction_leaderboard: {
+        Row: {
+          accuracy_percentage: number | null
+          active_days: number | null
+          best_streak: number | null
+          correct_predictions: number | null
+          first_prediction: string | null
+          highest_multiplier: number | null
+          incorrect_predictions: number | null
+          last_prediction: string | null
+          total_points: number | null
+          total_predictions: number | null
+          user_wallet: string | null
+        }
+        Relationships: []
+      }
       prediction_user_stats: {
         Row: {
           accuracy_percentage: number | null

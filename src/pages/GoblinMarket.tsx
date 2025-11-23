@@ -21,6 +21,9 @@ import { PricePredictionGame } from "@/components/market/PricePredictionGame";
 import { PredictionChallenges } from "@/components/market/PredictionChallenges";
 import { PredictionTournament } from "@/components/market/PredictionTournament";
 import { PredictionInsightsDashboard } from "@/components/market/PredictionInsightsDashboard";
+import { NFTBadgeDisplay } from "@/components/market/NFTBadgeDisplay";
+import { EnhancedLeaderboard } from "@/components/market/EnhancedLeaderboard";
+import { AdvancedAnalytics } from "@/components/market/AdvancedAnalytics";
 import { LiveViewersCounter } from "@/components/market/LiveViewersCounter";
 import { PortfolioTracker } from "@/components/market/PortfolioTracker";
 import { AchievementTracker } from "@/components/market/AchievementTracker";
@@ -154,8 +157,17 @@ const GoblinMarket = () => {
             <PredictionChallenges walletAddress={walletAddress || undefined} />
           </div>
 
-          {/* Prediction Insights */}
-          <PredictionInsightsDashboard walletAddress={walletAddress || undefined} />
+          {/* Prediction Insights & NFT Badges */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <PredictionInsightsDashboard walletAddress={walletAddress || undefined} />
+            <NFTBadgeDisplay walletAddress={walletAddress || undefined} />
+          </div>
+
+          {/* Enhanced Social Leaderboards */}
+          <EnhancedLeaderboard />
+
+          {/* Advanced Analytics */}
+          <AdvancedAnalytics walletAddress={walletAddress || undefined} />
 
           {/* Price Alert Notifications */}
           <PriceAlertNotifications />
