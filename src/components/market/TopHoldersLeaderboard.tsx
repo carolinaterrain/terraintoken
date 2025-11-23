@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DataBadge } from "./DataBadge";
 
 interface Holder {
   address: string;
@@ -59,7 +60,7 @@ export const TopHoldersLeaderboard = () => {
           <Trophy className="w-5 h-5 text-goblin-gold" />
           Top Holders Leaderboard
         </h3>
-        <span className="text-xs text-muted-foreground">Live Rankings</span>
+        <DataBadge type="demo" />
       </div>
 
       <div className="space-y-2">

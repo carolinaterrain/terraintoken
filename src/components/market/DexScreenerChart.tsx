@@ -1,12 +1,17 @@
+import { DataBadge } from "./DataBadge";
+
 export const DexScreenerChart = () => {
   return (
     <div className="bg-gradient-to-br from-terrain-dark via-terrain-shadow to-terrain-deep border-2 border-goblin-gold/60 rounded-2xl p-4 shadow-[0_0_30px_rgba(251,191,36,0.3)] relative overflow-hidden">
       
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-bold text-goblin-gold flex items-center gap-2">
-          📈 Live Trading Chart
-        </h3>
+        <div className="flex items-center gap-2">
+          <h3 className="text-xl font-bold text-goblin-gold flex items-center gap-2">
+            📈 Live Trading Chart
+          </h3>
+          <DataBadge type="live" />
+        </div>
         <div className="text-xs text-muted-foreground">
           Powered by DexScreener
         </div>

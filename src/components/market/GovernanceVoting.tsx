@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
+import { DataBadge } from "./DataBadge";
 
 export const GovernanceVoting = () => {
   const [walletAddress, setWalletAddress] = useState("");
@@ -92,10 +93,13 @@ export const GovernanceVoting = () => {
   return (
     <Card className="p-6 bg-gradient-to-br from-terrain-dark via-terrain-shadow to-terrain-deep border-2 border-terrain-purple/60">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-bold flex items-center gap-2">
-          <Vote className="w-5 h-5 text-terrain-purple" />
-          Governance Proposals
-        </h3>
+        <div className="flex items-center gap-2">
+          <h3 className="text-lg font-bold flex items-center gap-2">
+            <Vote className="w-5 h-5 text-terrain-purple" />
+            Governance Proposals
+          </h3>
+          <DataBadge type={proposals && proposals.length > 0 ? "live" : "coming-soon"} />
+        </div>
         <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
           <DialogTrigger asChild>
             <Button size="sm" className="bg-terrain-purple">

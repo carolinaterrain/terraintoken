@@ -568,6 +568,96 @@ export type Database = {
         }
         Relationships: []
       }
+      live_viewers: {
+        Row: {
+          created_at: string | null
+          id: string
+          last_ping: string | null
+          page_path: string
+          session_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          last_ping?: string | null
+          page_path: string
+          session_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          last_ping?: string | null
+          page_path?: string
+          session_id?: string
+        }
+        Relationships: []
+      }
+      market_achievements: {
+        Row: {
+          achievement_id: string
+          id: string
+          metadata: Json | null
+          unlocked_at: string | null
+          user_wallet: string
+        }
+        Insert: {
+          achievement_id: string
+          id?: string
+          metadata?: Json | null
+          unlocked_at?: string | null
+          user_wallet: string
+        }
+        Update: {
+          achievement_id?: string
+          id?: string
+          metadata?: Json | null
+          unlocked_at?: string | null
+          user_wallet?: string
+        }
+        Relationships: []
+      }
+      market_predictions: {
+        Row: {
+          actual_price: number | null
+          created_at: string | null
+          current_price: number
+          id: string
+          points_earned: number | null
+          predicted_at: string
+          prediction_type: string
+          resolved_at: string | null
+          target_date: string
+          user_wallet: string
+          was_correct: boolean | null
+        }
+        Insert: {
+          actual_price?: number | null
+          created_at?: string | null
+          current_price: number
+          id?: string
+          points_earned?: number | null
+          predicted_at?: string
+          prediction_type: string
+          resolved_at?: string | null
+          target_date: string
+          user_wallet: string
+          was_correct?: boolean | null
+        }
+        Update: {
+          actual_price?: number | null
+          created_at?: string | null
+          current_price?: number
+          id?: string
+          points_earned?: number | null
+          predicted_at?: string
+          prediction_type?: string
+          resolved_at?: string | null
+          target_date?: string
+          user_wallet?: string
+          was_correct?: boolean | null
+        }
+        Relationships: []
+      }
       meme_submissions: {
         Row: {
           caption: string | null
@@ -1174,6 +1264,30 @@ export type Database = {
         }
         Relationships: []
       }
+      wallet_connections: {
+        Row: {
+          connection_count: number | null
+          first_connected_at: string | null
+          id: string
+          last_seen_at: string | null
+          wallet_address: string
+        }
+        Insert: {
+          connection_count?: number | null
+          first_connected_at?: string | null
+          id?: string
+          last_seen_at?: string | null
+          wallet_address: string
+        }
+        Update: {
+          connection_count?: number | null
+          first_connected_at?: string | null
+          id?: string
+          last_seen_at?: string | null
+          wallet_address?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       terrain_contributors_leaderboard: {
@@ -1201,6 +1315,7 @@ export type Database = {
     }
     Functions: {
       cleanup_rate_limits: { Args: never; Returns: undefined }
+      cleanup_stale_viewers: { Args: never; Returns: undefined }
       expire_old_invoice_codes: { Args: never; Returns: undefined }
       has_role: {
         Args: {
