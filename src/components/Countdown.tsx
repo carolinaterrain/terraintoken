@@ -9,7 +9,7 @@ interface TimeLeft {
 }
 
 const Countdown = () => {
-  const targetDate = new Date('2025-11-22T23:59:59-05:00'); // November 22, 2025 @ 11:59 PM EST
+  const targetDate = new Date('2025-12-07T23:59:59-05:00'); // December 7, 2025 @ 11:59 PM EST
   
   const calculateTimeLeft = (): TimeLeft => {
     const difference = targetDate.getTime() - new Date().getTime();
@@ -70,7 +70,7 @@ const Countdown = () => {
       </div>
       
       <h3 className="text-xl md:text-2xl font-bold text-primary mb-2 animate-pulse-glow">
-        🏆 First Meme Contest Ends In:
+        🏆 TRN Meme Contest Ends In:
       </h3>
       <p className="text-sm text-muted-foreground mb-4">
         Submit your best TRN memes for a chance to win rewards!
