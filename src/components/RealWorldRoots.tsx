@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useToast } from "@/hooks/use-toast";
 import confetti from "canvas-confetti";
-import JobberEmbed from "./JobberEmbed";
 
 const RealWorldRoots = () => {
   const [clickCount, setClickCount] = useState(0);
@@ -176,11 +175,6 @@ const RealWorldRoots = () => {
             </div>
           </div>
         </Card>
-
-        {/* Jobber Embed */}
-        <div className="mb-12">
-          <JobberEmbed />
-        </div>
 
         {/* Remote Services Section */}
         <div className="mb-12">
