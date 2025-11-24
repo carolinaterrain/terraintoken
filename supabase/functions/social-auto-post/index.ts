@@ -1,4 +1,12 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+
+const socialPostSchema = z.object({
+  platform: z.enum(['twitter', 'facebook', 'linkedin']),
+  message: z.string().min(1).max(280).trim(),
+  image_url: z.string().url().optional(),
+  link: z.string().url().optional()
+});
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -18,7 +26,29 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { platform, message, image_url, link }: SocialPostRequest = await req.json();
+    // API Key validation
+    const apiKey = req.headers.get('x-api-key');
+    const validApiKey = Deno.env.get('CRON_API_KEY');
+    
+    if (apiKey !== validApiKey) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized - API key required' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Validate and sanitize input
+    const body = await req.json();
+    const validation = socialPostSchema.safeParse(body);
+    
+    if (!validation.success) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid input', details: validation.error.issues }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    const { platform, message, image_url, link } = validation.data;
 
     console.log(`Auto-posting to ${platform}: ${message}`);
 

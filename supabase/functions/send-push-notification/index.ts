@@ -1,5 +1,13 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+
+const notificationSchema = z.object({
+  title: z.string().min(1).max(100),
+  body: z.string().min(1).max(500),
+  icon: z.string().url().optional(),
+  url: z.string().url().optional()
+});
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -22,12 +30,35 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // API Key validation
+    const apiKey = req.headers.get('x-api-key');
+    const validApiKey = Deno.env.get('CRON_API_KEY');
+    
+    if (apiKey !== validApiKey) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized - API key required' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const { title, body, icon, badge, data, target, session_id }: PushNotificationRequest = await req.json();
+    // Validate input
+    const body = await req.json();
+    const validation = notificationSchema.safeParse(body);
+    
+    if (!validation.success) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid input', details: validation.error.issues }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    const { title, body: notificationBody, icon, url } = validation.data;
+    const { badge, data, target, session_id } = await req.json();
 
     // Get subscriptions
     let query = supabaseClient.from('push_subscriptions').select('*');

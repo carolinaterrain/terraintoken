@@ -1,5 +1,18 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+
+const emailWorkflowSchema = z.object({
+  type: z.enum(['waitlist_signup', 'trn_reward', 'contest_entry', 'meme_approved']),
+  data: z.object({
+    email: z.string().email().max(255),
+    name: z.string().max(100).optional(),
+    position: z.number().int().positive().optional(),
+    referral_code: z.string().max(20).optional(),
+    trn_amount: z.number().positive().optional(),
+    contest_week: z.string().max(50).optional()
+  })
+});
 
 const resendApiKey = Deno.env.get("RESEND_API_KEY");
 const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
@@ -28,8 +41,31 @@ serve(async (req: Request): Promise<Response> => {
   }
 
   try {
+    // API Key validation for cron job security
+    const apiKey = req.headers.get('x-api-key');
+    const validApiKey = Deno.env.get('CRON_API_KEY');
+    
+    if (apiKey !== validApiKey) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized - API key required' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const supabase = createClient(supabaseUrl, supabaseKey);
-    const event: EmailWorkflowEvent = await req.json();
+    
+    // Validate input
+    const body = await req.json();
+    const validation = emailWorkflowSchema.safeParse(body);
+    
+    if (!validation.success) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid input', details: validation.error.issues }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    const event: EmailWorkflowEvent = validation.data;
 
     console.log("Processing email workflow:", event.type);
 

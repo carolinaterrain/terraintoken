@@ -11,6 +11,17 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // API Key validation for cron job security
+    const apiKey = req.headers.get('x-api-key');
+    const validApiKey = Deno.env.get('CRON_API_KEY');
+    
+    if (apiKey !== validApiKey) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized - API key required' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const baseUrl = 'https://terraintoken.com'; // Update with your actual domain
     
     // Static pages
