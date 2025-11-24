@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import SkipToContent from "@/components/SkipToContent";
 import ScrollProgress from "@/components/ScrollProgress";
 import SmartHeader from "@/components/SmartHeader";
@@ -52,6 +53,23 @@ const LoadingSection = () => (
 const Index = () => {
   const [activeTab, setActiveTab] = useTabPersistence('homepage', 'overview');
   useTabAnalytics('homepage', activeTab);
+  const location = useLocation();
+
+  useEffect(() => {
+    // Handle tab change from navigation
+    const handleTabChange = (e: CustomEvent) => {
+      setActiveTab(e.detail.tab);
+    };
+    window.addEventListener('changeTab', handleTabChange as EventListener);
+    return () => window.removeEventListener('changeTab', handleTabChange as EventListener);
+  }, [setActiveTab]);
+
+  useEffect(() => {
+    // Handle navigation with state
+    if (location.state?.activeTab) {
+      setActiveTab(location.state.activeTab);
+    }
+  }, [location.state, setActiveTab]);
 
   return (
     <>
