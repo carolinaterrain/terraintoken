@@ -100,7 +100,7 @@ export const WalletConnect = () => {
   };
 
   if (!connected || !publicKey) {
-    return <WalletMultiButton className="!bg-gradient-to-r !from-goblin-green !to-terrain-purple hover:!from-goblin-green/90 hover:!to-terrain-purple/90" />;
+    return <WalletMultiButton className="!bg-gradient-to-r !from-goblin-green !to-terrain-purple hover:!from-goblin-green/90 hover:!to-terrain-purple/90 !text-sm !font-medium" />;
   }
 
   const { tier, color } = getHolderTier(trnBalance);
