@@ -21,6 +21,17 @@ serve(async (req) => {
   }
 
   try {
+    // API Key validation for cron job security
+    const apiKey = req.headers.get('x-api-key');
+    const validApiKey = Deno.env.get('CRON_API_KEY');
+    
+    if (apiKey !== validApiKey) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized - API key required' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Rate limiting
     const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
     const SUPABASE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;

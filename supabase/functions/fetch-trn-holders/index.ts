@@ -11,6 +11,17 @@ serve(async (req) => {
   }
 
   try {
+    // API Key validation for cron job security
+    const apiKey = req.headers.get('x-api-key');
+    const validApiKey = Deno.env.get('CRON_API_KEY');
+    
+    if (apiKey !== validApiKey) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized - API key required' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const HELIUS_API_KEY = Deno.env.get('HELIUS_API_KEY');
     const TRN_MINT_ADDRESS = '2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump';
 
