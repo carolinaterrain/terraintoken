@@ -188,6 +188,9 @@ const AudioControl = () => {
   };
 
   const handleMouseEnter = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
     hoverTimeoutRef.current = setTimeout(() => {
       setShowPopup(true);
     }, 300);
@@ -197,7 +200,10 @@ const AudioControl = () => {
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
     }
-    setShowPopup(false);
+    // Add delay before closing to allow hovering over popup
+    hoverTimeoutRef.current = setTimeout(() => {
+      setShowPopup(false);
+    }, 200);
   };
 
   const retry = () => {
@@ -339,11 +345,20 @@ const AudioControl = () => {
 
         {/* Hover Popup */}
         {showPopup && (
-          <Card className={cn(
-            "absolute bg-background/98 backdrop-blur-md border-primary/30 shadow-glow p-4 space-y-3 w-64 animate-fade-in",
-            "bottom-full mb-2 right-0",
-            "sm:right-full sm:bottom-auto sm:top-0 sm:mr-2 sm:mb-0"
-          )}>
+          <Card 
+            className={cn(
+              "absolute bg-background/98 backdrop-blur-md border-primary/30 shadow-glow p-4 space-y-3 w-64 animate-fade-in",
+              "bottom-full mb-2 right-0",
+              "sm:right-full sm:bottom-auto sm:top-0 sm:mr-2 sm:mb-0"
+            )}
+            onMouseEnter={() => {
+              if (hoverTimeoutRef.current) {
+                clearTimeout(hoverTimeoutRef.current);
+              }
+              setShowPopup(true);
+            }}
+            onMouseLeave={handleMouseLeave}
+          >
             {/* Track Info */}
             <div className="space-y-1">
               <div className="flex items-center gap-2">
