@@ -25,8 +25,8 @@ const DesktopNav = () => {
 
   const navItems = [
     { id: "hero", label: "Home" },
-    { id: "about", label: "About" },
-    { id: "tokenomics", label: "Tokenomics" },
+    { id: "about", label: "About", isTab: true, tab: "token-details" },
+    { id: "tokenomics", label: "Tokenomics", isTab: true, tab: "token-details" },
     { id: "video-updates", label: "Videos", isRoute: true },
     { id: "updates", label: "Blog", isRoute: true },
     { id: "market", label: "🟢 Market", isRoute: true },
@@ -63,6 +63,13 @@ const DesktopNav = () => {
                 onClick={() => {
                   if (item.isRoute) {
                     navigate(`/${item.id}`);
+                  } else if (item.isTab) {
+                    if (location.pathname !== '/') {
+                      navigate('/', { state: { activeTab: item.tab } });
+                    } else {
+                      const event = new CustomEvent('changeTab', { detail: { tab: item.tab } });
+                      window.dispatchEvent(event);
+                    }
                   } else {
                     if (location.pathname !== '/') {
                       navigate('/', { state: { scrollTo: item.id } });
