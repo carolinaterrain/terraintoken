@@ -68,9 +68,12 @@ export const PricePredictionChart = () => {
   let chartData = calculateSMA(historicalData, 7);
   chartData = calculateSMA(chartData, 14);
 
-  // Simple prediction (linear trend for next 7 days)
+  // Simple prediction (linear trend for next 7 days with safeguards)
   const recentPrices = chartData.slice(-7).map(d => d.price);
   const avgChange = (recentPrices[recentPrices.length - 1] - recentPrices[0]) / 7;
+  
+  // Set minimum price floor at 20% of current price to prevent negative predictions
+  const minPrice = currentPrice * 0.2;
   
   const predictions = [];
   const now = Date.now();
@@ -78,7 +81,16 @@ export const PricePredictionChart = () => {
   
   for (let i = 1; i <= 7; i++) {
     const date = new Date(now + i * dayInMs);
-    const predictedPrice = currentPrice + (avgChange * i);
+    let predictedPrice = currentPrice + (avgChange * i);
+    
+    // Apply dampening factor for extreme downward trends
+    if (avgChange < 0) {
+      const dampeningFactor = 0.7; // Reduce impact of negative trend
+      predictedPrice = currentPrice + (avgChange * i * dampeningFactor);
+    }
+    
+    // Ensure price never goes below minimum threshold
+    predictedPrice = Math.max(predictedPrice, minPrice);
     
     predictions.push({
       date: date.toLocaleDateString(),
