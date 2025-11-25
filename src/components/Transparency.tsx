@@ -1,10 +1,13 @@
 import { GlassCard } from "@/components/ui/glass-card";
-import { Shield, CheckCircle, Lock, TrendingUp, Copy, ExternalLink } from "lucide-react";
+import { Shield, CheckCircle, Lock, TrendingUp, Copy, ExternalLink, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { useTokenSupply, formatSupply } from "@/hooks/useTokenSupply";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Transparency = () => {
   const { toast } = useToast();
+  const { data: supplyData, isLoading } = useTokenSupply();
   const contractAddress = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 
   const copyToClipboard = async (text: string, label: string) => {
@@ -32,13 +35,7 @@ const Transparency = () => {
       link: `https://solscan.io/token/${contractAddress}`,
       copyable: true,
     },
-    {
-      icon: TrendingUp,
-      label: "Total Supply",
-      value: "10,431,918 TRN",
-      description: "Fixed supply - no minting",
-      copyable: false,
-    },
+    // Total supply now comes from live data - removed from static array
     {
       icon: CheckCircle,
       label: "Dev Holdings",
@@ -89,6 +86,52 @@ const Transparency = () => {
 
         {/* Key Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          {/* Live Total Supply Card */}
+          <GlassCard hover className="p-6">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                <TrendingUp className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="font-display text-sm font-semibold text-muted-foreground mb-2">
+                Total Supply (Live)
+              </h3>
+              {isLoading ? (
+                <Skeleton className="h-7 w-32 mb-2" />
+              ) : (
+                <>
+                  <div className="flex items-center gap-2 mb-2">
+                    <p className="font-display text-lg font-bold text-primary">
+                      {supplyData ? formatSupply(supplyData.totalSupply, supplyData.decimals) : '—'} TRN
+                    </p>
+                    {supplyData?.isStale && (
+                      <AlertCircle className="w-4 h-4 text-yellow-500" />
+                    )}
+                  </div>
+                  <p className="font-body text-xs text-muted-foreground mb-3">
+                    Fixed supply - mint revoked
+                  </p>
+                  <Button variant="ghost" size="sm" className="text-xs" asChild>
+                    <a
+                      href={`https://solscan.io/token/${contractAddress}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1"
+                    >
+                      Verify on Solscan
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </Button>
+                  {supplyData && (
+                    <p className="text-[10px] text-muted-foreground mt-2">
+                      Updated: {new Date(supplyData.lastUpdated).toLocaleTimeString()}
+                    </p>
+                  )}
+                </>
+              )}
+            </div>
+          </GlassCard>
+
+          {/* Static Stats */}
           {transparencyStats.map((stat, index) => {
             const Icon = stat.icon;
             return (
