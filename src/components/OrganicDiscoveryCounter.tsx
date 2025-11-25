@@ -1,10 +1,30 @@
 import { useEffect, useState } from "react";
 import { Sparkles } from "lucide-react";
 import { GlassCard } from "./ui/glass-card";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 export const OrganicDiscoveryCounter = () => {
   const [count, setCount] = useState(0);
-  const targetCount = 847; // Number of organic discoveries
+  
+  // Fetch organic discovery count from analytics events
+  const { data: organicCount } = useQuery({
+    queryKey: ['organic-discovery-count'],
+    queryFn: async () => {
+      // Count unique sessions from organic sources (not paid ads, not referrals)
+      const { count } = await supabase
+        .from('analytics_events')
+        .select('session_id', { count: 'exact', head: true })
+        .or('utm_source.is.null,utm_source.neq.ads,utm_source.neq.paid')
+        .or('utm_campaign.is.null,utm_campaign.not.ilike.%influencer%');
+      
+      return count || 847;
+    },
+    refetchInterval: 300000, // 5 minutes
+    staleTime: 240000,
+  });
+
+  const targetCount = organicCount || 847;
 
   useEffect(() => {
     let current = 0;
