@@ -1,9 +1,12 @@
-import { MessageCircle, Users, Twitter, Shield, TrendingUp } from "lucide-react";
+import { MessageCircle, Users, Twitter, Shield, TrendingUp, ExternalLink } from "lucide-react";
 import { GlassCard } from "@/components/ui/glass-card";
+import { useTokenSupply, formatSupply } from "@/hooks/useTokenSupply";
+import { Skeleton } from "@/components/ui/skeleton";
 import trnCoin from "@/assets/trn-coin.png";
 
 const Footer = () => {
   const contractAddress = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+  const { data: supplyData, isLoading } = useTokenSupply();
 
   return (
     <footer className="border-t border-border/50 bg-terrain-dark">
@@ -13,12 +16,44 @@ const Footer = () => {
           <GlassCard className="p-4 text-center">
             <TrendingUp className="w-5 h-5 text-primary mx-auto mb-2" />
             <p className="text-xs text-muted-foreground mb-1">Total Supply</p>
-            <p className="font-display text-sm font-bold text-primary">10.43M TRN</p>
+            {isLoading ? (
+              <Skeleton className="h-5 w-20 mx-auto" />
+            ) : (
+              <>
+                <p className="font-display text-sm font-bold text-primary">
+                  {supplyData ? formatSupply(supplyData.totalSupply, supplyData.decimals) : '—'} TRN
+                </p>
+                <a
+                  href={`https://solscan.io/token/${contractAddress}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-[9px] text-muted-foreground hover:text-primary mt-1"
+                >
+                  Verify <ExternalLink className="w-2 h-2" />
+                </a>
+              </>
+            )}
           </GlassCard>
           <GlassCard className="p-4 text-center">
             <Shield className="w-5 h-5 text-primary mx-auto mb-2" />
             <p className="text-xs text-muted-foreground mb-1">Circulating</p>
-            <p className="font-display text-sm font-bold text-primary">~5.2M TRN</p>
+            {isLoading ? (
+              <Skeleton className="h-5 w-20 mx-auto" />
+            ) : (
+              <>
+                <p className="font-display text-sm font-bold text-primary">
+                  {supplyData ? formatSupply(supplyData.circulatingSupply, supplyData.decimals) : '—'} TRN
+                </p>
+                <a
+                  href={`https://solscan.io/token/${contractAddress}#holders`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-[9px] text-muted-foreground hover:text-primary mt-1"
+                >
+                  Verify <ExternalLink className="w-2 h-2" />
+                </a>
+              </>
+            )}
           </GlassCard>
           <GlassCard className="p-4 text-center">
             <Shield className="w-5 h-5 text-primary mx-auto mb-2" />

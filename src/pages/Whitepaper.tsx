@@ -1,13 +1,18 @@
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
-import { Download, FileText, Shield, Target, Users, TrendingUp, Lock, Coins, BookOpen } from "lucide-react";
+import { Download, FileText, Shield, Target, Users, TrendingUp, Lock, Coins, BookOpen, ExternalLink } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import DesktopNav from "@/components/DesktopNav";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
 import BackToHome from "@/components/BackToHome";
+import { useTokenSupply, formatSupply } from "@/hooks/useTokenSupply";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Whitepaper = () => {
+  const { data: supplyData, isLoading } = useTokenSupply();
+  const contractAddress = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+  
   const sections = [
     {
       icon: FileText,
@@ -22,7 +27,7 @@ const Whitepaper = () => {
     {
       icon: Coins,
       title: "Tokenomics",
-      description: "Fixed supply of 10,431,918 TRN. 50% DEX liquidity (locked), 25% treasury, 15% community rewards, 10% team (vested over 2 years)."
+      description: "Fixed supply (see live data below). 50% DEX liquidity (locked), 25% treasury, 15% community rewards, 10% team (vested over 2 years)."
     },
     {
       icon: Target,
@@ -91,7 +96,7 @@ const Whitepaper = () => {
             </div>
 
             <p className="text-sm text-muted-foreground italic">
-              Last Updated: November 2025 | Version 1.0
+              Last Updated: November 2025 | Version 1.0 | Supply data is live from blockchain
             </p>
           </div>
 
@@ -143,11 +148,27 @@ const Whitepaper = () => {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
-                  <h3 className="font-display text-xl font-semibold mb-4 text-primary">Supply Details</h3>
+                  <h3 className="font-display text-xl font-semibold mb-4 text-primary">Supply Details (Live)</h3>
                   <div className="space-y-3">
-                    <div className="flex justify-between p-3 bg-background/30 rounded-lg">
+                    <div className="flex justify-between items-center p-3 bg-background/30 rounded-lg">
                       <span className="text-muted-foreground">Total Supply:</span>
-                      <span className="font-bold text-primary">10,431,918 TRN</span>
+                      {isLoading ? (
+                        <Skeleton className="h-6 w-32" />
+                      ) : (
+                        <div className="text-right">
+                          <span className="font-bold text-primary">
+                            {supplyData ? formatSupply(supplyData.totalSupply, supplyData.decimals) : '—'} TRN
+                          </span>
+                          <a
+                            href={`https://solscan.io/token/${contractAddress}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="ml-2 inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary"
+                          >
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        </div>
+                      )}
                     </div>
                     <div className="flex justify-between p-3 bg-background/30 rounded-lg">
                       <span className="text-muted-foreground">Mint Authority:</span>
