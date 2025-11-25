@@ -8,8 +8,14 @@ import terrainMascot from "@/assets/terrain-mascot.png";
 import trnCoin from "@/assets/trn-coin.png";
 import heroBackground from "@/assets/hero-terrain-grid.jpg";
 import { useTokenStats } from "@/hooks/useTokenStats";
+import { UIMode } from "@/stores/uiModeStore";
 
-const Hero = () => {
+interface HeroProps {
+  mode?: UIMode;
+}
+
+const Hero = ({ mode = 'research' }: HeroProps) => {
+  const isApeMode = mode === 'ape';
   const { toast } = useToast();
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
   const [goblinPhrase, setGoblinPhrase] = useState("");
@@ -188,14 +194,22 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Subheading */}
+          {/* Subheading - Different per mode */}
           <p className="font-display text-lg md:text-xl lg:text-2xl text-muted-foreground -mt-3">
-            Born From The Ground Down
+            {isApeMode ? "🚀 Real Business. Real Rewards. No BS." : "Born From The Ground Down"}
           </p>
 
-          {/* Subtitle Tagline */}
+          {/* Subtitle Tagline - More aggressive in Ape Mode */}
           <p className="font-body text-base md:text-lg text-muted-foreground max-w-lg">
-            The only meme coin where you <span className="text-primary font-semibold">EARN by contributing</span>—not just by holding. <span className="text-primary font-semibold">TerrainVision AI is LIVE.</span>
+            {isApeMode ? (
+              <>
+                <span className="text-primary font-bold text-xl">Stop gambling.</span> Upload photos, train AI, <span className="text-primary font-bold">earn TRN tokens instantly.</span> Live NOW.
+              </>
+            ) : (
+              <>
+                The only meme coin where you <span className="text-primary font-semibold">EARN by contributing</span>—not just by holding. <span className="text-primary font-semibold">TerrainVision AI is LIVE.</span>
+              </>
+            )}
           </p>
 
           {/* Contract Address with Copy + Verification */}
@@ -213,68 +227,102 @@ const Hero = () => {
             <ContractVerificationBadge />
           </div>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons - More aggressive in Ape Mode */}
           <div className="flex flex-col w-full md:w-auto gap-3 mt-2">
-            <Button
-              variant="default"
-              size="lg"
-              className="font-display font-semibold w-full md:w-64"
-              asChild
-            >
-              <a href="/earn-trn">
-                <span className="mr-2">🌱</span>
-                Start Earning TRN
-              </a>
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="font-display font-semibold w-full md:w-64"
-              asChild
-            >
-              <a
-                href="https://pump.fun/coin/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Buy TRN
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
-            </Button>
+            {isApeMode ? (
+              <>
+                <Button
+                  variant="default"
+                  size="lg"
+                  className="font-display font-bold text-lg w-full md:w-64 h-14"
+                  asChild
+                >
+                  <a
+                    href="https://pump.fun/coin/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    BUY TRN NOW 🚀
+                  </a>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="font-display font-semibold w-full md:w-64"
+                  asChild
+                >
+                  <a href="/earn-trn">
+                    <span className="mr-2">💰</span>
+                    Or Earn It Free
+                  </a>
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="default"
+                  size="lg"
+                  className="font-display font-semibold w-full md:w-64"
+                  asChild
+                >
+                  <a href="/earn-trn">
+                    <span className="mr-2">🌱</span>
+                    Start Earning TRN
+                  </a>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="font-display font-semibold w-full md:w-64"
+                  asChild
+                >
+                  <a
+                    href="https://pump.fun/coin/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Buy TRN
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </a>
+                </Button>
 
-            <Button
-              variant="ghost"
-              size="lg"
-              className="font-display font-semibold w-full md:w-64"
-              asChild
-            >
-              <a href="/whitepaper">
-                <FileText className="mr-2 h-5 w-5" />
-                Whitepaper
-              </a>
-            </Button>
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  className="font-display font-semibold w-full md:w-64"
+                  asChild
+                >
+                  <a href="/whitepaper">
+                    <FileText className="mr-2 h-5 w-5" />
+                    Whitepaper
+                  </a>
+                </Button>
+              </>
+            )}
           </div>
 
-          {/* Inline Waitlist CTA */}
-          <div className="mt-8 p-6 bg-gradient-to-br from-primary/10 via-chart-3/10 to-primary/5 border-2 border-primary/30 rounded-xl backdrop-blur-sm">
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">🎮</span>
-                <h3 className="font-display text-xl font-bold">Join TerrainScape Waitlist</h3>
+          {/* Inline Waitlist CTA - Hide in Ape Mode */}
+          {!isApeMode && (
+            <div className="mt-8 p-6 bg-gradient-to-br from-primary/10 via-chart-3/10 to-primary/5 border-2 border-primary/30 rounded-xl backdrop-blur-sm">
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">🎮</span>
+                  <h3 className="font-display text-xl font-bold">Join TerrainScape Waitlist</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Be first to play the AI-powered drainage game. <span className="text-primary font-semibold">1,000+</span> already waiting.
+                </p>
+                <Button
+                  variant="default"
+                  size="lg"
+                  className="font-semibold w-full"
+                  asChild
+                >
+                  <a href="#community">🌱 Secure Beta Access</a>
+                </Button>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Be first to play the AI-powered drainage game. <span className="text-primary font-semibold">1,000+</span> already waiting.
-              </p>
-              <Button
-                variant="default"
-                size="lg"
-                className="font-semibold w-full"
-                asChild
-              >
-                <a href="#community">🌱 Secure Beta Access</a>
-              </Button>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>
