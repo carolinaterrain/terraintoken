@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
-import { Upload, X, ArrowLeft, Share2 } from "lucide-react";
+import { Upload, X, ArrowLeft, AlertCircle, Clock, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -40,6 +40,10 @@ const UploadProject = () => {
   const [goblinMessage, setGoblinMessage] = useState("");
   const [showRewardModal, setShowRewardModal] = useState(false);
   const [uploadedMediaId, setUploadedMediaId] = useState("");
+  const [uploadProgress, setUploadProgress] = useState<string>("");
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [uploadTimeout, setUploadTimeout] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout>();
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
@@ -118,23 +122,43 @@ const UploadProject = () => {
     }
 
     setIsSubmitting(true);
+    setUploadTimeout(false);
+    setIsAnalyzing(true);
+    
+    // Set upload timeout (2 minutes)
+    timeoutRef.current = setTimeout(() => {
+      setUploadTimeout(true);
+      setIsAnalyzing(false);
+      setIsSubmitting(false);
+      toast({
+        title: "Upload Timeout",
+        description: "The upload is taking too long. Please use a smaller file or check your connection.",
+        variant: "destructive",
+      });
+    }, 120000);
 
     try {
+      setUploadProgress("Checking rate limits...");
+      
       // Check rate limit first
       const { data: rateLimitData, error: rateLimitError } = await supabase.functions.invoke('upload-project-media', {
         body: {}
       });
 
       if (rateLimitError || !rateLimitData?.success) {
+        clearTimeout(timeoutRef.current);
         toast({
           title: "Rate Limit Exceeded",
           description: "You've uploaded too many projects recently. Please try again later.",
           variant: "destructive",
         });
         setIsSubmitting(false);
+        setIsAnalyzing(false);
         return;
       }
 
+      setUploadProgress("Uploading image...");
+      
       // Upload image to Supabase Storage
       const fileExt = imageFile.name.split('.').pop();
       const fileName = `${Date.now()}.${fileExt}`;
@@ -145,11 +169,20 @@ const UploadProject = () => {
 
       if (uploadError) throw uploadError;
 
+      setUploadProgress("Processing image...");
+      
       // Get public URL
       const { data: { publicUrl } } = supabase.storage
         .from('carolina-terrain-projects')
         .getPublicUrl(fileName);
 
+      setUploadProgress("Analyzing terrain features...");
+      
+      // Simulate AI analysis delay (in real implementation, this would be actual AI processing)
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      setUploadProgress("Saving results...");
+      
       // Insert into database
       const { data: insertData, error: insertError } = await supabase
         .from('project_media')
@@ -169,6 +202,8 @@ const UploadProject = () => {
       if (insertError) throw insertError;
 
       setUploadedMediaId(insertData.id);
+      
+      setUploadProgress("Calculating rewards...");
 
       // Calculate TRN rewards
       if (walletAddress && insertData) {
@@ -185,6 +220,8 @@ const UploadProject = () => {
           if (rewardError) {
             console.error('Reward calculation error:', rewardError);
           } else if (rewardData) {
+            clearTimeout(timeoutRef.current);
+            setUploadProgress("Complete!");
             setEarnedTRN(rewardData.totalTRN || 0);
             setGoblinMessage(rewardData.goblinMessage || "TRN earned!");
             setShowRewardModal(true);
@@ -193,6 +230,7 @@ const UploadProject = () => {
           console.error('Reward error:', err);
         }
       } else {
+        clearTimeout(timeoutRef.current);
         toast({
           title: "Upload Successful!",
           description: "Your project has been added.",
@@ -201,6 +239,7 @@ const UploadProject = () => {
       }
 
       if (!walletAddress) {
+        clearTimeout(timeoutRef.current);
         toast({
           title: "Success!",
           description: "Project uploaded successfully.",
@@ -218,11 +257,13 @@ const UploadProject = () => {
         setIsFeatured(false);
         setWalletAddress("");
         setDataConsent(false);
+        setUploadProgress("");
         
         // Navigate to home after delay
         setTimeout(() => navigate("/"), 2000);
       }
     } catch (error) {
+      clearTimeout(timeoutRef.current);
       console.error("Upload error:", error);
       toast({
         title: "Upload Failed",
@@ -231,8 +272,19 @@ const UploadProject = () => {
       });
     } finally {
       setIsSubmitting(false);
+      setIsAnalyzing(false);
+      setUploadProgress("");
     }
   };
+  
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-background py-12 px-4">
@@ -248,8 +300,34 @@ const UploadProject = () => {
 
         <GlassCard className="p-8">
           <h1 className="font-display text-3xl font-bold text-center mb-8">
-            Upload Project Photo
+            🌱 Earn Terrain Token (TRN) Rewards
           </h1>
+          
+          <p className="text-center text-muted-foreground mb-8">
+            Help train our AI and earn cryptocurrency rewards
+          </p>
+          
+          {uploadTimeout && (
+            <div className="mb-6 p-4 bg-destructive/10 border border-destructive rounded-lg flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold text-destructive">Upload Timeout</p>
+                <p className="text-sm text-destructive/80">
+                  The upload is taking too long. Please use a smaller file or check your connection.
+                </p>
+              </div>
+            </div>
+          )}
+          
+          {isAnalyzing && uploadProgress && (
+            <div className="mb-6 p-4 bg-primary/10 border border-primary rounded-lg flex items-start gap-3">
+              <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5 animate-pulse" />
+              <div>
+                <p className="font-semibold text-primary">Processing...</p>
+                <p className="text-sm text-muted-foreground">{uploadProgress}</p>
+              </div>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Image Upload */}
@@ -409,6 +487,32 @@ const UploadProject = () => {
                 <p className="text-xs text-muted-foreground mt-3">Additional rewards: +25 TRN for validation, +15 TRN for social share</p>
               </div>
             </div>
+            
+            {/* Before You Start Section */}
+            <div className="p-6 bg-muted/50 rounded-lg border border-border">
+              <div className="flex items-center gap-2 mb-4">
+                <Clock className="w-5 h-5 text-primary" />
+                <h4 className="font-display font-bold">Before You Start:</h4>
+              </div>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span>Analysis takes 45-60 seconds to complete</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span>Please keep this page open during analysis</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span>You'll see real-time progress updates</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span>Results will load automatically when ready</span>
+                </li>
+              </ul>
+            </div>
 
             {/* Submit Button */}
             <Button
@@ -416,7 +520,14 @@ const UploadProject = () => {
               className="w-full"
               disabled={isSubmitting || !imageFile || !category}
             >
-              {isSubmitting ? "Uploading..." : "Upload Project"}
+              {isSubmitting ? (
+                <span className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 animate-spin" />
+                  {uploadProgress || "Processing..."}
+                </span>
+              ) : (
+                "Start Analysis"
+              )}
             </Button>
           </form>
         </GlassCard>
