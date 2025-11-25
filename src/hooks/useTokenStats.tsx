@@ -1,25 +1,30 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchTRNStats, fetchMemeStats } from "@/lib/api";
+import { useSmartPolling } from "@/hooks/useSmartPolling";
 
 export function useTokenStats() {
+  const pollingInterval = useSmartPolling(60000);
+  
   return useQuery({
     queryKey: ["token-stats"],
     queryFn: fetchTRNStats,
-    refetchInterval: 60000, // Refresh every 1 minute (optimized from 30s)
-    staleTime: 55000, // Consider data stale after 55 seconds
-    gcTime: 600000, // Keep in cache for 10 minutes
-    refetchOnWindowFocus: false, // Don't refetch on window focus to reduce API calls
-    refetchOnMount: false, // Don't refetch on mount if data exists
-    retry: 2, // Reduce retries from 3 to 2
+    refetchInterval: pollingInterval,
+    staleTime: 55000,
+    gcTime: 600000,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    retry: 2,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
 }
 
 export function useMemeStats() {
+  const pollingInterval = useSmartPolling(300000);
+  
   return useQuery({
     queryKey: ["meme-stats"],
     queryFn: fetchMemeStats,
-    refetchInterval: 300000, // Refresh every 5 minutes
+    refetchInterval: pollingInterval,
     staleTime: 240000,
     refetchOnWindowFocus: false,
     refetchOnMount: true,

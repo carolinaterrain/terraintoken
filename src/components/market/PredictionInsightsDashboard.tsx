@@ -135,7 +135,7 @@ export const PredictionInsightsDashboard = ({
             <span className="text-xs text-muted-foreground">Total Points</span>
           </div>
           <div className="text-xl font-bold">
-            {Number(userStats.lifetime_points || 0).toLocaleString()}
+            {Number(userStats.total_points || 0).toLocaleString()}
           </div>
           <div className="text-xs text-muted-foreground">
             {userStats.highest_multiplier}x max multiplier
