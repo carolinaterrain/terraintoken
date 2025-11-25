@@ -151,7 +151,6 @@ const Hero = ({ mode = 'research' }: HeroProps) => {
               width="384"
               height="384"
               loading="eager"
-              fetchPriority="high"
             />
           </div>
         </div>
