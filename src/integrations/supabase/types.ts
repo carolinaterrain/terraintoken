@@ -1724,6 +1724,7 @@ export type Database = {
           highest_multiplier: number | null
           incorrect_predictions: number | null
           last_prediction: string | null
+          rank: number | null
           total_points: number | null
           total_predictions: number | null
           user_wallet: string | null
@@ -1736,9 +1737,11 @@ export type Database = {
           active_days: number | null
           best_streak: number | null
           correct_predictions: number | null
+          first_prediction: string | null
           highest_multiplier: number | null
           incorrect_predictions: number | null
-          lifetime_points: number | null
+          last_prediction: string | null
+          total_points: number | null
           total_predictions: number | null
           user_wallet: string | null
         }

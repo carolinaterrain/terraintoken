@@ -1,7 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useSmartPolling } from "@/hooks/useSmartPolling";
 
 export function useLiveHolderCount() {
+  const pollingInterval = useSmartPolling(120000);
+  
   return useQuery({
     queryKey: ["live-holder-count"],
     queryFn: async () => {
@@ -14,7 +17,7 @@ export function useLiveHolderCount() {
 
       return data;
     },
-    refetchInterval: 120000, // Refresh every 2 minutes
+    refetchInterval: pollingInterval,
     staleTime: 100000,
   });
 }

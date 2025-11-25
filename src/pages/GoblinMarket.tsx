@@ -1,42 +1,65 @@
 import { Helmet } from "react-helmet-async";
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { Loader2 } from "lucide-react";
 import { useGoblinMarketData, useHolderProgress } from "@/hooks/useGoblinMarketData";
 import { SolanaWalletProvider } from "@/providers/WalletProvider";
+import { LazySection } from "@/components/ui/lazy-section";
+import { Skeleton } from "@/components/ui/skeleton";
+
+// Critical components - Load immediately
 import { GoblinStatsBar } from "@/components/market/GoblinStatsBar";
 import { DexScreenerChart } from "@/components/market/DexScreenerChart";
-import { HolderQuestBar } from "@/components/market/HolderQuestBar";
-import { UtilityHookSection } from "@/components/market/UtilityHookSection";
-import { WhaleDistributionChart } from "@/components/market/WhaleDistributionChart";
-import { TRNValuationCard } from "@/components/market/TRNValuationCard";
+import { WalletConnect } from "@/components/market/WalletConnect";
+import { LiveViewersCounter } from "@/components/market/LiveViewersCounter";
+import BackToHome from "@/components/BackToHome";
+
+// Above-the-fold components - Load on mount
 import { LiveHolderTracker } from "@/components/market/LiveHolderTracker";
 import { PriceAlerts } from "@/components/market/PriceAlerts";
-import { MarketSentiment } from "@/components/market/MarketSentiment";
-import { TradingHistoryFeed } from "@/components/market/TradingHistoryFeed";
-import { TopHoldersLeaderboard } from "@/components/market/TopHoldersLeaderboard";
-import { PricePredictionChart } from "@/components/market/PricePredictionChart";
-import { GovernanceVoting } from "@/components/market/GovernanceVoting";
-import { WalletConnect } from "@/components/market/WalletConnect";
 import { PricePredictionGame } from "@/components/market/PricePredictionGame";
-import { PredictionChallenges } from "@/components/market/PredictionChallenges";
-import { PredictionTournament } from "@/components/market/PredictionTournament";
-import { PredictionInsightsDashboard } from "@/components/market/PredictionInsightsDashboard";
-import { NFTBadgeDisplay } from "@/components/market/NFTBadgeDisplay";
-import { EnhancedLeaderboard } from "@/components/market/EnhancedLeaderboard";
-import { AdvancedAnalytics } from "@/components/market/AdvancedAnalytics";
-import { LiveViewersCounter } from "@/components/market/LiveViewersCounter";
-import { PortfolioTracker } from "@/components/market/PortfolioTracker";
-import { AchievementTracker } from "@/components/market/AchievementTracker";
-import { SocialChatLayer } from "@/components/market/SocialChatLayer";
-import { JupiterSwap } from "@/components/market/JupiterSwap";
-import { LivePurchaseFeed } from "@/components/market/LivePurchaseFeed";
-import { PurchaseLeaderboard } from "@/components/market/PurchaseLeaderboard";
-import { WhaleAlerts } from "@/components/market/WhaleAlerts";
-import { ReferralSystem } from "@/components/market/ReferralSystem";
-import { FiatOnRamp } from "@/components/market/FiatOnRamp";
-import { PriceAlertNotifications } from "@/components/market/PriceAlertNotifications";
-import { useNotificationService } from "@/components/market/NotificationStatus";
-import BackToHome from "@/components/BackToHome";
+
+// Below-the-fold components - Lazy load with named export wrapping
+const PredictionTournament = lazy(() => import("@/components/market/PredictionTournament").then(m => ({ default: m.PredictionTournament })));
+const PredictionChallenges = lazy(() => import("@/components/market/PredictionChallenges").then(m => ({ default: m.PredictionChallenges })));
+const PredictionInsightsDashboard = lazy(() => import("@/components/market/PredictionInsightsDashboard").then(m => ({ default: m.PredictionInsightsDashboard })));
+const NFTBadgeDisplay = lazy(() => import("@/components/market/NFTBadgeDisplay").then(m => ({ default: m.NFTBadgeDisplay })));
+const EnhancedLeaderboard = lazy(() => import("@/components/market/EnhancedLeaderboard").then(m => ({ default: m.EnhancedLeaderboard })));
+const AdvancedAnalytics = lazy(() => import("@/components/market/AdvancedAnalytics").then(m => ({ default: m.AdvancedAnalytics })));
+const PriceAlertNotifications = lazy(() => import("@/components/market/PriceAlertNotifications").then(m => ({ default: m.PriceAlertNotifications })));
+const PortfolioTracker = lazy(() => import("@/components/market/PortfolioTracker").then(m => ({ default: m.PortfolioTracker })));
+const AchievementTracker = lazy(() => import("@/components/market/AchievementTracker").then(m => ({ default: m.AchievementTracker })));
+const MarketSentiment = lazy(() => import("@/components/market/MarketSentiment").then(m => ({ default: m.MarketSentiment })));
+const HolderQuestBar = lazy(() => import("@/components/market/HolderQuestBar").then(m => ({ default: m.HolderQuestBar })));
+const SocialChatLayer = lazy(() => import("@/components/market/SocialChatLayer").then(m => ({ default: m.SocialChatLayer })));
+const TradingHistoryFeed = lazy(() => import("@/components/market/TradingHistoryFeed").then(m => ({ default: m.TradingHistoryFeed })));
+const TopHoldersLeaderboard = lazy(() => import("@/components/market/TopHoldersLeaderboard").then(m => ({ default: m.TopHoldersLeaderboard })));
+const PricePredictionChart = lazy(() => import("@/components/market/PricePredictionChart").then(m => ({ default: m.PricePredictionChart })));
+const GovernanceVoting = lazy(() => import("@/components/market/GovernanceVoting").then(m => ({ default: m.GovernanceVoting })));
+const WhaleDistributionChart = lazy(() => import("@/components/market/WhaleDistributionChart").then(m => ({ default: m.WhaleDistributionChart })));
+const TRNValuationCard = lazy(() => import("@/components/market/TRNValuationCard").then(m => ({ default: m.TRNValuationCard })));
+const JupiterSwap = lazy(() => import("@/components/market/JupiterSwap").then(m => ({ default: m.JupiterSwap })));
+const LivePurchaseFeed = lazy(() => import("@/components/market/LivePurchaseFeed").then(m => ({ default: m.LivePurchaseFeed })));
+const FiatOnRamp = lazy(() => import("@/components/market/FiatOnRamp").then(m => ({ default: m.FiatOnRamp })));
+const PurchaseLeaderboard = lazy(() => import("@/components/market/PurchaseLeaderboard").then(m => ({ default: m.PurchaseLeaderboard })));
+const WhaleAlerts = lazy(() => import("@/components/market/WhaleAlerts").then(m => ({ default: m.WhaleAlerts })));
+const ReferralSystem = lazy(() => import("@/components/market/ReferralSystem").then(m => ({ default: m.ReferralSystem })));
+const UtilityHookSection = lazy(() => import("@/components/market/UtilityHookSection").then(m => ({ default: m.UtilityHookSection })));
+
+// Lazy load notification service
+const NotificationService = lazy(() => 
+  import("@/components/market/NotificationStatus").then(module => ({
+    default: () => {
+      module.useNotificationService();
+      return null;
+    }
+  }))
+);
+
+const ComponentFallback = () => (
+  <div className="flex items-center justify-center p-8">
+    <Loader2 className="w-6 h-6 animate-spin text-goblin-gold" />
+  </div>
+);
 
 const GoblinMarket = () => {
   const { data: marketData, isLoading: isLoadingMarket } = useGoblinMarketData();
@@ -44,16 +67,12 @@ const GoblinMarket = () => {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [solBalance, setSOLBalance] = useState<number>(0);
 
-  // Enable background notification checking
-  useNotificationService();
-
   // Listen for wallet connection changes
   useEffect(() => {
     const handleWalletChange = (event: CustomEvent) => {
       const address = event.detail;
       setWalletAddress(address);
       
-      // Also get SOL balance if available
       if (event.detail && typeof event.detail === 'object' && 'solBalance' in event.detail) {
         setSOLBalance(event.detail.solBalance);
       }
@@ -67,7 +86,6 @@ const GoblinMarket = () => {
 
   const isLoading = isLoadingMarket || isLoadingHolders;
 
-  // Use fallback data if API fails
   const marketStats = marketData?.stats || {
     priceUsd: "0.00001149",
     priceChange24h: 5.2,
@@ -104,8 +122,13 @@ const GoblinMarket = () => {
         />
       </Helmet>
 
+      {/* Load notification service in background */}
+      <Suspense fallback={null}>
+        <NotificationService />
+      </Suspense>
+
       <div className="min-h-screen bg-background">
-        {/* Header */}
+        {/* Header - Always visible */}
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <BackToHome />
@@ -129,7 +152,7 @@ const GoblinMarket = () => {
             </p>
           </div>
 
-          {/* Stats Bar */}
+          {/* Critical Above-the-Fold Content - Load immediately */}
           <GoblinStatsBar
             price={parseFloat(marketStats.priceUsd)}
             priceChange24h={marketStats.priceChange24h}
@@ -138,10 +161,9 @@ const GoblinMarket = () => {
             liquidity={marketStats.liquidity}
           />
 
-          {/* Chart */}
           <DexScreenerChart />
 
-          {/* Engagement Features Row */}
+          {/* Primary Engagement Features - Load immediately */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <LiveHolderTracker />
             <PriceAlerts currentPrice={parseFloat(marketStats.priceUsd)} />
@@ -151,91 +173,155 @@ const GoblinMarket = () => {
             />
           </div>
 
-          {/* Prediction Tournament & Challenges */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <PredictionTournament walletAddress={walletAddress || undefined} />
-            <PredictionChallenges walletAddress={walletAddress || undefined} />
-          </div>
+          {/* Prediction Features - Lazy load */}
+          <LazySection fallback={<Skeleton className="h-96" />}>
+            <Suspense fallback={<ComponentFallback />}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <PredictionTournament walletAddress={walletAddress || undefined} />
+                <PredictionChallenges walletAddress={walletAddress || undefined} />
+              </div>
+            </Suspense>
+          </LazySection>
 
-          {/* Prediction Insights & NFT Badges */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <PredictionInsightsDashboard walletAddress={walletAddress || undefined} />
-            <NFTBadgeDisplay walletAddress={walletAddress || undefined} />
-          </div>
+          {/* Prediction Insights & NFT Badges - Lazy load */}
+          <LazySection fallback={<Skeleton className="h-96" />}>
+            <Suspense fallback={<ComponentFallback />}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <PredictionInsightsDashboard walletAddress={walletAddress || undefined} />
+                <NFTBadgeDisplay walletAddress={walletAddress || undefined} />
+              </div>
+            </Suspense>
+          </LazySection>
 
-          {/* Enhanced Social Leaderboards */}
-          <EnhancedLeaderboard />
+          {/* Enhanced Leaderboard - Lazy load */}
+          <LazySection fallback={<Skeleton className="h-96" />}>
+            <Suspense fallback={<ComponentFallback />}>
+              <EnhancedLeaderboard />
+            </Suspense>
+          </LazySection>
 
-          {/* Advanced Analytics */}
-          <AdvancedAnalytics walletAddress={walletAddress || undefined} />
+          {/* Advanced Analytics - Lazy load */}
+          <LazySection fallback={<Skeleton className="h-96" />}>
+            <Suspense fallback={<ComponentFallback />}>
+              <AdvancedAnalytics walletAddress={walletAddress || undefined} />
+            </Suspense>
+          </LazySection>
 
-          {/* Price Alert Notifications */}
-          <PriceAlertNotifications />
+          {/* Price Alert Notifications - Lazy load */}
+          <LazySection fallback={null}>
+            <Suspense fallback={null}>
+              <PriceAlertNotifications />
+            </Suspense>
+          </LazySection>
 
-          {/* Portfolio & Achievements */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <PortfolioTracker 
-              walletAddress={walletAddress || undefined}
-              currentPrice={parseFloat(marketStats.priceUsd)}
-            />
-            <AchievementTracker walletAddress={walletAddress || undefined} />
-          </div>
+          {/* Portfolio & Achievements - Lazy load */}
+          <LazySection fallback={<Skeleton className="h-96" />}>
+            <Suspense fallback={<ComponentFallback />}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <PortfolioTracker 
+                  walletAddress={walletAddress || undefined}
+                  currentPrice={parseFloat(marketStats.priceUsd)}
+                />
+                <AchievementTracker walletAddress={walletAddress || undefined} />
+              </div>
+            </Suspense>
+          </LazySection>
 
-          {/* Social Features & Market Sentiment */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <MarketSentiment
-              priceChange24h={marketStats.priceChange24h}
-              volume24h={marketStats.volume24h}
-              holders={holderProgress.current}
-            />
-            <div>
-              <HolderQuestBar
-                current={holderProgress.current}
-                target={holderProgress.target}
-                milestones={holderProgress.milestones}
-              />
-            </div>
-            <SocialChatLayer walletAddress={walletAddress || undefined} />
-          </div>
+          {/* Social Features - Lazy load */}
+          <LazySection fallback={<Skeleton className="h-64" />}>
+            <Suspense fallback={<ComponentFallback />}>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <MarketSentiment
+                  priceChange24h={marketStats.priceChange24h}
+                  volume24h={marketStats.volume24h}
+                  holders={holderProgress.current}
+                />
+                <div>
+                  <HolderQuestBar
+                    current={holderProgress.current}
+                    target={holderProgress.target}
+                    milestones={holderProgress.milestones}
+                  />
+                </div>
+                <SocialChatLayer walletAddress={walletAddress || undefined} />
+              </div>
+            </Suspense>
+          </LazySection>
 
-          {/* Trading History */}
-          <TradingHistoryFeed />
+          {/* Trading History - Lazy load */}
+          <LazySection fallback={<Skeleton className="h-96" />}>
+            <Suspense fallback={<ComponentFallback />}>
+              <TradingHistoryFeed />
+            </Suspense>
+          </LazySection>
 
-          {/* Advanced Analytics Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <TopHoldersLeaderboard />
-            <PricePredictionChart />
-          </div>
+          {/* Analytics Row - Lazy load */}
+          <LazySection fallback={<Skeleton className="h-96" />}>
+            <Suspense fallback={<ComponentFallback />}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <TopHoldersLeaderboard />
+                <PricePredictionChart />
+              </div>
+            </Suspense>
+          </LazySection>
 
-          {/* Governance Section */}
-          <GovernanceVoting />
+          {/* Governance - Lazy load */}
+          <LazySection fallback={<Skeleton className="h-96" />}>
+            <Suspense fallback={<ComponentFallback />}>
+              <GovernanceVoting />
+            </Suspense>
+          </LazySection>
 
-          {/* Market Intelligence */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <WhaleDistributionChart />
-            <TRNValuationCard />
-          </div>
+          {/* Market Intelligence - Lazy load */}
+          <LazySection fallback={<Skeleton className="h-96" />}>
+            <Suspense fallback={<ComponentFallback />}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <WhaleDistributionChart />
+                <TRNValuationCard />
+              </div>
+            </Suspense>
+          </LazySection>
 
-          {/* Jupiter Swap & Purchase Features */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <JupiterSwap />
-            <LivePurchaseFeed />
-          </div>
+          {/* Trading Features - Lazy load */}
+          <LazySection fallback={<Skeleton className="h-96" />}>
+            <Suspense fallback={<ComponentFallback />}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <JupiterSwap />
+                <LivePurchaseFeed />
+              </div>
+            </Suspense>
+          </LazySection>
 
-          {/* Fiat On-Ramp Alert */}
-          <FiatOnRamp walletAddress={walletAddress || undefined} solBalance={solBalance} />
+          {/* Fiat On-Ramp - Lazy load */}
+          <LazySection fallback={null}>
+            <Suspense fallback={null}>
+              <FiatOnRamp walletAddress={walletAddress || undefined} solBalance={solBalance} />
+            </Suspense>
+          </LazySection>
 
-          {/* Purchase Leaderboard */}
-          <PurchaseLeaderboard />
+          {/* Purchase Leaderboard - Lazy load */}
+          <LazySection fallback={<Skeleton className="h-96" />}>
+            <Suspense fallback={<ComponentFallback />}>
+              <PurchaseLeaderboard />
+            </Suspense>
+          </LazySection>
 
-          {/* Whale Alerts & Referral System */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <WhaleAlerts />
-            <ReferralSystem walletAddress={walletAddress || undefined} />
-          </div>
+          {/* Whale Alerts & Referrals - Lazy load */}
+          <LazySection fallback={<Skeleton className="h-64" />}>
+            <Suspense fallback={<ComponentFallback />}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <WhaleAlerts />
+                <ReferralSystem walletAddress={walletAddress || undefined} />
+              </div>
+            </Suspense>
+          </LazySection>
 
-          {/* Utility & Disclaimer */}
-          <UtilityHookSection />
+          {/* Utility Section - Lazy load */}
+          <LazySection fallback={<Skeleton className="h-48" />}>
+            <Suspense fallback={<ComponentFallback />}>
+              <UtilityHookSection />
+            </Suspense>
+          </LazySection>
         </main>
       </div>
     </SolanaWalletProvider>
