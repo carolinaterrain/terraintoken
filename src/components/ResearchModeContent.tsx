@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTabPersistence } from "@/hooks/useTabPersistence";
@@ -47,6 +47,18 @@ const LoadingSection = () => (
 export const ResearchModeContent = () => {
   const [activeTab, setActiveTab] = useTabPersistence('homepage', 'overview');
   useTabAnalytics('homepage', activeTab);
+
+  // Listen for tab change events from navigation
+  useEffect(() => {
+    const handleChangeTab = (event: CustomEvent) => {
+      if (event.detail?.tab) {
+        setActiveTab(event.detail.tab);
+      }
+    };
+    
+    window.addEventListener('changeTab', handleChangeTab as EventListener);
+    return () => window.removeEventListener('changeTab', handleChangeTab as EventListener);
+  }, [setActiveTab]);
 
   return (
     <>

@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SkipToContent from "@/components/SkipToContent";
 import ScrollProgress from "@/components/ScrollProgress";
 import SmartHeader from "@/components/SmartHeader";
@@ -14,6 +14,7 @@ const Index = () => {
   const { mode } = useUIModeStore();
   const { trackPageView } = useAnalytics();
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     trackPageView(location.pathname);
@@ -23,6 +24,28 @@ const Index = () => {
     // Track UI mode on mount
     trackPageView(`${location.pathname}?mode=${mode}`);
   }, [mode, location.pathname, trackPageView]);
+
+  // Handle navigation with tab/scroll state
+  useEffect(() => {
+    if (location.state) {
+      const state = location.state as { activeTab?: string; scrollTo?: string };
+      
+      if (state.activeTab && mode === 'research') {
+        // Dispatch event to change tab
+        const event = new CustomEvent('changeTab', { detail: { tab: state.activeTab } });
+        window.dispatchEvent(event);
+      }
+      
+      if (state.scrollTo) {
+        setTimeout(() => {
+          document.getElementById(state.scrollTo)?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+      
+      // Clear state
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state, mode, navigate, location.pathname]);
 
   return (
     <>
