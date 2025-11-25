@@ -15,74 +15,56 @@ serve(async (req) => {
     const HELIUS_API_KEY = Deno.env.get('HELIUS_API_KEY');
 
     if (!HELIUS_API_KEY) {
-      throw new Error('HELIUS_API_KEY not configured');
+      console.warn('HELIUS_API_KEY not configured, using fallback');
+      return new Response(
+        JSON.stringify({
+          holderCount: 1137,
+          lastUpdated: new Date().toISOString(),
+          source: 'fallback',
+        }),
+        {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        }
+      );
     }
 
     console.log('Fetching holder count for TRN token...');
 
-    // Use Helius RPC to get token largest accounts count
+    // Use Helius REST API for holder data
     const response = await fetch(
-      `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`,
+      `https://api.helius.xyz/v0/addresses/${TRN_MINT_ADDRESS}/holders?api-key=${HELIUS_API_KEY}`,
       {
-        method: 'POST',
+        method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          jsonrpc: '2.0',
-          id: 'holder-count',
-          method: 'getTokenSupply',
-          params: [TRN_MINT_ADDRESS],
-        }),
       }
     );
 
     if (!response.ok) {
-      console.error('Helius RPC error:', response.status);
-      throw new Error(`Helius RPC error: ${response.status}`);
+      console.error('Helius API error:', response.status, await response.text());
+      throw new Error(`Helius API error: ${response.status}`);
     }
 
     const data = await response.json();
     
-    if (data.error) {
-      throw new Error(`RPC error: ${data.error.message}`);
+    if (!data || !Array.isArray(data)) {
+      console.error('Invalid response format:', data);
+      throw new Error('Invalid response format from Helius API');
     }
 
-    console.log('Token supply data:', JSON.stringify(data));
+    // Count holders with non-zero balances
+    const activeHolders = data.filter((holder: any) => {
+      const balance = holder.amount || holder.balance || 0;
+      return balance > 0;
+    });
 
-    // Get actual holder count using getTokenLargestAccounts
-    const holderResponse = await fetch(
-      `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          jsonrpc: '2.0',
-          id: 'get-holders',
-          method: 'getTokenLargestAccounts',
-          params: [TRN_MINT_ADDRESS],
-        }),
-      }
-    );
-
-    let holderCount = 1137; // Fallback
-
-    if (holderResponse.ok) {
-      const holderData = await holderResponse.json();
-      if (holderData.result?.value) {
-        // Count non-zero balance accounts
-        const activeHolders = holderData.result.value.filter(
-          (account: any) => parseInt(account.amount, 10) > 0
-        );
-        holderCount = activeHolders.length;
-        console.log(`Found ${holderCount} active holders from RPC`);
-      }
-    } else {
-      console.warn('Holder count API failed, using fallback');
-    }
+    const holderCount = activeHolders.length;
+    console.log(`Successfully fetched ${holderCount} active holders from Helius API`);
 
     return new Response(
       JSON.stringify({
         holderCount,
         lastUpdated: new Date().toISOString(),
+        source: 'helius',
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -91,13 +73,17 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error fetching holder count:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    
+    // Return fallback data with 200 status so frontend doesn't break
     return new Response(
       JSON.stringify({
+        holderCount: 1137,
+        lastUpdated: new Date().toISOString(),
+        source: 'fallback',
         error: errorMessage,
-        holderCount: 1137, // Fallback
       }),
       {
-        status: 200, // Return 200 with fallback data
+        status: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       }
     );
