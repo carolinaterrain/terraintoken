@@ -71,20 +71,6 @@ const SmartHeader = () => {
             </div>
             
             <div className="flex items-center gap-3">
-              {/* Mode Indicator (desktop only) */}
-              <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/50 border border-border">
-                {mode === 'ape' ? (
-                  <>
-                    <Rocket className="w-4 h-4 text-chart-3" />
-                    <span className="text-sm font-semibold text-chart-3">Ape Mode</span>
-                  </>
-                ) : (
-                  <>
-                    <Microscope className="w-4 h-4 text-primary" />
-                    <span className="text-sm font-semibold text-primary">Research Mode</span>
-                  </>
-                )}
-              </div>
               <UIModeToggle />
             </div>
           </div>
