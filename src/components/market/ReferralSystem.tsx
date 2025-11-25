@@ -29,7 +29,7 @@ export const ReferralSystem = ({ walletAddress }: ReferralSystemProps) => {
       .from("referral_codes")
       .select("*")
       .eq("wallet_address", walletAddress)
-      .single();
+      .maybeSingle();
 
     if (data) {
       setReferralCode(data.referral_code);

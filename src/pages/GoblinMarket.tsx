@@ -5,6 +5,7 @@ import { useGoblinMarketData, useHolderProgress } from "@/hooks/useGoblinMarketD
 import { SolanaWalletProvider } from "@/providers/WalletProvider";
 import { LazySection } from "@/components/ui/lazy-section";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DashboardErrorBoundary } from "@/components/charts/DashboardErrorBoundary";
 
 // Critical components - Load immediately
 import { GoblinStatsBar } from "@/components/market/GoblinStatsBar";
@@ -153,24 +154,34 @@ const GoblinMarket = () => {
           </div>
 
           {/* Critical Above-the-Fold Content - Load immediately */}
-          <GoblinStatsBar
-            price={parseFloat(marketStats.priceUsd)}
-            priceChange24h={marketStats.priceChange24h}
-            marketCap={marketStats.marketCap}
-            volume24h={marketStats.volume24h}
-            liquidity={marketStats.liquidity}
-          />
+          <DashboardErrorBoundary componentName="Market Stats">
+            <GoblinStatsBar
+              price={parseFloat(marketStats.priceUsd)}
+              priceChange24h={marketStats.priceChange24h}
+              marketCap={marketStats.marketCap}
+              volume24h={marketStats.volume24h}
+              liquidity={marketStats.liquidity}
+            />
+          </DashboardErrorBoundary>
 
-          <DexScreenerChart />
+          <DashboardErrorBoundary componentName="Price Chart">
+            <DexScreenerChart />
+          </DashboardErrorBoundary>
 
           {/* Primary Engagement Features - Load immediately */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <LiveHolderTracker />
-            <PriceAlerts currentPrice={parseFloat(marketStats.priceUsd)} />
-            <PricePredictionGame 
-              currentPrice={parseFloat(marketStats.priceUsd)}
-              walletAddress={walletAddress || undefined}
-            />
+            <DashboardErrorBoundary componentName="Holder Tracker">
+              <LiveHolderTracker />
+            </DashboardErrorBoundary>
+            <DashboardErrorBoundary componentName="Price Alerts">
+              <PriceAlerts currentPrice={parseFloat(marketStats.priceUsd)} />
+            </DashboardErrorBoundary>
+            <DashboardErrorBoundary componentName="Price Prediction">
+              <PricePredictionGame 
+                currentPrice={parseFloat(marketStats.priceUsd)}
+                walletAddress={walletAddress || undefined}
+              />
+            </DashboardErrorBoundary>
           </div>
 
           {/* Prediction Features - Lazy load */}

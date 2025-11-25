@@ -45,9 +45,9 @@ serve(async (req) => {
       .update(updateData)
       .eq('id', proof_id)
       .select()
-      .single();
+      .maybeSingle();
 
-    if (updateError) {
+    if (updateError || !proof) {
       console.error('Error updating proof:', updateError);
       throw updateError;
     }
