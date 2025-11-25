@@ -1,9 +1,7 @@
-import { useState, useEffect } from "react";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import { useTokenStats } from "@/hooks/useTokenStats";
 import { cn } from "@/lib/utils";
-import { TrendingUp, TrendingDown, Rocket, Microscope } from "lucide-react";
-import AnnouncementBanner from "./AnnouncementBanner";
+import { Rocket, Microscope } from "lucide-react";
 import DesktopNav from "./DesktopNav";
 import { UIModeToggle } from "./UIModeToggle";
 import { useUIModeStore } from "@/stores/uiModeStore";
@@ -11,39 +9,13 @@ import { useUIModeStore } from "@/stores/uiModeStore";
 const SmartHeader = () => {
   const scrollDirection = useScrollDirection();
   const { data: tokenStats } = useTokenStats();
-  const [bannerDismissed, setBannerDismissed] = useState(false);
   const { mode } = useUIModeStore();
-
-  // Check if banner was previously dismissed
-  useEffect(() => {
-    const dismissed = localStorage.getItem('announcementBannerDismissed');
-    if (dismissed) {
-      setBannerDismissed(true);
-    }
-  }, []);
-
-  const handleDismissBanner = () => {
-    setBannerDismissed(true);
-    localStorage.setItem('announcementBannerDismissed', 'true');
-  };
 
   const isMinimized = scrollDirection === 'down';
   const isAtTop = scrollDirection === 'top';
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] transition-transform duration-300">
-      {/* Announcement Banner - Dismissible */}
-      {!bannerDismissed && (
-        <div
-          className={cn(
-            "transition-all duration-300",
-            isAtTop ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 h-0"
-          )}
-        >
-          <AnnouncementBanner onDismiss={handleDismissBanner} />
-        </div>
-      )}
-
       {/* Main Header - Simplified with Mode Indicator */}
       <div className={cn(
         "bg-background/95 backdrop-blur-lg border-b transition-colors duration-300",
