@@ -55,7 +55,7 @@ export function useToolProofs(walletAddress?: string) {
         .from('tool_usage_proofs')
         .insert(params)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data as ToolProof;

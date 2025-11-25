@@ -129,7 +129,7 @@ export default function AdminDashboard() {
         .from('project_media')
         .select('user_wallet_address')
         .eq('id', mediaId)
-        .single();
+        .maybeSingle();
 
       if (media?.user_wallet_address) {
         await supabase.from('trn_rewards').insert({

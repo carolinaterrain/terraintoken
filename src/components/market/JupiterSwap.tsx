@@ -137,7 +137,7 @@ export const JupiterSwap = () => {
           .from("referral_codes")
           .select("*")
           .eq("referral_code", referralCode)
-          .single();
+          .maybeSingle();
 
         if (referrer) {
           // Insert redemption

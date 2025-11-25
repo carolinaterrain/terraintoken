@@ -77,7 +77,7 @@ serve(async (req) => {
       .from('project_media')
       .select('id, trn_earned, user_wallet_address')
       .eq('id', mediaId)
-      .single();
+      .maybeSingle();
 
     if (mediaError || !media) {
       console.error('Media not found:', mediaError);
@@ -149,7 +149,7 @@ serve(async (req) => {
         .from('user_stats')
         .select('*')
         .eq('user_wallet_address', walletAddress)
-        .single();
+        .maybeSingle();
 
       if (existingStats) {
         await supabase
@@ -177,7 +177,7 @@ serve(async (req) => {
         .from('user_stats')
         .select('*')
         .eq('user_wallet_address', walletAddress)
-        .single();
+        .maybeSingle();
 
       const newAchievements = [];
 

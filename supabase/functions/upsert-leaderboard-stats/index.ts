@@ -74,7 +74,7 @@ serve(async (req) => {
       .from("purchase_leaderboard")
       .select("*")
       .eq("wallet_address", p_wallet_address)
-      .single();
+      .maybeSingle();
 
     if (existing) {
       // Update existing entry

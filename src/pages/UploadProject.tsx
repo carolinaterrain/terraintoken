@@ -164,7 +164,7 @@ const UploadProject = () => {
           data_consent: dataConsent,
         })
         .select()
-        .single();
+        .maybeSingle();
 
       if (insertError) throw insertError;
 

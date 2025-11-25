@@ -77,7 +77,7 @@ const handler = async (req: Request): Promise<Response> => {
       .from('user_stats')
       .select('*')
       .eq('user_wallet_address', wallet_address)
-      .single();
+      .maybeSingle();
 
     if (!stats) {
       return new Response(
@@ -134,7 +134,7 @@ const handler = async (req: Request): Promise<Response> => {
             trn_bonus: def.trn_reward
           })
           .select()
-          .single();
+          .maybeSingle();
 
         // Create TRN reward
         await supabaseClient.from('trn_rewards').insert({

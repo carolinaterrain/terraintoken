@@ -86,7 +86,7 @@ export default function ReferralDashboard() {
         .from("terrainscape_waitlist")
         .select("referral_code")
         .eq("email", userEmail)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
 

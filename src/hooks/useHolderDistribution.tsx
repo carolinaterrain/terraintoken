@@ -27,7 +27,7 @@ export function useHolderDistribution() {
         .select('*')
         .order('snapshot_date', { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
 
       if (error || !snapshot) {
         console.error('Error fetching holder snapshot:', error);

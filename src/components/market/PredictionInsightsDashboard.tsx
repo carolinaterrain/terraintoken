@@ -19,7 +19,7 @@ export const PredictionInsightsDashboard = ({
         .from("prediction_user_stats")
         .select("*")
         .eq("user_wallet", walletAddress)
-        .single();
+        .maybeSingle();
       return data;
     },
     enabled: !!walletAddress,
