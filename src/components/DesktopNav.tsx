@@ -65,10 +65,12 @@ const DesktopNav = () => {
                     navigate(`/${item.id}`);
                   } else if (item.isTab) {
                     if (location.pathname !== '/') {
-                      navigate('/', { state: { activeTab: item.tab } });
+                      navigate('/', { state: { activeTab: item.tab, scrollTo: item.id } });
                     } else {
                       const event = new CustomEvent('changeTab', { detail: { tab: item.tab } });
                       window.dispatchEvent(event);
+                      // Scroll to section after tab change
+                      setTimeout(() => scrollToSection(item.id), 100);
                     }
                   } else {
                     if (location.pathname !== '/') {
