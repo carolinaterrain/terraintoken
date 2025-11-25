@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import AnnouncementBanner from "./AnnouncementBanner";
 import DesktopNav from "./DesktopNav";
+import { UIModeToggle } from "./UIModeToggle";
 
 const SmartHeader = () => {
   const scrollDirection = useScrollDirection();
@@ -44,8 +45,13 @@ const SmartHeader = () => {
       {/* Main Header - Simplified */}
       <div className="bg-background/95 backdrop-blur-lg border-b border-primary/20">
         <div className="container mx-auto px-4">
-          <div className="hidden md:block">
-            <DesktopNav />
+          <div className="flex items-center justify-between py-3">
+            <div className="hidden md:block flex-1">
+              <DesktopNav />
+            </div>
+            <div className="ml-auto">
+              <UIModeToggle />
+            </div>
           </div>
         </div>
       </div>
