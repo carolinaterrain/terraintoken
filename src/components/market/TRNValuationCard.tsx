@@ -4,6 +4,9 @@ import { Separator } from "@/components/ui/separator";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
+import { useTokenStats } from "@/hooks/useTokenStats";
+import { getCumulativeEquipmentValue } from "@/lib/equipmentData";
+import { calculateMetrics } from "@/lib/financialData";
 
 interface ValuationData {
   monthlyRevenue: number;
@@ -15,6 +18,8 @@ interface ValuationData {
 }
 
 export function TRNValuationCard() {
+  const { data: tokenStats } = useTokenStats();
+  
   const { data: valuation, isLoading } = useQuery({
     queryKey: ["trn-valuation"],
     queryFn: async () => {
@@ -24,14 +29,17 @@ export function TRNValuationCard() {
         supabase.from("holder_snapshots").select("total_holders").order("snapshot_date", { ascending: false }).limit(1).maybeSingle(),
       ]);
 
-      // Mock business data (replace with actual data sources)
+      // Get real business data
+      const equipmentData = getCumulativeEquipmentValue();
+      const financialData = calculateMetrics();
+      
       const data: ValuationData = {
-        monthlyRevenue: 25000, // Replace with actual Jobber API or manual entry
-        equipmentValue: 150000, // From inventory data
+        monthlyRevenue: financialData.avgMonthlyRevenue,
+        equipmentValue: equipmentData.totalCurrentValue,
         holderCount: snapshotResult.data?.total_holders || 1137,
         waitlistSize: waitlistResult.count || 2847,
-        circulatingSupply: 1000000000, // 1B TRN
-        marketPrice: 0.00000123, // From DexScreener
+        circulatingSupply: 1000000000, // 1B TRN fixed supply
+        marketPrice: tokenStats?.priceUsd ? parseFloat(tokenStats.priceUsd.replace(/[^0-9.]/g, '')) : 0.00000123,
       };
 
       return data;
