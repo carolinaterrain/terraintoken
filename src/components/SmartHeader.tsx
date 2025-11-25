@@ -31,7 +31,7 @@ const SmartHeader = () => {
   const isAtTop = scrollDirection === 'top';
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-40 transition-transform duration-300">
+    <div className="fixed top-0 left-0 right-0 z-[100] transition-transform duration-300">
       {/* Announcement Banner - Dismissible */}
       {!bannerDismissed && (
         <div

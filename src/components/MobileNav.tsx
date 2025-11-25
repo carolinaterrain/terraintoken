@@ -1,10 +1,17 @@
 import { Home, Video, FileText, Users, Gift, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useUIModeStore } from "@/stores/uiModeStore";
 
 const MobileNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { mode } = useUIModeStore();
+  
+  // Hide in Ape Mode on home page (ApeLiveFooter shows instead)
+  if (mode === 'ape' && location.pathname === '/') {
+    return null;
+  }
   
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -47,7 +54,7 @@ const MobileNav = () => {
 
   return (
     <nav 
-      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-t border-primary/20 shadow-lg safe-area-bottom"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-[90] bg-background/95 backdrop-blur-lg border-t border-primary/20 shadow-lg safe-area-bottom"
       role="navigation"
       aria-label="Mobile navigation"
     >
