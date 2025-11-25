@@ -52,11 +52,7 @@ const Transparency = () => {
     },
   ];
 
-  const topHolders = [
-    { rank: 1, address: "Pump.fun Bonding Curve", percentage: "~45%", description: "Protocol liquidity pool" },
-    { rank: 2, address: "Community Holders", percentage: "~54%", description: "Distributed among holders" },
-    { rank: 3, address: "Dev/Team Wallet", percentage: "~1%", description: "Minimal team allocation" },
-  ];
+  // Removed static holder distribution - use live data from holder snapshots instead
 
   return (
     <section id="transparency" className="py-16 px-4 relative overflow-hidden">
@@ -185,62 +181,6 @@ const Transparency = () => {
               </GlassCard>
             );
           })}
-        </div>
-
-        {/* Top Holders Breakdown */}
-        <div className="max-w-4xl mx-auto">
-          <GlassCard className="p-8">
-            <h3 className="font-display text-2xl font-bold text-center mb-6">
-              📊 Top Holdings Breakdown
-            </h3>
-            <div className="space-y-4">
-              {topHolders.map((holder) => (
-                <div 
-                  key={holder.rank}
-                  className="flex items-center justify-between p-4 bg-background/30 rounded-lg border border-primary/10"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">
-                      #{holder.rank}
-                    </div>
-                    <div>
-                      <p className="font-display font-semibold">{holder.address}</p>
-                      <p className="text-sm text-muted-foreground">{holder.description}</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-display text-xl font-bold text-primary">{holder.percentage}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            <div className="mt-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
-              <p className="text-sm text-center text-muted-foreground">
-                <strong className="text-primary">🛡️ Transparency Pledge:</strong> We publish monthly reports on wallet holdings, 
-                treasury activity, and development progress. No insider dumps, no hidden wallets, no goblin funny business. 
-                Just pure, verified facts.
-              </p>
-            </div>
-
-            <div className="mt-4 text-center">
-              <Button
-                variant="outline"
-                className="font-display"
-                asChild
-              >
-                <a
-                  href={`https://solscan.io/token/${contractAddress}#holders`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2"
-                >
-                  View All Holders on Solscan
-                  <ExternalLink className="w-4 h-4" />
-                </a>
-              </Button>
-            </div>
-          </GlassCard>
         </div>
 
         {/* Real-World Backing Callout */}

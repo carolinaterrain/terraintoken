@@ -2,13 +2,18 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import TokenomicsDashboard from "@/components/TokenomicsDashboard";
 import { Coins, Shield, Rocket, RefreshCw, Gift } from "lucide-react";
+import { useTokenSupply, formatSupply } from "@/hooks/useTokenSupply";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const stats = [
+const Tokenomics = () => {
+  const { data: supplyData, isLoading } = useTokenSupply();
+  
+  const stats = [
   {
     icon: Coins,
-    label: "Fixed Supply",
-    value: "10.43M TRN",
-    description: "No additional minting"
+    label: "Total Supply (Live)",
+    value: isLoading ? "..." : supplyData ? `${formatSupply(supplyData.totalSupply, supplyData.decimals)} TRN` : "—",
+    description: "No additional minting possible"
   },
   {
     icon: Shield,
@@ -36,7 +41,6 @@ const stats = [
   }
 ];
 
-const Tokenomics = () => {
   return (
     <section id="tokenomics" className="py-12 px-4 relative overflow-hidden">
       <div 
@@ -83,7 +87,11 @@ const Tokenomics = () => {
                   <Icon className="w-6 h-6 text-primary" />
                 </div>
                 <h3 className="font-display text-sm font-semibold text-muted-foreground mb-2">{stat.label}</h3>
-                <p className="font-display text-2xl font-bold mb-2 text-primary">{stat.value}</p>
+                {isLoading && index === 0 ? (
+                  <Skeleton className="h-8 w-32 mx-auto mb-2" />
+                ) : (
+                  <p className="font-display text-2xl font-bold mb-2 text-primary">{stat.value}</p>
+                )}
                 <p className="font-body text-sm text-muted-foreground">{stat.description}</p>
               </GlassCard>
             );

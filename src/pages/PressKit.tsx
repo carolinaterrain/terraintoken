@@ -7,9 +7,12 @@ import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
 import BackToHome from "@/components/BackToHome";
 import trnCoin from "@/assets/trn-coin.png";
-import terrainMascot from "@/assets/terrain-mascot.png";
+import { useTokenSupply, formatSupply } from "@/hooks/useTokenSupply";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const PressKit = () => {
+  const { data: supplyData, isLoading } = useTokenSupply();
+  
   const brandColors = [
     { name: "Goblin Green", hex: "#00C46A", hsl: "142 76% 39%" },
     { name: "Emerald Glow", hex: "#06FF8C", hsl: "142 84% 47%" },
@@ -21,7 +24,10 @@ const PressKit = () => {
     { label: "Token Name", value: "Terrain Token" },
     { label: "Symbol", value: "TRN" },
     { label: "Blockchain", value: "Solana" },
-    { label: "Total Supply", value: "10,431,918 TRN" },
+    { 
+      label: "Total Supply", 
+      value: isLoading ? "..." : supplyData ? `${formatSupply(supplyData.totalSupply, supplyData.decimals)} TRN` : "—"
+    },
     { label: "Contract Address", value: "2L1x...pump" },
     { label: "Launch Date", value: "Mid-2025" },
     { label: "Launch Platform", value: "Pump.fun (Fair Launch)" },
@@ -79,7 +85,7 @@ const PressKit = () => {
                   </a>
                 </Button>
                 <Button size="lg" variant="outline" className="font-display h-auto py-4 border-primary" asChild>
-                  <a href={terrainMascot} download="TRN_Mascot.png">
+                  <a href={trnCoin} download="TRN_Mascot.png">
                     <ImageIcon className="mr-2 h-5 w-5" />
                     <div className="text-left">
                       <div className="font-bold">Mascot</div>
@@ -114,12 +120,12 @@ const PressKit = () => {
 
               <GlassCard className="p-8 text-center">
                 <div className="bg-background/50 rounded-lg p-8 mb-4">
-                  <img src={terrainMascot} alt="Terrain Goblin Mascot" className="w-32 h-32 mx-auto" />
+                  <img src={trnCoin} alt="Terrain Goblin Mascot" className="w-32 h-32 mx-auto" />
                 </div>
                 <h3 className="font-display font-bold mb-2">Terrain Goblin</h3>
                 <p className="text-sm text-muted-foreground mb-4">Official mascot • High-res PNG</p>
                 <Button size="sm" variant="outline" asChild>
-                  <a href={terrainMascot} download="TRN_Mascot.png">
+                  <a href={trnCoin} download="TRN_Mascot.png">
                     <Download className="mr-2 h-4 w-4" />
                     Download
                   </a>
@@ -184,7 +190,7 @@ const PressKit = () => {
 
                 <p className="font-bold text-foreground mt-6">Long Version (100 words):</p>
                 <p className="italic bg-background/30 p-4 rounded-lg">
-                  "Terrain Token (TRN) launched in 2025 as a community-driven meme coin with a unique twist: it's backed by Carolina Terrain LLC, a North Carolina-based landscaping and drainage company generating over $2 million in annual revenue. Unlike typical meme coins built on speculation, TRN is anchored to real-world services and expertise. The project aims to integrate blockchain technology with traditional landscaping through TerrainVision AI, an analyze-to-earn platform where users upload yard photos and receive TRN rewards. With a fixed supply of 10.43M tokens, transparent tokenomics, and a commitment to community governance, TRN represents a new category of data contribution tokens."
+                  "Terrain Token (TRN) launched in 2025 as a community-driven meme coin with a unique twist: it's backed by Carolina Terrain LLC, a North Carolina-based landscaping and drainage company generating over $2 million in annual revenue. Unlike typical meme coins built on speculation, TRN is anchored to real-world services and expertise. The project aims to integrate blockchain technology with traditional landscaping through TerrainVision AI, an analyze-to-earn platform where users upload yard photos and receive TRN rewards. With transparent tokenomics and a commitment to community governance, TRN represents a new category of data contribution tokens."
                 </p>
               </div>
             </GlassCard>
