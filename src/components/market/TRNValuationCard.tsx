@@ -21,7 +21,7 @@ export function TRNValuationCard() {
       // Fetch real data
       const [waitlistResult, snapshotResult] = await Promise.all([
         supabase.from("terrainscape_waitlist").select("*", { count: "exact", head: true }),
-        supabase.from("holder_snapshots").select("total_holders").order("snapshot_date", { ascending: false }).limit(1).single(),
+        supabase.from("holder_snapshots").select("total_holders").order("snapshot_date", { ascending: false }).limit(1).maybeSingle(),
       ]);
 
       // Mock business data (replace with actual data sources)

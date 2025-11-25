@@ -40,7 +40,7 @@ const ClaimInvoiceReward = () => {
         .from("invoice_codes")
         .select("*")
         .eq("code", data.code)
-        .single();
+        .maybeSingle();
 
       if (fetchError || !codeData) {
         toast.error("Invalid code. Please check and try again.");

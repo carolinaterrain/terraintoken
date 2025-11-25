@@ -50,7 +50,7 @@ async function findUniqueReferralCode(supabase: any): Promise<string> {
       .from('terrainscape_waitlist')
       .select('referral_code')
       .eq('referral_code', newReferralCode)
-      .single();
+      .maybeSingle();
     
     if (!codeExists) break;
     newReferralCode = generateReferralCode();
@@ -167,7 +167,7 @@ serve(async (req) => {
       .from('terrainscape_waitlist')
       .select('id, referral_code')
       .eq('email', email)
-      .single();
+      .maybeSingle();
 
     if (existing) {
       return new Response(
@@ -211,7 +211,7 @@ serve(async (req) => {
         .from('terrainscape_waitlist')
         .select('referral_code')
         .eq('referral_code', referral_code)
-        .single();
+        .maybeSingle();
       
       if (!referrer) {
         return new Response(
@@ -250,7 +250,7 @@ serve(async (req) => {
         }
       })
       .select()
-      .single();
+      .maybeSingle();
 
     if (error) {
       console.error('Database error:', error);

@@ -69,7 +69,7 @@ export const GovernanceVoting = () => {
       .from("governance_proposals")
       .select("*")
       .eq("id", proposalId)
-      .single();
+      .maybeSingle();
 
     if (proposal) {
       await supabase

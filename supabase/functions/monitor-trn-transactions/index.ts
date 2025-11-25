@@ -67,7 +67,7 @@ serve(async (req) => {
         .from('trn_purchases')
         .select('id')
         .eq('transaction_signature', tx.signature)
-        .single();
+        .maybeSingle();
 
       if (existingTx) continue; // Skip already processed
 
@@ -124,7 +124,7 @@ serve(async (req) => {
           .from('whale_alerts')
           .select('id')
           .eq('transaction_signature', tx.signature)
-          .single();
+          .maybeSingle();
 
         if (!existingAlert) {
           const { error: alertError } = await supabase

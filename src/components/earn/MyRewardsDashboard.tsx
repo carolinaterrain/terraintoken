@@ -21,9 +21,9 @@ const MyRewardsDashboard = () => {
         .from("user_stats")
         .select("*")
         .eq("user_wallet_address", searchedWallet)
-        .single();
+        .maybeSingle();
       
-      if (error && error.code !== "PGRST116") throw error;
+      if (error) throw error;
       return data;
     },
     enabled: !!searchedWallet
