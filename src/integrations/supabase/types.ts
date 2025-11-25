@@ -502,6 +502,7 @@ export type Database = {
           holder_addresses: Json
           holder_balances: Json
           id: string
+          is_live_data: boolean | null
           snapshot_date: string
           total_holders: number
         }
@@ -510,6 +511,7 @@ export type Database = {
           holder_addresses: Json
           holder_balances: Json
           id?: string
+          is_live_data?: boolean | null
           snapshot_date: string
           total_holders: number
         }
@@ -518,6 +520,7 @@ export type Database = {
           holder_addresses?: Json
           holder_balances?: Json
           id?: string
+          is_live_data?: boolean | null
           snapshot_date?: string
           total_holders?: number
         }
@@ -1317,6 +1320,51 @@ export type Database = {
           review_date?: string | null
           review_text?: string
           sort_order?: number | null
+        }
+        Relationships: []
+      }
+      tool_usage_proofs: {
+        Row: {
+          created_at: string | null
+          id: string
+          notes: string | null
+          proof_type: string
+          proof_url: string
+          status: string | null
+          tool_name: string
+          trn_reward: number | null
+          verified_at: string | null
+          verified_by: string | null
+          wallet_address: string
+          x_post_url: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          proof_type: string
+          proof_url: string
+          status?: string | null
+          tool_name: string
+          trn_reward?: number | null
+          verified_at?: string | null
+          verified_by?: string | null
+          wallet_address: string
+          x_post_url?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          proof_type?: string
+          proof_url?: string
+          status?: string | null
+          tool_name?: string
+          trn_reward?: number | null
+          verified_at?: string | null
+          verified_by?: string | null
+          wallet_address?: string
+          x_post_url?: string | null
         }
         Relationships: []
       }
