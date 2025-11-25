@@ -9,10 +9,9 @@ const VibeCheck = lazy(() => import("@/components/VibeCheck").then(m => ({ defau
 const OrganicDiscoveryCounter = lazy(() => import("@/components/OrganicDiscoveryCounter").then(m => ({ default: m.OrganicDiscoveryCounter })));
 const AntiRugMeter = lazy(() => import("@/components/AntiRugMeter").then(m => ({ default: m.AntiRugMeter })));
 const CommunityBuzz = lazy(() => import("@/components/CommunityBuzz").then(m => ({ default: m.CommunityBuzz })));
-const RealUtility = lazy(() => import("@/components/RealUtility"));
-const About = lazy(() => import("@/components/About"));
-const Tokenomics = lazy(() => import("@/components/Tokenomics"));
-const Founders = lazy(() => import("@/components/Founders"));
+const SimplifiedAbout = lazy(() => import("@/components/SimplifiedAbout").then(m => ({ default: m.SimplifiedAbout })));
+const SimplifiedTokenomics = lazy(() => import("@/components/SimplifiedTokenomics").then(m => ({ default: m.SimplifiedTokenomics })));
+const SimplifiedFounders = lazy(() => import("@/components/SimplifiedFounders").then(m => ({ default: m.SimplifiedFounders })));
 const Transparency = lazy(() => import("@/components/Transparency"));
 const Roadmap = lazy(() => import("@/components/Roadmap"));
 const FAQ = lazy(() => import("@/components/FAQ"));
@@ -45,66 +44,39 @@ export const ApeModeContent = () => {
         </div>
       </section>
 
+      {/* Simplified About - 2 Sentences */}
+      <Suspense fallback={<LoadingSection />}><SimplifiedAbout /></Suspense>
+
       {/* Social Proof Wall */}
       <Suspense fallback={<LoadingSection />}><SocialProofWall /></Suspense>
+
+      {/* Simplified Tokenomics - Key Numbers Only */}
+      <Suspense fallback={<LoadingSection />}><SimplifiedTokenomics /></Suspense>
 
       {/* How to Buy */}
       <Suspense fallback={<LoadingSection />}><HowToBuy /></Suspense>
 
+      {/* Simplified Founders - Photos + Doxxed Badge */}
+      <Suspense fallback={<LoadingSection />}><SimplifiedFounders /></Suspense>
+
       {/* Community Buzz */}
       <Suspense fallback={<LoadingSection />}><CommunityBuzz /></Suspense>
-
-      {/* Quick Utility Pitch */}
-      <Suspense fallback={<LoadingSection />}><RealUtility /></Suspense>
 
       {/* Optional Depth Sections - Collapsed by default */}
       <section className="container mx-auto px-4 py-12">
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            📚 Want to Learn More?
+            📚 Need More Info?
           </h2>
           <p className="text-muted-foreground">
-            Expand any section to dive deeper
+            Tap to expand detailed sections
           </p>
         </div>
 
         <Accordion type="single" collapsible className="max-w-4xl mx-auto space-y-4">
-          <AccordionItem value="about" className="border border-border rounded-lg px-6">
-            <AccordionTrigger className="text-xl font-semibold hover:text-primary">
-              ▶ About TRN & Our Mission
-            </AccordionTrigger>
-            <AccordionContent>
-              <Suspense fallback={<Skeleton className="h-64" />}>
-                <About />
-              </Suspense>
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="tokenomics" className="border border-border rounded-lg px-6">
-            <AccordionTrigger className="text-xl font-semibold hover:text-primary">
-              ▶ Tokenomics & Distribution
-            </AccordionTrigger>
-            <AccordionContent>
-              <Suspense fallback={<Skeleton className="h-64" />}>
-                <Tokenomics />
-              </Suspense>
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="founders" className="border border-border rounded-lg px-6">
-            <AccordionTrigger className="text-xl font-semibold hover:text-primary">
-              ▶ Meet the Founders
-            </AccordionTrigger>
-            <AccordionContent>
-              <Suspense fallback={<Skeleton className="h-64" />}>
-                <Founders />
-              </Suspense>
-            </AccordionContent>
-          </AccordionItem>
-
           <AccordionItem value="transparency" className="border border-border rounded-lg px-6">
             <AccordionTrigger className="text-xl font-semibold hover:text-primary">
-              ▶ Transparency Report (November 2025)
+              ▶ Transparency Report
             </AccordionTrigger>
             <AccordionContent>
               <Suspense fallback={<Skeleton className="h-64" />}>
@@ -115,7 +87,7 @@ export const ApeModeContent = () => {
 
           <AccordionItem value="roadmap" className="border border-border rounded-lg px-6">
             <AccordionTrigger className="text-xl font-semibold hover:text-primary">
-              ▶ Roadmap & Future Plans
+              ▶ Roadmap
             </AccordionTrigger>
             <AccordionContent>
               <Suspense fallback={<Skeleton className="h-64" />}>

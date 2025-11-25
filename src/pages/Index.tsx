@@ -36,7 +36,7 @@ const Index = () => {
       <SmartHeader />
 
       <main id="main-content">
-        <Hero />
+        <Hero mode={mode} />
         
         {mode === 'ape' ? <ApeModeContent /> : <ResearchModeContent />}
       </main>
