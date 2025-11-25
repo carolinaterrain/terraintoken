@@ -3,21 +3,21 @@ import { Progress } from "@/components/ui/progress";
 import { Lock, Users, Gift, Coins, TrendingUp, PieChart, CheckCircle } from "lucide-react";
 import { useState, memo } from "react";
 import { usePieSlice } from "@/lib/chartUtils";
+import { useTokenSupply, formatSupply } from "@/hooks/useTokenSupply";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface TokenAllocation {
   name: string;
   percentage: number;
-  amount: string;
   color: string;
   description: string;
   status: string;
 }
 
-const allocations: TokenAllocation[] = [
+const allocationTemplates: TokenAllocation[] = [
   {
     name: "DEX Liquidity",
     percentage: 50,
-    amount: "5,215,959",
     color: "hsl(var(--primary))",
     description: "Locked liquidity pool",
     status: "Locked"
@@ -25,7 +25,6 @@ const allocations: TokenAllocation[] = [
   {
     name: "Treasury",
     percentage: 25,
-    amount: "2,607,980",
     color: "hsl(var(--forest-green))",
     description: "Development & operations",
     status: "Multi-sig"
@@ -33,7 +32,6 @@ const allocations: TokenAllocation[] = [
   {
     name: "Community Rewards",
     percentage: 15,
-    amount: "1,564,788",
     color: "hsl(var(--earth-brown))",
     description: "Airdrops & incentives",
     status: "Reserved"
@@ -41,7 +39,6 @@ const allocations: TokenAllocation[] = [
   {
     name: "Team",
     percentage: 10,
-    amount: "1,043,192",
     color: "hsl(var(--stone-gray))",
     description: "12mo lock + quarterly vest",
     status: "Vested"
@@ -50,9 +47,30 @@ const allocations: TokenAllocation[] = [
 
 const TokenomicsDashboard = memo(() => {
   const [hoveredSlice, setHoveredSlice] = useState<number | null>(null);
-  const totalSupply = 10431918;
+  const { data: supplyData, isLoading } = useTokenSupply();
+  
+  const totalSupply = supplyData ? supplyData.totalSupply / Math.pow(10, supplyData.decimals) : 0;
+  const allocations = allocationTemplates.map(alloc => ({
+    ...alloc,
+    amount: totalSupply > 0 ? Math.floor((totalSupply * alloc.percentage) / 100).toLocaleString() : "—"
+  }));
 
   let cumulativePercentage = 0;
+  
+  if (isLoading) {
+    return (
+      <div className="space-y-8">
+        <GlassCard className="p-8">
+          <h3 className="font-display text-2xl font-bold mb-6 text-center">
+            Token Distribution
+          </h3>
+          <div className="flex items-center justify-center py-12">
+            <Skeleton className="w-64 h-64 rounded-full" />
+          </div>
+        </GlassCard>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -118,7 +136,9 @@ const TokenomicsDashboard = memo(() => {
             {/* Center Label */}
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <p className="font-display text-3xl font-bold text-primary">
-                {hoveredSlice !== null ? `${allocations[hoveredSlice].percentage}%` : "10.43M"}
+                {hoveredSlice !== null 
+                  ? `${allocations[hoveredSlice].percentage}%` 
+                  : supplyData ? formatSupply(supplyData.totalSupply, supplyData.decimals) : "—"}
               </p>
               <p className="text-sm text-muted-foreground">
                 {hoveredSlice !== null ? allocations[hoveredSlice].name : "Total Supply"}
@@ -231,26 +251,25 @@ const TokenomicsDashboard = memo(() => {
       </GlassCard>
 
       {/* Supply Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         <GlassCard className="p-6 text-center">
           <Coins className="w-8 h-8 text-primary mx-auto mb-3" />
-          <p className="text-2xl font-bold text-primary mb-1">{totalSupply.toLocaleString()}</p>
+          <p className="text-2xl font-bold text-primary mb-1">
+            {supplyData ? formatSupply(supplyData.totalSupply, supplyData.decimals) : "—"}
+          </p>
           <p className="text-xs text-muted-foreground">Total Supply</p>
         </GlassCard>
         <GlassCard className="p-6 text-center">
           <TrendingUp className="w-8 h-8 text-primary mx-auto mb-3" />
-          <p className="text-2xl font-bold text-primary mb-1">~5.2M</p>
-          <p className="text-xs text-muted-foreground">Circulating</p>
+          <p className="text-2xl font-bold text-primary mb-1">
+            {supplyData ? formatSupply(supplyData.circulatingSupply, supplyData.decimals) : "—"}
+          </p>
+          <p className="text-xs text-muted-foreground">Circulating Supply</p>
         </GlassCard>
         <GlassCard className="p-6 text-center">
           <Lock className="w-8 h-8 text-primary mx-auto mb-3" />
           <p className="text-2xl font-bold text-primary mb-1">0</p>
           <p className="text-xs text-muted-foreground">Can Be Minted</p>
-        </GlassCard>
-        <GlassCard className="p-6 text-center">
-          <PieChart className="w-8 h-8 text-primary mx-auto mb-3" />
-          <p className="text-2xl font-bold text-primary mb-1">~1%</p>
-          <p className="text-xs text-muted-foreground">Dev Holdings</p>
         </GlassCard>
       </div>
     </div>
