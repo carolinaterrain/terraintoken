@@ -51,7 +51,7 @@ export const ApeLiveFooter = () => {
   const isPositive = priceChange >= 0;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-[100] border-t border-border/20 bg-background/95 backdrop-blur-xl">
+    <div className="fixed bottom-0 left-0 right-0 z-[120] border-t border-border/20 bg-background/95 backdrop-blur-xl">
       {/* Collapsed/Main Bar */}
       <div className="flex items-center justify-between gap-2 px-4 py-3 md:py-2">
         {/* Live Price - Left */}

@@ -1,12 +1,20 @@
 import { useState, useEffect } from "react";
 import { AlertTriangle, ChevronDown, ChevronUp, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useUIModeStore } from "@/stores/uiModeStore";
 
 export const RiskFooterBar = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isDismissed, setIsDismissed] = useState(false);
+  const location = useLocation();
+  const { mode } = useUIModeStore();
+
+  // Hide in Ape Mode on home page (ApeLiveFooter shows risk instead)
+  if (mode === 'ape' && location.pathname === '/') {
+    return null;
+  }
 
   useEffect(() => {
     const dismissed = localStorage.getItem("risk_footer_dismissed");
@@ -25,7 +33,7 @@ export const RiskFooterBar = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-[100] bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 backdrop-blur-md border-t border-yellow-500/30 shadow-[0_-4px_20px_rgba(234,179,8,0.15)]">
+    <div className="fixed bottom-0 left-0 right-0 z-[110] bg-gradient-to-r from-yellow-500/10 via-orange-500/10 to-red-500/10 backdrop-blur-md border-t border-yellow-500/30 shadow-[0_-4px_20px_rgba(234,179,8,0.15)]">
       {/* Collapsed State */}
       {!isExpanded && (
         <div className="container mx-auto px-4 py-3">

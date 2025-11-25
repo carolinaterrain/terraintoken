@@ -46,7 +46,7 @@ export const PWAInstallBadge = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-20 right-4 z-[80] md:bottom-6 md:right-6 animate-in slide-in-from-bottom-5 duration-500">
+      <div className="fixed bottom-20 right-4 z-[80] md:bottom-6 md:right-6 animate-in slide-in-from-bottom-5 duration-500">
       <div className="relative group">
         {/* Pulse animation */}
         <div className="absolute inset-0 bg-primary/20 rounded-lg animate-pulse" />
