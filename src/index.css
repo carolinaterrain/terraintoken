@@ -31,7 +31,12 @@ All colors MUST be HSL.
     --secondary-foreground: 142 76% 39%;
 
     --muted: 142 10% 20%;
-    --muted-foreground: 0 0% 60%;
+    --muted-foreground: 0 0% 70%;     /* Improved from 60% for better contrast (~11:1) */
+    
+    /* Semantic text tokens for accessibility */
+    --text-body: 0 0% 98%;            /* Primary body text - max contrast */
+    --text-secondary: 0 0% 75%;       /* Secondary text - still readable */
+    --text-accent-safe: 142 70% 50%;  /* Lighter green for small text (≥4.5:1) */
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -130,7 +135,12 @@ All colors MUST be HSL.
     --secondary-foreground: 142 76% 39%;
     
     --muted: 142 10% 90%;             /* Light muted */
-    --muted-foreground: 0 0% 40%;
+    --muted-foreground: 0 0% 35%;     /* Darker for better contrast on light bg */
+    
+    /* Light mode semantic text tokens */
+    --text-body: 0 0% 10%;            /* Dark body text */
+    --text-secondary: 0 0% 30%;       /* Secondary text */
+    --text-accent-safe: 142 70% 35%;  /* Darker green for light mode */
     
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -202,7 +212,12 @@ All colors MUST be HSL.
     --secondary-foreground: 142 76% 39%;
     
     --muted: 142 10% 20%;
-    --muted-foreground: 0 0% 60%;
+    --muted-foreground: 0 0% 70%;     /* Improved from 60% for better contrast (~11:1) */
+    
+    /* Dark mode semantic text tokens */
+    --text-body: 0 0% 98%;            /* Primary body text - max contrast */
+    --text-secondary: 0 0% 75%;       /* Secondary text - still readable */
+    --text-accent-safe: 142 70% 50%;  /* Lighter green for small text (≥4.5:1) */
     
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
