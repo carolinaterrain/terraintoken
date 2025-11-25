@@ -1,13 +1,18 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 import { checkRateLimit, getClientIP } from '../_shared/rate-limit.ts';
+import { TRN_MINT_ADDRESS } from "../_shared/constants.ts";
 
-// Helius API response validation
+// Helius RPC response validation
 const heliusResponseSchema = z.object({
-  result: z.array(z.object({
-    owner: z.string(),
-    amount: z.number(),
-  }))
+  result: z.object({
+    value: z.array(
+      z.object({
+        address: z.string(),
+        amount: z.string(),
+      })
+    ),
+  }),
 });
 
 const corsHeaders = {
@@ -50,36 +55,48 @@ serve(async (req) => {
     }
 
     const HELIUS_API_KEY = Deno.env.get('HELIUS_API_KEY');
-    const TRN_MINT_ADDRESS = 'GwXzGeZFF4jK1PqzVd17MHioY7pqSET7r6UY7RS1pump';
 
-    console.log('Fetching TRN holder data from Helius...');
+    console.log('Fetching TRN holder data from Helius RPC...');
 
     const response = await fetch(
-      `https://api.helius.xyz/v0/addresses/${TRN_MINT_ADDRESS}/holders`,
+      `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`,
       {
-        headers: {
-          'Authorization': `Bearer ${HELIUS_API_KEY}`,
-        },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          id: 'get-token-holders',
+          method: 'getTokenLargestAccounts',
+          params: [TRN_MINT_ADDRESS],
+        }),
       }
     );
 
     if (!response.ok) {
-      throw new Error(`Helius API error: ${response.status}`);
+      throw new Error(`Helius RPC error: ${response.status}`);
     }
 
-    const data = await response.json();
+    const rawData = await response.json();
     
+    if (rawData.error) {
+      throw new Error(`RPC error: ${rawData.error.message}`);
+    }
+
     // Validate response structure
-    const validation = heliusResponseSchema.safeParse(data);
+    const validation = heliusResponseSchema.safeParse(rawData);
     if (!validation.success) {
-      console.error('Invalid Helius API response:', validation.error);
-      throw new Error('Invalid API response format');
+      console.error('Invalid Helius RPC response:', validation.error);
+      throw new Error('Invalid RPC response format');
     }
     
-    const holderData = validation.data.result || [];
+    const holdersData = validation.data.result.value
+      .map((holder: any) => ({
+        owner: holder.address,
+        amount: parseInt(holder.amount, 10) / 1e6, // Convert from raw to TRN with 6 decimals
+      }))
+      .filter((h: any) => h.amount >= 1); // Only active holders
 
-    const holders = holderData
-      .filter((h: any) => h.amount >= 1)
+    const holders = holdersData
       .map((h: any) => ({
         address: h.owner,
         balance: h.amount,

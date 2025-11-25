@@ -1689,6 +1689,7 @@ export type Database = {
           created_at: string | null
           id: string
           metadata: Json | null
+          transaction_signature: string | null
           wallet_address: string
         }
         Insert: {
@@ -1697,6 +1698,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           metadata?: Json | null
+          transaction_signature?: string | null
           wallet_address: string
         }
         Update: {
@@ -1705,6 +1707,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           metadata?: Json | null
+          transaction_signature?: string | null
           wallet_address?: string
         }
         Relationships: []

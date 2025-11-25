@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { TRN_MINT_ADDRESS, getHolderTier, HOLDER_TIERS } from "../_shared/constants.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -17,38 +18,47 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    console.log('Fetching TRN holder data from Helius...');
+    console.log('Fetching TRN holder data from Helius RPC...');
 
     const HELIUS_API_KEY = Deno.env.get('HELIUS_API_KEY');
-    const TRN_MINT_ADDRESS = 'GwXzGeZFF4jK1PqzVd17MHioY7pqSET7r6UY7RS1pump';
 
     let holders: Array<{ address: string; balance: number }> = [];
 
     try {
       const response = await fetch(
-        `https://api.helius.xyz/v0/addresses/${TRN_MINT_ADDRESS}/holders`,
+        `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`,
         {
-          headers: {
-            'Authorization': `Bearer ${HELIUS_API_KEY}`,
-          },
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            jsonrpc: '2.0',
+            id: 'get-holders',
+            method: 'getTokenLargestAccounts',
+            params: [TRN_MINT_ADDRESS],
+          }),
         }
       );
 
       if (!response.ok) {
-        throw new Error(`Helius API error: ${response.status}`);
+        throw new Error(`Helius RPC error: ${response.status}`);
       }
 
-      const data = await response.json();
-      const holderData = data.result || [];
+      const rpcData = await response.json();
+      
+      if (rpcData.error) {
+        throw new Error(`RPC error: ${rpcData.error.message}`);
+      }
+
+      const holderData = rpcData.result?.value || [];
 
       holders = holderData
-        .filter((h: any) => h.amount >= 1) // Only holders with >= 1 TRN
         .map((h: any) => ({
-          address: h.owner,
-          balance: h.amount,
-        }));
+          address: h.address,
+          balance: parseInt(h.amount, 10) / 1e6, // Convert from raw to TRN with 6 decimals
+        }))
+        .filter((h: any) => h.balance >= 1); // Only holders with >= 1 TRN
 
-      console.log(`Successfully fetched ${holders.length} holders from Helius`);
+      console.log(`Successfully fetched ${holders.length} holders from Helius RPC`);
     } catch (error) {
       console.error('Error fetching from Helius, using fallback data:', error);
       // Fallback to mock data if Helius fails

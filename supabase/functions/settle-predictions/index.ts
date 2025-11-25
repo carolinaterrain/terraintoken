@@ -1,5 +1,6 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
+import { TRN_MINT_ADDRESS } from "../_shared/constants.ts";
 
 // Input validation schema
 const settleInputSchema = z.object({
@@ -61,7 +62,7 @@ Deno.serve(async (req) => {
 
     // Fetch current TRN price from DexScreener with validation
     const dexResponse = await fetch(
-      'https://api.dexscreener.com/latest/dex/tokens/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump'
+      `https://api.dexscreener.com/latest/dex/tokens/${TRN_MINT_ADDRESS}`
     );
     
     if (!dexResponse.ok) {

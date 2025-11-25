@@ -16,7 +16,7 @@ export interface MemeTokenStats {
   commentary: string;
 }
 
-const TRN_CONTRACT = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+const TRN_CONTRACT = "EMrpbqAmruGBfkejNXQPZVTkuFHt7pc6DUeHRfN8qSQV";
 
 // Fetch TRN token stats from DexScreener
 export async function fetchTRNStats(): Promise<TokenStats | null> {

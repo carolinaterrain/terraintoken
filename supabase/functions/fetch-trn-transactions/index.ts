@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { TRN_MINT_ADDRESS } from "../_shared/constants.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,7 +13,6 @@ serve(async (req) => {
 
   try {
     const HELIUS_API_KEY = Deno.env.get('HELIUS_API_KEY');
-    const TRN_MINT_ADDRESS = '2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump';
 
     if (!HELIUS_API_KEY) {
       throw new Error('HELIUS_API_KEY not configured');
