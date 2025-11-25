@@ -14,7 +14,7 @@ const EcosystemFlow = () => {
         .select('*')
         .order('rank', { ascending: true })
         .limit(1)
-        .single();
+        .maybeSingle();
       return data;
     }
   });

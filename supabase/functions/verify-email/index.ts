@@ -32,7 +32,7 @@ serve(async (req) => {
       .select('*')
       .eq('metadata->>verification_token', token)
       .eq('status', 'pending_verification')
-      .single();
+      .maybeSingle();
 
     if (findError || !waitlistEntry) {
       console.error('Verification token not found:', findError);

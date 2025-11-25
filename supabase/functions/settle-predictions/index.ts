@@ -171,7 +171,7 @@ Deno.serve(async (req) => {
           .from('prediction_user_stats')
           .select('*')
           .eq('user_wallet', prediction.user_wallet)
-          .single();
+          .maybeSingle();
 
         if (userStats.data) {
           const stats = userStats.data;
@@ -211,7 +211,7 @@ Deno.serve(async (req) => {
             .select('*')
             .eq('tournament_id', tournament.id)
             .eq('user_wallet', prediction.user_wallet)
-            .single();
+            .maybeSingle();
 
           if (entry) {
             await supabase

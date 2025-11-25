@@ -74,7 +74,7 @@ serve(async (req) => {
           .from("whale_alerts")
           .select("id")
           .eq("metadata->transaction_signature", purchase.transaction_signature)
-          .single();
+          .maybeSingle();
 
         if (!existing) {
           await supabase.from("whale_alerts").insert({

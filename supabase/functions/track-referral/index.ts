@@ -76,7 +76,7 @@ const handler = async (req: Request): Promise<Response> => {
           metadata: { source: 'web' }
         })
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) {
         if (error.code === '23505') { // Unique constraint violation
@@ -113,7 +113,7 @@ const handler = async (req: Request): Promise<Response> => {
         .eq('referrer_code', referrer_code)
         .eq('referred_email', referred_email)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
 

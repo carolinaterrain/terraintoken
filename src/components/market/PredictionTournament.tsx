@@ -18,7 +18,7 @@ export const PredictionTournament = ({ walletAddress }: PredictionTournamentProp
         .eq("status", "active")
         .order("start_date", { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
       return data;
     },
   });
@@ -48,7 +48,7 @@ export const PredictionTournament = ({ walletAddress }: PredictionTournamentProp
         .select("*")
         .eq("tournament_id", activeTournament.id)
         .eq("user_wallet", walletAddress)
-        .single();
+        .maybeSingle();
       return data;
     },
     enabled: !!activeTournament && !!walletAddress,
