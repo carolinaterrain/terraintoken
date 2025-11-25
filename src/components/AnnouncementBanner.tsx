@@ -11,20 +11,18 @@ const AnnouncementBanner = ({ onDismiss }: AnnouncementBannerProps) => {
       <div className="container mx-auto flex items-center justify-center gap-2 text-sm pr-8">
         <Sparkles className="w-4 h-4 text-primary animate-pulse" />
         <p className="text-foreground font-medium">
-          🎬 New Video Updates Hub Live! Watch 30-second price action & demo updates
+          🚀 NEW: Ape Mode is LIVE! Giant BUY/SELL buttons, zero distractions. Just vibes.
         </p>
         <Button
           variant="ghost"
           size="sm"
           onClick={() => {
-            const element = document.getElementById("video-updates");
-            if (element) {
-              element.scrollIntoView({ behavior: "smooth" });
-            }
+            window.location.hash = '';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
           className="text-primary hover:text-primary/80"
         >
-          Watch Now →
+          Try Ape Mode →
         </Button>
       </div>
       {onDismiss && (

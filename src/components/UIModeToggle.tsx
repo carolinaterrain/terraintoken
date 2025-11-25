@@ -28,11 +28,14 @@ export const UIModeToggle = () => {
       aria-label={`Switch to ${mode === 'ape' ? 'Research' : 'Ape'} Mode`}
     >
       <div className={cn(
-        "flex items-center gap-2 transition-all duration-300",
+        "flex items-center gap-2 transition-all duration-300 relative",
         mode === 'ape' ? "text-primary" : "text-muted-foreground"
       )}>
         <Rocket className="w-4 h-4" />
         <span className="hidden sm:inline">Ape</span>
+        <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[8px] font-bold px-1 rounded animate-pulse">
+          NEW
+        </span>
       </div>
       <div className={cn(
         "w-10 h-5 rounded-full bg-border relative transition-all duration-300",
