@@ -1,8 +1,9 @@
 import { GlassCard } from "@/components/ui/glass-card";
 import { motion } from "framer-motion";
-import { TrendingUp, Users, Brain, Target, Zap, CloudRain } from "lucide-react";
+import { TrendingUp, Users, Brain, Target, Zap, CloudRain, ExternalLink } from "lucide-react";
 import { Bar, BarChart, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { marketSegments, marketOpportunity, competitiveLandscape, adoptionDrivers, marketPositioning } from "@/lib/marketData";
+import { DataVerificationBadge } from "./DataVerificationBadge";
 
 const iconMap = {
   Brain,
@@ -24,19 +25,27 @@ export const MarketLandscape = () => {
   return (
     <section className="py-20 px-4 bg-gradient-to-b from-background to-secondary/5">
       <div className="container mx-auto max-w-7xl">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-chart-2 bg-clip-text text-transparent">
-            Market Landscape
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Multi-billion dollar market opportunity at the intersection of AI, terrain intelligence, and Web3
-          </p>
-        </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-chart-2 bg-clip-text text-transparent">
+              Market Landscape
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Multi-billion dollar market opportunity at the intersection of AI, terrain intelligence, and Web3
+            </p>
+            <div className="flex items-center justify-center gap-4 mt-4 text-xs text-muted-foreground">
+              <DataVerificationBadge 
+                status="estimated"
+                source="IBISWorld, Grand View Research, Markets & Markets"
+                className="text-xs"
+              />
+              <span>Market data as of 2024</span>
+            </div>
+          </motion.div>
 
         {/* Market Size Growth */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
@@ -44,10 +53,16 @@ export const MarketLandscape = () => {
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-          >
-            <GlassCard className="p-8">
-              <h3 className="text-2xl font-bold mb-6">Market Growth 2024-2029</h3>
-              <ResponsiveContainer width="100%" height={300}>
+            >
+              <GlassCard className="p-8">
+                <div className="flex items-start justify-between mb-6">
+                  <h3 className="text-2xl font-bold">Market Growth 2024-2029</h3>
+                  <DataVerificationBadge 
+                    status="estimated"
+                    source="Industry Research Reports"
+                  />
+                </div>
+                <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={growthData}>
                   <XAxis dataKey="name" tick={{ fontSize: 11 }} angle={-15} textAnchor="end" height={80} />
                   <YAxis tick={{ fontSize: 12 }} label={{ value: 'Billion USD', angle: -90, position: 'insideLeft' }} />
@@ -100,9 +115,15 @@ export const MarketLandscape = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="mb-16"
-        >
-          <h3 className="text-3xl font-bold text-center mb-8">Market Opportunity Funnel</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          >
+            <div className="text-center mb-8">
+              <h3 className="text-3xl font-bold mb-2">Market Opportunity Funnel</h3>
+              <DataVerificationBadge 
+                status="estimated"
+                source="TAM/SAM/SOM analysis based on market research"
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {marketOpportunity.map((level, index) => (
               <div
                 key={level.label}

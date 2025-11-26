@@ -7,13 +7,15 @@ import CountUp from "react-countup";
 import { TrendingUp, DollarSign, Users, Zap, Database, Activity } from "lucide-react";
 import { calculateMetrics } from "@/lib/financialData";
 import { motion } from "framer-motion";
+import { DataSourceIndicator } from "./DataSourceIndicator";
+import { DataVerificationBadge } from "./DataVerificationBadge";
 
 export const EcosystemMetrics = () => {
   const { data: tokenStats, isLoading: tokenLoading } = useTokenStats();
   const { data: holderData, isLoading: holderLoading } = useLiveHolderCount();
   
   const businessMetrics = calculateMetrics();
-  const equipmentValue = 397000; // Total equipment value
+  const equipmentValue = 172591.78; // Current equipment value from balance sheet
 
   // Get waitlist count
   const { data: waitlistCount } = useQuery({
@@ -115,7 +117,27 @@ export const EcosystemMetrics = () => {
                     >
                       <GlassCard className="p-6 h-full hover:scale-105 transition-transform">
                         <div className="space-y-3">
-                          <p className="text-sm text-muted-foreground">{metric.label}</p>
+                          <div className="flex items-center justify-between">
+                            <p className="text-sm text-muted-foreground">{metric.label}</p>
+                            {section.title === "On-Chain Metrics" && (
+                              <DataSourceIndicator 
+                                source="live" 
+                                lastUpdated={new Date()}
+                              />
+                            )}
+                            {section.title === "Business Metrics" && (
+                              <DataVerificationBadge 
+                                status="verified"
+                                source="QuickBooks Records"
+                              />
+                            )}
+                            {section.title === "Network Activity" && (
+                              <DataSourceIndicator 
+                                source="live"
+                                lastUpdated={new Date()}
+                              />
+                            )}
+                          </div>
                           <div className={`text-3xl font-bold ${metric.color}`}>
                             {metric.prefix}
                             <CountUp

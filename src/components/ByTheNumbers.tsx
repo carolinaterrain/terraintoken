@@ -176,6 +176,9 @@ const ByTheNumbers = () => {
             team expansion, and cutting-edge technology. This complete financial disclosure demonstrates the authentic 
             foundation behind the TRN community.
           </p>
+          <p className="text-xs text-muted-foreground italic">
+            * Financial calculations exclude incomplete months (e.g., partial month data). All figures sourced from QuickBooks records.
+          </p>
           <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
             <Shield className="w-4 h-4 text-primary" />
             <span>All data verified from QuickBooks accounting records</span>

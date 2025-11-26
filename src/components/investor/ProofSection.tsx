@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import CountUp from "react-countup";
 
 export const ProofSection = () => {
-  const equipmentValue = 397000; // Total verified equipment value
+  const equipmentValue = 172591.78; // Current equipment value from balance sheet
 
   // Get days since launch (assuming Jan 1, 2024)
   const launchDate = new Date("2024-01-01");
@@ -28,7 +28,7 @@ export const ProofSection = () => {
       icon: Shield,
       title: "Smart Contract Verified",
       description: "Audited and verified on Solscan",
-      link: "https://solscan.io/token/TRNgHXTCb52EtFN3cKXXSDdFLgVEj2XmXqJFoYhR5Hn",
+      link: "https://solscan.io/token/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump",
       color: "text-chart-1"
     },
     {

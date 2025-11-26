@@ -1,7 +1,7 @@
 import { InvestorHero } from "@/components/investor/InvestorHero";
 import { EcosystemMetrics } from "@/components/investor/EcosystemMetrics";
 import { MarketLandscape } from "@/components/investor/MarketLandscape";
-import { RevenueStreams } from "@/components/investor/RevenueStreams";
+import { RevenueStreamsEnhanced } from "@/components/investor/RevenueStreamsEnhanced";
 import { ValueGeneration } from "@/components/investor/ValueGeneration";
 import { InvestmentTiers } from "@/components/investor/InvestmentTiers";
 import { RiskMitigation } from "@/components/investor/RiskMitigation";
@@ -147,7 +147,7 @@ const Investors = () => {
 
         {/* Revenue Streams */}
         <section id="revenue-streams">
-          <RevenueStreams />
+          <RevenueStreamsEnhanced />
         </section>
 
         {/* Token Value Generation */}
