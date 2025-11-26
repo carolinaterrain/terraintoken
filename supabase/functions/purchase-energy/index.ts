@@ -1,0 +1,79 @@
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
+Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  try {
+    const { walletAddress, packageType, energyAmount, trnCost } = await req.json();
+
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    );
+
+    const trnBurned = trnCost / 2; // 50% burn
+
+    // Update energy balance
+    const { data: balance } = await supabase
+      .from('energy_balances')
+      .select('*')
+      .eq('user_wallet', walletAddress)
+      .maybeSingle();
+
+    if (balance) {
+      await supabase
+        .from('energy_balances')
+        .update({
+          energy_balance: balance.energy_balance + energyAmount,
+          total_energy_purchased: balance.total_energy_purchased + energyAmount,
+          trn_spent_on_energy: balance.trn_spent_on_energy + trnCost,
+        })
+        .eq('user_wallet', walletAddress);
+    } else {
+      await supabase.from('energy_balances').insert({
+        user_wallet: walletAddress,
+        energy_balance: 5 + energyAmount,
+        total_energy_purchased: energyAmount,
+        trn_spent_on_energy: trnCost,
+      });
+    }
+
+    // Record purchase
+    const { data: purchase } = await supabase
+      .from('energy_purchases')
+      .insert({
+        user_wallet: walletAddress,
+        package_type: packageType,
+        energy_amount: energyAmount,
+        trn_cost: trnCost,
+        trn_burned: trnBurned,
+      })
+      .select()
+      .single();
+
+    // Record burn
+    await supabase.from('token_burns').insert({
+      burn_source: 'energy_purchase',
+      burn_amount: trnBurned,
+      user_wallet: walletAddress,
+      related_transaction_id: purchase.id,
+    });
+
+    return new Response(JSON.stringify({ success: true, purchase }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  } catch (error: any) {
+    console.error('Error:', error);
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+});
