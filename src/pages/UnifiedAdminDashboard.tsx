@@ -5,12 +5,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useTabPersistence } from "@/hooks/useTabPersistence";
 import { useTabAnalytics } from "@/hooks/useTabAnalytics";
 import { supabase } from "@/integrations/supabase/client";
-import { LayoutDashboard, Image, Users, BarChart3, TestTube2, Filter, Activity, Gift, DollarSign, UserPlus } from "lucide-react";
+import { LayoutDashboard, Image, Users, BarChart3, TestTube2, Filter, Activity, Gift, DollarSign, UserPlus, Code2 } from "lucide-react";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Card } from "@/components/ui/card";
 import { RedemptionsTab } from "@/components/admin/RedemptionsTab";
 import { InvoiceCodesTab } from "@/components/admin/InvoiceCodesTab";
 import { ReferralsTab } from "@/components/admin/ReferralsTab";
+import { CodeHealthTab } from "@/components/admin/CodeHealthTab";
 
 const ScrollProgress = lazy(() => import("@/components/ScrollProgress"));
 const SmartHeader = lazy(() => import("@/components/SmartHeader"));
@@ -141,6 +142,10 @@ const UnifiedAdminDashboard = () => {
                   <UserPlus className="w-4 h-4" />
                   Referrals
                 </TabsTrigger>
+                <TabsTrigger value="codehealth" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-6 py-4 gap-2">
+                  <Code2 className="w-4 h-4" />
+                  Code Health
+                </TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
@@ -264,6 +269,13 @@ const UnifiedAdminDashboard = () => {
             <TabsContent value="referrals">
               <Suspense fallback={<LoadingSection />}>
                 <ReferralsTab />
+              </Suspense>
+            </TabsContent>
+
+            {/* Code Health Tab */}
+            <TabsContent value="codehealth">
+              <Suspense fallback={<LoadingSection />}>
+                <CodeHealthTab />
               </Suspense>
             </TabsContent>
           </Tabs>
