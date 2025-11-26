@@ -275,6 +275,42 @@ export type Database = {
           },
         ]
       }
+      contest_stakes: {
+        Row: {
+          burn_amount: number | null
+          contest_id: string | null
+          contest_type: string
+          created_at: string
+          entry_fee: number
+          id: string
+          placement: number | null
+          prize_won: number | null
+          user_wallet: string
+        }
+        Insert: {
+          burn_amount?: number | null
+          contest_id?: string | null
+          contest_type: string
+          created_at?: string
+          entry_fee: number
+          id?: string
+          placement?: number | null
+          prize_won?: number | null
+          user_wallet: string
+        }
+        Update: {
+          burn_amount?: number | null
+          contest_id?: string | null
+          contest_type?: string
+          created_at?: string
+          entry_fee?: number
+          id?: string
+          placement?: number | null
+          prize_won?: number | null
+          user_wallet?: string
+        }
+        Relationships: []
+      }
       daily_quests: {
         Row: {
           active: boolean | null
@@ -338,6 +374,72 @@ export type Database = {
         }
         Relationships: []
       }
+      energy_balances: {
+        Row: {
+          created_at: string
+          energy_balance: number
+          last_refill: string
+          max_energy: number
+          total_energy_purchased: number
+          trn_spent_on_energy: number
+          updated_at: string
+          user_wallet: string
+        }
+        Insert: {
+          created_at?: string
+          energy_balance?: number
+          last_refill?: string
+          max_energy?: number
+          total_energy_purchased?: number
+          trn_spent_on_energy?: number
+          updated_at?: string
+          user_wallet: string
+        }
+        Update: {
+          created_at?: string
+          energy_balance?: number
+          last_refill?: string
+          max_energy?: number
+          total_energy_purchased?: number
+          trn_spent_on_energy?: number
+          updated_at?: string
+          user_wallet?: string
+        }
+        Relationships: []
+      }
+      energy_purchases: {
+        Row: {
+          created_at: string
+          energy_amount: number
+          id: string
+          package_type: string
+          transaction_signature: string | null
+          trn_burned: number
+          trn_cost: number
+          user_wallet: string
+        }
+        Insert: {
+          created_at?: string
+          energy_amount: number
+          id?: string
+          package_type: string
+          transaction_signature?: string | null
+          trn_burned: number
+          trn_cost: number
+          user_wallet: string
+        }
+        Update: {
+          created_at?: string
+          energy_amount?: number
+          id?: string
+          package_type?: string
+          transaction_signature?: string | null
+          trn_burned?: number
+          trn_cost?: number
+          user_wallet?: string
+        }
+        Relationships: []
+      }
       funnel_events: {
         Row: {
           completed: boolean | null
@@ -368,6 +470,45 @@ export type Database = {
           step_name?: string
           step_order?: number
           time_spent_seconds?: number | null
+        }
+        Relationships: []
+      }
+      gamification_purchases: {
+        Row: {
+          created_at: string
+          effect_data: Json | null
+          expires_at: string | null
+          id: string
+          item_name: string
+          item_type: string
+          transaction_signature: string | null
+          trn_burned: number
+          trn_cost: number
+          user_wallet: string
+        }
+        Insert: {
+          created_at?: string
+          effect_data?: Json | null
+          expires_at?: string | null
+          id?: string
+          item_name: string
+          item_type: string
+          transaction_signature?: string | null
+          trn_burned: number
+          trn_cost: number
+          user_wallet: string
+        }
+        Update: {
+          created_at?: string
+          effect_data?: Json | null
+          expires_at?: string | null
+          id?: string
+          item_name?: string
+          item_type?: string
+          transaction_signature?: string | null
+          trn_burned?: number
+          trn_cost?: number
+          user_wallet?: string
         }
         Relationships: []
       }
@@ -748,6 +889,107 @@ export type Database = {
         }
         Relationships: []
       }
+      marketplace_items: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          is_featured: boolean | null
+          item_type: string
+          metadata: Json | null
+          price_trn: number
+          rating: number | null
+          review_count: number | null
+          sales_count: number | null
+          seller_wallet: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean | null
+          item_type: string
+          metadata?: Json | null
+          price_trn: number
+          rating?: number | null
+          review_count?: number | null
+          sales_count?: number | null
+          seller_wallet: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean | null
+          item_type?: string
+          metadata?: Json | null
+          price_trn?: number
+          rating?: number | null
+          review_count?: number | null
+          sales_count?: number | null
+          seller_wallet?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      marketplace_transactions: {
+        Row: {
+          buyer_wallet: string
+          created_at: string
+          fee_burned: number
+          id: string
+          item_id: string | null
+          platform_fee: number
+          price_paid: number
+          seller_payout: number
+          seller_wallet: string
+          transaction_signature: string | null
+        }
+        Insert: {
+          buyer_wallet: string
+          created_at?: string
+          fee_burned: number
+          id?: string
+          item_id?: string | null
+          platform_fee: number
+          price_paid: number
+          seller_payout: number
+          seller_wallet: string
+          transaction_signature?: string | null
+        }
+        Update: {
+          buyer_wallet?: string
+          created_at?: string
+          fee_burned?: number
+          id?: string
+          item_id?: string | null
+          platform_fee?: number
+          price_paid?: number
+          seller_payout?: number
+          seller_wallet?: string
+          transaction_signature?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_transactions_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       meme_submissions: {
         Row: {
           caption: string | null
@@ -790,6 +1032,80 @@ export type Database = {
           status?: string | null
           x_handle?: string | null
           x_post_url?: string | null
+        }
+        Relationships: []
+      }
+      mystery_box_opens: {
+        Row: {
+          box_id: string | null
+          created_at: string
+          id: string
+          reward_data: Json | null
+          reward_type: string
+          reward_value: number
+          trn_paid: number
+          user_wallet: string
+        }
+        Insert: {
+          box_id?: string | null
+          created_at?: string
+          id?: string
+          reward_data?: Json | null
+          reward_type: string
+          reward_value: number
+          trn_paid: number
+          user_wallet: string
+        }
+        Update: {
+          box_id?: string | null
+          created_at?: string
+          id?: string
+          reward_data?: Json | null
+          reward_type?: string
+          reward_value?: number
+          trn_paid?: number
+          user_wallet?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mystery_box_opens_box_id_fkey"
+            columns: ["box_id"]
+            isOneToOne: false
+            referencedRelation: "mystery_boxes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mystery_boxes: {
+        Row: {
+          available_count: number | null
+          box_tier: string
+          created_at: string
+          id: string
+          is_active: boolean | null
+          possible_rewards: Json
+          rarity_weights: Json
+          trn_cost: number
+        }
+        Insert: {
+          available_count?: number | null
+          box_tier: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          possible_rewards: Json
+          rarity_weights: Json
+          trn_cost: number
+        }
+        Update: {
+          available_count?: number | null
+          box_tier?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          possible_rewards?: Json
+          rarity_weights?: Json
+          trn_cost?: number
         }
         Relationships: []
       }
@@ -927,6 +1243,53 @@ export type Database = {
           trn_reward?: number | null
         }
         Relationships: []
+      }
+      prediction_stakes: {
+        Row: {
+          burn_amount: number | null
+          created_at: string
+          id: string
+          payout_amount: number | null
+          prediction_id: string | null
+          settled_at: string | null
+          stake_amount: number
+          status: string
+          treasury_amount: number | null
+          user_wallet: string
+        }
+        Insert: {
+          burn_amount?: number | null
+          created_at?: string
+          id?: string
+          payout_amount?: number | null
+          prediction_id?: string | null
+          settled_at?: string | null
+          stake_amount: number
+          status?: string
+          treasury_amount?: number | null
+          user_wallet: string
+        }
+        Update: {
+          burn_amount?: number | null
+          created_at?: string
+          id?: string
+          payout_amount?: number | null
+          prediction_id?: string | null
+          settled_at?: string | null
+          stake_amount?: number
+          status?: string
+          treasury_amount?: number | null
+          user_wallet?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prediction_stakes_prediction_id_fkey"
+            columns: ["prediction_id"]
+            isOneToOne: false
+            referencedRelation: "market_predictions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       prediction_tournaments: {
         Row: {
@@ -1273,6 +1636,178 @@ export type Database = {
         }
         Relationships: []
       }
+      season_pass_holders: {
+        Row: {
+          id: string
+          pass_id: string | null
+          purchased_at: string
+          rewards_claimed: Json | null
+          tier_level: number | null
+          user_wallet: string
+          xp_earned: number | null
+        }
+        Insert: {
+          id?: string
+          pass_id?: string | null
+          purchased_at?: string
+          rewards_claimed?: Json | null
+          tier_level?: number | null
+          user_wallet: string
+          xp_earned?: number | null
+        }
+        Update: {
+          id?: string
+          pass_id?: string | null
+          purchased_at?: string
+          rewards_claimed?: Json | null
+          tier_level?: number | null
+          user_wallet?: string
+          xp_earned?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "season_pass_holders_pass_id_fkey"
+            columns: ["pass_id"]
+            isOneToOne: false
+            referencedRelation: "season_passes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      season_passes: {
+        Row: {
+          created_at: string
+          end_date: string
+          id: string
+          is_active: boolean | null
+          max_supply: number | null
+          rewards_structure: Json
+          season_name: string
+          season_number: number
+          start_date: string
+          total_sold: number | null
+          trn_cost: number
+        }
+        Insert: {
+          created_at?: string
+          end_date: string
+          id?: string
+          is_active?: boolean | null
+          max_supply?: number | null
+          rewards_structure: Json
+          season_name: string
+          season_number: number
+          start_date: string
+          total_sold?: number | null
+          trn_cost: number
+        }
+        Update: {
+          created_at?: string
+          end_date?: string
+          id?: string
+          is_active?: boolean | null
+          max_supply?: number | null
+          rewards_structure?: Json
+          season_name?: string
+          season_number?: number
+          start_date?: string
+          total_sold?: number | null
+          trn_cost?: number
+        }
+        Relationships: []
+      }
+      service_redemptions: {
+        Row: {
+          created_at: string
+          discount_code: string
+          discount_percent: number
+          expires_at: string
+          id: string
+          invoice_number: string | null
+          service_type: string
+          service_value_estimate: number | null
+          trn_balance_snapshot: number
+          trn_required: number
+          used: boolean | null
+          used_at: string | null
+          user_wallet: string
+        }
+        Insert: {
+          created_at?: string
+          discount_code: string
+          discount_percent: number
+          expires_at: string
+          id?: string
+          invoice_number?: string | null
+          service_type: string
+          service_value_estimate?: number | null
+          trn_balance_snapshot: number
+          trn_required: number
+          used?: boolean | null
+          used_at?: string | null
+          user_wallet: string
+        }
+        Update: {
+          created_at?: string
+          discount_code?: string
+          discount_percent?: number
+          expires_at?: string
+          id?: string
+          invoice_number?: string | null
+          service_type?: string
+          service_value_estimate?: number | null
+          trn_balance_snapshot?: number
+          trn_required?: number
+          used?: boolean | null
+          used_at?: string | null
+          user_wallet?: string
+        }
+        Relationships: []
+      }
+      subscription_payments: {
+        Row: {
+          amount_paid: number
+          created_at: string
+          id: string
+          payment_method: string
+          stripe_payment_id: string | null
+          subscription_id: string | null
+          transaction_signature: string | null
+          trn_burned: number | null
+          user_wallet: string
+        }
+        Insert: {
+          amount_paid: number
+          created_at?: string
+          id?: string
+          payment_method: string
+          stripe_payment_id?: string | null
+          subscription_id?: string | null
+          transaction_signature?: string | null
+          trn_burned?: number | null
+          user_wallet: string
+        }
+        Update: {
+          amount_paid?: number
+          created_at?: string
+          id?: string
+          payment_method?: string
+          stripe_payment_id?: string | null
+          subscription_id?: string | null
+          transaction_signature?: string | null
+          trn_burned?: number | null
+          user_wallet?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscription_payments_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "user_subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       terrainscape_waitlist: {
         Row: {
           beta_application: string | null
@@ -1377,6 +1912,39 @@ export type Database = {
           review_date?: string | null
           review_text?: string
           sort_order?: number | null
+        }
+        Relationships: []
+      }
+      token_burns: {
+        Row: {
+          burn_amount: number
+          burn_source: string
+          created_at: string
+          id: string
+          metadata: Json | null
+          related_transaction_id: string | null
+          transaction_signature: string | null
+          user_wallet: string | null
+        }
+        Insert: {
+          burn_amount: number
+          burn_source: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          related_transaction_id?: string | null
+          transaction_signature?: string | null
+          user_wallet?: string | null
+        }
+        Update: {
+          burn_amount?: number
+          burn_source?: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          related_transaction_id?: string | null
+          transaction_signature?: string | null
+          user_wallet?: string | null
         }
         Relationships: []
       }
@@ -1760,6 +2328,57 @@ export type Database = {
           total_validations?: number | null
           updated_at?: string | null
           user_wallet_address?: string
+        }
+        Relationships: []
+      }
+      user_subscriptions: {
+        Row: {
+          auto_renew: boolean | null
+          created_at: string
+          discount_applied: number | null
+          expires_at: string | null
+          id: string
+          payment_method: string | null
+          started_at: string
+          status: string
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          tier: string
+          trn_staked: number | null
+          updated_at: string
+          user_wallet: string
+        }
+        Insert: {
+          auto_renew?: boolean | null
+          created_at?: string
+          discount_applied?: number | null
+          expires_at?: string | null
+          id?: string
+          payment_method?: string | null
+          started_at?: string
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          tier: string
+          trn_staked?: number | null
+          updated_at?: string
+          user_wallet: string
+        }
+        Update: {
+          auto_renew?: boolean | null
+          created_at?: string
+          discount_applied?: number | null
+          expires_at?: string | null
+          id?: string
+          payment_method?: string | null
+          started_at?: string
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          tier?: string
+          trn_staked?: number | null
+          updated_at?: string
+          user_wallet?: string
         }
         Relationships: []
       }
