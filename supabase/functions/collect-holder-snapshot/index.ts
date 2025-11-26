@@ -23,8 +23,15 @@ serve(async (req) => {
     const HELIUS_API_KEY = Deno.env.get('HELIUS_API_KEY');
 
     let holders: Array<{ address: string; balance: number }> = [];
+    let isLiveData = false;
 
     try {
+      if (!HELIUS_API_KEY) {
+        throw new Error('HELIUS_API_KEY is not configured');
+      }
+
+      console.log('Calling Helius RPC with API key:', HELIUS_API_KEY.substring(0, 8) + '...');
+
       const response = await fetch(
         `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`,
         {
@@ -39,17 +46,25 @@ serve(async (req) => {
         }
       );
 
+      console.log('Helius RPC response status:', response.status);
+
       if (!response.ok) {
-        throw new Error(`Helius RPC error: ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(`Helius RPC error: ${response.status} - ${errorText}`);
       }
 
       const rpcData = await response.json();
+      console.log('RPC Data structure:', JSON.stringify(rpcData, null, 2));
       
       if (rpcData.error) {
-        throw new Error(`RPC error: ${rpcData.error.message}`);
+        throw new Error(`RPC error: ${JSON.stringify(rpcData.error)}`);
       }
 
       const holderData = rpcData.result?.value || [];
+
+      if (holderData.length === 0) {
+        throw new Error('Helius returned no holder data');
+      }
 
       holders = holderData
         .map((h: any) => ({
@@ -58,14 +73,23 @@ serve(async (req) => {
         }))
         .filter((h: any) => h.balance >= 1); // Only holders with >= 1 TRN
 
-      console.log(`Successfully fetched ${holders.length} holders from Helius RPC`);
+      // Validate that we got real wallet addresses (not mock data)
+      const hasRealAddresses = holders.some(h => 
+        h.address.length > 20 && !h.address.startsWith('holder')
+      );
+
+      if (!hasRealAddresses) {
+        throw new Error('Received suspicious data from Helius - addresses look like mock data');
+      }
+
+      isLiveData = true;
+      console.log(`✅ Successfully fetched ${holders.length} LIVE holders from Helius RPC`);
     } catch (error) {
-      console.error('Error fetching from Helius, using fallback data:', error);
-      // Fallback to mock data if Helius fails
-      holders = Array.from({ length: 1137 }, (_, i) => ({
-        address: `holder${i}`,
-        balance: Math.floor(Math.random() * 1000000) + 1000,
-      }));
+      console.error('❌ Error fetching from Helius:', error);
+      console.error('Error details:', error instanceof Error ? error.message : 'Unknown error');
+      
+      // DO NOT use fallback mock data - throw error instead
+      throw new Error(`Failed to fetch live holder data: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
 
     const holderAddresses = holders.map(h => h.address);
@@ -86,6 +110,7 @@ serve(async (req) => {
         total_holders: holders.length,
         holder_addresses: holderAddresses,
         holder_balances: holderBalances,
+        is_live_data: isLiveData,
       }, {
         onConflict: 'snapshot_date',
       });
