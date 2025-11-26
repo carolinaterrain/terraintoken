@@ -526,6 +526,63 @@ export type Database = {
         }
         Relationships: []
       }
+      investor_interests: {
+        Row: {
+          additional_notes: string | null
+          contacted_at: string | null
+          created_at: string | null
+          discord_handle: string | null
+          email: string
+          id: string
+          investment_range: string
+          investment_tier: string | null
+          is_accredited: boolean | null
+          name: string
+          nda_accepted: boolean | null
+          reason: string[] | null
+          status: string | null
+          utm_campaign: string | null
+          utm_source: string | null
+          wallet_address: string | null
+        }
+        Insert: {
+          additional_notes?: string | null
+          contacted_at?: string | null
+          created_at?: string | null
+          discord_handle?: string | null
+          email: string
+          id?: string
+          investment_range: string
+          investment_tier?: string | null
+          is_accredited?: boolean | null
+          name: string
+          nda_accepted?: boolean | null
+          reason?: string[] | null
+          status?: string | null
+          utm_campaign?: string | null
+          utm_source?: string | null
+          wallet_address?: string | null
+        }
+        Update: {
+          additional_notes?: string | null
+          contacted_at?: string | null
+          created_at?: string | null
+          discord_handle?: string | null
+          email?: string
+          id?: string
+          investment_range?: string
+          investment_tier?: string | null
+          is_accredited?: boolean | null
+          name?: string
+          nda_accepted?: boolean | null
+          reason?: string[] | null
+          status?: string | null
+          utm_campaign?: string | null
+          utm_source?: string | null
+          wallet_address?: string | null
+        }
+        Relationships: []
+      }
       invoice_codes: {
         Row: {
           code: string
