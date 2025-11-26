@@ -1,6 +1,7 @@
 import { DataBadge } from "./DataBadge";
+import { memo } from "react";
 
-export const DexScreenerChart = () => {
+export const DexScreenerChart = memo(() => {
   return (
     <div className="bg-gradient-to-br from-terrain-dark via-terrain-shadow to-terrain-deep border-2 border-goblin-gold/60 rounded-2xl p-4 shadow-[0_0_30px_rgba(251,191,36,0.3)] relative overflow-hidden">
       
@@ -46,4 +47,6 @@ export const DexScreenerChart = () => {
       </div>
     </div>
   );
-};
+});
+
+DexScreenerChart.displayName = 'DexScreenerChart';

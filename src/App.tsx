@@ -9,6 +9,7 @@ import { LoadingSpinner } from "./components/ui/loading-spinner";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { useEasterEggs } from "./hooks/useEasterEggs";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
+import { TokenDataProvider } from "./providers/TokenDataProvider";
 
 // Lazy load all pages for optimal code splitting
 const Index = lazy(() => import("./pages/Index"));
@@ -120,16 +121,18 @@ const App = () => {
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
-        <HelmetProvider>
-          <TooltipProvider>
-            <Suspense fallback={null}>
-              <PerformanceMonitor />
-            </Suspense>
-            <Toaster />
-            <Sonner />
-            <AppContent />
-          </TooltipProvider>
-        </HelmetProvider>
+        <TokenDataProvider>
+          <HelmetProvider>
+            <TooltipProvider>
+              <Suspense fallback={null}>
+                <PerformanceMonitor />
+              </Suspense>
+              <Toaster />
+              <Sonner />
+              <AppContent />
+            </TooltipProvider>
+          </HelmetProvider>
+        </TokenDataProvider>
       </QueryClientProvider>
     </ErrorBoundary>
   );
