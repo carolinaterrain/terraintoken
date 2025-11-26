@@ -40,6 +40,7 @@ const TransparencyReportNovember2025 = lazy(() => import("./pages/blog/transpare
 const RiskDisclosure = lazy(() => import("./pages/RiskDisclosure"));
 const ReferralDashboard = lazy(() => import("./pages/ReferralDashboard"));
 const UnifiedAdminDashboard = lazy(() => import("./pages/UnifiedAdminDashboard"));
+const Investors = lazy(() => import("./pages/Investors"));
 
 // Lazy load components
 const AdminRoute = lazy(() => import("./components/AdminRoute").then(m => ({ default: m.AdminRoute })));
@@ -102,6 +103,7 @@ const AppContent = () => {
             <Route path="/blog/transparency-report-november-2025" element={<TransparencyReportNovember2025 />} />
             <Route path="/transparency" element={<TransparencyHub />} />
             <Route path="/risk-disclosure" element={<RiskDisclosure />} />
+            <Route path="/investors" element={<Investors />} />
             <Route path="/funnel-analytics" element={<AdminRoute><FunnelAnalytics /></AdminRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
