@@ -8,11 +8,15 @@ import { RiskMitigation } from "@/components/investor/RiskMitigation";
 import { InvestorForm } from "@/components/investor/InvestorForm";
 import { ProofSection } from "@/components/investor/ProofSection";
 import { UseOfFunds } from "@/components/investor/UseOfFunds";
+import { StickyNavigation } from "@/components/investor/StickyNavigation";
 import { GlassCard } from "@/components/ui/glass-card";
 import Roadmap from "@/components/Roadmap";
 import { motion } from "framer-motion";
 import { TrendingUp, Target, Rocket } from "lucide-react";
 import { Helmet } from "react-helmet-async";
+import SmartHeader from "@/components/SmartHeader";
+import ScrollProgress from "@/components/ScrollProgress";
+import SkipToContent from "@/components/SkipToContent";
 
 const Investors = () => {
   return (
@@ -28,9 +32,16 @@ const Investors = () => {
         <meta property="og:description" content="Join the terrain intelligence revolution. Real utility. Real adoption. Real returns." />
       </Helmet>
 
-      <main className="min-h-screen">
+      <SkipToContent />
+      <ScrollProgress />
+      <SmartHeader />
+      <StickyNavigation />
+
+      <main id="main-content" className="min-h-screen">
         {/* Hero */}
-        <InvestorHero />
+        <section id="hero">
+          <InvestorHero />
+        </section>
 
         {/* Investment Narrative */}
         <section className="py-20 px-4 bg-gradient-to-b from-background to-secondary/5">
@@ -125,19 +136,29 @@ const Investors = () => {
         </section>
 
         {/* Live Metrics */}
-        <EcosystemMetrics />
+        <section id="ecosystem-metrics">
+          <EcosystemMetrics />
+        </section>
 
         {/* Market Landscape */}
-        <MarketLandscape />
+        <section id="market-landscape">
+          <MarketLandscape />
+        </section>
 
         {/* Revenue Streams */}
-        <RevenueStreams />
+        <section id="revenue-streams">
+          <RevenueStreams />
+        </section>
 
         {/* Token Value Generation */}
-        <ValueGeneration />
+        <section id="value-generation">
+          <ValueGeneration />
+        </section>
 
         {/* Investment Tiers */}
-        <InvestmentTiers />
+        <section id="investment-tiers">
+          <InvestmentTiers />
+        </section>
 
         {/* Why Now Section */}
         <section className="py-20 px-4 bg-gradient-to-b from-background to-primary/5">
@@ -215,16 +236,24 @@ const Investors = () => {
         </section>
 
         {/* Proof & Trust */}
-        <ProofSection />
+        <section id="proof-section">
+          <ProofSection />
+        </section>
 
         {/* Use of Funds */}
-        <UseOfFunds />
+        <section id="use-of-funds">
+          <UseOfFunds />
+        </section>
 
         {/* Risk Mitigation */}
-        <RiskMitigation />
+        <section id="risk-mitigation">
+          <RiskMitigation />
+        </section>
 
         {/* Investor Form */}
-        <InvestorForm />
+        <section id="investor-form">
+          <InvestorForm />
+        </section>
 
         {/* Compliance Footer */}
         <section className="py-12 px-4 bg-muted/30">
