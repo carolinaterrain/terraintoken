@@ -1,6 +1,10 @@
 import { InvestorHero } from "@/components/investor/InvestorHero";
 import { EcosystemMetrics } from "@/components/investor/EcosystemMetrics";
+import { MarketLandscape } from "@/components/investor/MarketLandscape";
+import { RevenueStreams } from "@/components/investor/RevenueStreams";
+import { ValueGeneration } from "@/components/investor/ValueGeneration";
 import { InvestmentTiers } from "@/components/investor/InvestmentTiers";
+import { RiskMitigation } from "@/components/investor/RiskMitigation";
 import { InvestorForm } from "@/components/investor/InvestorForm";
 import { ProofSection } from "@/components/investor/ProofSection";
 import { UseOfFunds } from "@/components/investor/UseOfFunds";
@@ -123,6 +127,15 @@ const Investors = () => {
         {/* Live Metrics */}
         <EcosystemMetrics />
 
+        {/* Market Landscape */}
+        <MarketLandscape />
+
+        {/* Revenue Streams */}
+        <RevenueStreams />
+
+        {/* Token Value Generation */}
+        <ValueGeneration />
+
         {/* Investment Tiers */}
         <InvestmentTiers />
 
@@ -206,6 +219,9 @@ const Investors = () => {
 
         {/* Use of Funds */}
         <UseOfFunds />
+
+        {/* Risk Mitigation */}
+        <RiskMitigation />
 
         {/* Investor Form */}
         <InvestorForm />
