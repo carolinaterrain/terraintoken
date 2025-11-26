@@ -98,9 +98,9 @@ export const ValueGeneration = () => {
           <div className="relative">
             {/* Desktop circular layout */}
             <div className="hidden lg:block">
-              <div className="relative w-full max-w-4xl mx-auto" style={{ height: '700px' }}>
+              <div className="relative w-full mx-auto px-8 py-12" style={{ minHeight: '800px' }}>
                 {/* SVG for connecting arrows */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }}>
+                <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid meet" style={{ zIndex: 0 }}>
                   <defs>
                     <marker
                       id="arrowhead"
@@ -117,9 +117,9 @@ export const ValueGeneration = () => {
                   {flywheelSteps.map((_, index) => {
                     const angle1 = (index / flywheelSteps.length) * 2 * Math.PI - Math.PI / 2;
                     const angle2 = ((index + 1) / flywheelSteps.length) * 2 * Math.PI - Math.PI / 2;
-                    const radius = 280;
+                    const radius = 300;
                     const centerX = 400;
-                    const centerY = 350;
+                    const centerY = 400;
                     
                     const x1 = centerX + radius * Math.cos(angle1);
                     const y1 = centerY + radius * Math.sin(angle1);
@@ -128,7 +128,7 @@ export const ValueGeneration = () => {
                     
                     // Calculate control point for curved arrow
                     const midAngle = (angle1 + angle2) / 2;
-                    const controlRadius = radius + 50;
+                    const controlRadius = radius + 60;
                     const cx = centerX + controlRadius * Math.cos(midAngle);
                     const cy = centerY + controlRadius * Math.sin(midAngle);
                     
@@ -142,62 +142,62 @@ export const ValueGeneration = () => {
                         strokeOpacity="0.3"
                         markerEnd="url(#arrowhead)"
                         className="animate-pulse"
-                        style={{ animationDelay: `${index * 0.3}s` }}
+                        style={{ animationDelay: `${index * 0.3}s`, animationDuration: '3s' }}
                       />
                     );
                   })}
                 </svg>
 
-                {flywheelSteps.map((step, index) => {
-                  const Icon = step.icon;
-                  const angle = (index / flywheelSteps.length) * 2 * Math.PI - Math.PI / 2;
-                  const radius = 280;
-                  const centerX = 400;
-                  const centerY = 350;
-                  const x = centerX + radius * Math.cos(angle);
-                  const y = centerY + radius * Math.sin(angle);
+                <div className="relative w-full h-full" style={{ aspectRatio: '1/1', maxWidth: '800px', margin: '0 auto' }}>
+                  {flywheelSteps.map((step, index) => {
+                    const Icon = step.icon;
+                    const angle = (index / flywheelSteps.length) * 2 * Math.PI - Math.PI / 2;
+                    const radius = 37.5; // percentage of container
+                    const x = 50 + radius * Math.cos(angle);
+                    const y = 50 + radius * Math.sin(angle);
+                    
+                    return (
+                      <motion.div
+                        key={step.title}
+                        initial={{ opacity: 0, scale: 0 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.15 }}
+                        className="absolute"
+                        style={{
+                          left: `${x}%`,
+                          top: `${y}%`,
+                          transform: 'translate(-50%, -50%)',
+                          zIndex: 10
+                        }}
+                      >
+                        <GlassCard className="p-5 w-40 text-center hover:scale-105 hover:shadow-glow transition-all duration-300 group">
+                          {/* Step number badge */}
+                          <div className="absolute -top-2 -left-2 w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shadow-lg z-10">
+                            {index + 1}
+                          </div>
+                          
+                          <div 
+                            className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform"
+                            style={{ backgroundColor: step.color + '20' }}
+                          >
+                            <Icon className="w-6 h-6" style={{ color: step.color }} />
+                          </div>
+                          <h4 className="font-bold text-sm mb-2">{step.title}</h4>
+                          <p className="text-xs text-muted-foreground leading-tight">{step.description}</p>
+                        </GlassCard>
+                      </motion.div>
+                    );
+                  })}
                   
-                  return (
-                    <motion.div
-                      key={step.title}
-                      initial={{ opacity: 0, scale: 0 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.15 }}
-                      className="absolute"
-                      style={{
-                        left: `${x}px`,
-                        top: `${y}px`,
-                        transform: 'translate(-50%, -50%)',
-                        zIndex: 10
-                      }}
-                    >
-                      <GlassCard className="p-5 w-44 text-center hover:scale-105 hover:shadow-glow transition-all duration-300 group">
-                        {/* Step number badge */}
-                        <div className="absolute -top-2 -left-2 w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shadow-lg">
-                          {index + 1}
-                        </div>
-                        
-                        <div 
-                          className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform"
-                          style={{ backgroundColor: step.color + '20' }}
-                        >
-                          <Icon className="w-6 h-6" style={{ color: step.color }} />
-                        </div>
-                        <h4 className="font-bold text-sm mb-2">{step.title}</h4>
-                        <p className="text-xs text-muted-foreground leading-tight">{step.description}</p>
-                      </GlassCard>
-                    </motion.div>
-                  );
-                })}
-                
-                {/* Center message */}
-                <div className="absolute" style={{ left: '400px', top: '350px', transform: 'translate(-50%, -50%)', zIndex: 20 }}>
-                  <GlassCard className="p-8 bg-gradient-to-br from-primary/20 to-chart-2/20 text-center shadow-glow">
-                    <div className="text-4xl font-bold mb-2">♻️</div>
-                    <div className="font-bold text-lg text-primary">Self-Sustaining</div>
-                    <div className="text-sm text-muted-foreground">Value Loop</div>
-                  </GlassCard>
+                  {/* Center message */}
+                  <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+                    <GlassCard className="p-6 bg-gradient-to-br from-primary/20 to-chart-2/20 text-center shadow-glow w-40">
+                      <div className="text-3xl font-bold mb-2">♻️</div>
+                      <div className="font-bold text-base text-primary">Self-Sustaining</div>
+                      <div className="text-xs text-muted-foreground">Value Loop</div>
+                    </GlassCard>
+                  </div>
                 </div>
               </div>
             </div>
