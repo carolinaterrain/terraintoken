@@ -1,7 +1,7 @@
 // Shared constants for TRN token across all edge functions
 // IMPORTANT: This is the single source of truth for the TRN mint address
 
-export const TRN_MINT_ADDRESS = "EMrpbqAmruGBfkejNXQPZVTkuFHt7pc6DUeHRfN8qSQV";
+export const TRN_MINT_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 
 // Whale tiers for purchase tracking
 export const WHALE_TIERS = {

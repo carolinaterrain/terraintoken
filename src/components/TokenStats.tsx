@@ -4,11 +4,12 @@ import { useToast } from "@/hooks/use-toast";
 import { useTokenData } from "@/providers/TokenDataProvider";
 import { useMemeStats } from "@/hooks/useTokenStats";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DataBadge } from "@/components/market/DataBadge";
 
 const TokenStats = memo(() => {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const { toast } = useToast();
-  const { stats, isLoading } = useTokenData();
+  const { stats, isLoading, holderCount, dataSource } = useTokenData();
   const { data: memeStats } = useMemeStats();
 
   const handleCopy = useCallback((value: string, label: string, index: number) => {
@@ -34,10 +35,10 @@ const TokenStats = memo(() => {
   }
 
   const statsArray = [
-    { label: "Market Cap", value: stats.marketCap, change: stats.change24h },
-    { label: "Price", value: `$${stats.priceUsd}`, change: stats.change24h },
-    { label: "24h Vol", value: stats.volume24h, change: 0 },
-    { label: "Holders", value: stats.holders || "N/A", change: 0 },
+    { label: "Market Cap", value: stats.marketCap, change: stats.change24h, source: dataSource.stats },
+    { label: "Price", value: `$${stats.priceUsd}`, change: stats.change24h, source: dataSource.stats },
+    { label: "24h Vol", value: stats.volume24h, change: 0, source: dataSource.stats },
+    { label: "Holders", value: holderCount?.holderCount?.toLocaleString() || "N/A", change: 0, source: dataSource.holders },
   ];
 
   const goblinMood = stats.change24h > 0 ? "🎉" : stats.change24h < -5 ? "😱" : "🏄‍♂️";
@@ -54,7 +55,10 @@ const TokenStats = memo(() => {
                 className="flex items-center gap-2 hover:bg-primary/10 px-3 py-2 rounded-lg transition-colors group"
               >
                 <div className="text-left">
-                  <div className="text-xs text-muted-foreground">{stat.label}</div>
+                  <div className="text-xs text-muted-foreground flex items-center gap-1">
+                    {stat.label}
+                    <DataBadge type={stat.source} className="scale-75" />
+                  </div>
                   <div className="text-sm font-bold flex items-center gap-1">
                     {stat.value}
                     {stat.change !== 0 && (

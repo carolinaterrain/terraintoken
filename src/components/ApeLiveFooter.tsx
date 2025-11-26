@@ -6,7 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useFeatureAnalytics } from "@/hooks/useFeatureAnalytics";
 import { Link } from "react-router-dom";
 
-const TRN_CONTRACT = "EMrpbqAmruGBfkejNXQPZVTkuFHt7pc6DUeHRfN8qSQV";
+const TRN_CONTRACT = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 
 export const ApeLiveFooter = () => {
   const { data: stats } = useTokenStats();

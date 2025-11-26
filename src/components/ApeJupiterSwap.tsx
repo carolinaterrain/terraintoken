@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import confetti from "canvas-confetti";
 import { useFeatureAnalytics } from "@/hooks/useFeatureAnalytics";
 
-const TRN_MINT = "EMrpbqAmruGBfkejNXQPZVTkuFHt7pc6DUeHRfN8qSQV";
+const TRN_MINT = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 const SOL_MINT = "So11111111111111111111111111111111111111112";
 
 type SwapMode = 'buy' | 'sell' | null;

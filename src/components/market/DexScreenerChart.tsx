@@ -31,7 +31,7 @@ export const DexScreenerChart = memo(() => {
           }
         `}</style>
         <iframe
-          src="https://dexscreener.com/solana/EMrpbqAmruGBfkejNXQPZVTkuFHt7pc6DUeHRfN8qSQV?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"
+          src="https://dexscreener.com/solana/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"
           className="absolute top-0 left-0 w-full h-full border-0 rounded-lg"
           title="TRN Trading Chart"
         />
