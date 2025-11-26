@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Check, Clock, AlertCircle } from "lucide-react";
 
 interface DataBadgeProps {
-  type: "live" | "demo" | "coming-soon";
+  type: "live" | "fallback" | "coming-soon";
   className?: string;
 }
 
@@ -14,9 +14,9 @@ export const DataBadge = ({ type, className = "" }: DataBadgeProps) => {
       variant: "default" as const,
       className: "bg-goblin-green text-black hover:bg-goblin-green/90",
     },
-    demo: {
+    fallback: {
       icon: AlertCircle,
-      text: "DEMO MODE",
+      text: "FALLBACK",
       variant: "outline" as const,
       className: "border-orange-500 text-orange-500",
     },

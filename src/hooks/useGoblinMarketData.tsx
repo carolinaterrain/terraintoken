@@ -20,7 +20,7 @@ interface PriceDataPoint {
 }
 
 const DEXSCREENER_API = "https://api.dexscreener.com/latest/dex";
-const TRN_PAIR_ADDRESS = "EMrpbqAmruGBfkejNXQPZVTkuFHt7pc6DUeHRfN8qSQV"; // Match DexScreener embed
+const TRN_PAIR_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 
 export function useGoblinMarketData() {
   return useQuery({

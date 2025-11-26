@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import confetti from "canvas-confetti";
 
 // TRN Token mint address on Solana
-const TRN_MINT = "EMrpbqAmruGBfkejNXQPZVTkuFHt7pc6DUeHRfN8qSQV";
+const TRN_MINT = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 
 interface BuyTier {
   id: string;

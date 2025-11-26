@@ -9,6 +9,11 @@ interface TokenData {
   supply: any;
   holderCount: any;
   isLoading: boolean;
+  dataSource: {
+    stats: 'live' | 'fallback';
+    supply: 'live' | 'fallback';
+    holders: 'live' | 'fallback';
+  };
 }
 
 const TokenDataContext = createContext<TokenData | null>(null);
@@ -79,6 +84,11 @@ export const TokenDataProvider = ({ children }: { children: ReactNode }) => {
     supply,
     holderCount,
     isLoading: statsLoading || supplyLoading || holderLoading,
+    dataSource: {
+      stats: stats?.marketCap !== "$--" ? 'live' : 'fallback',
+      supply: supply?.isStale ? 'fallback' : 'live',
+      holders: holderCount?.source === 'helius' ? 'live' : 'fallback',
+    },
   };
 
   return (

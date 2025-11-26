@@ -21,6 +21,7 @@ serve(async (req) => {
           holderCount: 1137,
           lastUpdated: new Date().toISOString(),
           source: 'fallback',
+          error: 'API key not configured',
         }),
         {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -28,37 +29,48 @@ serve(async (req) => {
       );
     }
 
-    console.log('Fetching holder count for TRN token...');
+    console.log('Fetching holder count for TRN token using Helius RPC...');
 
-    // Use Helius REST API for holder data
+    // Use Helius RPC method getTokenLargestAccounts instead of REST endpoint
     const response = await fetch(
-      `https://api.helius.xyz/v0/addresses/${TRN_MINT_ADDRESS}/holders?api-key=${HELIUS_API_KEY}`,
+      `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`,
       {
-        method: 'GET',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          id: 'holder-count',
+          method: 'getTokenLargestAccounts',
+          params: [TRN_MINT_ADDRESS],
+        }),
       }
     );
 
     if (!response.ok) {
-      console.error('Helius API error:', response.status, await response.text());
-      throw new Error(`Helius API error: ${response.status}`);
+      console.error('Helius RPC error:', response.status, await response.text());
+      throw new Error(`Helius RPC error: ${response.status}`);
     }
 
     const data = await response.json();
     
-    if (!data || !Array.isArray(data)) {
-      console.error('Invalid response format:', data);
-      throw new Error('Invalid response format from Helius API');
+    if (data.error) {
+      console.error('Helius RPC error:', data.error);
+      throw new Error(`Helius RPC error: ${data.error.message}`);
     }
 
-    // Count holders with non-zero balances
-    const activeHolders = data.filter((holder: any) => {
-      const balance = holder.amount || holder.balance || 0;
+    if (!data.result || !data.result.value) {
+      console.error('Invalid response format:', data);
+      throw new Error('Invalid response format from Helius RPC');
+    }
+
+    // Count accounts with non-zero balances
+    const activeHolders = data.result.value.filter((holder: any) => {
+      const balance = holder.amount || holder.uiAmount || 0;
       return balance > 0;
     });
 
     const holderCount = activeHolders.length;
-    console.log(`Successfully fetched ${holderCount} active holders from Helius API`);
+    console.log(`Successfully fetched ${holderCount} active holders from Helius RPC`);
 
     return new Response(
       JSON.stringify({
@@ -67,7 +79,11 @@ serve(async (req) => {
         source: 'helius',
       }),
       {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, max-age=120, s-maxage=120', // 2 min cache
+        },
       }
     );
   } catch (error) {

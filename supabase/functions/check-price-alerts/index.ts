@@ -66,7 +66,7 @@ serve(async (req) => {
 
     // Get current TRN price from DexScreener with validation
     const priceResponse = await fetch(
-      'https://api.dexscreener.com/latest/dex/pairs/solana/EMrpbqAmruGBfkejNXQPZVTkuFHt7pc6DUeHRfN8qSQV'
+      'https://api.dexscreener.com/latest/dex/pairs/solana/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump'
     );
 
     if (!priceResponse.ok) {
