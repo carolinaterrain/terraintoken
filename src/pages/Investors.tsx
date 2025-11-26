@@ -1,5 +1,7 @@
 import { InvestorHero } from "@/components/investor/InvestorHero";
 import { EcosystemMetrics } from "@/components/investor/EcosystemMetrics";
+import { RecentDevelopments } from "@/components/investor/RecentDevelopments";
+import { TokenBurnDashboard } from "@/components/investor/TokenBurnDashboard";
 import { MarketLandscape } from "@/components/investor/MarketLandscape";
 import { RevenueStreamsEnhanced } from "@/components/investor/RevenueStreamsEnhanced";
 import { ValueGeneration } from "@/components/investor/ValueGeneration";
@@ -138,6 +140,16 @@ const Investors = () => {
         {/* Live Metrics */}
         <section id="ecosystem-metrics">
           <EcosystemMetrics />
+        </section>
+
+        {/* Recent Developments */}
+        <section id="recent-developments">
+          <RecentDevelopments />
+        </section>
+
+        {/* Token Burn Dashboard */}
+        <section id="token-burn">
+          <TokenBurnDashboard />
         </section>
 
         {/* Market Landscape */}

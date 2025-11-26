@@ -17,6 +17,54 @@ export interface RevenueStream {
 }
 
 export const revenueStreams: RevenueStream[] = [
+  {
+    id: "energy_packs",
+    name: "Energy Pack Sales",
+    description: "Users purchase energy to power AI drainage analyses. 50% of TRN spent is burned.",
+    pricing: "50-350 TRN per pack",
+    marketSize: "Active platform users",
+    captureTarget: "20% monthly conversion",
+    arrProjection: "$180K",
+    category: "recurring",
+    priority: "high",
+    timeline: "LIVE"
+  },
+  {
+    id: "premium_subscriptions",
+    name: "Premium Subscriptions",
+    description: "4-tier subscription model with TRN + Stripe payments. 20% of TRN subscriptions burned.",
+    pricing: "$25-80/month or 100-1000 TRN",
+    marketSize: "Professional users, property managers",
+    captureTarget: "15% subscriber rate",
+    arrProjection: "$450K",
+    category: "recurring",
+    priority: "high",
+    timeline: "LIVE"
+  },
+  {
+    id: "marketplace_fees",
+    name: "Marketplace Transaction Fees",
+    description: "P2P trading platform with 5% transaction fee. 50% of fees burned.",
+    pricing: "5% per transaction",
+    marketSize: "All platform users",
+    captureTarget: "5% monthly GMV",
+    arrProjection: "$120K",
+    category: "recurring",
+    priority: "medium",
+    timeline: "LIVE"
+  },
+  {
+    id: "gamification_purchases",
+    name: "Gamification Layer",
+    description: "Mystery boxes, shop items, and premium effects. 30% of purchases burned.",
+    pricing: "100-500 TRN per item",
+    marketSize: "Engaged community members",
+    captureTarget: "10% monthly purchase rate",
+    arrProjection: "$90K",
+    category: "recurring",
+    priority: "medium",
+    timeline: "LIVE"
+  },
   // Recurring Revenue Streams
   {
     id: 'contractor-subs',
