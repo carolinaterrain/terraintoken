@@ -98,13 +98,64 @@ export const ValueGeneration = () => {
           <div className="relative">
             {/* Desktop circular layout */}
             <div className="hidden lg:block">
-              <div className="relative w-full aspect-square max-w-3xl mx-auto">
+              <div className="relative w-full max-w-4xl mx-auto" style={{ height: '700px' }}>
+                {/* SVG for connecting arrows */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }}>
+                  <defs>
+                    <marker
+                      id="arrowhead"
+                      markerWidth="10"
+                      markerHeight="10"
+                      refX="9"
+                      refY="3"
+                      orient="auto"
+                      className="fill-primary/40"
+                    >
+                      <polygon points="0 0, 10 3, 0 6" />
+                    </marker>
+                  </defs>
+                  {flywheelSteps.map((_, index) => {
+                    const angle1 = (index / flywheelSteps.length) * 2 * Math.PI - Math.PI / 2;
+                    const angle2 = ((index + 1) / flywheelSteps.length) * 2 * Math.PI - Math.PI / 2;
+                    const radius = 280;
+                    const centerX = 400;
+                    const centerY = 350;
+                    
+                    const x1 = centerX + radius * Math.cos(angle1);
+                    const y1 = centerY + radius * Math.sin(angle1);
+                    const x2 = centerX + radius * Math.cos(angle2);
+                    const y2 = centerY + radius * Math.sin(angle2);
+                    
+                    // Calculate control point for curved arrow
+                    const midAngle = (angle1 + angle2) / 2;
+                    const controlRadius = radius + 50;
+                    const cx = centerX + controlRadius * Math.cos(midAngle);
+                    const cy = centerY + controlRadius * Math.sin(midAngle);
+                    
+                    return (
+                      <path
+                        key={index}
+                        d={`M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`}
+                        stroke="hsl(var(--primary))"
+                        strokeWidth="2"
+                        fill="none"
+                        strokeOpacity="0.3"
+                        markerEnd="url(#arrowhead)"
+                        className="animate-pulse"
+                        style={{ animationDelay: `${index * 0.3}s` }}
+                      />
+                    );
+                  })}
+                </svg>
+
                 {flywheelSteps.map((step, index) => {
                   const Icon = step.icon;
                   const angle = (index / flywheelSteps.length) * 2 * Math.PI - Math.PI / 2;
-                  const radius = 42; // percentage
-                  const x = 50 + radius * Math.cos(angle);
-                  const y = 50 + radius * Math.sin(angle);
+                  const radius = 280;
+                  const centerX = 400;
+                  const centerY = 350;
+                  const x = centerX + radius * Math.cos(angle);
+                  const y = centerY + radius * Math.sin(angle);
                   
                   return (
                     <motion.div
@@ -115,33 +166,36 @@ export const ValueGeneration = () => {
                       transition={{ delay: index * 0.15 }}
                       className="absolute"
                       style={{
-                        left: `${x}%`,
-                        top: `${y}%`,
-                        transform: 'translate(-50%, -50%)'
+                        left: `${x}px`,
+                        top: `${y}px`,
+                        transform: 'translate(-50%, -50%)',
+                        zIndex: 10
                       }}
                     >
-                      <GlassCard className="p-6 w-48 text-center hover:scale-110 transition-transform">
+                      <GlassCard className="p-5 w-44 text-center hover:scale-105 hover:shadow-glow transition-all duration-300 group">
+                        {/* Step number badge */}
+                        <div className="absolute -top-2 -left-2 w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shadow-lg">
+                          {index + 1}
+                        </div>
+                        
                         <div 
-                          className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3"
+                          className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform"
                           style={{ backgroundColor: step.color + '20' }}
                         >
                           <Icon className="w-6 h-6" style={{ color: step.color }} />
                         </div>
                         <h4 className="font-bold text-sm mb-2">{step.title}</h4>
-                        <p className="text-xs text-muted-foreground">{step.description}</p>
-                        <div className="absolute -right-6 top-1/2 -translate-y-1/2">
-                          <ArrowRight className="w-5 h-5 text-muted-foreground" />
-                        </div>
+                        <p className="text-xs text-muted-foreground leading-tight">{step.description}</p>
                       </GlassCard>
                     </motion.div>
                   );
                 })}
                 
                 {/* Center message */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <GlassCard className="p-8 bg-gradient-to-br from-primary/20 to-chart-2/20 text-center">
-                    <div className="text-4xl font-bold text-primary mb-2">♻️</div>
-                    <div className="font-bold text-lg">Self-Sustaining</div>
+                <div className="absolute" style={{ left: '400px', top: '350px', transform: 'translate(-50%, -50%)', zIndex: 20 }}>
+                  <GlassCard className="p-8 bg-gradient-to-br from-primary/20 to-chart-2/20 text-center shadow-glow">
+                    <div className="text-4xl font-bold mb-2">♻️</div>
+                    <div className="font-bold text-lg text-primary">Self-Sustaining</div>
                     <div className="text-sm text-muted-foreground">Value Loop</div>
                   </GlassCard>
                 </div>
