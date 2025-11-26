@@ -1,4 +1,4 @@
-import { Home, Video, FileText, Users, Gift, TrendingUp } from "lucide-react";
+import { Home, Video, Briefcase, Gift, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useUIModeStore } from "@/stores/uiModeStore";
@@ -122,16 +122,16 @@ const MobileNav = () => {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => handleNavClick(() => navigate("/team"))}
-          aria-label="View team page"
+          onClick={() => handleNavClick(() => navigate("/investors"))}
+          aria-label="View investor opportunities"
           className={`flex flex-col items-center gap-1 h-auto py-3 px-3 min-h-[48px] min-w-[48px] transition-all ${
-            location.pathname === '/team' 
+            location.pathname === '/investors' 
               ? 'text-primary bg-primary/10' 
               : 'text-muted-foreground hover:text-foreground'
           }`}
         >
-          <Users className="w-5 h-5" />
-          <span className="text-xs font-medium">Team</span>
+          <Briefcase className="w-5 h-5" />
+          <span className="text-xs font-medium">Invest</span>
         </Button>
       </div>
     </nav>

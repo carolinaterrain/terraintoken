@@ -1,9 +1,15 @@
 import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, ChevronDown } from "lucide-react";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { useNavigate, useLocation } from "react-router-dom";
 import trnCoin from "@/assets/trn-coin.png";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const DesktopNav = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -23,16 +29,25 @@ const DesktopNav = () => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const navItems = [
+  const primaryNavItems = [
     { id: "hero", label: "Home" },
+    { id: "market", label: "🟢 Market", isRoute: true },
+    { id: "investors", label: "💼 Invest", isRoute: true },
+    { id: "earn-trn", label: "Earn", isRoute: true },
+  ];
+
+  const aboutDropdownItems = [
     { id: "about", label: "About", isTab: true, tab: "token-details" },
     { id: "tokenomics", label: "Tokenomics", isTab: true, tab: "token-details" },
+    { id: "transparency-hub", label: "Transparency", isRoute: true },
+    { id: "team", label: "Team", isRoute: true },
+  ];
+
+  const moreDropdownItems = [
     { id: "video-updates", label: "Videos", isRoute: true },
     { id: "updates", label: "Blog", isRoute: true },
-    { id: "market", label: "🟢 Market", isRoute: true },
-    { id: "investors", label: "💼 Investors", isRoute: true },
-    { id: "earn-trn", label: "Earn", isRoute: true },
-    { id: "redeem-trn", label: "Redeem", isRoute: true },
+    { id: "redeem-trn", label: "Redeem TRN", isRoute: true },
+    { id: "whitepaper", label: "Whitepaper", isRoute: true },
   ];
 
   return (
@@ -58,21 +73,12 @@ const DesktopNav = () => {
 
           {/* Center Nav */}
           <div className="flex items-center gap-1">
-            {navItems.map((item) => (
+            {primaryNavItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => {
                   if (item.isRoute) {
                     navigate(`/${item.id}`);
-                  } else if (item.isTab) {
-                    if (location.pathname !== '/') {
-                      navigate('/', { state: { activeTab: item.tab, scrollTo: item.id } });
-                    } else {
-                      const event = new CustomEvent('changeTab', { detail: { tab: item.tab } });
-                      window.dispatchEvent(event);
-                      // Scroll to section after tab change
-                      setTimeout(() => scrollToSection(item.id), 100);
-                    }
                   } else {
                     if (location.pathname !== '/') {
                       navigate('/', { state: { scrollTo: item.id } });
@@ -94,6 +100,64 @@ const DesktopNav = () => {
                 )}
               </button>
             ))}
+
+            {/* About Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="px-3 py-2 text-sm font-medium transition-all hover:text-foreground text-muted-foreground rounded flex items-center gap-1"
+                  aria-label="About menu"
+                >
+                  About
+                  <ChevronDown className="w-3 h-3" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="center" className="w-48">
+                {aboutDropdownItems.map((item) => (
+                  <DropdownMenuItem
+                    key={item.id}
+                    onClick={() => {
+                      if (item.isRoute) {
+                        navigate(`/${item.id}`);
+                      } else if (item.isTab) {
+                        if (location.pathname !== '/') {
+                          navigate('/', { state: { activeTab: item.tab, scrollTo: item.id } });
+                        } else {
+                          const event = new CustomEvent('changeTab', { detail: { tab: item.tab } });
+                          window.dispatchEvent(event);
+                          setTimeout(() => scrollToSection(item.id), 100);
+                        }
+                      }
+                    }}
+                  >
+                    {item.label}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* More Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="px-3 py-2 text-sm font-medium transition-all hover:text-foreground text-muted-foreground rounded flex items-center gap-1"
+                  aria-label="More menu"
+                >
+                  More
+                  <ChevronDown className="w-3 h-3" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="center" className="w-48">
+                {moreDropdownItems.map((item) => (
+                  <DropdownMenuItem
+                    key={item.id}
+                    onClick={() => navigate(`/${item.id}`)}
+                  >
+                    {item.label}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           {/* Right CTAs */}
