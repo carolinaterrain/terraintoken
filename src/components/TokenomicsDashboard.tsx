@@ -2,7 +2,7 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Progress } from "@/components/ui/progress";
 import { Lock, Users, Gift, Coins, TrendingUp, PieChart, CheckCircle } from "lucide-react";
 import { useState, memo } from "react";
-import { usePieSlice } from "@/lib/chartUtils";
+import { calculatePieSlice } from "@/lib/chartUtils";
 import { useTokenSupply, formatSupply } from "@/hooks/useTokenSupply";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -109,7 +109,7 @@ const TokenomicsDashboard = memo(() => {
                 opacity="0.1"
               />
               {allocations.map((alloc, index) => {
-                const slice = usePieSlice(alloc.percentage, cumulativePercentage);
+                const slice = calculatePieSlice(alloc.percentage, cumulativePercentage);
                 const isHovered = hoveredSlice === index;
                 const result = (
                   <circle
