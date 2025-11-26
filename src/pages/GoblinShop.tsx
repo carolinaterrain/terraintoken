@@ -5,6 +5,8 @@ import ScrollProgress from "@/components/ScrollProgress";
 import BackToHome from "@/components/BackToHome";
 import DesktopNav from "@/components/DesktopNav";
 import Footer from "@/components/Footer";
+import { ShopItemCard } from "@/components/shop/ShopItemCard";
+import { MysteryBoxSection } from "@/components/shop/MysteryBoxSection";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -215,35 +217,7 @@ const GoblinShop = () => {
             </TabsContent>
 
             <TabsContent value="boxes">
-              <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold mb-2">Mystery Boxes 🎁</h2>
-                <p className="text-muted-foreground">
-                  Try your luck for bonus TRN rewards and rare items!
-                </p>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                {SHOP_ITEMS.mysteryBoxes.map((item) => (
-                  <Card key={item.id} className="p-6">
-                    <div className="text-center mb-4">
-                      <div className="flex justify-center mb-3">
-                        <div className="p-4 rounded-full bg-gradient-to-r from-primary/20 to-accent/20">
-                          <item.icon className="h-8 w-8 text-primary" />
-                        </div>
-                      </div>
-                      <h3 className="font-bold text-lg mb-2">{item.name}</h3>
-                      <p className="text-sm text-muted-foreground mb-4">{item.description}</p>
-                      <p className="text-3xl font-bold mb-4">{item.trnCost} TRN</p>
-                      <Button 
-                        className="w-full"
-                        onClick={() => handlePurchase(item.id, 'mystery_box', item.trnCost)}
-                        disabled={purchasing === item.id}
-                      >
-                        {purchasing === item.id ? 'Opening...' : 'Open Box'}
-                      </Button>
-                    </div>
-                  </Card>
-                ))}
-              </div>
+              <MysteryBoxSection />
             </TabsContent>
 
             <TabsContent value="passes">
