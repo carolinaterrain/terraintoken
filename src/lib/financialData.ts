@@ -89,24 +89,30 @@ export const equipmentInventory = [
   { name: "Yarbo Mower", purchasePrice: 4458.00, currentValue: 4458.00, purchaseDate: "2024" },
 ];
 
-// Calculate key metrics
+// Filter out incomplete months (e.g., August 2025 with $0 revenue)
+export const getCompleteMonths = () => {
+  return monthlyRevenue.filter(m => m.revenue > 0);
+};
+
+// Calculate key metrics using only complete months
 export const calculateMetrics = () => {
-  const totalRevenue = monthlyRevenue.reduce((sum, m) => sum + m.revenue, 0);
-  const totalExpenses = monthlyRevenue.reduce((sum, m) => sum + m.expenses, 0);
-  const totalNetIncome = monthlyRevenue.reduce((sum, m) => sum + m.netIncome, 0);
-  const monthsWithData = monthlyRevenue.filter(m => m.revenue > 0).length;
+  const completeMonths = getCompleteMonths();
+  const totalRevenue = completeMonths.reduce((sum, m) => sum + m.revenue, 0);
+  const totalExpenses = completeMonths.reduce((sum, m) => sum + m.expenses, 0);
+  const totalNetIncome = completeMonths.reduce((sum, m) => sum + m.netIncome, 0);
+  const monthsWithData = completeMonths.length;
   
-  // Calculate 2024 vs 2025 growth
-  const revenue2024 = monthlyRevenue
+  // Calculate 2024 vs 2025 growth using complete months only
+  const revenue2024 = completeMonths
     .filter(m => m.date.getFullYear() === 2024)
     .reduce((sum, m) => sum + m.revenue, 0);
   
-  const revenue2025YTD = monthlyRevenue
-    .filter(m => m.date.getFullYear() === 2025 && m.revenue > 0)
+  const revenue2025YTD = completeMonths
+    .filter(m => m.date.getFullYear() === 2025)
     .reduce((sum, m) => sum + m.revenue, 0);
   
   const months2024 = 12;
-  const months2025 = monthlyRevenue.filter(m => m.date.getFullYear() === 2025 && m.revenue > 0).length;
+  const months2025 = completeMonths.filter(m => m.date.getFullYear() === 2025).length;
   
   const avgMonthly2024 = revenue2024 / months2024;
   const avgMonthly2025 = revenue2025YTD / months2025;
@@ -126,15 +132,16 @@ export const calculateMetrics = () => {
     revenue2024,
     revenue2025YTD,
     growthRate,
-    peakMonth: monthlyRevenue.reduce((max, m) => m.revenue > max.revenue ? m : max, monthlyRevenue[0]),
+    peakMonth: completeMonths.reduce((max, m) => m.revenue > max.revenue ? m : max, completeMonths[0]),
   };
 };
 
-// Get year-over-year comparison data
+// Get year-over-year comparison data (only complete months)
 export const getYoYComparison = () => {
+  const completeMonths = getCompleteMonths();
   const years = [2023, 2024, 2025];
   return years.map(year => {
-    const yearData = monthlyRevenue.filter(m => m.date.getFullYear() === year);
+    const yearData = completeMonths.filter(m => m.date.getFullYear() === year);
     const revenue = yearData.reduce((sum, m) => sum + m.revenue, 0);
     const expenses = yearData.reduce((sum, m) => sum + m.expenses, 0);
     const netIncome = yearData.reduce((sum, m) => sum + m.netIncome, 0);
@@ -145,17 +152,18 @@ export const getYoYComparison = () => {
       expenses,
       netIncome,
       months: yearData.length,
-      avgMonthly: revenue / yearData.length,
+      avgMonthly: yearData.length > 0 ? revenue / yearData.length : 0,
     };
   });
 };
 
-// Get expense breakdown
+// Get expense breakdown (only complete months)
 export const getExpenseBreakdown = () => {
-  const totalSupplies = monthlyRevenue.reduce((sum, m) => sum + m.supplies, 0);
-  const totalLabor = monthlyRevenue.reduce((sum, m) => sum + m.labor, 0);
-  const totalAdvertising = monthlyRevenue.reduce((sum, m) => sum + m.advertising, 0);
-  const totalExpenses = monthlyRevenue.reduce((sum, m) => sum + m.expenses, 0);
+  const completeMonths = getCompleteMonths();
+  const totalSupplies = completeMonths.reduce((sum, m) => sum + m.supplies, 0);
+  const totalLabor = completeMonths.reduce((sum, m) => sum + m.labor, 0);
+  const totalAdvertising = completeMonths.reduce((sum, m) => sum + m.advertising, 0);
+  const totalExpenses = completeMonths.reduce((sum, m) => sum + m.expenses, 0);
   const otherExpenses = totalExpenses - totalSupplies - totalLabor - totalAdvertising;
   
   return [

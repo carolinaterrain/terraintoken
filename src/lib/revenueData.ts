@@ -230,20 +230,47 @@ export const revenueAllocationFramework = {
   }
 };
 
+/**
+ * Parse monetary value from string like "$7.9M at 1% capture"
+ * Handles K (thousands), M (millions), B (billions) suffixes
+ * Extracts only the first monetary value to avoid concatenation bugs
+ */
+const parseMonetaryValue = (str: string): number => {
+  // Match first monetary value with K/M/B suffix
+  const match = str.match(/\$?([\d.]+)\s*([KMB])/i);
+  if (!match) {
+    // Try to match just a number without suffix
+    const numMatch = str.match(/\$?([\d.]+)/);
+    if (!numMatch) return 0;
+    return parseFloat(numMatch[1]);
+  }
+  
+  const value = parseFloat(match[1]);
+  const suffix = match[2].toUpperCase();
+  
+  const multipliers: { [key: string]: number } = {
+    'K': 1_000,
+    'M': 1_000_000,
+    'B': 1_000_000_000
+  };
+  
+  return value * (multipliers[suffix] || 1);
+};
+
 // Calculate total projected ARR
 export const calculateProjectedARR = () => {
   const recurring = revenueStreams
     .filter(s => s.category === 'recurring')
     .reduce((sum, s) => {
-      const arr = parseFloat(s.arrProjection.replace(/[^0-9.]/g, ''));
-      return sum + (isNaN(arr) ? 0 : arr);
+      const arr = parseMonetaryValue(s.arrProjection);
+      return sum + arr;
     }, 0);
 
   const oneOff = revenueStreams
     .filter(s => s.category === 'one-off')
     .reduce((sum, s) => {
-      const arr = parseFloat(s.arrProjection.replace(/[^0-9.]/g, ''));
-      return sum + (isNaN(arr) ? 0 : arr);
+      const arr = parseMonetaryValue(s.arrProjection);
+      return sum + arr;
     }, 0);
 
   return {
