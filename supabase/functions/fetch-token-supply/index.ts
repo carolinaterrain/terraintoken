@@ -22,23 +22,35 @@ serve(async (req) => {
 
     console.log('Fetching token supply for TRN...');
 
-    // Get token supply from Helius RPC
-    const response = await fetch(`https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        jsonrpc: '2.0',
-        id: 1,
-        method: 'getTokenSupply',
-        params: [TRN_MINT_ADDRESS]
+    // Parallelize API calls for better performance
+    const [supplyResponse, holdersResponse] = await Promise.all([
+      fetch(`https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          id: 1,
+          method: 'getTokenSupply',
+          params: [TRN_MINT_ADDRESS]
+        })
+      }),
+      fetch(`https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          id: 2,
+          method: 'getTokenLargestAccounts',
+          params: [TRN_MINT_ADDRESS]
+        })
       })
-    });
+    ]);
 
-    if (!response.ok) {
-      throw new Error(`RPC error: ${response.statusText}`);
+    if (!supplyResponse.ok) {
+      throw new Error(`RPC error: ${supplyResponse.statusText}`);
     }
 
-    const data = await response.json();
+    const data = await supplyResponse.json();
     
     if (data.error) {
       throw new Error(`RPC error: ${data.error.message}`);
@@ -49,18 +61,6 @@ serve(async (req) => {
     if (!supply) {
       throw new Error('No supply data returned');
     }
-
-    // Get holder count for circulating supply estimation
-    const holdersResponse = await fetch(`https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        jsonrpc: '2.0',
-        id: 2,
-        method: 'getTokenLargestAccounts',
-        params: [TRN_MINT_ADDRESS]
-      })
-    });
 
     const holdersData = await holdersResponse.json();
     const accounts = holdersData.result?.value || [];
@@ -91,7 +91,13 @@ serve(async (req) => {
         decimals,
         lastUpdated: new Date().toISOString(),
       }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { 
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, max-age=60, s-maxage=60',
+        } 
+      }
     );
   } catch (error) {
     console.error('Error fetching token supply:', error);

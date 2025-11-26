@@ -1,18 +1,14 @@
 import { useScrollDirection } from "@/hooks/useScrollDirection";
-import { useTokenStats } from "@/hooks/useTokenStats";
 import { cn } from "@/lib/utils";
 import { Rocket, Microscope } from "lucide-react";
 import DesktopNav from "./DesktopNav";
 import { UIModeToggle } from "./UIModeToggle";
 import { useUIModeStore } from "@/stores/uiModeStore";
+import { memo } from "react";
 
-const SmartHeader = () => {
+const SmartHeader = memo(() => {
   const scrollDirection = useScrollDirection();
-  const { data: tokenStats } = useTokenStats();
   const { mode } = useUIModeStore();
-
-  const isMinimized = scrollDirection === 'down';
-  const isAtTop = scrollDirection === 'top';
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] transition-transform duration-300">
@@ -50,6 +46,8 @@ const SmartHeader = () => {
       </div>
     </div>
   );
-};
+});
+
+SmartHeader.displayName = 'SmartHeader';
 
 export default SmartHeader;

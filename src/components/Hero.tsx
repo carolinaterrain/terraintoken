@@ -1,27 +1,27 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Copy, FileText, TrendingUp, TrendingDown } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { useToast } from "@/hooks/use-toast";
 import confetti from "canvas-confetti";
 import ContractVerificationBadge from "./ContractVerificationBadge";
 import terrainMascot from "@/assets/terrain-mascot.png";
 import trnCoin from "@/assets/trn-coin.png";
 import heroBackground from "@/assets/hero-terrain-grid.jpg";
-import { useTokenStats } from "@/hooks/useTokenStats";
+import { useTokenData } from "@/providers/TokenDataProvider";
 import { UIMode } from "@/stores/uiModeStore";
 
 interface HeroProps {
   mode?: UIMode;
 }
 
-const Hero = ({ mode = 'research' }: HeroProps) => {
+const Hero = memo(({ mode = 'research' }: HeroProps) => {
   const isApeMode = mode === 'ape';
   const { toast } = useToast();
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
   const [goblinPhrase, setGoblinPhrase] = useState("");
   const [priceUpdated, setPriceUpdated] = useState(false);
   const contractAddress = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
-  const { data: tokenStats } = useTokenStats();
+  const { stats: tokenStats } = useTokenData();
   
   const price = tokenStats?.priceUsd ?? "$0.00";
   const change24h = tokenStats?.change24h ?? 0;
@@ -326,6 +326,8 @@ const Hero = ({ mode = 'research' }: HeroProps) => {
       </div>
     </section>
   );
-};
+});
+
+Hero.displayName = 'Hero';
 
 export default Hero;

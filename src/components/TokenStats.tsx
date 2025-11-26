@@ -1,16 +1,17 @@
-import { useState } from "react";
+import { useState, memo, useCallback } from "react";
 import { TrendingUp, TrendingDown, Copy, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useTokenStats, useMemeStats } from "@/hooks/useTokenStats";
+import { useTokenData } from "@/providers/TokenDataProvider";
+import { useMemeStats } from "@/hooks/useTokenStats";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const TokenStats = () => {
+const TokenStats = memo(() => {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const { toast } = useToast();
-  const { data: stats, isLoading } = useTokenStats();
+  const { stats, isLoading } = useTokenData();
   const { data: memeStats } = useMemeStats();
 
-  const handleCopy = (value: string, label: string, index: number) => {
+  const handleCopy = useCallback((value: string, label: string, index: number) => {
     navigator.clipboard.writeText(value);
     setCopiedIndex(index);
     toast({
@@ -18,7 +19,7 @@ const TokenStats = () => {
       description: `${label}: ${value}`,
     });
     setTimeout(() => setCopiedIndex(null), 2000);
-  };
+  }, [toast]);
 
   if (isLoading || !stats) {
     return (
@@ -94,6 +95,8 @@ const TokenStats = () => {
       )}
     </div>
   );
-};
+});
+
+TokenStats.displayName = 'TokenStats';
 
 export default TokenStats;

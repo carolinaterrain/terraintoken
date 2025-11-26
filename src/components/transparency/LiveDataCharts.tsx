@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo, useMemo } from 'react';
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -10,7 +10,7 @@ interface ChartData {
   revenue: number;
 }
 
-export const LiveDataCharts = () => {
+export const LiveDataCharts = memo(() => {
   const [data, setData] = useState<ChartData[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -43,6 +43,12 @@ export const LiveDataCharts = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  const tooltipStyle = useMemo(() => ({
+    backgroundColor: 'hsl(var(--popover))',
+    border: '1px solid hsl(var(--border))',
+    borderRadius: '8px'
+  }), []);
 
   if (loading) {
     return (
@@ -84,13 +90,7 @@ export const LiveDataCharts = () => {
                 stroke="hsl(var(--muted-foreground))"
                 fontSize={10}
               />
-              <Tooltip 
-                contentStyle={{
-                  backgroundColor: 'hsl(var(--popover))',
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: '8px'
-                }}
-              />
+              <Tooltip contentStyle={tooltipStyle} />
               <Area
                 type="monotone"
                 dataKey="holders"
@@ -133,11 +133,7 @@ export const LiveDataCharts = () => {
                 fontSize={10}
               />
               <Tooltip 
-                contentStyle={{
-                  backgroundColor: 'hsl(var(--popover))',
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: '8px'
-                }}
+                contentStyle={tooltipStyle}
                 formatter={(value) => `$${Number(value).toLocaleString()}`}
               />
               <Area
@@ -153,4 +149,6 @@ export const LiveDataCharts = () => {
       </Card>
     </div>
   );
-};
+});
+
+LiveDataCharts.displayName = 'LiveDataCharts';

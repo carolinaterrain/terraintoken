@@ -317,11 +317,6 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Smooth theme transitions */
-* {
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-}
-
 /* Optimize for high-DPI screens */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   body {

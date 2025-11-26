@@ -4,8 +4,9 @@ import { TrendingUp, Activity } from "lucide-react";
 import { useGoblinMarketData } from "@/hooks/useGoblinMarketData";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DataBadge } from "./DataBadge";
+import { memo, useMemo } from "react";
 
-export const PricePredictionChart = () => {
+export const PricePredictionChart = memo(() => {
   const { data: marketData, isLoading } = useGoblinMarketData();
 
   if (isLoading) {
@@ -197,4 +198,6 @@ export const PricePredictionChart = () => {
       </p>
     </Card>
   );
-};
+});
+
+PricePredictionChart.displayName = 'PricePredictionChart';
