@@ -2,6 +2,12 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { motion } from "framer-motion";
 import { AlertTriangle, CheckCircle2, Shield, TrendingDown, Users, Gavel, Activity } from "lucide-react";
 import { useState } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface Risk {
   id: string;
@@ -105,11 +111,23 @@ export const RiskMitigation = () => {
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'high': return 'text-red-500 border-red-500/30 bg-red-500/10';
-      case 'medium': return 'text-yellow-500 border-yellow-500/30 bg-yellow-500/10';
-      case 'low': return 'text-green-500 border-green-500/30 bg-green-500/10';
+      case 'high': return 'text-red-100 border-red-500/40 bg-red-500/30';
+      case 'medium': return 'text-yellow-100 border-yellow-500/40 bg-yellow-500/30';
+      case 'low': return 'text-green-100 border-green-500/40 bg-green-500/30';
       default: return 'text-muted-foreground border-border bg-muted/20';
     }
+  };
+
+  const getShortLabel = (title: string): string => {
+    const labelMap: { [key: string]: string } = {
+      'Slow Market Adoption': 'Slow Adopt.',
+      'Rising Compute Costs': 'Compute',
+      'Market Competition': 'Competition',
+      'Regulatory Uncertainty': 'Regulatory',
+      'Token Fatigue': 'Token',
+      'Whale Concentration': 'Whale Conc.'
+    };
+    return labelMap[title] || title.split(' ').slice(0, 2).join(' ');
   };
 
   return (
@@ -138,47 +156,61 @@ export const RiskMitigation = () => {
         >
           <GlassCard className="p-8">
             <h3 className="text-2xl font-bold text-center mb-8">Risk Severity × Likelihood Matrix</h3>
-            <div className="grid grid-cols-4 gap-4 max-w-4xl mx-auto">
-              <div className="text-center text-sm font-semibold text-muted-foreground"></div>
-              <div className="text-center text-sm font-semibold text-muted-foreground">Low</div>
-              <div className="text-center text-sm font-semibold text-muted-foreground">Medium</div>
-              <div className="text-center text-sm font-semibold text-muted-foreground">High</div>
-              
-              {['High', 'Medium', 'Low'].map((severity) => (
-                <>
-                  <div key={severity} className="text-right text-sm font-semibold text-muted-foreground pr-2">
-                    {severity}
-                  </div>
-                  {['low', 'medium', 'high'].map((likelihood) => {
-                    const matchingRisks = risks.filter(
-                      r => r.severity === severity.toLowerCase() && r.likelihood === likelihood
-                    );
-                    return (
-                      <div
-                        key={`${severity}-${likelihood}`}
-                        className={`aspect-square rounded-lg border-2 ${
-                          matchingRisks.length > 0 
-                            ? getSeverityColor(severity.toLowerCase())
-                            : 'border-border bg-muted/10'
-                        } flex items-center justify-center text-xs font-semibold p-2 text-center`}
-                      >
-                        {matchingRisks.length > 0 && (
-                          <div className="space-y-1">
-                            {matchingRisks.map(r => (
-                              <div key={r.id} className="truncate">{r.title.split(' ')[0]}</div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </>
-              ))}
-              
-              <div className="col-span-4 text-center text-xs text-muted-foreground mt-4">
-                <span className="font-semibold">Likelihood</span> of occurrence in next 12-24 months →
+            <TooltipProvider>
+              <div className="grid grid-cols-4 gap-3 max-w-4xl mx-auto">
+                <div className="text-center text-sm font-semibold text-muted-foreground"></div>
+                <div className="text-center text-sm font-semibold text-muted-foreground">Low</div>
+                <div className="text-center text-sm font-semibold text-muted-foreground">Medium</div>
+                <div className="text-center text-sm font-semibold text-muted-foreground">High</div>
+                
+                {['High', 'Medium', 'Low'].map((severity) => (
+                  <>
+                    <div key={severity} className="text-right text-sm font-semibold text-muted-foreground pr-2 flex items-center justify-end">
+                      {severity}
+                    </div>
+                    {['low', 'medium', 'high'].map((likelihood) => {
+                      const matchingRisks = risks.filter(
+                        r => r.severity === severity.toLowerCase() && r.likelihood === likelihood
+                      );
+                      return (
+                        <div
+                          key={`${severity}-${likelihood}`}
+                          className={`min-h-[80px] rounded-lg border-2 ${
+                            matchingRisks.length > 0 
+                              ? getSeverityColor(severity.toLowerCase())
+                              : 'border-border bg-muted/10'
+                          } flex items-center justify-center text-xs font-bold p-3 text-center transition-all hover:scale-105 hover:shadow-lg`}
+                        >
+                          {matchingRisks.length > 0 ? (
+                            <div className="space-y-1 w-full">
+                              {matchingRisks.map(r => (
+                                <Tooltip key={r.id}>
+                                  <TooltipTrigger asChild>
+                                    <div className="cursor-help hover:underline">
+                                      {getShortLabel(r.title)}
+                                    </div>
+                                  </TooltipTrigger>
+                                  <TooltipContent side="top" className="max-w-xs">
+                                    <p className="font-semibold">{r.title}</p>
+                                    <p className="text-xs text-muted-foreground mt-1">{r.description}</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              ))}
+                            </div>
+                          ) : (
+                            <span className="text-muted-foreground/50 text-xs">—</span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </>
+                ))}
+                
+                <div className="col-span-4 text-center text-xs text-muted-foreground mt-4">
+                  <span className="font-semibold">Likelihood</span> of occurrence in next 12-24 months →
+                </div>
               </div>
-            </div>
+            </TooltipProvider>
           </GlassCard>
         </motion.div>
 
