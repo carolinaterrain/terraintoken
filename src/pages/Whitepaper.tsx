@@ -1,6 +1,6 @@
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
-import { Download, FileText, Shield, Target, Users, TrendingUp, Lock, Coins, BookOpen, ExternalLink } from "lucide-react";
+import { Download, FileText, Shield, Target, Users, TrendingUp, Lock, Coins, BookOpen, ExternalLink, Zap, Vote, Flame, Database } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import DesktopNav from "@/components/DesktopNav";
 import Footer from "@/components/Footer";
@@ -17,32 +17,42 @@ const Whitepaper = () => {
     {
       icon: FileText,
       title: "Executive Summary",
-      description: "Terrain Token blends meme culture with real-world utility, backed by Carolina Terrain LLC—a licensed drainage contractor generating $2M+ annual revenue."
+      description: "Terrain Token blends meme culture with AI-driven terrain intelligence, backed by Carolina Terrain LLC—a licensed NC drainage contractor with $2M+ annual revenue."
     },
     {
       icon: BookOpen,
-      title: "Origin Story",
-      description: "Born as a playful experiment from Carolina Terrain's founders, TRN bridges the serious world of stormwater management with community-driven crypto culture."
+      title: "Origin Story & Evolution",
+      description: "Born as a playful experiment, TRN evolved from meme origins to a utility-powered ecosystem bridging crypto innovation with real-world terrain services."
     },
     {
       icon: Coins,
-      title: "Tokenomics",
-      description: "Fixed supply (see live data below). 50% DEX liquidity (locked), 25% treasury, 15% community rewards, 10% team (vested over 2 years)."
+      title: "Tokenomics v2.0",
+      description: "Fixed supply with 50/50 burn & reinvest model. Energy Packs for token-to-utility conversion. Vault & Staking for sustainable ecosystem growth."
+    },
+    {
+      icon: Zap,
+      title: "Ecosystem Products",
+      description: "TerrainVision AI, FlowGuardian monitoring, Terrain Estimator, Drainage Academy education platform, and Goblin Market P2P marketplace."
     },
     {
       icon: Target,
-      title: "Vision & Roadmap",
-      description: "Phase 1: Genesis (establishing community). Phase 2: Alignment (real-world integration). Phase 3: Expansion (governance & scaling)."
+      title: "Four-Phase Roadmap",
+      description: "Phase 1: Genesis (2025) → Phase 2: Integration (2026) → Phase 3: Expansion (2027) → Phase 4: Enterprise Terrain Intelligence (2028+)."
+    },
+    {
+      icon: Vote,
+      title: "Governance & DAO",
+      description: "Multi-sig treasury governance with path to full DAO. Community-driven expansion strategy and token-weighted voting mechanisms."
     },
     {
       icon: Shield,
-      title: "Transparency",
-      description: "No presale, no VC allocations. Mint authority revoked. Multi-sig treasury. Open-book approach with quarterly transparency reports."
+      title: "Transparency & Security",
+      description: "No presale, no VC allocations. Mint authority revoked. Multi-sig treasury. Quarterly transparency reports and open-book approach."
     },
     {
       icon: Users,
-      title: "Community Governance",
-      description: "Community-first decision making through open dialogue. Future DAO evolution planned with token-weighted voting when ready."
+      title: "Risks & Challenges",
+      description: "Comprehensive risk disclosures including market volatility, regulatory uncertainty, liquidity risks, and technology execution challenges."
     }
   ];
 
@@ -51,6 +61,8 @@ const Whitepaper = () => {
     "Solana-Powered (65k TPS, ~400ms blocks, negligible fees)",
     "Fixed Supply with mint authority removed",
     "Fair Launch on Pump.fun (no presale/VC)",
+    "Energy Packs: Token-to-utility conversion system",
+    "50/50 Burn & Reinvest: Half burned, half to Vault",
     "Liquidity Locked for community protection",
     "Team tokens vested over 2 years"
   ];
@@ -58,8 +70,8 @@ const Whitepaper = () => {
   return (
     <>
       <Helmet>
-        <title>Whitepaper | Terrain Token (TRN)</title>
-        <meta name="description" content="Read the official Terrain Token whitepaper. Learn about tokenomics, vision, roadmap, and how we're bridging meme culture with real-world drainage expertise." />
+        <title>Whitepaper v2.0 | Terrain Token (TRN)</title>
+        <meta name="description" content="Read the official Terrain Token whitepaper v2.0. Learn about Energy Packs, 50/50 burn model, AI-powered ecosystem products, 4-phase roadmap, and governance." />
       </Helmet>
 
       <ScrollProgress />
@@ -76,8 +88,9 @@ const Whitepaper = () => {
                 TRN <span className="text-primary">Whitepaper</span>
               </h1>
             </div>
+            <p className="text-sm text-primary font-semibold mb-2">Version 2.0 — Utility-Powered Terrain Intelligence</p>
             <p className="font-body text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-              The complete technical and strategic overview of Terrain Token — from meme origins to meaningful utility.
+              The complete technical and strategic overview of Terrain Token — from meme origins to AI-driven terrain ecosystem.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
@@ -96,7 +109,7 @@ const Whitepaper = () => {
             </div>
 
             <p className="text-sm text-muted-foreground italic">
-              Last Updated: November 2025 | Version 1.0 | Supply data is live from blockchain
+              Last Updated: November 2025 | Version 2.0 | 28 Pages | Supply data is live from blockchain
             </p>
           </div>
 
@@ -124,7 +137,7 @@ const Whitepaper = () => {
             <h2 className="font-display text-3xl font-bold text-center mb-8">
               📖 What's Inside the Whitepaper
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {sections.map((section, index) => {
                 const Icon = section.icon;
                 return (
@@ -132,12 +145,88 @@ const Whitepaper = () => {
                     <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                       <Icon className="w-6 h-6 text-primary" />
                     </div>
-                    <h3 className="font-display text-xl font-bold mb-2">{section.title}</h3>
+                    <h3 className="font-display text-lg font-bold mb-2">{section.title}</h3>
                     <p className="text-sm text-muted-foreground">{section.description}</p>
                   </GlassCard>
                 );
               })}
             </div>
+          </div>
+
+          {/* Energy Packs & 50/50 Model - NEW */}
+          <div className="mb-16">
+            <GlassCard className="p-8 bg-gradient-to-br from-primary/10 to-earth-green/10">
+              <h2 className="font-display text-3xl font-bold mb-6 text-center">
+                ⚡ Energy Economy & 50/50 Model
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <Zap className="w-8 h-8 text-primary" />
+                    <h3 className="font-display text-xl font-semibold text-primary">Energy Packs</h3>
+                  </div>
+                  <p className="text-muted-foreground mb-4">
+                    Token-to-utility conversion system enabling stable service pricing regardless of market volatility.
+                  </p>
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    <li>• Convert TRN to Energy at fixed rates</li>
+                    <li>• Spend Energy on ecosystem services</li>
+                    <li>• Shields users from price fluctuations</li>
+                    <li>• Creates consistent token demand</li>
+                  </ul>
+                </div>
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <Flame className="w-8 h-8 text-destructive" />
+                    <h3 className="font-display text-xl font-semibold text-primary">50/50 Burn & Reinvest</h3>
+                  </div>
+                  <p className="text-muted-foreground mb-4">
+                    Sustainable tokenomics model balancing deflation with ecosystem growth.
+                  </p>
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    <li>• 50% of spent tokens are burned permanently</li>
+                    <li>• 50% flows to Ecosystem Vault</li>
+                    <li>• Vault funds development & rewards</li>
+                    <li>• Creates long-term sustainability</li>
+                  </ul>
+                </div>
+              </div>
+            </GlassCard>
+          </div>
+
+          {/* Ecosystem Products - NEW */}
+          <div className="mb-16">
+            <GlassCard className="p-8">
+              <h2 className="font-display text-3xl font-bold mb-6 text-center">
+                🛠️ Ecosystem Products
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="p-4 bg-background/30 rounded-lg border border-primary/10">
+                  <h4 className="font-display font-bold text-primary mb-2">TerrainVision AI</h4>
+                  <p className="text-sm text-muted-foreground">AI-powered drainage analysis from aerial imagery. Instant property assessments.</p>
+                </div>
+                <div className="p-4 bg-background/30 rounded-lg border border-primary/10">
+                  <h4 className="font-display font-bold text-primary mb-2">FlowGuardian</h4>
+                  <p className="text-sm text-muted-foreground">IoT sensor monitoring for real-time drainage system health tracking.</p>
+                </div>
+                <div className="p-4 bg-background/30 rounded-lg border border-primary/10">
+                  <h4 className="font-display font-bold text-primary mb-2">Terrain Estimator</h4>
+                  <p className="text-sm text-muted-foreground">Instant cost estimates for drainage projects based on property data.</p>
+                </div>
+                <div className="p-4 bg-background/30 rounded-lg border border-primary/10">
+                  <h4 className="font-display font-bold text-primary mb-2">Drainage Academy</h4>
+                  <p className="text-sm text-muted-foreground">Educational platform teaching DIY drainage skills with certifications.</p>
+                </div>
+                <div className="p-4 bg-background/30 rounded-lg border border-primary/10">
+                  <h4 className="font-display font-bold text-primary mb-2">Goblin Market</h4>
+                  <p className="text-sm text-muted-foreground">P2P marketplace for community services, memes, and digital goods.</p>
+                </div>
+                <div className="p-4 bg-background/30 rounded-lg border border-primary/10">
+                  <h4 className="font-display font-bold text-primary mb-2">Staking & XP</h4>
+                  <p className="text-sm text-muted-foreground">Earn non-transferable XP through staking. Unlock rewards and governance power.</p>
+                </div>
+              </div>
+            </GlassCard>
           </div>
 
           {/* Tokenomics Snapshot */}
@@ -211,29 +300,35 @@ const Whitepaper = () => {
             </GlassCard>
           </div>
 
-          {/* Roadmap Overview */}
+          {/* Four-Phase Roadmap - UPDATED */}
           <div className="mb-16">
             <GlassCard className="p-8">
               <h2 className="font-display text-3xl font-bold mb-6 text-center">
-                🗺️ Three-Phase Roadmap
+                🗺️ Four-Phase Roadmap
               </h2>
               <div className="space-y-6">
                 <div className="border-l-4 border-primary pl-6">
                   <h3 className="font-display text-xl font-bold mb-2">Phase 1: Genesis (2025)</h3>
                   <p className="text-muted-foreground">
-                    Establish token, build community, launch social channels, ensure transparency. Deploy fair launch on Pump.fun with locked liquidity.
+                    Fair launch on Pump.fun, community building, website & social presence, transparency reports, initial ecosystem infrastructure deployment.
                   </p>
                 </div>
                 <div className="border-l-4 border-earth-green pl-6">
-                  <h3 className="font-display text-xl font-bold mb-2">Phase 2: Alignment (2026)</h3>
+                  <h3 className="font-display text-xl font-bold mb-2">Phase 2: Integration (2026)</h3>
                   <p className="text-muted-foreground">
-                    Integrate with Carolina Terrain services, launch Terrain Vision AI beta, explore token-gated perks, grow to thousands of community members.
+                    TerrainVision AI launch, Energy Pack system activation, Carolina Terrain service integration, token-gated perks, community growth to 10k+ members.
                   </p>
                 </div>
                 <div className="border-l-4 border-earth-brown pl-6">
-                  <h3 className="font-display text-xl font-bold mb-2">Phase 3: Expansion (2027+)</h3>
+                  <h3 className="font-display text-xl font-bold mb-2">Phase 3: Expansion (2027)</h3>
                   <p className="text-muted-foreground">
-                    Scale utilities, explore DAO governance, pursue strategic partnerships, list on reputable platforms. Long-term sustainable ecosystem.
+                    FlowGuardian IoT launch, Drainage Academy platform, strategic partnerships with contractors, DEX listings, staking pools activation.
+                  </p>
+                </div>
+                <div className="border-l-4 border-primary/60 pl-6">
+                  <h3 className="font-display text-xl font-bold mb-2">Phase 4: Enterprise (2028+)</h3>
+                  <p className="text-muted-foreground">
+                    Enterprise Terrain Intelligence Layer, full DAO governance transition, multi-state contractor network, institutional partnerships, sustainable ecosystem maturity.
                   </p>
                 </div>
               </div>
@@ -284,6 +379,7 @@ const Whitepaper = () => {
                 <p>• <strong>Liquidity Risk:</strong> As a micro-cap token, liquidity may be limited. Large trades could impact price significantly.</p>
                 <p>• <strong>No Utility Guarantees:</strong> Planned utilities are experimental. No guarantees of implementation or success.</p>
                 <p>• <strong>Regulatory Uncertainty:</strong> Crypto regulations are evolving. Future changes may impact the project.</p>
+                <p>• <strong>Technology Risk:</strong> Smart contracts and AI systems may contain bugs or vulnerabilities.</p>
               </div>
               <div className="mt-6 p-4 bg-destructive/10 rounded-lg border border-destructive/30">
                 <p className="text-sm text-center font-semibold">
@@ -301,13 +397,13 @@ const Whitepaper = () => {
                 Ready to Dive Deeper?
               </h2>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Download the complete 25-page whitepaper for full technical details, tokenomics breakdowns, risk disclosures, and the long-term vision.
+                Download the complete 28-page whitepaper v2.0 for full technical details, Energy Pack economics, ecosystem products, and the long-term vision.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" className="font-display font-semibold" asChild>
                   <a href="/Terrain_Token_TRN_Whitepaper.pdf" download>
                     <Download className="mr-2 h-5 w-5" />
-                    Download PDF (2.1 MB)
+                    Download PDF v2.0
                   </a>
                 </Button>
                 <Button size="lg" variant="outline" className="font-display font-semibold border-primary" asChild>
