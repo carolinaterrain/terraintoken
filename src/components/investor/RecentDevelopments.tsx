@@ -7,11 +7,11 @@ const developments = [
     icon: Zap,
     title: "Energy Economy System",
     status: "LIVE",
-    description: "Users purchase energy packs to power AI analyses. 50% of TRN spent is permanently burned.",
+    description: "Users purchase energy packs to power AI analyses. 50% of TRN spent is allocated for burn.",
     metrics: [
-      "5 Energy: 50 TRN (25 burned)",
-      "15 Energy: 120 TRN (60 burned)",
-      "50 Energy: 350 TRN (175 burned)"
+      "5 Energy: 50 TRN (25 for burn)",
+      "15 Energy: 120 TRN (60 for burn)",
+      "50 Energy: 350 TRN (175 for burn)"
     ],
     color: "text-yellow-400"
   },
@@ -19,7 +19,7 @@ const developments = [
     icon: Crown,
     title: "Premium Subscription Engine",
     status: "LIVE",
-    description: "4-tier subscription model with both TRN and Stripe fiat payments. 20% of TRN subscriptions burned.",
+    description: "4-tier subscription model with both TRN and Stripe fiat payments. 20% of TRN subscriptions allocated for burn.",
     metrics: [
       "Starter: 100 TRN/month",
       "Pro: 250 TRN/month or $25 fiat",
@@ -32,11 +32,11 @@ const developments = [
     icon: ShoppingBag,
     title: "P2P Marketplace",
     status: "LIVE",
-    description: "Peer-to-peer trading of services, assets, and tools. 5% platform fee with 50% of fees burned.",
+    description: "Peer-to-peer trading of services, assets, and tools. 5% platform fee with 50% allocated for burn.",
     metrics: [
       "User-created listings",
       "Instant TRN transactions",
-      "Automatic burn on sales"
+      "Burn allocation on sales"
     ],
     color: "text-green-400"
   },
@@ -44,11 +44,11 @@ const developments = [
     icon: Sparkles,
     title: "Gamification Layer",
     status: "LIVE",
-    description: "Mystery boxes, shop items, and premium effects. All purchases include token burn mechanisms.",
+    description: "Mystery boxes, shop items, and premium effects. All purchases include burn allocation tracking.",
     metrics: [
       "Mystery Boxes with rare rewards",
       "Shop items (badges, effects)",
-      "Guaranteed burn on every purchase"
+      "Burn allocation on every purchase"
     ],
     color: "text-pink-400"
   },
@@ -99,7 +99,7 @@ export function RecentDevelopments() {
             Recent Developments
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            We've just deployed a complete utility ecosystem with <span className="text-primary font-semibold">multiple token burn mechanisms</span>, 
+            We've just deployed a complete utility ecosystem with <span className="text-primary font-semibold">burn allocation tracking</span>, 
             real revenue streams, and genuine on-chain utility.
           </p>
         </motion.div>
@@ -155,7 +155,7 @@ export function RecentDevelopments() {
               🔥 All Systems Operational
             </p>
             <p className="text-sm text-muted-foreground">
-              These features are deployed, tested, and generating real token burns and revenue right now.
+              These features are deployed, tested, and tracking burn allocations in real-time. On-chain burns execute as volume grows.
             </p>
           </GlassCard>
         </motion.div>

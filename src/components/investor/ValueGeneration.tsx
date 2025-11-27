@@ -296,7 +296,7 @@ export const ValueGeneration = () => {
               <div className="text-4xl mb-4">🔥</div>
               <h3 className="text-2xl font-bold mb-4">Burn-and-Mint Economics</h3>
               <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Inspired by Helium's model: tokens are <span className="font-semibold text-primary">burned when accessing services</span> and 
+                Inspired by Helium's model: tokens are <span className="font-semibold text-primary">committed to burn when accessing services</span> and 
                 <span className="font-semibold text-chart-2"> minted only to reward contributions</span>.
               </p>
             </div>
@@ -306,7 +306,7 @@ export const ValueGeneration = () => {
                 <TrendingDown className="w-10 h-10 text-chart-1 mx-auto mb-3" />
                 <h4 className="font-semibold mb-2">Burn = Use</h4>
                 <p className="text-sm text-muted-foreground">
-                  Every AI analysis, marketplace purchase, and premium feature burns TRN
+                  Every AI analysis, marketplace purchase, and premium feature allocates TRN for burn
                 </p>
               </div>
               <div className="text-center">
