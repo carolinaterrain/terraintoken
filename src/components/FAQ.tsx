@@ -62,7 +62,7 @@ const faqs = [
   },
   {
     question: "When will TerrainScape launch?",
-    answer: "TerrainScape is currently in closed beta with 2,847+ people on the waitlist. Public beta launches Q1 2026. Early access is prioritized for TRN holders who join the waitlist now. Join at terraintoken.com to secure your spot!"
+    answer: "TerrainScape is currently in development with public beta planned for Q1 2026. Early access is prioritized for TRN holders who join the waitlist now. Join at terraintoken.com to secure your spot!"
   }
 ];
 

@@ -309,7 +309,7 @@ const Hero = memo(({ mode = 'research' }: HeroProps) => {
                   <h3 className="font-display text-xl font-bold">Join TerrainScape Waitlist</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Be first to play the AI-powered drainage game. <span className="text-primary font-semibold">1,000+</span> already waiting.
+                  Be first to play the AI-powered drainage game. <span className="text-primary font-semibold">Coming 2026</span>
                 </p>
                 <Button
                   variant="default"

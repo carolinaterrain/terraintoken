@@ -31,19 +31,19 @@ export function useHolderDistribution() {
 
       if (error || !snapshot) {
         console.error('Error fetching holder snapshot:', error);
-        // Return mock data as fallback
+        // Return zero state - no fake data
         return {
-          totalHolders: 1137,
+          totalHolders: 0,
           tiers: {
-            shrimp: 450,
-            crab: 320,
-            fish: 200,
-            dolphin: 100,
-            shark: 45,
-            whale: 18,
-            humpback: 4,
+            shrimp: 0,
+            crab: 0,
+            fish: 0,
+            dolphin: 0,
+            shark: 0,
+            whale: 0,
+            humpback: 0,
           },
-          top10Percentage: 32.5,
+          top10Percentage: 0,
         };
       }
 

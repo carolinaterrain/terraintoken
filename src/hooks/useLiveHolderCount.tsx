@@ -12,7 +12,7 @@ export function useLiveHolderCount() {
       
       if (error) {
         console.error("Error fetching holder count:", error);
-        return { holderCount: 1137, lastUpdated: new Date().toISOString() };
+        return { holderCount: 0, lastUpdated: new Date().toISOString(), source: 'error' };
       }
 
       return data;

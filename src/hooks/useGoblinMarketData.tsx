@@ -43,27 +43,27 @@ export function useGoblinMarketData() {
         }
         
         const stats: TokenStats = {
-          priceUsd: pair.priceUsd || "0.00001149",
+          priceUsd: pair.priceUsd || "0",
           priceChange24h: parseFloat(pair.priceChange?.h24 || "0"),
           volume24h: parseFloat(pair.volume?.h24 || "0"),
           marketCap: parseFloat(pair.marketCap || "0"),
           liquidity: parseFloat(pair.liquidity?.usd || "0"),
-          holders: 1137,
+          holders: undefined, // Live data from separate hook
         };
         
         console.log("Market data fetched successfully:", stats);
         return { stats };
       } catch (error) {
         console.error("Error in useGoblinMarketData:", error);
-        // Return fallback data instead of throwing
+        // Return empty state - let UI handle loading
         return {
           stats: {
-            priceUsd: "0.00001149",
-            priceChange24h: 5.2,
-            volume24h: 45000,
-            marketCap: 11560000,
-            liquidity: 85000,
-            holders: 1137,
+            priceUsd: "0",
+            priceChange24h: 0,
+            volume24h: 0,
+            marketCap: 0,
+            liquidity: 0,
+            holders: undefined,
           }
         };
       }
@@ -84,13 +84,13 @@ export function useHolderProgress() {
         if (error) {
           console.error("Error fetching holder count:", error);
           return {
-            current: 1137,
+            current: 0,
             target: 5000,
             milestones: [500, 1000, 2500, 5000],
           };
         }
         
-        const holderCount = data?.holderCount || 1137;
+        const holderCount = data?.holderCount || 0;
         console.log("Holder count fetched:", holderCount);
         
         return {
@@ -101,7 +101,7 @@ export function useHolderProgress() {
       } catch (error) {
         console.error("Error in useHolderProgress:", error);
         return {
-          current: 1137,
+          current: 0,
           target: 5000,
           milestones: [500, 1000, 2500, 5000],
         };

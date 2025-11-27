@@ -36,10 +36,10 @@ export function TRNValuationCard() {
       const data: ValuationData = {
         monthlyRevenue: financialData.avgMonthlyRevenue,
         equipmentValue: equipmentData.totalCurrentValue,
-        holderCount: snapshotResult.data?.total_holders || 1137,
-        waitlistSize: waitlistResult.count || 2847,
+        holderCount: snapshotResult.data?.total_holders || 0,
+        waitlistSize: waitlistResult.count || 0,
         circulatingSupply: 1000000000, // 1B TRN fixed supply
-        marketPrice: tokenStats?.priceUsd ? parseFloat(tokenStats.priceUsd.replace(/[^0-9.]/g, '')) : 0.00000123,
+        marketPrice: tokenStats?.priceUsd ? parseFloat(tokenStats.priceUsd.replace(/[^0-9.]/g, '')) : 0,
       };
 
       return data;
