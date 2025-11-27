@@ -1764,6 +1764,45 @@ export type Database = {
         }
         Relationships: []
       }
+      staking_positions: {
+        Row: {
+          amount_staked: number
+          created_at: string
+          id: string
+          pool_id: string
+          rewards_earned: number
+          staked_at: string
+          status: string
+          unlock_at: string | null
+          updated_at: string
+          user_wallet: string
+        }
+        Insert: {
+          amount_staked: number
+          created_at?: string
+          id?: string
+          pool_id: string
+          rewards_earned?: number
+          staked_at?: string
+          status?: string
+          unlock_at?: string | null
+          updated_at?: string
+          user_wallet: string
+        }
+        Update: {
+          amount_staked?: number
+          created_at?: string
+          id?: string
+          pool_id?: string
+          rewards_earned?: number
+          staked_at?: string
+          status?: string
+          unlock_at?: string | null
+          updated_at?: string
+          user_wallet?: string
+        }
+        Relationships: []
+      }
       subscription_payments: {
         Row: {
           amount_paid: number

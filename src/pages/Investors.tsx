@@ -11,6 +11,7 @@ import { InvestorForm } from "@/components/investor/InvestorForm";
 import { ProofSection } from "@/components/investor/ProofSection";
 import { UseOfFunds } from "@/components/investor/UseOfFunds";
 import { StickyNavigation } from "@/components/investor/StickyNavigation";
+import { EarlyStageDisclaimer } from "@/components/investor/EarlyStageDisclaimer";
 import { GlassCard } from "@/components/ui/glass-card";
 import Roadmap from "@/components/Roadmap";
 import { motion } from "framer-motion";
@@ -39,6 +40,9 @@ const Investors = () => {
       <ScrollProgress />
       <SmartHeader />
       <StickyNavigation />
+      
+      {/* Early Stage Disclaimer Banner */}
+      <EarlyStageDisclaimer />
 
       <main id="main-content" className="min-h-screen">
         {/* Hero */}

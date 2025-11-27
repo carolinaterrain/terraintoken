@@ -6,7 +6,7 @@ const developments = [
   {
     icon: Zap,
     title: "Energy Economy System",
-    status: "LIVE",
+    status: "DEPLOYED",
     description: "Users purchase energy packs to power AI analyses. 50% of TRN spent is allocated for burn.",
     metrics: [
       "5 Energy: 50 TRN (25 for burn)",
@@ -18,7 +18,7 @@ const developments = [
   {
     icon: Crown,
     title: "Premium Subscription Engine",
-    status: "LIVE",
+    status: "DEPLOYED",
     description: "4-tier subscription model with both TRN and Stripe fiat payments. 20% of TRN subscriptions allocated for burn.",
     metrics: [
       "Starter: 100 TRN/month",
@@ -31,7 +31,7 @@ const developments = [
   {
     icon: ShoppingBag,
     title: "P2P Marketplace",
-    status: "LIVE",
+    status: "DEPLOYED",
     description: "Peer-to-peer trading of services, assets, and tools. 5% platform fee with 50% allocated for burn.",
     metrics: [
       "User-created listings",
@@ -43,7 +43,7 @@ const developments = [
   {
     icon: Sparkles,
     title: "Gamification Layer",
-    status: "LIVE",
+    status: "DEPLOYED",
     description: "Mystery boxes, shop items, and premium effects. All purchases include burn allocation tracking.",
     metrics: [
       "Mystery Boxes with rare rewards",
@@ -55,7 +55,7 @@ const developments = [
   {
     icon: Coins,
     title: "Staking Pools",
-    status: "LIVE",
+    status: "COMING Q1 2026",
     description: "Multiple staking options with competitive APY. Reduces circulating supply and rewards holders.",
     metrics: [
       "Flexible staking: 5% APY",
@@ -67,7 +67,7 @@ const developments = [
   {
     icon: Flame,
     title: "Real-World Service Redemption",
-    status: "LIVE",
+    status: "DEPLOYED",
     description: "Unique bridge between token utility and actual drainage services. TRN holders unlock discounts on Carolina Terrain work.",
     metrics: [
       "10K TRN: 10% discount",
@@ -77,6 +77,12 @@ const developments = [
     color: "text-orange-400"
   }
 ];
+
+const getStatusColor = (status: string) => {
+  if (status === "DEPLOYED") return "bg-blue-500/20 text-blue-400";
+  if (status.includes("COMING")) return "bg-amber-500/20 text-amber-400";
+  return "bg-green-500/20 text-green-400";
+};
 
 export function RecentDevelopments() {
   return (
@@ -90,17 +96,17 @@ export function RecentDevelopments() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 mb-4">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-            <span className="text-sm font-semibold text-green-400">MAJOR DEPLOYMENTS</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 mb-4">
+            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+            <span className="text-sm font-semibold text-blue-400">INFRASTRUCTURE DEPLOYED</span>
           </div>
           
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Recent Developments
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            We've just deployed a complete utility ecosystem with <span className="text-primary font-semibold">burn allocation tracking</span>, 
-            real revenue streams, and genuine on-chain utility.
+            We've deployed a complete utility ecosystem with <span className="text-primary font-semibold">burn allocation tracking</span>. 
+            Infrastructure is ready — active usage metrics will grow as the ecosystem matures.
           </p>
         </motion.div>
 
@@ -121,7 +127,7 @@ export function RecentDevelopments() {
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <h3 className="font-semibold text-lg">{dev.title}</h3>
-                      <span className="px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 text-xs font-bold">
+                      <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${getStatusColor(dev.status)}`}>
                         {dev.status}
                       </span>
                     </div>
@@ -150,12 +156,12 @@ export function RecentDevelopments() {
           viewport={{ once: true }}
           className="mt-12 text-center"
         >
-          <GlassCard className="inline-block px-8 py-6 bg-gradient-to-r from-primary/10 to-purple-500/10">
+          <GlassCard className="inline-block px-8 py-6 bg-gradient-to-r from-blue-500/10 to-purple-500/10">
             <p className="text-lg font-semibold mb-2">
-              🔥 All Systems Operational
+              🏗️ Infrastructure Ready
             </p>
             <p className="text-sm text-muted-foreground">
-              These features are deployed, tested, and tracking burn allocations in real-time. On-chain burns execute as volume grows.
+              All systems are deployed and operational. Burn allocations are tracked in real-time. On-chain execution will commence as transaction volume grows.
             </p>
           </GlassCard>
         </motion.div>
