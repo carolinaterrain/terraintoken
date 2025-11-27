@@ -88,16 +88,16 @@ const GoblinMarket = () => {
   const isLoading = isLoadingMarket || isLoadingHolders;
 
   const marketStats = marketData?.stats || {
-    priceUsd: "0.00001149",
-    priceChange24h: 5.2,
-    volume24h: 45000,
-    marketCap: 11560000,
-    liquidity: 85000,
-    holders: 1137,
+    priceUsd: "0",
+    priceChange24h: 0,
+    volume24h: 0,
+    marketCap: 0,
+    liquidity: 0,
+    holders: 0,
   };
 
   const holderProgress = holderData || {
-    current: 1137,
+    current: 0,
     target: 5000,
     milestones: [500, 1000, 2500, 5000],
   };

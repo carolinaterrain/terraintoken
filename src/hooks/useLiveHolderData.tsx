@@ -20,10 +20,10 @@ export function useLiveHolderData() {
       
       if (error) {
         console.error("Error fetching holder data:", error);
-        // Return fallback data
+        // Return zero state - no fake data
         return {
-          totalHolders: 1137,
-          holders: generateMockHolders(),
+          totalHolders: 0,
+          holders: [],
         };
       }
 

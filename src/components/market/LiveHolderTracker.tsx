@@ -10,7 +10,7 @@ export const LiveHolderTracker = () => {
     return <Skeleton className="h-24 rounded-xl" />;
   }
 
-  const holderCount = data?.holderCount || 1137;
+  const holderCount = data?.holderCount || 0;
   const target = 5000;
   const progress = (holderCount / target) * 100;
 

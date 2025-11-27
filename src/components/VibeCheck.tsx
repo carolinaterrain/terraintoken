@@ -86,7 +86,7 @@ export const VibeCheck = () => {
           </div>
           <Progress value={vibeScore} className="h-2" />
           <p className="text-xs text-muted-foreground mt-1">
-            Based on {communityStats?.totalInteractions?.toLocaleString() || '1,247'} recent community interactions
+            Based on {communityStats?.totalInteractions?.toLocaleString() || 0} recent community interactions
           </p>
         </div>
 

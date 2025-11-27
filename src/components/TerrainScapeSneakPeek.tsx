@@ -250,40 +250,48 @@ export const TerrainScapeSneakPeek = () => {
             </TabsContent>
             
             <TabsContent value="economy" className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="p-6 bg-primary/10 rounded-lg border border-primary/20">
+              <div className="text-center py-6 mb-4">
+                <Badge className="bg-chart-2/20 text-chart-2 border-chart-2/40 mb-4">
+                  🚧 PREVIEW - Game Not Yet Launched
+                </Badge>
+                <p className="text-sm text-muted-foreground max-w-md mx-auto">
+                  These are projected features for the TerrainScape economy. Actual metrics will display once the game launches in 2026.
+                </p>
+              </div>
+              <div className="grid md:grid-cols-2 gap-6 opacity-60">
+                <div className="p-6 bg-primary/10 rounded-lg border border-primary/20 border-dashed">
                   <div className="flex items-center gap-3 mb-4">
                     <Users className="w-8 h-8 text-primary" />
                     <div>
-                      <p className="text-3xl font-bold text-foreground">2,847</p>
-                      <p className="text-sm text-muted-foreground">Active Players</p>
+                      <p className="text-3xl font-bold text-foreground">--</p>
+                      <p className="text-sm text-muted-foreground">Active Players (Coming Soon)</p>
                     </div>
                   </div>
                 </div>
-                <div className="p-6 bg-chart-3/10 rounded-lg border border-chart-3/20">
+                <div className="p-6 bg-chart-3/10 rounded-lg border border-chart-3/20 border-dashed">
                   <div className="flex items-center gap-3 mb-4">
                     <DollarSign className="w-8 h-8 text-chart-3" />
                     <div>
-                      <p className="text-3xl font-bold text-foreground">1.2M TRN</p>
-                      <p className="text-sm text-muted-foreground">Total Earned</p>
+                      <p className="text-3xl font-bold text-foreground">--</p>
+                      <p className="text-sm text-muted-foreground">Total Earned (Coming Soon)</p>
                     </div>
                   </div>
                 </div>
-                <div className="p-6 bg-chart-1/10 rounded-lg border border-chart-1/20">
+                <div className="p-6 bg-chart-1/10 rounded-lg border border-chart-1/20 border-dashed">
                   <div className="flex items-center gap-3 mb-4">
                     <Award className="w-8 h-8 text-chart-1" />
                     <div>
-                      <p className="text-3xl font-bold text-foreground">127</p>
-                      <p className="text-sm text-muted-foreground">Jobs Placed</p>
+                      <p className="text-3xl font-bold text-foreground">--</p>
+                      <p className="text-sm text-muted-foreground">Jobs Placed (Coming Soon)</p>
                     </div>
                   </div>
                 </div>
-                <div className="p-6 bg-chart-2/10 rounded-lg border border-chart-2/20">
+                <div className="p-6 bg-chart-2/10 rounded-lg border border-chart-2/20 border-dashed">
                   <div className="flex items-center gap-3 mb-4">
                     <Bot className="w-8 h-8 text-chart-2" />
                     <div>
-                      <p className="text-3xl font-bold text-foreground">850k</p>
-                      <p className="text-sm text-muted-foreground">AI Training Data</p>
+                      <p className="text-3xl font-bold text-foreground">--</p>
+                      <p className="text-sm text-muted-foreground">AI Training Data (Coming Soon)</p>
                     </div>
                   </div>
                 </div>

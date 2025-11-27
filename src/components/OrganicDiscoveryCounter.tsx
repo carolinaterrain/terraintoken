@@ -18,13 +18,13 @@ export const OrganicDiscoveryCounter = () => {
         .or('utm_source.is.null,utm_source.neq.ads,utm_source.neq.paid')
         .or('utm_campaign.is.null,utm_campaign.not.ilike.%influencer%');
       
-      return count || 847;
+      return count || 0;
     },
     refetchInterval: 300000, // 5 minutes
     staleTime: 240000,
   });
 
-  const targetCount = organicCount || 847;
+  const targetCount = organicCount || 0;
 
   useEffect(() => {
     let current = 0;
