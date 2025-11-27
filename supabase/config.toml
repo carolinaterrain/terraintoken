@@ -53,3 +53,9 @@ verify_jwt = false
 
 [functions.fetch-holder-data]
 verify_jwt = false
+
+[functions.sync-rewards]
+verify_jwt = false
+
+[functions.get-live-stats]
+verify_jwt = false
