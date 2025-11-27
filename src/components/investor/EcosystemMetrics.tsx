@@ -28,14 +28,14 @@ export const EcosystemMetrics = () => {
     },
   });
 
-  // Get analysis count
+  // Get analysis count - actual database count, no fallbacks
   const { data: analysisCount } = useQuery({
     queryKey: ['analysis-count'],
     queryFn: async () => {
       const { count } = await supabase
         .from('tool_usage_proofs')
         .select('*', { count: 'exact', head: true });
-      return count || 1200;
+      return count || 0;
     },
   });
 
@@ -65,7 +65,7 @@ export const EcosystemMetrics = () => {
       icon: Activity,
       metrics: [
         { label: "Waitlist Size", value: waitlistCount || 0, color: "text-chart-1" },
-        { label: "TerrainVision Analyses", value: analysisCount || 1200, color: "text-chart-2" },
+        { label: "TerrainVision Analyses", value: analysisCount || 0, color: "text-chart-2" },
         { label: "Active Tools", value: 8, color: "text-chart-3" },
         { label: "Regional Coverage", value: 2, suffix: " states", color: "text-chart-4" },
       ]
