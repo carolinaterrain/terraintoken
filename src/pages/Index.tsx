@@ -9,6 +9,7 @@ import { ApeModeContent } from "@/components/ApeModeContent";
 import { ResearchModeContent } from "@/components/ResearchModeContent";
 import { useUIModeStore } from "@/stores/uiModeStore";
 import { useAnalytics } from "@/hooks/useAnalytics";
+import { HeyGenAvatar } from "@/components/HeyGenAvatar";
 
 const Index = () => {
   const { mode } = useUIModeStore();
@@ -63,6 +64,9 @@ const Index = () => {
         
         {mode === 'ape' ? <ApeModeContent /> : <ResearchModeContent />}
       </main>
+
+      {/* AI Avatar Assistant - Only show in Research mode */}
+      <HeyGenAvatar enabled={mode === 'research'} />
     </>
   );
 };
