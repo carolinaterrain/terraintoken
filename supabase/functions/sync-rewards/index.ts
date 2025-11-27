@@ -3,7 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-source-project',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-source-project, x-sync-secret',
 };
 
 // Whitelist of allowed source projects
@@ -41,6 +41,27 @@ serve(async (req) => {
       return new Response(
         JSON.stringify({ error: 'Method not allowed' }),
         { status: 405, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Validate API key authentication
+    const syncSecret = Deno.env.get('TRN_SYNC_SECRET');
+    const providedSecret = req.headers.get('x-sync-secret') || 
+                           req.headers.get('authorization')?.replace('Bearer ', '');
+
+    if (!syncSecret) {
+      console.error('TRN_SYNC_SECRET not configured on server');
+      return new Response(
+        JSON.stringify({ error: 'Server configuration error' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (!providedSecret || providedSecret !== syncSecret) {
+      console.error('Invalid or missing sync secret');
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized - invalid sync secret' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
@@ -107,7 +128,7 @@ serve(async (req) => {
       };
     });
 
-    console.log(`Syncing ${rewardsToInsert.length} rewards from ${normalizedSource}`);
+    console.log(`Syncing ${rewardsToInsert.length} rewards from ${normalizedSource} (authenticated)`);
 
     // Upsert rewards (on conflict update synced_at and status if changed)
     const { data, error } = await supabase
