@@ -2040,6 +2040,51 @@ export type Database = {
           },
         ]
       }
+      trn_live_stats: {
+        Row: {
+          active_users: number
+          created_at: string
+          current_supply: number
+          id: string
+          liquidity_usd: number | null
+          market_cap_usd: number | null
+          max_supply: number
+          price_change_24h: number | null
+          price_sol: number | null
+          price_usd: number | null
+          total_issued: number
+          volume_24h_usd: number | null
+        }
+        Insert: {
+          active_users?: number
+          created_at?: string
+          current_supply?: number
+          id?: string
+          liquidity_usd?: number | null
+          market_cap_usd?: number | null
+          max_supply?: number
+          price_change_24h?: number | null
+          price_sol?: number | null
+          price_usd?: number | null
+          total_issued?: number
+          volume_24h_usd?: number | null
+        }
+        Update: {
+          active_users?: number
+          created_at?: string
+          current_supply?: number
+          id?: string
+          liquidity_usd?: number | null
+          market_cap_usd?: number | null
+          max_supply?: number
+          price_change_24h?: number | null
+          price_sol?: number | null
+          price_usd?: number | null
+          total_issued?: number
+          volume_24h_usd?: number | null
+        }
+        Relationships: []
+      }
       trn_purchases: {
         Row: {
           amount_sol: number
@@ -2170,6 +2215,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      trn_rewards_ledger: {
+        Row: {
+          amount_trn: number
+          created_at: string
+          id: string
+          metadata: Json | null
+          reward_type: string
+          session_id: string | null
+          source_project: string
+          source_reward_id: string
+          status: string
+          synced_at: string
+          user_email: string | null
+          wallet_address: string | null
+        }
+        Insert: {
+          amount_trn?: number
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          reward_type: string
+          session_id?: string | null
+          source_project: string
+          source_reward_id: string
+          status?: string
+          synced_at?: string
+          user_email?: string | null
+          wallet_address?: string | null
+        }
+        Update: {
+          amount_trn?: number
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          reward_type?: string
+          session_id?: string | null
+          source_project?: string
+          source_reward_id?: string
+          status?: string
+          synced_at?: string
+          user_email?: string | null
+          wallet_address?: string | null
+        }
+        Relationships: []
       }
       user_achievements: {
         Row: {
