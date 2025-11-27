@@ -2597,6 +2597,16 @@ export type Database = {
           total_trn_earned: number
         }[]
       }
+      get_referral_stats: {
+        Args: never
+        Returns: {
+          active_referrers: number
+          total_referrals: number
+          total_rewards_distributed: number
+        }[]
+      }
+      get_user_email: { Args: never; Returns: string }
+      get_user_wallet_address: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
