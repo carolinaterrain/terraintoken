@@ -90,7 +90,10 @@ export function TokenBurnDashboard() {
             Token Burn Dashboard
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Real-time tracking of TRN permanently removed from circulation through platform utility.
+            Real-time tracking of TRN allocated for burns through platform utility.
+          </p>
+          <p className="text-sm text-muted-foreground/70 mt-2 max-w-2xl mx-auto">
+            Burns are tracked and committed when services are used. On-chain burn execution will be implemented as transaction volume grows.
           </p>
         </motion.div>
 
@@ -106,7 +109,7 @@ export function TokenBurnDashboard() {
               <div className="text-4xl font-bold mb-2">
                 <CountUp end={totalBurned} duration={2} separator="," />
               </div>
-              <div className="text-sm text-muted-foreground">Total TRN Burned</div>
+              <div className="text-sm text-muted-foreground">Total TRN Committed for Burn</div>
             </GlassCard>
           </motion.div>
 
@@ -121,7 +124,7 @@ export function TokenBurnDashboard() {
               <div className="text-4xl font-bold mb-2">
                 <CountUp end={burnedPercentage} duration={2} decimals={3} />%
               </div>
-              <div className="text-sm text-muted-foreground">Supply Reduced</div>
+              <div className="text-sm text-muted-foreground">Supply Allocated for Burn</div>
             </GlassCard>
           </motion.div>
 
