@@ -1,15 +1,28 @@
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, Shield, Users, Activity } from "lucide-react";
+import { TrendingUp, Shield, Users, Rocket, Activity } from "lucide-react";
 import { useTokenStats } from "@/hooks/useTokenStats";
 import { useLiveHolderCount } from "@/hooks/useLiveHolderCount";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import CountUp from "react-countup";
 import { motion } from "framer-motion";
 
 export const InvestorHero = () => {
   const { data: tokenStats } = useTokenStats();
   const { data: holderData } = useLiveHolderCount();
+
+  // Get actual TRN rewards count from database
+  const { data: rewardsCount } = useQuery({
+    queryKey: ['trn-rewards-count'],
+    queryFn: async () => {
+      const { count } = await supabase
+        .from('trn_rewards')
+        .select('*', { count: 'exact', head: true });
+      return count || 0;
+    },
+  });
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -18,7 +31,7 @@ export const InvestorHero = () => {
   const stats = [
     {
       label: "Token Holders",
-      value: holderData?.holderCount || 1137,
+      value: holderData?.holderCount || 0,
       prefix: "",
       icon: Users,
       color: "text-chart-1"
@@ -32,12 +45,12 @@ export const InvestorHero = () => {
       decimals: 0
     },
     {
-      label: "Analyses Completed",
-      value: 1200,
+      label: "TRN Rewards Issued",
+      value: rewardsCount || 0,
       prefix: "",
-      icon: Activity,
+      icon: Rocket,
       color: "text-chart-3",
-      suffix: "+"
+      suffix: ""
     },
     {
       label: "License",
