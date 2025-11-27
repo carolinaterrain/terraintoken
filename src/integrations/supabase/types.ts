@@ -2498,6 +2498,15 @@ export type Database = {
       cleanup_rate_limits: { Args: never; Returns: undefined }
       cleanup_stale_viewers: { Args: never; Returns: undefined }
       expire_old_invoice_codes: { Args: never; Returns: undefined }
+      get_public_leaderboard: {
+        Args: { limit_count?: number }
+        Returns: {
+          masked_wallet: string
+          rank: number
+          reputation_score: number
+          total_trn_earned: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
