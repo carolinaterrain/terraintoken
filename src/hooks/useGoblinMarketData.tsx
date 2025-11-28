@@ -19,15 +19,16 @@ interface PriceDataPoint {
   volume: number;
 }
 
-const DEXSCREENER_API = "https://api.dexscreener.com/latest/dex";
-const TRN_PAIR_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+const DEXSCREENER_API = "https://api.dexscreener.com/tokens";
+const TRN_TOKEN_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 
 export function useGoblinMarketData() {
   return useQuery({
     queryKey: ["goblin-market-data"],
     queryFn: async () => {
       try {
-        const response = await fetch(`${DEXSCREENER_API}/pairs/solana/${TRN_PAIR_ADDRESS}`);
+        // Use tokens endpoint which returns all pairs for a token
+        const response = await fetch(`${DEXSCREENER_API}/${TRN_TOKEN_ADDRESS}`);
         
         if (!response.ok) {
           console.error("DexScreener API error:", response.status);
@@ -35,18 +36,23 @@ export function useGoblinMarketData() {
         }
         
         const data = await response.json();
-        const pair = data.pair;
         
-        if (!pair) {
-          console.error("No pair data returned from DexScreener");
+        // tokens endpoint returns { pairs: [...] } array
+        const pairs = data.pairs;
+        
+        if (!pairs || pairs.length === 0) {
+          console.error("No pairs returned from DexScreener tokens endpoint");
           throw new Error("No pair data available");
         }
+        
+        // Use the first/primary pair (usually the most liquid)
+        const pair = pairs[0];
         
         const stats: TokenStats = {
           priceUsd: pair.priceUsd || "0",
           priceChange24h: parseFloat(pair.priceChange?.h24 || "0"),
           volume24h: parseFloat(pair.volume?.h24 || "0"),
-          marketCap: parseFloat(pair.marketCap || "0"),
+          marketCap: parseFloat(pair.marketCap || pair.fdv || "0"),
           liquidity: parseFloat(pair.liquidity?.usd || "0"),
           holders: undefined, // Live data from separate hook
         };
