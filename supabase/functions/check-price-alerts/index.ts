@@ -4,11 +4,11 @@ import { Resend } from "https://esm.sh/resend@4.0.0";
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 import { checkRateLimit, getClientIP } from '../_shared/rate-limit.ts';
 
-// DexScreener response validation
+// DexScreener response validation (tokens endpoint returns pairs array)
 const dexResponseSchema = z.object({
-  pair: z.object({
-    priceUsd: z.string().regex(/^\d+(\.\d+)?$/)
-  })
+  pairs: z.array(z.object({
+    priceUsd: z.string().optional()
+  })).min(1)
 });
 
 // Email validation
@@ -64,9 +64,9 @@ serve(async (req) => {
 
     console.log('Checking price alerts...');
 
-    // Get current TRN price from DexScreener with validation
+    // Get current TRN price from DexScreener with validation (use tokens endpoint)
     const priceResponse = await fetch(
-      'https://api.dexscreener.com/latest/dex/pairs/solana/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump'
+      'https://api.dexscreener.com/latest/dex/tokens/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump'
     );
 
     if (!priceResponse.ok) {
@@ -77,10 +77,12 @@ serve(async (req) => {
     const dexValidation = dexResponseSchema.safeParse(priceData);
     
     if (!dexValidation.success) {
+      console.error('DexScreener validation failed:', dexValidation.error);
       throw new Error('Invalid DexScreener API response');
     }
     
-    const currentPrice = parseFloat(dexValidation.data.pair.priceUsd);
+    // Use the first pair (most liquid)
+    const currentPrice = parseFloat(dexValidation.data.pairs[0].priceUsd || '0');
 
     console.log(`Current TRN price: $${currentPrice}`);
 
