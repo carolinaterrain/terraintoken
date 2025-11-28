@@ -19,14 +19,32 @@ serve(async (req) => {
 
     const supabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!);
 
+    // First check cache - only refresh every 5 minutes
+    const { data: cached } = await supabase
+      .from('holder_count_cache')
+      .select('holder_count, last_updated')
+      .eq('id', 'current')
+      .single();
+
+    const cacheAge = cached?.last_updated 
+      ? Date.now() - new Date(cached.last_updated).getTime()
+      : Infinity;
+    
+    // Return cached data if less than 5 minutes old
+    if (cached && cached.holder_count > 0 && cacheAge < 300000) {
+      console.log(`Returning cached holder count: ${cached.holder_count}`);
+      return new Response(
+        JSON.stringify({
+          holderCount: cached.holder_count,
+          lastUpdated: cached.last_updated,
+          source: 'cache',
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     if (!HELIUS_API_KEY) {
       console.warn('HELIUS_API_KEY not configured, using cached fallback');
-      const { data: cached } = await supabase
-        .from('holder_count_cache')
-        .select('holder_count, last_updated')
-        .eq('id', 'current')
-        .single();
-
       return new Response(
         JSON.stringify({
           holderCount: cached?.holder_count || 0,
@@ -38,80 +56,99 @@ serve(async (req) => {
       );
     }
 
-    console.log('Fetching holder count using Helius DAS getTokenAccounts API...');
+    console.log('Fetching holder count by paginating through all token accounts...');
 
-    // Use Helius DAS API getTokenAccounts - returns total count and token accounts
-    const response = await fetch(
-      `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          jsonrpc: '2.0',
-          id: 'get-holder-count',
-          method: 'getTokenAccounts',
-          params: {
-            mint: TRN_MINT_ADDRESS,
-            limit: 1, // We only need the total count
-            options: {
-              showZeroBalance: false,
+    // Paginate through ALL token accounts to get accurate count
+    let totalHolders = 0;
+    let cursor: string | undefined;
+    let pageCount = 0;
+    const MAX_PAGES = 50; // Safety limit
+    const PAGE_SIZE = 1000;
+
+    do {
+      const response = await fetch(
+        `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            jsonrpc: '2.0',
+            id: `get-holders-page-${pageCount}`,
+            method: 'getTokenAccounts',
+            params: {
+              mint: TRN_MINT_ADDRESS,
+              limit: PAGE_SIZE,
+              cursor: cursor,
+              options: {
+                showZeroBalance: false,
+              },
             },
-          },
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`Helius DAS API error: ${response.status}`, errorText);
-      
-      // On rate limit (429), return cached data
-      if (response.status === 429) {
-        console.log('Rate limited, returning cached holder count...');
-        const { data: cached } = await supabase
-          .from('holder_count_cache')
-          .select('holder_count, last_updated')
-          .eq('id', 'current')
-          .single();
-
-        return new Response(
-          JSON.stringify({
-            holderCount: cached?.holder_count || 0,
-            lastUpdated: cached?.last_updated || new Date().toISOString(),
-            source: 'cache',
           }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`Helius DAS API error: ${response.status}`, errorText);
+        
+        if (response.status === 429 && cached && cached.holder_count > 0) {
+          console.log('Rate limited, returning cached holder count...');
+          return new Response(
+            JSON.stringify({
+              holderCount: cached.holder_count,
+              lastUpdated: cached.last_updated,
+              source: 'cache',
+            }),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+        
+        throw new Error(`Helius DAS API error: ${response.status}`);
       }
+
+      const data = await response.json();
       
-      throw new Error(`Helius DAS API error: ${response.status}`);
-    }
+      if (data.error) {
+        console.error('Helius RPC error:', data.error);
+        throw new Error(`Helius RPC error: ${data.error.message || JSON.stringify(data.error)}`);
+      }
 
-    const data = await response.json();
-    
-    if (data.error) {
-      console.error('Helius RPC error:', data.error);
-      throw new Error(`Helius RPC error: ${data.error.message || JSON.stringify(data.error)}`);
-    }
+      const result = data.result;
+      const tokenAccounts = result?.token_accounts || [];
+      
+      // Count non-zero balance accounts
+      const activeAccounts = tokenAccounts.filter((acc: { amount: string }) => 
+        parseInt(acc.amount, 10) > 0
+      );
+      
+      totalHolders += activeAccounts.length;
+      cursor = result?.cursor;
+      pageCount++;
 
-    // DAS getTokenAccounts returns: { result: { total: number, limit: number, cursor: string, token_accounts: [...] } }
-    const holderCount = data.result?.total || 0;
-    
-    console.log(`Successfully fetched holder count: ${holderCount} holders`);
+      console.log(`Page ${pageCount}: found ${activeAccounts.length} holders (total so far: ${totalHolders})`);
+
+      // If we got less than PAGE_SIZE results, we've reached the end
+      if (tokenAccounts.length < PAGE_SIZE) {
+        break;
+      }
+
+    } while (cursor && pageCount < MAX_PAGES);
+
+    console.log(`Successfully counted ${totalHolders} total holders across ${pageCount} pages`);
 
     // Update cache with new holder count
     await supabase
       .from('holder_count_cache')
       .upsert({
         id: 'current',
-        holder_count: holderCount,
+        holder_count: totalHolders,
         last_updated: new Date().toISOString(),
-        source: 'helius-das',
+        source: 'helius-das-paginated',
       });
 
     return new Response(
       JSON.stringify({
-        holderCount,
+        holderCount: totalHolders,
         lastUpdated: new Date().toISOString(),
         source: 'helius-das',
       }),
@@ -119,7 +156,7 @@ serve(async (req) => {
         headers: { 
           ...corsHeaders, 
           'Content-Type': 'application/json',
-          'Cache-Control': 'public, max-age=120, s-maxage=120',
+          'Cache-Control': 'public, max-age=300, s-maxage=300',
         },
       }
     );
