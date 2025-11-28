@@ -2,9 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Sparkles, Zap } from "lucide-react";
+import { Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import confetti from "canvas-confetti";
 
 // TRN Token mint address on Solana
@@ -12,60 +11,21 @@ const TRN_MINT = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 
 interface BuyTier {
   id: string;
-  name: string;
-  emoji: string;
   dollarAmount: number;
-  estimatedTRN: number;
   color: string;
 }
 
 const BUY_TIERS: BuyTier[] = [
-  {
-    id: "shrimp",
-    name: "Shrimp Starter",
-    emoji: "🦐",
-    dollarAmount: 10,
-    estimatedTRN: 100000,
-    color: "from-gray-500 to-gray-600",
-  },
-  {
-    id: "crab",
-    name: "Crab Collector",
-    emoji: "🦀",
-    dollarAmount: 50,
-    estimatedTRN: 500000,
-    color: "from-orange-500 to-red-600",
-  },
-  {
-    id: "dolphin",
-    name: "Dolphin Dive",
-    emoji: "🐬",
-    dollarAmount: 100,
-    estimatedTRN: 1000000,
-    color: "from-cyan-500 to-blue-600",
-  },
-  {
-    id: "shark",
-    name: "Shark Attack",
-    emoji: "🦈",
-    dollarAmount: 500,
-    estimatedTRN: 5000000,
-    color: "from-blue-600 to-indigo-700",
-  },
-  {
-    id: "whale",
-    name: "Whale Entry",
-    emoji: "🐋",
-    dollarAmount: 1000,
-    estimatedTRN: 10000000,
-    color: "from-purple-600 to-pink-600",
-  },
+  { id: "tier_10", dollarAmount: 10, color: "from-gray-500 to-gray-600" },
+  { id: "tier_50", dollarAmount: 50, color: "from-orange-500 to-red-600" },
+  { id: "tier_100", dollarAmount: 100, color: "from-cyan-500 to-blue-600" },
+  { id: "tier_500", dollarAmount: 500, color: "from-blue-600 to-indigo-700" },
+  { id: "tier_1000", dollarAmount: 1000, color: "from-purple-600 to-pink-600" },
 ];
 
 export const JupiterSwap = () => {
   const { publicKey, connected } = useWallet();
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
   const [selectedTier, setSelectedTier] = useState<BuyTier | null>(null);
   const jupiterRef = useRef<HTMLDivElement>(null);
 
@@ -95,102 +55,14 @@ export const JupiterSwap = () => {
         initialAmount: (tier.dollarAmount * 1e9).toString(), // Convert to lamports
       },
       strictTokenList: false,
-      onSuccess: async ({ txid }) => {
-        await trackPurchase(tier, txid);
-        celebratePurchase(tier);
+      onSuccess: async ({ txid }: { txid: string }) => {
+        celebratePurchase();
+        console.log("Purchase successful:", txid);
       },
     });
   };
 
-  const trackPurchase = async (tier: BuyTier, txSignature: string) => {
-    if (!publicKey) return;
-
-    try {
-      // Check for referral code in URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const referralCode = urlParams.get("ref");
-
-      const purchaseData: any = {
-        wallet_address: publicKey.toBase58(),
-        amount_trn: tier.estimatedTRN,
-        amount_sol: tier.dollarAmount / 100, // Rough estimate
-        purchase_tier: tier.id,
-        transaction_signature: txSignature,
-        metadata: {
-          tier_name: tier.name,
-          timestamp: new Date().toISOString(),
-          referral_code: referralCode || null,
-        },
-      };
-
-      const { error } = await supabase.from("trn_purchases").insert(purchaseData);
-
-      if (error) throw error;
-
-      // Process referral if exists
-      if (referralCode) {
-        const bonusAmount = tier.estimatedTRN * 0.02; // 2% bonus for buyer
-        const referrerBonus = tier.estimatedTRN * 0.01; // 1% for referrer
-
-        // Find referrer
-        const { data: referrer } = await supabase
-          .from("referral_codes")
-          .select("*")
-          .eq("referral_code", referralCode)
-          .maybeSingle();
-
-        if (referrer) {
-          // Insert redemption
-          await supabase.from("referral_redemptions").insert({
-            referrer_wallet: referrer.wallet_address,
-            referee_wallet: publicKey.toBase58(),
-            referral_code: referralCode,
-            bonus_amount: bonusAmount,
-            purchase_amount: tier.estimatedTRN,
-          });
-
-          // Update referrer stats
-          await supabase
-            .from("referral_codes")
-            .update({
-              total_referrals: referrer.total_referrals + 1,
-              total_bonus_trn: referrer.total_bonus_trn + referrerBonus,
-            })
-            .eq("wallet_address", referrer.wallet_address);
-
-          toast({
-            title: "🎁 Referral Bonus!",
-            description: `You got ${(bonusAmount / 1000000).toFixed(2)}M extra TRN!`,
-          });
-        }
-      }
-
-      // Update leaderboard via edge function
-      await supabase.functions.invoke("upsert-leaderboard-stats", {
-        body: {
-          p_wallet_address: publicKey.toBase58(),
-          p_trn_amount: tier.estimatedTRN,
-        },
-      });
-
-      // Check for whale alert (5M+ TRN)
-      if (tier.estimatedTRN >= 5000000) {
-        await supabase.from("whale_alerts").insert({
-          wallet_address: publicKey.toBase58(),
-          amount_trn: tier.estimatedTRN,
-          alert_type: "large_purchase",
-          metadata: {
-            transaction_signature: txSignature,
-            tier: tier.id,
-          },
-        });
-      }
-    } catch (error) {
-      console.error("Error tracking purchase:", error);
-    }
-  };
-
-  const celebratePurchase = (tier: BuyTier) => {
+  const celebratePurchase = () => {
     // Confetti explosion
     confetti({
       particleCount: 100,
@@ -199,41 +71,12 @@ export const JupiterSwap = () => {
       colors: ["#10B981", "#F59E0B", "#8B5CF6"],
     });
 
-    // Success toast with achievement
+    // Success toast
     toast({
-      title: `🎉 Welcome, ${tier.name}!`,
-      description: `You just bought ${(tier.estimatedTRN / 1000000).toFixed(2)}M TRN! Achievement unlocked!`,
+      title: "🎉 Purchase Successful!",
+      description: "Your TRN tokens are on the way. Check your wallet!",
       duration: 5000,
     });
-
-    // Unlock achievement
-    unlockPurchaseAchievement(tier.id);
-  };
-
-  const unlockPurchaseAchievement = async (tierId: string) => {
-    if (!publicKey) return;
-
-    const achievementMap: Record<string, string> = {
-      shrimp: "first_buy",
-      crab: "crab_status",
-      dolphin: "dolphin_status",
-      shark: "shark_status",
-      whale: "whale_status",
-    };
-
-    const achievementId = achievementMap[tierId];
-    if (!achievementId) return;
-
-    try {
-      await supabase.from("market_achievements").insert({
-        user_wallet: publicKey.toBase58(),
-        achievement_id: achievementId,
-        metadata: { tier: tierId },
-      });
-    } catch (error) {
-      // Achievement might already exist
-      console.log("Achievement already unlocked");
-    }
   };
 
   const handleQuickBuy = (tier: BuyTier) => {
@@ -258,32 +101,22 @@ export const JupiterSwap = () => {
             <Zap className="w-6 h-6" />
             Quick Buy TRN
           </h3>
-          <Sparkles className="w-5 h-5 text-goblin-green animate-pulse" />
         </div>
 
         <p className="text-sm text-muted-foreground">
-          One-click purchase. Best prices from Jupiter aggregator. Instant achievements.
+          One-click purchase with best prices from Jupiter aggregator.
         </p>
 
         {/* Buy Tier Buttons */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
           {BUY_TIERS.map((tier) => (
             <Button
               key={tier.id}
               onClick={() => handleQuickBuy(tier)}
-              disabled={isLoading || !connected}
-              className={`h-auto py-4 bg-gradient-to-r ${tier.color} hover:opacity-90 flex flex-col items-start gap-1 text-left`}
+              disabled={!connected}
+              className={`h-auto py-4 bg-gradient-to-r ${tier.color} hover:opacity-90 text-white font-bold text-lg`}
             >
-              <div className="flex items-center gap-2 w-full">
-                <span className="text-2xl">{tier.emoji}</span>
-                <div className="flex-1">
-                  <div className="font-bold">{tier.name}</div>
-                  <div className="text-xs opacity-80">${tier.dollarAmount}</div>
-                </div>
-              </div>
-              <div className="text-xs opacity-90">
-                ~{(tier.estimatedTRN / 1000000).toFixed(2)}M TRN
-              </div>
+              ${tier.dollarAmount}
             </Button>
           ))}
         </div>
