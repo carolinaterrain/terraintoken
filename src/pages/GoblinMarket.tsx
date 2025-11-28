@@ -18,7 +18,6 @@ import { LiveHolderTracker } from "@/components/market/LiveHolderTracker";
 import { PriceAlerts } from "@/components/market/PriceAlerts";
 
 // Below-the-fold components - Lazy load
-const TradingHistoryFeed = lazy(() => import("@/components/market/TradingHistoryFeed").then(m => ({ default: m.TradingHistoryFeed })));
 const TopHoldersLeaderboard = lazy(() => import("@/components/market/TopHoldersLeaderboard").then(m => ({ default: m.TopHoldersLeaderboard })));
 const WhaleDistributionChart = lazy(() => import("@/components/market/WhaleDistributionChart").then(m => ({ default: m.WhaleDistributionChart })));
 const JupiterSwap = lazy(() => import("@/components/market/JupiterSwap").then(m => ({ default: m.JupiterSwap })));
@@ -101,13 +100,6 @@ const GoblinMarket = () => {
               <PriceAlerts currentPrice={parseFloat(marketStats.priceUsd)} />
             </DashboardErrorBoundary>
           </div>
-
-          {/* Trading History - Lazy load */}
-          <LazySection fallback={<Skeleton className="h-96" />}>
-            <Suspense fallback={<ComponentFallback />}>
-              <TradingHistoryFeed />
-            </Suspense>
-          </LazySection>
 
           {/* Holder Analytics - Lazy load */}
           <LazySection fallback={<Skeleton className="h-96" />}>
