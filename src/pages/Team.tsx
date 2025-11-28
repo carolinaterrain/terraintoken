@@ -68,8 +68,8 @@ const companyStats = [
   },
   {
     icon: Target,
-    label: "Annual Revenue",
-    value: "$2M+",
+    label: "Established Business",
+    value: "Since 2018",
     description: "Real company backing"
   }
 ];

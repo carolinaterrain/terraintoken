@@ -16,7 +16,7 @@ export const videoUpdates: VideoUpdate[] = [
   {
     id: '2',
     title: 'Real Utility Showcase',
-    description: 'Behind the scenes of our $2M+ annual revenue drainage business and how TRN integrates with real-world operations.',
+    description: 'Behind the scenes of our established drainage business and how TRN integrates with real-world operations.',
     videoUrl: '/videos/real-utility-showcase.mp4',
     category: 'demo',
     duration: 30,

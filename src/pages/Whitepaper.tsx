@@ -17,7 +17,7 @@ const Whitepaper = () => {
     {
       icon: FileText,
       title: "Executive Summary",
-      description: "Terrain Token blends meme culture with AI-driven terrain intelligence, backed by Carolina Terrain LLC—a licensed NC drainage contractor with $2M+ annual revenue."
+      description: "Terrain Token blends meme culture with AI-driven terrain intelligence, backed by Carolina Terrain LLC—a licensed NC drainage contractor with established revenue streams."
     },
     {
       icon: BookOpen,
@@ -26,18 +26,18 @@ const Whitepaper = () => {
     },
     {
       icon: Coins,
-      title: "Tokenomics v2.0",
-      description: "Fixed supply with 50/50 burn & reinvest model. Energy Packs for token-to-utility conversion. Vault & Staking for sustainable ecosystem growth."
+      title: "Tokenomics",
+      description: "Fixed supply with mint authority revoked. Energy/XP system planned for token-to-utility conversion. Vault & Staking for sustainable ecosystem growth."
     },
     {
       icon: Zap,
       title: "Ecosystem Products",
-      description: "TerrainVision AI, FlowGuardian monitoring, Terrain Estimator, Drainage Academy education platform, and Goblin Market P2P marketplace."
+      description: "TerrainVision AI (planned), Telegram Tip Bot (live), community engagement tools, and future AI-powered terrain analysis services."
     },
     {
       icon: Target,
       title: "Four-Phase Roadmap",
-      description: "Phase 1: Genesis (2025) → Phase 2: Integration (2026) → Phase 3: Expansion (2027) → Phase 4: Enterprise Terrain Intelligence (2028+)."
+      description: "Phase 1: Genesis (2025) → Phase 2: Alignment (2026) → Phase 3: Expansion (2027) → Phase 4: Maturity (2028+)."
     },
     {
       icon: Vote,
@@ -61,17 +61,17 @@ const Whitepaper = () => {
     "Solana-Powered (65k TPS, ~400ms blocks, negligible fees)",
     "Fixed Supply with mint authority removed",
     "Fair Launch on Pump.fun (no presale/VC)",
-    "Energy Packs: Token-to-utility conversion system",
-    "50/50 Burn & Reinvest: Half burned, half to Vault",
+    "Energy/XP System planned for token utility",
     "Liquidity Locked for community protection",
-    "Team tokens vested over 2 years"
+    "Team tokens locked 1 year + quarterly vesting",
+    "Telegram Tip Bot live for community rewards"
   ];
 
   return (
     <>
       <Helmet>
-        <title>Whitepaper v2.0 | Terrain Token (TRN)</title>
-        <meta name="description" content="Read the official Terrain Token whitepaper v2.0. Learn about Energy Packs, 50/50 burn model, AI-powered ecosystem products, 4-phase roadmap, and governance." />
+        <title>Whitepaper v2.2 | Terrain Token (TRN)</title>
+        <meta name="description" content="Read the official Terrain Token whitepaper v2.2. Learn about tokenomics, AI-powered ecosystem products, 4-phase roadmap, and governance." />
       </Helmet>
 
       <ScrollProgress />
@@ -88,7 +88,7 @@ const Whitepaper = () => {
                 TRN <span className="text-primary">Whitepaper</span>
               </h1>
             </div>
-            <p className="text-sm text-primary font-semibold mb-2">Version 2.0 — Utility-Powered Terrain Intelligence</p>
+            <p className="text-sm text-primary font-semibold mb-2">Version 2.2 — Utility-Powered Terrain Intelligence</p>
             <p className="font-body text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
               The complete technical and strategic overview of Terrain Token — from meme origins to AI-driven terrain ecosystem.
             </p>
@@ -109,7 +109,7 @@ const Whitepaper = () => {
             </div>
 
             <p className="text-sm text-muted-foreground italic">
-              Last Updated: November 2025 | Version 2.0 | 28 Pages | Supply data is live from blockchain
+              Last Updated: November 2025 | Version 2.2 | 30 Pages | Supply data is live from blockchain
             </p>
           </div>
 
@@ -292,9 +292,9 @@ const Whitepaper = () => {
                 </div>
               </div>
               <div className="mt-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
-                <p className="text-sm text-center text-muted-foreground">
+              <p className="text-sm text-center text-muted-foreground">
                   <Lock className="inline w-4 h-4 mr-2 text-primary" />
-                  <strong className="text-primary">Security First:</strong> Liquidity locked, team tokens vested over 2 years (12-month cliff + quarterly release). No rug pull possible.
+                  <strong className="text-primary">Security First:</strong> Liquidity locked, team tokens locked for 1 year and vest quarterly thereafter. No rug pull possible.
                 </p>
               </div>
             </GlassCard>
