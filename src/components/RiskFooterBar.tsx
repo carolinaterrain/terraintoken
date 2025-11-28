@@ -1,20 +1,12 @@
 import { useState, useEffect } from "react";
 import { AlertTriangle, ChevronDown, ChevronUp, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link, useLocation } from "react-router-dom";
-import { useUIModeStore } from "@/stores/uiModeStore";
+import { Link } from "react-router-dom";
 
 export const RiskFooterBar = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isDismissed, setIsDismissed] = useState(false);
-  const location = useLocation();
-  const { mode } = useUIModeStore();
-
-  // Hide in Ape Mode on home page (ApeLiveFooter shows risk instead)
-  if (mode === 'ape' && location.pathname === '/') {
-    return null;
-  }
 
   useEffect(() => {
     const dismissed = localStorage.getItem("risk_footer_dismissed");
