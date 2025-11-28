@@ -7,7 +7,6 @@ import DailyQuests from "@/components/earn/DailyQuests";
 import Leaderboard from "@/components/earn/Leaderboard";
 import MyRewardsDashboard from "@/components/earn/MyRewardsDashboard";
 import AchievementBadges from "@/components/earn/AchievementBadges";
-import WeeklyContests from "@/components/earn/WeeklyContests";
 import LegalDisclaimers from "@/components/earn/LegalDisclaimers";
 import AnnouncementBanner from "@/components/AnnouncementBanner";
 import DesktopNav from "@/components/DesktopNav";
@@ -36,7 +35,6 @@ const EarnTRN = () => {
         <Leaderboard />
         <MyRewardsDashboard />
         <AchievementBadges />
-        <WeeklyContests />
         <LegalDisclaimers />
       </main>
 

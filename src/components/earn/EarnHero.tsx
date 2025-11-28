@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
-import { Upload, Database, CheckCircle, Share2 } from "lucide-react";
+import { Upload, Database, Wallet, FolderOpen } from "lucide-react";
 
 const EarnHero = () => {
   return (
@@ -36,15 +36,15 @@ const EarnHero = () => {
           </GlassCard>
 
           <GlassCard className="p-6 text-center">
-            <CheckCircle className="w-8 h-8 text-primary mx-auto mb-3" />
-            <div className="font-display text-2xl font-bold text-primary mb-1">+25 TRN</div>
-            <div className="font-body text-sm text-muted-foreground">Validate Results</div>
+            <Wallet className="w-8 h-8 text-primary mx-auto mb-3" />
+            <div className="font-display text-2xl font-bold text-primary mb-1">+5 TRN</div>
+            <div className="font-body text-sm text-muted-foreground">Connect Wallet</div>
           </GlassCard>
 
           <GlassCard className="p-6 text-center">
-            <Share2 className="w-8 h-8 text-primary mx-auto mb-3" />
-            <div className="font-display text-2xl font-bold text-primary mb-1">+15 TRN</div>
-            <div className="font-body text-sm text-muted-foreground">Social Share</div>
+            <FolderOpen className="w-8 h-8 text-primary mx-auto mb-3" />
+            <div className="font-display text-2xl font-bold text-primary mb-1">+10 TRN</div>
+            <div className="font-body text-sm text-muted-foreground">Select Category</div>
           </GlassCard>
         </div>
 
@@ -53,7 +53,7 @@ const EarnHero = () => {
             <a href="/upload-project">Start Earning Now</a>
           </Button>
           <p className="font-body text-sm text-muted-foreground mt-4">
-            Up to 200 TRN per upload • No purchase required
+            Up to 75 TRN per upload • No purchase required
           </p>
         </div>
       </div>
