@@ -6,7 +6,7 @@ export function EarlyStageDisclaimer() {
     <motion.div
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-4 mx-4 mt-4 md:mx-auto md:max-w-4xl"
+      className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-4 mx-4 mt-20 md:mt-24 md:mx-auto md:max-w-4xl"
     >
       <div className="flex items-start gap-3">
         <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
