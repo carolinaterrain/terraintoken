@@ -1,5 +1,5 @@
 import { GlassCard } from "@/components/ui/glass-card";
-import { Upload, Database, CheckCircle, Share2 } from "lucide-react";
+import { Upload, Database, Wallet, FolderOpen } from "lucide-react";
 
 const steps = [
   {
@@ -17,17 +17,17 @@ const steps = [
     color: "text-green-500"
   },
   {
-    icon: CheckCircle,
-    title: "Validate AI Results",
-    description: "Confirm if our AI analysis was accurate (human-in-the-loop learning)",
-    reward: "+25 TRN",
+    icon: Wallet,
+    title: "Connect Wallet",
+    description: "Link your Solana wallet to receive rewards directly",
+    reward: "+5 TRN",
     color: "text-purple-500"
   },
   {
-    icon: Share2,
-    title: "Share on Social",
-    description: "Post your results with #TerrainToken for bonus rewards",
-    reward: "+15 TRN",
+    icon: FolderOpen,
+    title: "Select Category",
+    description: "Categorize your terrain issue for better AI training data",
+    reward: "+10 TRN",
     color: "text-orange-500"
   }
 ];
@@ -61,7 +61,7 @@ const HowItWorks = () => {
 
         <div className="mt-12 text-center">
           <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary/10">
-            <span className="font-display text-2xl font-bold text-primary">Total: Up to 200 TRN</span>
+            <span className="font-display text-2xl font-bold text-primary">Total: Up to 75 TRN</span>
             <span className="font-body text-muted-foreground">per upload</span>
           </div>
         </div>
