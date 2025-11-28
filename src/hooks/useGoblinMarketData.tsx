@@ -19,7 +19,7 @@ interface PriceDataPoint {
   volume: number;
 }
 
-const DEXSCREENER_API = "https://api.dexscreener.com/tokens";
+const DEXSCREENER_API = "https://api.dexscreener.com/latest/dex/tokens";
 const TRN_TOKEN_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 
 export function useGoblinMarketData() {
