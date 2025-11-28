@@ -13,14 +13,18 @@ export const useNotificationService = () => {
       }
     }, 120000); // 2 minutes
 
-    // Check whale purchases every 10 minutes (rate limit is 10/hour)
+    // Check whale purchases every 30 minutes (rate limit protection)
+    // Note: Purchase tracking is not yet active, so this is infrequent
     const whaleInterval = setInterval(async () => {
       try {
         await supabase.functions.invoke("check-whale-purchases");
       } catch (error) {
-        console.error("Error checking whale purchases:", error);
+        // Silently handle rate limit errors - not critical
+        if (error instanceof Error && !error.message.includes('429')) {
+          console.error("Error checking whale purchases:", error);
+        }
       }
-    }, 600000); // 10 minutes
+    }, 1800000); // 30 minutes
 
     return () => {
       clearInterval(priceAlertInterval);
