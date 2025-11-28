@@ -188,11 +188,11 @@ const Transparency = () => {
           <GlassCard className="p-8 bg-gradient-to-br from-primary/10 to-primary/5">
             <div className="text-center">
               <h3 className="font-display text-2xl font-bold mb-4">
-                💪 Backed by Real Revenue
+                💪 Backed by Real Operations
               </h3>
               <p className="text-muted-foreground mb-4">
                 Unlike 99% of meme coins built on speculation alone, TRN is connected to <strong className="text-primary">Carolina Terrain</strong> — 
-                a licensed drainage contractor generating <strong className="text-primary">$2M+ in annual revenue</strong> from real projects.
+                a licensed drainage contractor with <strong className="text-primary">established revenue streams</strong> from real projects.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
                 <div className="p-4 bg-background/50 rounded-lg">
@@ -200,8 +200,8 @@ const Transparency = () => {
                   <p className="font-display text-lg font-bold text-primary">8+ Industry Certs</p>
                 </div>
                 <div className="p-4 bg-background/50 rounded-lg">
-                  <p className="text-sm text-muted-foreground mb-1">Annual Revenue</p>
-                  <p className="font-display text-lg font-bold text-primary">$2M+</p>
+                  <p className="text-sm text-muted-foreground mb-1">Revenue Status</p>
+                  <p className="font-display text-lg font-bold text-primary">Established</p>
                 </div>
                 <div className="p-4 bg-background/50 rounded-lg">
                   <p className="text-sm text-muted-foreground mb-1">Google Reviews</p>

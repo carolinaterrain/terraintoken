@@ -43,7 +43,7 @@ const AIPoweredDrainageAnalysisFuture = () => {
     {
       slug: "why-meme-coins-need-real-world-backing",
       title: "Why Every Meme Coin Needs Real-World Backing",
-      excerpt: "The BEER collapse and why TRN's $2M+ revenue backing makes it different from 99% of meme coins.",
+      excerpt: "The BEER collapse and why TRN's established revenue backing makes it different from 99% of meme coins.",
       category: "Analysis",
       date: "November 10, 2025",
       author: "TRN Team",

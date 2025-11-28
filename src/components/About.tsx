@@ -47,11 +47,11 @@ const About = () => {
             What is <span className="text-primary">TRN</span>?
           </h2>
           <p className="font-body text-lg text-muted-foreground max-w-3xl mx-auto mb-3">
-            Terrain Token <span className="text-primary font-semibold">has evolved</span> into the world's 
-            first terrain-data reward ecosystem. <span className="text-primary font-semibold">Right now, you can upload photos on TerrainVision AI and earn TRN tokens while training our AI.</span> No speculation. Just contribution.
+            TRN <span className="text-primary font-semibold">powers platform access and sustainability</span> within the Terrain ecosystem. 
+            <span className="text-primary font-semibold"> Upload photos on TerrainVision AI, contribute terrain data, and access platform utilities.</span> Real contribution, real utility.
           </p>
           <p className="font-body text-md text-primary italic max-w-3xl mx-auto">
-            While DOGE tweets and SHIB hopes, TRN BUILDS. We're the evolution of meme coins — from hot air to HARD ASSETS.
+            TRN is used within the platform and governed by community rules—not speculation.
           </p>
         </div>
         
@@ -96,10 +96,10 @@ const About = () => {
             To prove that digital currencies can be rooted in the physical world — not abstract speculation.
           </p>
           <p className="font-body text-md text-muted-foreground max-w-3xl mx-auto">
-            TerrainToken ties blockchain incentives to real work, real soil health, real stormwater improvements, and transparent land data.
+            TRN powers platform access and sustainability. Value comes from real utility—terrain data contribution, AI analysis, and community governance.
           </p>
           <p className="font-body text-lg text-primary font-semibold mt-4 italic">
-            This is what happens when a drainage contractor builds a crypto project that actually means something.
+            Built by licensed contractors who understand real-world operations.
           </p>
         </GlassCard>
       </div>

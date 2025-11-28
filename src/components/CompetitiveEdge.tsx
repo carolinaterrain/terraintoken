@@ -200,7 +200,7 @@ const CompetitiveEdge = () => {
           <Card className="p-6 text-center border-primary/50 bg-primary/5">
             <p className="text-sm text-primary mb-2">TRN</p>
             <p className="text-2xl font-bold mb-1">Early Stage</p>
-            <p className="text-sm text-primary">$2M+ Annual Revenue Backing</p>
+            <p className="text-sm text-primary">Real Revenue Backing</p>
           </Card>
         </div>
 

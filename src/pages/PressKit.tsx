@@ -32,7 +32,7 @@ const PressKit = () => {
     { label: "Launch Date", value: "Mid-2025" },
     { label: "Launch Platform", value: "Pump.fun (Fair Launch)" },
     { label: "Backing Company", value: "Carolina Terrain LLC" },
-    { label: "Company Revenue", value: "$2M+ Annual" },
+    { label: "Company Revenue", value: "Established" },
     { label: "License", value: "NC CL.1872" }
   ];
 
@@ -185,12 +185,12 @@ const PressKit = () => {
               <div className="space-y-4 text-muted-foreground">
                 <p className="font-bold text-foreground">Short Version (50 words):</p>
                 <p className="italic bg-background/30 p-4 rounded-lg">
-                  "Terrain Token (TRN) is a Solana-based cryptocurrency blending meme culture with real-world utility. Backed by Carolina Terrain LLC—a licensed drainage contractor with $2M+ annual revenue—TRN is building the bridge between blockchain and traditional landscaping services through AI-powered terrain analysis."
+                  "Terrain Token (TRN) is a Solana-based utility token powering platform access and sustainability within the Terrain ecosystem. Backed by Carolina Terrain LLC—a licensed drainage contractor with established revenue streams—TRN bridges blockchain technology and traditional landscaping services through AI-powered terrain analysis."
                 </p>
 
                 <p className="font-bold text-foreground mt-6">Long Version (100 words):</p>
                 <p className="italic bg-background/30 p-4 rounded-lg">
-                  "Terrain Token (TRN) launched in 2025 as a community-driven meme coin with a unique twist: it's backed by Carolina Terrain LLC, a North Carolina-based landscaping and drainage company generating over $2 million in annual revenue. Unlike typical meme coins built on speculation, TRN is anchored to real-world services and expertise. The project aims to integrate blockchain technology with traditional landscaping through TerrainVision AI, an analyze-to-earn platform where users upload yard photos and receive TRN rewards. With transparent tokenomics and a commitment to community governance, TRN represents a new category of data contribution tokens."
+                  "Terrain Token (TRN) launched in 2025 as a community-driven utility token with a unique twist: it's backed by Carolina Terrain LLC, a North Carolina-based landscaping and drainage company with established revenue streams. Unlike typical meme coins built on speculation, TRN is anchored to real-world services and expertise. The project integrates blockchain technology with traditional landscaping through TerrainVision AI, an analyze-to-earn platform where users upload yard photos and receive TRN rewards. With transparent tokenomics and a commitment to community governance, TRN represents a new category of data contribution tokens."
                 </p>
               </div>
             </GlassCard>

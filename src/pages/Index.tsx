@@ -51,8 +51,8 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>Terrain Token (TRN) - Real Business Backing Real Utility</title>
-        <meta name="description" content="TRN is the first memecoin backed by a profitable landscaping business." />
+        <title>Terrain Token (TRN) - Powering Real-World Terrain Intelligence</title>
+        <meta name="description" content="TRN powers platform access and sustainability within the Terrain ecosystem. Contribute terrain data, access AI analysis, participate in governance. A utility token backed by real operations." />
       </Helmet>
       
       <SkipToContent />

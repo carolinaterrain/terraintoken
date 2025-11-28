@@ -34,7 +34,7 @@ const faqs = [
   },
   {
     question: "What makes TRN different from DOGE, SHIB, and other meme coins?",
-    answer: "Unlike pure meme coins, TRN is backed by a real licensed landscape company (CL.1872) with $2M+ annual revenue, physical equipment worth $200K+, 8 industry certifications, and a 6-phase roadmap to AI-powered utility. We're the first meme coin where growth supports REAL construction projects."
+    answer: "Unlike pure meme coins, TRN is backed by a real licensed landscape company (CL.1872) with established revenue streams, physical equipment, 8 industry certifications, and a 6-phase roadmap to AI-powered utility. TRN powers platform access and sustainability—not speculation."
   },
   {
     question: "How does the Jobber consultation work?",

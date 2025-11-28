@@ -13,7 +13,7 @@ import { Calendar, User, Clock } from "lucide-react";
 
 const HowTerrainTokenStarted = () => {
   const title = "How Terrain Token Started – From Drainage Ditches to Digital Revolution";
-  const description = "Discover how two NC drainage contractors built Terrain Token (TRN)—a meme coin backed by $2M+ annual revenue, AI technology, and real-world utility. No hype, just French drains and blockchain.";
+  const description = "Discover how two NC drainage contractors built Terrain Token (TRN)—a utility token backed by established revenue streams, AI technology, and real-world utility. No hype, just French drains and blockchain.";
   const url = "https://terraintoken.com/blog/how-terrain-token-started";
   const publishDate = "2025-11-15T09:00:00-05:00";
   const modifiedDate = "2025-11-15T09:00:00-05:00";
@@ -215,7 +215,7 @@ const HowTerrainTokenStarted = () => {
                 </p>
 
                 <p>
-                  But Alex had a compelling argument: Carolina Terrain was already generating over <strong>$2 million in annual revenue</strong> through drainage projects, their LawnShift robotic mowing division, and FlowGuardian smart sensors. They weren't some anonymous dev team promising the moon. They had licenses (Licensed NC Landscape Contractor CL.1872), real equipment, actual clients, and verifiable work.
+                  But Alex had a compelling argument: Carolina Terrain was already generating <strong>established revenue streams</strong> through drainage projects, their LawnShift robotic mowing division, and FlowGuardian smart sensors. They weren't some anonymous dev team promising the moon. They had licenses (Licensed NC Landscape Contractor CL.1872), real equipment, actual clients, and verifiable work.
                 </p>
 
                 <h2 id="graveyard" className="font-display text-3xl font-bold mt-12 mb-6">
@@ -271,7 +271,7 @@ const HowTerrainTokenStarted = () => {
                         <tr className="border-b border-primary/10">
                           <td className="p-3 font-semibold">Revenue Backing</td>
                           <td className="p-3 text-muted-foreground">❌ None</td>
-                          <td className="p-3 text-primary">✅ $2M+ annual from real business</td>
+                          <td className="p-3 text-primary">✅ Established revenue from real business</td>
                         </tr>
                         <tr className="border-b border-primary/10">
                           <td className="p-3 font-semibold">Team Identity</td>
@@ -500,7 +500,7 @@ const HowTerrainTokenStarted = () => {
                   <div>
                     <h3 className="font-display text-xl font-bold mb-2">What makes TRN different from other meme coins?</h3>
                     <p>
-                      Three things: (1) Real revenue backing from a $2M+ business, (2) Tangible utility through service discounts, AI access, and data rewards, (3) Radical transparency with monthly reports and public wallet addresses. Most meme coins have none of these.
+                      Three things: (1) Real revenue backing from an established business, (2) Tangible utility through service discounts, AI access, and data rewards, (3) Radical transparency with monthly reports and public wallet addresses. Most meme coins have none of these.
                     </p>
                   </div>
                 </div>
