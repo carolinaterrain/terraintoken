@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Share2, Copy, Gift, Users } from "lucide-react";
+import { Share2, Copy, Gift, Users, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface ReferralSystemProps {
@@ -14,13 +14,14 @@ interface ReferralSystemProps {
 export const ReferralSystem = ({ walletAddress }: ReferralSystemProps) => {
   const [referralCode, setReferralCode] = useState<string>("");
   const [stats, setStats] = useState({ totalReferrals: 0, totalBonus: 0 });
+  const [isFeatureEnabled, setIsFeatureEnabled] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
-    if (walletAddress) {
+    if (walletAddress && isFeatureEnabled) {
       loadReferralData();
     }
-  }, [walletAddress]);
+  }, [walletAddress, isFeatureEnabled]);
 
   const loadReferralData = async () => {
     if (!walletAddress) return;
@@ -99,6 +100,46 @@ export const ReferralSystem = ({ walletAddress }: ReferralSystemProps) => {
       copyReferralLink();
     }
   };
+
+  // Show Coming Soon state when feature is not enabled
+  if (!isFeatureEnabled) {
+    return (
+      <Card className="p-6 bg-gradient-to-br from-terrain-dark via-terrain-shadow to-terrain-deep border-2 border-goblin-green/40">
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xl font-bold text-goblin-green flex items-center gap-2">
+              <Gift className="w-5 h-5" />
+              Referral Rewards
+            </h3>
+            <Badge variant="outline" className="bg-muted/20 text-muted-foreground border-muted-foreground/30">
+              <Clock className="w-3 h-3 mr-1" />
+              Coming Soon
+            </Badge>
+          </div>
+
+          <div className="text-center py-6 space-y-3">
+            <div className="text-4xl">🎁</div>
+            <div className="space-y-1">
+              <p className="text-sm font-medium text-foreground">Referral Program Coming Soon</p>
+              <p className="text-xs text-muted-foreground">
+                Earn 1% of every purchase when you invite friends. Your friends get 2% bonus TRN!
+              </p>
+            </div>
+          </div>
+
+          {/* Preview of rewards */}
+          <div className="bg-terrain-shadow/30 p-3 rounded-lg text-xs space-y-2">
+            <div className="font-bold text-goblin-gold">Coming Rewards:</div>
+            <ul className="space-y-1 text-muted-foreground">
+              <li>• Your friend gets 2% bonus TRN on their purchase</li>
+              <li>• You earn 1% of their purchase amount</li>
+              <li>• No limits on referrals!</li>
+            </ul>
+          </div>
+        </div>
+      </Card>
+    );
+  }
 
   return (
     <Card className="p-6 bg-gradient-to-br from-terrain-dark via-terrain-shadow to-terrain-deep border-2 border-goblin-green/40">

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
-import { Flame, TrendingUp, Zap } from "lucide-react";
+import { Flame, TrendingUp, Clock } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { Badge } from "@/components/ui/badge";
 
 interface Purchase {
   id: string;
@@ -74,84 +75,100 @@ export const LivePurchaseFeed = () => {
     return `${address.slice(0, 4)}...${address.slice(-4)}`;
   };
 
+  const hasNoPurchases = purchases.length === 0;
+
   return (
     <Card className="p-4 bg-gradient-to-br from-terrain-dark via-terrain-shadow to-terrain-deep border-2 border-goblin-gold/30">
       <div className="space-y-3">
         {/* Header */}
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-bold text-goblin-gold flex items-center gap-2">
-            <Flame className="w-5 h-5 animate-pulse" />
+            <Flame className="w-5 h-5" />
             Live Purchase Feed
           </h3>
-          <div className="flex items-center gap-2 text-xs text-goblin-green">
-            <TrendingUp className="w-4 h-4" />
-            {recentCount} buys/hour
-          </div>
-        </div>
-
-        {/* Stats Bar */}
-        <div className="grid grid-cols-2 gap-2 text-xs">
-          <div className="bg-terrain-shadow/50 p-2 rounded">
-            <div className="text-muted-foreground">Total Purchases</div>
-            <div className="font-bold text-foreground">{purchases.length}</div>
-          </div>
-          <div className="bg-terrain-shadow/50 p-2 rounded">
-            <div className="text-muted-foreground">Recent Activity</div>
-            <div className="font-bold text-goblin-green flex items-center gap-1">
-              <Zap className="w-3 h-3" />
-              High
-            </div>
-          </div>
-        </div>
-
-        {/* Purchase List */}
-        <div className="space-y-2 max-h-[400px] overflow-y-auto">
-          {purchases.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground text-sm">
-              No purchases yet. Be the first goblin to buy!
-            </div>
+          {hasNoPurchases ? (
+            <Badge variant="outline" className="bg-muted/20 text-muted-foreground border-muted-foreground/30">
+              <Clock className="w-3 h-3 mr-1" />
+              Coming Soon
+            </Badge>
           ) : (
-            purchases.map((purchase) => {
-              const tier =
-                TIER_CONFIG[purchase.purchase_tier as keyof typeof TIER_CONFIG];
-              return (
-                <div
-                  key={purchase.id}
-                  className="bg-terrain-shadow/30 p-3 rounded-lg border border-goblin-gold/20 hover:border-goblin-gold/40 transition-colors"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="text-2xl">{tier?.emoji || "🎯"}</span>
-                      <div>
-                        <div className="font-mono text-xs text-muted-foreground">
-                          {formatWallet(purchase.wallet_address)}
-                        </div>
-                        <div className={`text-sm font-bold ${tier?.color}`}>
-                          became a {tier?.name || "Buyer"}!
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm font-bold text-goblin-green">
-                        +{(purchase.amount_trn / 1000000).toFixed(2)}M TRN
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {formatDistanceToNow(new Date(purchase.created_at), {
-                          addSuffix: true,
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })
+            <div className="flex items-center gap-2 text-xs text-goblin-green">
+              <TrendingUp className="w-4 h-4" />
+              {recentCount} buys/hour
+            </div>
           )}
         </div>
 
-        {purchases.length > 0 && (
-          <div className="text-center text-xs text-muted-foreground pt-2 border-t border-goblin-gold/20">
-            🎉 The goblin horde grows stronger!
+        {/* Coming Soon State */}
+        {hasNoPurchases ? (
+          <div className="text-center py-8 space-y-3">
+            <div className="text-4xl">🛒</div>
+            <div className="space-y-1">
+              <p className="text-sm font-medium text-foreground">Purchase Tracking Coming Soon</p>
+              <p className="text-xs text-muted-foreground">
+                Live purchase feed will show real-time TRN buys once tracking is enabled.
+              </p>
+            </div>
           </div>
+        ) : (
+          <>
+            {/* Stats Bar */}
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="bg-terrain-shadow/50 p-2 rounded">
+                <div className="text-muted-foreground">Total Purchases</div>
+                <div className="font-bold text-foreground">{purchases.length}</div>
+              </div>
+              <div className="bg-terrain-shadow/50 p-2 rounded">
+                <div className="text-muted-foreground">Recent Activity</div>
+                <div className="font-bold text-goblin-green flex items-center gap-1">
+                  <TrendingUp className="w-3 h-3" />
+                  {recentCount > 0 ? "Active" : "Quiet"}
+                </div>
+              </div>
+            </div>
+
+            {/* Purchase List */}
+            <div className="space-y-2 max-h-[400px] overflow-y-auto">
+              {purchases.map((purchase) => {
+                const tier =
+                  TIER_CONFIG[purchase.purchase_tier as keyof typeof TIER_CONFIG];
+                return (
+                  <div
+                    key={purchase.id}
+                    className="bg-terrain-shadow/30 p-3 rounded-lg border border-goblin-gold/20 hover:border-goblin-gold/40 transition-colors"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl">{tier?.emoji || "🎯"}</span>
+                        <div>
+                          <div className="font-mono text-xs text-muted-foreground">
+                            {formatWallet(purchase.wallet_address)}
+                          </div>
+                          <div className={`text-sm font-bold ${tier?.color}`}>
+                            became a {tier?.name || "Buyer"}!
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm font-bold text-goblin-green">
+                          +{(purchase.amount_trn / 1000000).toFixed(2)}M TRN
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {formatDistanceToNow(new Date(purchase.created_at), {
+                            addSuffix: true,
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="text-center text-xs text-muted-foreground pt-2 border-t border-goblin-gold/20">
+              🎉 The goblin horde grows stronger!
+            </div>
+          </>
         )}
       </div>
     </Card>

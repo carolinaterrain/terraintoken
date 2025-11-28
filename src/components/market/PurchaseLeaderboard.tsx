@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
-import { Trophy, Crown, Award, Zap } from "lucide-react";
+import { Trophy, Crown, Award, Zap, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface LeaderboardEntry {
@@ -52,6 +52,8 @@ export const PurchaseLeaderboard = () => {
     }
   };
 
+  const hasNoLeaders = leaders.length === 0;
+
   return (
     <Card className="p-6 bg-gradient-to-br from-terrain-dark via-terrain-shadow to-terrain-deep border-2 border-goblin-gold/60">
       <div className="space-y-4">
@@ -60,10 +62,17 @@ export const PurchaseLeaderboard = () => {
             <Trophy className="w-6 h-6" />
             Goblin Leaderboard
           </h3>
-          <Badge variant="outline" className="bg-goblin-green/20 text-goblin-green border-goblin-green">
-            <Zap className="w-3 h-3 mr-1" />
-            Top Buyers
-          </Badge>
+          {hasNoLeaders && !loading ? (
+            <Badge variant="outline" className="bg-muted/20 text-muted-foreground border-muted-foreground/30">
+              <Clock className="w-3 h-3 mr-1" />
+              Coming Soon
+            </Badge>
+          ) : (
+            <Badge variant="outline" className="bg-goblin-green/20 text-goblin-green border-goblin-green">
+              <Zap className="w-3 h-3 mr-1" />
+              Top Buyers
+            </Badge>
+          )}
         </div>
 
         <div className="space-y-2">
@@ -71,9 +80,15 @@ export const PurchaseLeaderboard = () => {
             <div className="text-center py-8 text-muted-foreground">
               Loading leaderboard...
             </div>
-          ) : leaders.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              No purchases yet. Be the first goblin on the leaderboard!
+          ) : hasNoLeaders ? (
+            <div className="text-center py-8 space-y-3">
+              <div className="text-4xl">🏆</div>
+              <div className="space-y-1">
+                <p className="text-sm font-medium text-foreground">Leaderboard Coming Soon</p>
+                <p className="text-xs text-muted-foreground">
+                  Top TRN buyers will be featured here once purchase tracking is enabled.
+                </p>
+              </div>
             </div>
           ) : (
             leaders.map((leader, index) => (
