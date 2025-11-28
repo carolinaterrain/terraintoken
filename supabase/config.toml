@@ -59,3 +59,6 @@ verify_jwt = false
 
 [functions.get-live-stats]
 verify_jwt = false
+
+[functions.fetch-ecosystem-stats]
+verify_jwt = false

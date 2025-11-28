@@ -47,6 +47,7 @@ const Subscriptions = lazy(() => import("./pages/Subscriptions"));
 const ServiceRedemption = lazy(() => import("./pages/ServiceRedemption"));
 const Marketplace = lazy(() => import("./pages/Marketplace"));
 const Staking = lazy(() => import("./pages/Staking"));
+const TRNEcosystem = lazy(() => import("./pages/TRNEcosystem"));
 
 // Lazy load components
 const AdminRoute = lazy(() => import("./components/AdminRoute").then(m => ({ default: m.AdminRoute })));
@@ -115,6 +116,7 @@ const AppContent = () => {
             <Route path="/redeem-services" element={<ServiceRedemption />} />
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/staking" element={<Staking />} />
+            <Route path="/trn-ecosystem" element={<TRNEcosystem />} />
             <Route path="/funnel-analytics" element={<AdminRoute><FunnelAnalytics /></AdminRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
