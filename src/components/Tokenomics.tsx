@@ -51,14 +51,14 @@ const Tokenomics = () => {
       <div className="container mx-auto relative">
         <div className="text-center mb-12">
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
-            <span className="text-primary">Tokenomics</span>
+            <span className="text-primary">Sustainable Tokenomics</span>
           </h2>
           <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto mb-2">
-            Simple, transparent, and community-first token design
+            Fixed supply, no inflation, real utility backing
           </p>
-          <p className="font-body text-sm text-primary italic max-w-2xl mx-auto mb-3">
-            Unlike other meme coins, a portion of ecosystem growth funds REAL terrain projects through Carolina Terrain. 
-            Your memes literally pay for French drains. This is the future. 💚
+          <p className="font-body text-sm text-muted-foreground italic max-w-2xl mx-auto mb-3">
+            TRN is designed for platform sustainability—micro-burn on usage, rewards from real contribution, not minting. 
+            No yield promises. No emissions from dev wallet. 💚
           </p>
           <div className="flex justify-center mt-4">
             <Button

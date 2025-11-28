@@ -13,7 +13,7 @@ import { Calendar, User, Clock, AlertTriangle } from "lucide-react";
 
 const WhyMemeCoinsNeedRealWorldBacking = () => {
   const title = "Why Every Meme Coin Needs Real-World Backing: Lessons from $2B in Failures";
-  const description = "5.3M meme coins launched in 2024—99% failed. Learn why Terrain Token's $2M+ revenue backing, transparent treasury, and real utility make it different. Avoid rug pulls.";
+  const description = "5.3M meme coins launched in 2024—99% failed. Learn why Terrain Token's established revenue backing, transparent treasury, and real utility make it different. Avoid rug pulls.";
   const url = "https://terraintoken.com/blog/why-meme-coins-need-real-world-backing";
   const publishDate = "2025-11-10T10:00:00-05:00";
   const modifiedDate = "2025-11-10T10:00:00-05:00";
@@ -304,13 +304,13 @@ const WhyMemeCoinsNeedRealWorldBacking = () => {
                 <h3 className="font-display text-2xl font-bold mt-8 mb-4">Layer 1: Revenue Foundation</h3>
 
                 <p>
-                  <strong>Carolina Terrain LLC generates $2M+ in annual revenue</strong> from:
+                  <strong>Carolina Terrain LLC has established revenue streams</strong> from:
                 </p>
 
                 <ul className="list-disc pl-6 space-y-2">
-                  <li><strong>Drainage Projects:</strong> French drain installation, grading, erosion control ($1.2-1.5M annually)</li>
-                  <li><strong>LawnShift:</strong> Robotic mowing subscriptions, 350+ acres under management ($300-500K annually)</li>
-                  <li><strong>FlowGuardian:</strong> Smart drainage sensors, 1,200+ installations ($400K+ annually)</li>
+                  <li><strong>Drainage Projects:</strong> French drain installation, grading, erosion control</li>
+                  <li><strong>LawnShift:</strong> Robotic mowing subscriptions, 350+ acres under management</li>
+                  <li><strong>FlowGuardian:</strong> Smart drainage sensors, 1,200+ installations</li>
                 </ul>
 
                 <p>
@@ -394,7 +394,7 @@ const WhyMemeCoinsNeedRealWorldBacking = () => {
                       <tr className="border-b border-primary/10">
                         <td className="p-4 font-semibold">Revenue Source</td>
                         <td className="p-4 text-red-400">❌ None</td>
-                        <td className="p-4 text-primary">✅ $2M+ annual from real business</td>
+                        <td className="p-4 text-primary">✅ Established revenue from real business</td>
                       </tr>
                       <tr className="border-b border-primary/10">
                         <td className="p-4 font-semibold">Liquidity</td>
@@ -477,9 +477,9 @@ const WhyMemeCoinsNeedRealWorldBacking = () => {
                   </div>
 
                   <div>
-                    <h3 className="font-display text-xl font-bold mb-2">Where's the proof of $2M revenue?</h3>
+                    <h3 className="font-display text-xl font-bold mb-2">Where's the proof of revenue?</h3>
                     <p>
-                      Monthly transparency reports break down revenue sources. You can also cross-reference with the number of completed projects shown on Carolina Terrain's portfolio (80-120 projects annually at $3,500-15,000 each = $1.2M+ just from core drainage work).
+                      Monthly transparency reports break down revenue sources. You can also cross-reference with the number of completed projects shown on Carolina Terrain's portfolio. All financial claims are verified through our monthly transparency reports.
                     </p>
                   </div>
 

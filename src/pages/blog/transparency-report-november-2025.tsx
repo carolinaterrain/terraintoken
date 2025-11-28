@@ -13,7 +13,7 @@ import { Calendar, User, Clock, TrendingUp, Users, DollarSign } from "lucide-rea
 
 const TransparencyReportNovember2025 = () => {
   const title = "TRN Transparency Report – November 2025: Complete Financial Breakdown & Metrics";
-  const description = "Full transparency: 2,100 holders, $180K revenue, 620K USDC treasury. See exactly where every TRN token is and how Carolina Terrain's $2M+ business backs the token. No secrets.";
+  const description = "Full transparency: 2,100 holders, $180K revenue, 620K USDC treasury. See exactly where every TRN token is and how Carolina Terrain's established business backs the token. No secrets.";
   const url = "https://terraintoken.com/blog/transparency-report-november-2025";
   const publishDate = "2025-11-01T09:00:00-05:00";
   const modifiedDate = "2025-11-01T09:00:00-05:00";
@@ -47,7 +47,7 @@ const TransparencyReportNovember2025 = () => {
     {
       slug: "why-meme-coins-need-real-world-backing",
       title: "Why Every Meme Coin Needs Real-World Backing",
-      excerpt: "The BEER collapse and why TRN's $2M+ revenue backing makes it different from 99% of meme coins.",
+      excerpt: "The BEER collapse and why TRN's established revenue backing makes it different from 99% of meme coins.",
       category: "Analysis",
       date: "November 10, 2025",
       author: "TRN Team",

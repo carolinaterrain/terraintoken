@@ -14,6 +14,8 @@ const OrganicDiscoveryCounter = lazy(() => import("@/components/OrganicDiscovery
 const AntiRugMeter = lazy(() => import("@/components/AntiRugMeter").then(m => ({ default: m.AntiRugMeter })));
 const About = lazy(() => import("@/components/About"));
 const Tokenomics = lazy(() => import("@/components/Tokenomics"));
+const PublicGoods = lazy(() => import("@/components/PublicGoods"));
+const BuiltToLast = lazy(() => import("@/components/BuiltToLast"));
 const Roadmap = lazy(() => import("@/components/Roadmap"));
 const CompetitiveEdge = lazy(() => import("@/components/CompetitiveEdge"));
 const EcosystemFlow = lazy(() => import("@/components/EcosystemFlow"));
@@ -115,6 +117,8 @@ export const ResearchModeContent = () => {
         <TabsContent value="token-details" className="mt-0 animate-in fade-in-50 duration-300">
           <Suspense fallback={<LoadingSection />}><About /></Suspense>
           <Suspense fallback={<LoadingSection />}><Tokenomics /></Suspense>
+          <Suspense fallback={<LoadingSection />}><PublicGoods /></Suspense>
+          <Suspense fallback={<LoadingSection />}><BuiltToLast /></Suspense>
           <Suspense fallback={<LoadingSection />}><Roadmap /></Suspense>
           <Suspense fallback={<LoadingSection />}><CompetitiveEdge /></Suspense>
           <Suspense fallback={<LoadingSection />}><EcosystemFlow /></Suspense>

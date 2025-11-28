@@ -123,8 +123,13 @@ const Footer = () => {
 
         {/* Bottom: Disclaimer */}
         <div className="mt-4 pt-4 border-t border-border/30 text-center">
-          <p className="text-xs text-muted-foreground">
-            Not financial advice. DYOR. Meme responsibly. 🌱
+          <p className="text-xs text-muted-foreground max-w-3xl mx-auto mb-3">
+            TRN is a utility token that powers platform access and sustainability within the Terrain ecosystem. 
+            TRN is not an investment, does not represent equity or ownership, and makes no promises of profit, appreciation, or yield. 
+            Cryptocurrency involves significant risk. DYOR.
+          </p>
+          <p className="text-xs text-muted-foreground mb-3">
+            Not financial advice. 🌱
           </p>
           <div className="flex items-center justify-center flex-wrap gap-x-6 gap-y-3 mt-3">
             <a 

@@ -195,18 +195,18 @@ const Hero = memo(({ mode = 'research' }: HeroProps) => {
 
           {/* Subheading - Different per mode */}
           <p className="font-display text-lg md:text-xl lg:text-2xl text-muted-foreground -mt-3">
-            {isApeMode ? "🚀 Real Business. Real Rewards. No BS." : "Born From The Ground Down"}
+            {isApeMode ? "🚀 Real Utility. Real Contribution. No BS." : "Powering Real-World Terrain Intelligence"}
           </p>
 
           {/* Subtitle Tagline - More aggressive in Ape Mode */}
           <p className="font-body text-base md:text-lg text-muted-foreground max-w-lg">
             {isApeMode ? (
               <>
-                <span className="text-primary font-bold text-xl">Stop gambling.</span> Upload photos, train AI, <span className="text-primary font-bold">earn TRN tokens instantly.</span> Live NOW.
+                <span className="text-primary font-bold text-xl">Contribute real value.</span> Upload photos, train AI, <span className="text-primary font-bold">access platform rewards.</span> Live NOW.
               </>
             ) : (
               <>
-                The only meme coin where you <span className="text-primary font-semibold">EARN by contributing</span>—not just by holding. <span className="text-primary font-semibold">TerrainVision AI is LIVE.</span>
+                TRN powers platform access and sustainability. <span className="text-primary font-semibold">Contribute terrain data</span>, access AI analysis, and participate in governance. <span className="text-primary font-semibold">TerrainVision AI is LIVE.</span>
               </>
             )}
           </p>

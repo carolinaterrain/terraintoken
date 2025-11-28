@@ -14,8 +14,8 @@ export const QuickStartGuide = () => {
       color: "text-yellow-500",
       bgColor: "bg-yellow-500/10",
       borderColor: "border-yellow-500/20",
-      description: "A meme token with a twist",
-      details: "TRN is a community-driven meme coin that's backed by Carolina Terrain, a real drainage business generating $2M+ annual revenue. It combines crypto fun with authentic real-world operations."
+      description: "A utility token with real backing",
+      details: "TRN powers platform access and sustainability within the Terrain Token ecosystem. Backed by Carolina Terrain, a licensed drainage contractor with established revenue streams."
     },
     {
       icon: Shield,
@@ -24,7 +24,7 @@ export const QuickStartGuide = () => {
       bgColor: "bg-blue-500/10",
       borderColor: "border-blue-500/20",
       description: "Transparency over promises",
-      details: "Unlike most meme coins backed by nothing, TRN shows complete financial transparency: real equipment ($390k fleet), real revenue ($2M+), and real operations. We prove it's not a rug pull with verified on-chain data and QuickBooks records."
+      details: "Unlike most meme coins backed by nothing, TRN shows complete financial transparency: real equipment, established business operations, and verified on-chain data. No speculation required."
     },
     {
       icon: Zap,
