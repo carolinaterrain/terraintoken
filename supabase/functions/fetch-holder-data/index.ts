@@ -148,17 +148,23 @@ serve(async (req) => {
       else tiers.humpback++;
     });
 
-    // Calculate top 10 percentage
+    // Calculate total supply and top 10 percentage
     const totalSupply = holders.reduce((sum, h) => sum + h.balance, 0);
     const sortedHolders = [...holders].sort((a, b) => b.balance - a.balance);
     const top10Sum = sortedHolders.slice(0, 10).reduce((sum, h) => sum + h.balance, 0);
     const top10Percentage = totalSupply > 0 ? (top10Sum / totalSupply) * 100 : 0;
 
+    // Add percentage to each holder
+    const holdersWithPercentage = sortedHolders.slice(0, 50).map((h) => ({
+      ...h,
+      percentage: totalSupply > 0 ? parseFloat(((h.balance / totalSupply) * 100).toFixed(2)) : 0,
+    }));
+
     const responseData = {
       totalHolders: holders.length,
       tiers,
       top10Percentage,
-      holders: sortedHolders.slice(0, 50), // Return top 50 for display
+      holders: holdersWithPercentage, // Return top 50 with percentages
     };
 
     // Cache the result
