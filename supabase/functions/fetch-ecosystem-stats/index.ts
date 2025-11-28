@@ -98,6 +98,21 @@ serve(async (req) => {
 
   try {
     const url = new URL(req.url);
+    
+    // Health check endpoint
+    if (url.searchParams.get('health') === 'true') {
+      return new Response(
+        JSON.stringify({
+          status: 'healthy',
+          service: 'fetch-ecosystem-stats',
+          target: 'carolina_terrain',
+          endpoint: CT_SYNC_URL,
+          timestamp: new Date().toISOString(),
+        }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
     const mode = url.searchParams.get('mode') || 'full';
     
     // Validate mode
