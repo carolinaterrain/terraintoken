@@ -1,51 +1,20 @@
 import { Home, Video, Briefcase, Gift, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useUIModeStore } from "@/stores/uiModeStore";
 
 const MobileNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { mode } = useUIModeStore();
   
-  // Hide in Ape Mode on home page (ApeLiveFooter shows instead)
-  if (mode === 'ape' && location.pathname === '/') {
-    return null;
-  }
-  
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   const handleHomeClick = () => {
     if (window.location.pathname !== "/") {
-      // Navigate to home page if not already there
       navigate("/");
     } else {
-      // Scroll to top if already on home page
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "Terrain Token (TRN)",
-          text: "Born from the ground down 🌱⛏️ Join the meme contest!",
-          url: window.location.href,
-        });
-      } catch (error) {
-        console.log("Share cancelled");
-      }
-    }
-  };
-
   const handleNavClick = (action: () => void) => {
-    // Haptic feedback on mobile
     if ('vibrate' in navigator) {
       navigator.vibrate(10);
     }
