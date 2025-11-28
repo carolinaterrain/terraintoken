@@ -1,5 +1,6 @@
 import { GlassCard } from "@/components/ui/glass-card";
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import DesktopNav from "@/components/DesktopNav";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
@@ -191,7 +192,7 @@ const Team = () => {
             <h3 className="font-display text-2xl font-bold mb-4">Want to Learn More?</h3>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
-                <a href="/whitepaper">Read Our Whitepaper</a>
+                <Link to="/whitepaper">Read Our Whitepaper</Link>
               </Button>
               <Button size="lg" variant="outline" className="border-primary" asChild>
                 <a href="https://carolinaterrain.com" target="_blank" rel="noopener noreferrer">

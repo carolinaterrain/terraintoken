@@ -1,4 +1,5 @@
 import { MessageCircle, Users, Twitter, Shield, TrendingUp, ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom";
 import { GlassCard } from "@/components/ui/glass-card";
 import { useTokenSupply, formatSupply } from "@/hooks/useTokenSupply";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -132,42 +133,42 @@ const Footer = () => {
             Not financial advice. 🌱
           </p>
           <div className="flex items-center justify-center flex-wrap gap-x-6 gap-y-3 mt-3">
-            <a 
-              href="/risk-disclosure" 
+            <Link 
+              to="/risk-disclosure" 
               className="text-xs text-yellow-400 hover:underline font-medium"
             >
               ⚠️ Risk Disclosure
-            </a>
-            <a 
-              href="/whitepaper" 
+            </Link>
+            <Link 
+              to="/whitepaper" 
               className="text-xs text-primary hover:underline font-medium"
             >
               Whitepaper
-            </a>
-            <a 
-              href="/team" 
+            </Link>
+            <Link 
+              to="/team" 
               className="text-xs text-primary hover:underline font-medium"
             >
               Team
-            </a>
-            <a 
-              href="/transparency" 
+            </Link>
+            <Link 
+              to="/transparency" 
               className="text-xs text-primary hover:underline font-medium"
             >
               Transparency
-            </a>
-            <a 
-              href="/press" 
+            </Link>
+            <Link 
+              to="/press" 
               className="text-xs text-primary hover:underline font-medium"
             >
               Press Kit
-            </a>
-            <a 
-              href="/token-metadata" 
+            </Link>
+            <Link 
+              to="/token-metadata" 
               className="text-xs text-primary hover:underline font-medium"
             >
               Token Metadata
-            </a>
+            </Link>
             <a 
               href="https://solscan.io/token/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump" 
               target="_blank"
