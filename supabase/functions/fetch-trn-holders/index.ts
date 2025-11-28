@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { TRN_MINT_ADDRESS } from "../_shared/constants.ts";
 
 const corsHeaders = {
@@ -13,25 +14,33 @@ serve(async (req) => {
 
   try {
     const HELIUS_API_KEY = Deno.env.get('HELIUS_API_KEY');
+    const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
+    const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+
+    const supabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!);
 
     if (!HELIUS_API_KEY) {
-      console.warn('HELIUS_API_KEY not configured, using fallback');
+      console.warn('HELIUS_API_KEY not configured, using cached fallback');
+      const { data: cached } = await supabase
+        .from('holder_count_cache')
+        .select('holder_count, last_updated')
+        .eq('id', 'current')
+        .single();
+
       return new Response(
         JSON.stringify({
-          holderCount: 1137,
-          lastUpdated: new Date().toISOString(),
-          source: 'fallback',
+          holderCount: cached?.holder_count || 0,
+          lastUpdated: cached?.last_updated || new Date().toISOString(),
+          source: 'cache',
           error: 'API key not configured',
         }),
-        {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        }
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    console.log('Fetching holder count for TRN token using Helius RPC...');
+    console.log('Fetching holder count using Helius DAS getTokenAccounts API...');
 
-    // Use Helius RPC method getTokenLargestAccounts instead of REST endpoint
+    // Use Helius DAS API getTokenAccounts - returns total count and token accounts
     const response = await fetch(
       `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`,
       {
@@ -39,50 +48,78 @@ serve(async (req) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           jsonrpc: '2.0',
-          id: 'holder-count',
-          method: 'getTokenLargestAccounts',
-          params: [TRN_MINT_ADDRESS],
+          id: 'get-holder-count',
+          method: 'getTokenAccounts',
+          params: {
+            mint: TRN_MINT_ADDRESS,
+            limit: 1, // We only need the total count
+            options: {
+              showZeroBalance: false,
+            },
+          },
         }),
       }
     );
 
     if (!response.ok) {
-      console.error('Helius RPC error:', response.status, await response.text());
-      throw new Error(`Helius RPC error: ${response.status}`);
+      const errorText = await response.text();
+      console.error(`Helius DAS API error: ${response.status}`, errorText);
+      
+      // On rate limit (429), return cached data
+      if (response.status === 429) {
+        console.log('Rate limited, returning cached holder count...');
+        const { data: cached } = await supabase
+          .from('holder_count_cache')
+          .select('holder_count, last_updated')
+          .eq('id', 'current')
+          .single();
+
+        return new Response(
+          JSON.stringify({
+            holderCount: cached?.holder_count || 0,
+            lastUpdated: cached?.last_updated || new Date().toISOString(),
+            source: 'cache',
+          }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+      
+      throw new Error(`Helius DAS API error: ${response.status}`);
     }
 
     const data = await response.json();
     
     if (data.error) {
       console.error('Helius RPC error:', data.error);
-      throw new Error(`Helius RPC error: ${data.error.message}`);
+      throw new Error(`Helius RPC error: ${data.error.message || JSON.stringify(data.error)}`);
     }
 
-    if (!data.result || !data.result.value) {
-      console.error('Invalid response format:', data);
-      throw new Error('Invalid response format from Helius RPC');
-    }
+    // DAS getTokenAccounts returns: { result: { total: number, limit: number, cursor: string, token_accounts: [...] } }
+    const holderCount = data.result?.total || 0;
+    
+    console.log(`Successfully fetched holder count: ${holderCount} holders`);
 
-    // Count accounts with non-zero balances
-    const activeHolders = data.result.value.filter((holder: any) => {
-      const balance = holder.amount || holder.uiAmount || 0;
-      return balance > 0;
-    });
-
-    const holderCount = activeHolders.length;
-    console.log(`Successfully fetched ${holderCount} active holders from Helius RPC`);
+    // Update cache with new holder count
+    await supabase
+      .from('holder_count_cache')
+      .upsert({
+        id: 'current',
+        holder_count: holderCount,
+        last_updated: new Date().toISOString(),
+        source: 'helius-das',
+      });
 
     return new Response(
       JSON.stringify({
         holderCount,
         lastUpdated: new Date().toISOString(),
-        source: 'helius',
+        source: 'helius-das',
       }),
       {
         headers: { 
           ...corsHeaders, 
           'Content-Type': 'application/json',
-          'Cache-Control': 'public, max-age=120, s-maxage=120', // 2 min cache
+          'Cache-Control': 'public, max-age=120, s-maxage=120',
         },
       }
     );
@@ -90,12 +127,42 @@ serve(async (req) => {
     console.error('Error fetching holder count:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     
-    // Return fallback data with 200 status so frontend doesn't break
+    // Try to return cached data on any error
+    try {
+      const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
+      const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+      const supabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!);
+      
+      const { data: cached } = await supabase
+        .from('holder_count_cache')
+        .select('holder_count, last_updated')
+        .eq('id', 'current')
+        .single();
+
+      if (cached && cached.holder_count > 0) {
+        return new Response(
+          JSON.stringify({
+            holderCount: cached.holder_count,
+            lastUpdated: cached.last_updated,
+            source: 'cache',
+            error: errorMessage,
+          }),
+          {
+            status: 200,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          }
+        );
+      }
+    } catch (cacheError) {
+      console.error('Cache fetch also failed:', cacheError);
+    }
+    
+    // Return 0 as last resort (no fake data)
     return new Response(
       JSON.stringify({
-        holderCount: 1137,
+        holderCount: 0,
         lastUpdated: new Date().toISOString(),
-        source: 'fallback',
+        source: 'error',
         error: errorMessage,
       }),
       {
