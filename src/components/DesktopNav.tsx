@@ -98,12 +98,12 @@ const DesktopNav = () => {
               asChild
             >
               <a
-                href="https://pump.fun/coin/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
+                href="https://raydium.io/swap/?inputMint=sol&outputMint=2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Mint TRN tokens on Pump.fun"
+                aria-label="Buy TRN tokens on Raydium"
               >
-                Mint TRN
+                Buy TRN
               </a>
             </Button>
             <Button variant="outline" size="icon" asChild>

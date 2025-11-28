@@ -58,7 +58,7 @@ const faqs = [
   },
   {
     question: "How do I buy TRN?",
-    answer: "TRN is available on pump.fun and other decentralized exchanges. Check our official social channels for the latest trading information and contract address."
+    answer: "TRN graduated from pump.fun and is now available on Raydium and Jupiter aggregator. Simply connect your Solana wallet, swap SOL for TRN, and you're in! Check our official social channels for the latest trading information and contract address."
   },
   {
     question: "When will TerrainScape launch?",

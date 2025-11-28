@@ -5,7 +5,7 @@ import { useState } from "react";
 
 const HowToBuy = () => {
   const [showQR, setShowQR] = useState(false);
-  const pumpFunUrl = "https://pump.fun/coin/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+  const raydiumUrl = "https://raydium.io/swap/?inputMint=sol&outputMint=2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
   
   const steps = [
     {
@@ -22,8 +22,8 @@ const HowToBuy = () => {
     },
     {
       icon: Rocket,
-      title: "Go to Pump.fun",
-      description: "Visit our token page",
+      title: "Swap on Raydium",
+      description: "Trade on Solana's leading DEX",
       goblinText: "🚀",
       isAction: true
     },
@@ -89,7 +89,7 @@ const HowToBuy = () => {
                     className="w-full group-hover:scale-105 transition-transform"
                     asChild
                   >
-                    <a href={pumpFunUrl} target="_blank" rel="noopener noreferrer">
+                    <a href={raydiumUrl} target="_blank" rel="noopener noreferrer">
                       Buy TRN Now <ExternalLink className="ml-2 w-4 h-4" />
                     </a>
                   </Button>
@@ -114,12 +114,12 @@ const HowToBuy = () => {
           {showQR && (
             <div className="mt-6 inline-block p-6 bg-card border border-border rounded-xl animate-fade-in">
               <p className="text-sm text-muted-foreground mb-4">
-                Scan with your mobile wallet to visit pump.fun
+                Scan with your mobile wallet to trade on Raydium
               </p>
               <div className="bg-white p-4 rounded-lg inline-block">
                 <img 
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(pumpFunUrl)}`}
-                  alt="QR Code for TRN on Pump.fun"
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(raydiumUrl)}`}
+                  alt="QR Code for TRN on Raydium"
                   className="w-48 h-48"
                 />
               </div>

@@ -233,7 +233,7 @@ const Hero = memo(() => {
               asChild
             >
               <a
-                href="https://pump.fun/coin/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
+                href="https://raydium.io/swap/?inputMint=sol&outputMint=2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
                 target="_blank"
                 rel="noopener noreferrer"
               >
