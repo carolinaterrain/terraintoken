@@ -130,7 +130,7 @@ const RealUtility = () => {
             <Button
               onClick={() =>
                 window.open(
-                  "https://pump.fun/coin/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump",
+                  "https://raydium.io/swap/?inputMint=sol&outputMint=2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump",
                   "_blank"
                 )
               }

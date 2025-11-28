@@ -61,7 +61,7 @@ export const GoblinStatsBar = ({
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-2">
           <a
-            href="https://pump.fun/coin/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
+            href="https://raydium.io/swap/?inputMint=sol&outputMint=2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
             target="_blank"
             rel="noreferrer"
             className="px-4 py-2.5 text-sm font-semibold rounded-xl bg-goblin-green hover:bg-goblin-green/80 text-terrain-dark shadow-lg shadow-goblin-green/40 transition-all hover:scale-105 flex items-center justify-center gap-2 whitespace-nowrap"
