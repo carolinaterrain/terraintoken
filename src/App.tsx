@@ -42,12 +42,6 @@ const RiskDisclosure = lazy(() => import("./pages/RiskDisclosure"));
 const ReferralDashboard = lazy(() => import("./pages/ReferralDashboard"));
 const UnifiedAdminDashboard = lazy(() => import("./pages/UnifiedAdminDashboard"));
 const Investors = lazy(() => import("./pages/Investors"));
-const GoblinShop = lazy(() => import("./pages/GoblinShop"));
-const Subscriptions = lazy(() => import("./pages/Subscriptions"));
-const ServiceRedemption = lazy(() => import("./pages/ServiceRedemption"));
-const Marketplace = lazy(() => import("./pages/Marketplace"));
-const Staking = lazy(() => import("./pages/Staking"));
-const TRNEcosystem = lazy(() => import("./pages/TRNEcosystem"));
 
 // Lazy load components
 const AdminRoute = lazy(() => import("./components/AdminRoute").then(m => ({ default: m.AdminRoute })));
@@ -111,12 +105,6 @@ const AppContent = () => {
             <Route path="/transparency" element={<TransparencyHub />} />
             <Route path="/risk-disclosure" element={<RiskDisclosure />} />
             <Route path="/investors" element={<Investors />} />
-            <Route path="/shop" element={<GoblinShop />} />
-            <Route path="/subscriptions" element={<Subscriptions />} />
-            <Route path="/redeem-services" element={<ServiceRedemption />} />
-            <Route path="/marketplace" element={<Marketplace />} />
-            <Route path="/staking" element={<Staking />} />
-            <Route path="/trn-ecosystem" element={<TRNEcosystem />} />
             <Route path="/funnel-analytics" element={<AdminRoute><FunnelAnalytics /></AdminRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>

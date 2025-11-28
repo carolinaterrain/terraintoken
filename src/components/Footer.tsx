@@ -139,46 +139,22 @@ const Footer = () => {
               ⚠️ Risk Disclosure
             </a>
             <a 
-              href="/earn-trn" 
-              className="text-xs text-primary hover:underline font-medium"
-            >
-              Earn TRN Dashboard
-            </a>
-            <a 
-              href="/redeem-trn" 
-              className="text-xs text-primary hover:underline font-medium"
-            >
-              💎 Redeem TRN
-            </a>
-            <a 
-              href="/claim-reward" 
-              className="text-xs text-primary hover:underline font-medium"
-            >
-              🎁 Claim Invoice Reward
-            </a>
-            <a 
-              href="/upload-project" 
-              className="text-xs text-primary hover:underline font-medium"
-            >
-              Upload & Earn
-            </a>
-            <a 
               href="/whitepaper" 
               className="text-xs text-primary hover:underline font-medium"
             >
               Whitepaper
             </a>
             <a 
-              href="/updates" 
-              className="text-xs text-primary hover:underline font-medium"
-            >
-              Blog & Updates
-            </a>
-            <a 
               href="/team" 
               className="text-xs text-primary hover:underline font-medium"
             >
-              Meet the Team
+              Team
+            </a>
+            <a 
+              href="/transparency" 
+              className="text-xs text-primary hover:underline font-medium"
+            >
+              Transparency
             </a>
             <a 
               href="/press" 
