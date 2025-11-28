@@ -1,7 +1,7 @@
 // Helius API integration for Supabase Edge Functions
 // This file is meant to be imported only in edge functions where Deno is available
 
-const TRN_MINT_ADDRESS = "GwXzGeZFF4jK1PqzVd17MHioY7pqSET7r6UY7RS1pump";
+const TRN_MINT_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 
 export interface HolderData {
   address: string;
