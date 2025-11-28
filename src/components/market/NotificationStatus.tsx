@@ -13,14 +13,14 @@ export const useNotificationService = () => {
       }
     }, 120000); // 2 minutes
 
-    // Check whale purchases every 30 seconds
+    // Check whale purchases every 10 minutes (rate limit is 10/hour)
     const whaleInterval = setInterval(async () => {
       try {
         await supabase.functions.invoke("check-whale-purchases");
       } catch (error) {
         console.error("Error checking whale purchases:", error);
       }
-    }, 30000); // 30 seconds
+    }, 600000); // 10 minutes
 
     return () => {
       clearInterval(priceAlertInterval);
