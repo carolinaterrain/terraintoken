@@ -5,15 +5,21 @@ import ScrollProgress from "@/components/ScrollProgress";
 import BackToHome from "@/components/BackToHome";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "react-router-dom";
 import { TrendingUp, Users, DollarSign, Calendar, Download, ExternalLink } from "lucide-react";
+import { useLiveHolderCount } from "@/hooks/useLiveHolderCount";
 
 const TransparencyHub = () => {
+  const { data: holderData, isLoading: holderLoading } = useLiveHolderCount();
+  
+  // Use live holder count, fallback to 0 if not available
+  const currentHolders = holderData?.holderCount || 0;
+
   const reports = [
     {
       month: "November 2025",
       slug: "transparency-report-november-2025",
-      holders: 2100,
       revenue: 180000,
       treasury: 620000,
       date: "2025-11-01"
@@ -64,9 +70,13 @@ const TransparencyHub = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <GlassCard className="p-8 text-center">
                 <Users className="w-12 h-12 text-primary mx-auto mb-4" />
-                <div className="text-4xl font-bold text-primary mb-2">{latestReport.holders.toLocaleString()}</div>
+                {holderLoading ? (
+                  <Skeleton className="h-10 w-24 mx-auto mb-2" />
+                ) : (
+                  <div className="text-4xl font-bold text-primary mb-2">{currentHolders.toLocaleString()}</div>
+                )}
                 <div className="text-sm text-muted-foreground">Total Holders</div>
-                <div className="text-xs text-green-400 mt-2">Latest: {latestReport.month}</div>
+                <div className="text-xs text-green-400 mt-2">Live from blockchain</div>
               </GlassCard>
 
               <GlassCard className="p-8 text-center">
@@ -139,7 +149,11 @@ const TransparencyHub = () => {
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                         <div>
                           <div className="text-sm text-muted-foreground">Holders</div>
-                          <div className="text-xl font-bold text-primary">{report.holders.toLocaleString()}</div>
+                          {holderLoading ? (
+                            <Skeleton className="h-7 w-20" />
+                          ) : (
+                            <div className="text-xl font-bold text-primary">{currentHolders.toLocaleString()}</div>
+                          )}
                         </div>
                         <div>
                           <div className="text-sm text-muted-foreground">Revenue</div>

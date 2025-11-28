@@ -3,6 +3,7 @@ import { ArrowRight, Copy, FileText, TrendingUp, TrendingDown } from "lucide-rea
 import { useState, useEffect, memo } from "react";
 import { useToast } from "@/hooks/use-toast";
 import confetti from "canvas-confetti";
+import { Link } from "react-router-dom";
 import ContractVerificationBadge from "./ContractVerificationBadge";
 import terrainMascot from "@/assets/terrain-mascot.png";
 import trnCoin from "@/assets/trn-coin.png";
@@ -220,10 +221,10 @@ const Hero = memo(() => {
               className="font-display font-semibold w-full md:w-64"
               asChild
             >
-              <a href="/earn-trn">
+              <Link to="/earn-trn">
                 <span className="mr-2">🌱</span>
                 Start Earning TRN
-              </a>
+              </Link>
             </Button>
             <Button
               variant="outline"
@@ -247,10 +248,10 @@ const Hero = memo(() => {
               className="font-display font-semibold w-full md:w-64"
               asChild
             >
-              <a href="/whitepaper">
+              <Link to="/whitepaper">
                 <FileText className="mr-2 h-5 w-5" />
                 Whitepaper
-              </a>
+              </Link>
             </Button>
           </div>
 
@@ -268,9 +269,9 @@ const Hero = memo(() => {
                 variant="default"
                 size="lg"
                 className="font-semibold w-full"
-                asChild
+                onClick={() => document.getElementById('community')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                <a href="#community">🌱 Secure Beta Access</a>
+                🌱 Secure Beta Access
               </Button>
             </div>
           </div>

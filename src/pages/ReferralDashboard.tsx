@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Copy, Share2, Trophy, Mail, DollarSign, Gift } from "lucide-react";
+import { Copy, Share2, Trophy, Mail, DollarSign, Gift, AlertCircle } from "lucide-react";
 import BackToHome from "@/components/BackToHome";
 
 interface ReferralStats {
@@ -29,6 +30,7 @@ export default function ReferralDashboard() {
   const [emailInput, setEmailInput] = useState("");
   const [isEmailSet, setIsEmailSet] = useState(false);
   const [referralCode, setReferralCode] = useState("");
+  const [notFound, setNotFound] = useState(false);
   const [stats, setStats] = useState<ReferralStats>({
     totalEarned: 0,
     pendingTRN: 0,
@@ -63,6 +65,7 @@ export default function ReferralDashboard() {
     localStorage.setItem("referral_email", emailInput);
     setEmail(emailInput);
     setIsEmailSet(true);
+    setNotFound(false);
     loadUserData(emailInput);
   };
 
@@ -70,6 +73,7 @@ export default function ReferralDashboard() {
     setIsEmailSet(false);
     setEmailInput("");
     setReferralCode("");
+    setNotFound(false);
     setStats({
       totalEarned: 0,
       pendingTRN: 0,
@@ -92,9 +96,11 @@ export default function ReferralDashboard() {
 
       if (data) {
         setReferralCode(data.referral_code);
+        setNotFound(false);
         await loadReferralStats(data.referral_code);
       } else {
-        toast.error("Email not found in waitlist");
+        setNotFound(true);
+        setReferralCode("");
       }
     } catch (error) {
       console.error("Error loading user data:", error);
@@ -138,7 +144,7 @@ export default function ReferralDashboard() {
 
       if (error) throw error;
 
-      if (data) {
+      if (data && data.length > 0) {
         const grouped = data.reduce((acc, r) => {
           acc[r.referrer_code] = (acc[r.referrer_code] || 0) + r.trn_amount;
           return acc;
@@ -223,6 +229,52 @@ export default function ReferralDashboard() {
               </CardContent>
             </Card>
           </div>
+        </div>
+      </>
+    );
+  }
+
+  // Show "not found" state if email isn't in waitlist
+  if (notFound) {
+    return (
+      <>
+        <Helmet>
+          <title>Referral Dashboard - Earn TRN | Terrain Token</title>
+          <meta name="description" content="Refer friends to TRN and earn rewards. Track your earnings and climb the leaderboard." />
+        </Helmet>
+
+        <div className="min-h-screen bg-background">
+          <div className="container mx-auto px-4 py-6">
+            <div className="flex items-center justify-between">
+              <BackToHome />
+              <Button variant="outline" size="sm" onClick={handleChangeEmail}>
+                Try Different Email
+              </Button>
+            </div>
+          </div>
+
+          <main className="container mx-auto px-4 pb-20">
+            <div className="max-w-2xl mx-auto text-center py-20">
+              <AlertCircle className="w-16 h-16 mx-auto mb-6 text-yellow-500" />
+              <h1 className="text-3xl font-bold mb-4">Email Not Found</h1>
+              <p className="text-muted-foreground mb-8">
+                The email <strong>{email}</strong> is not in the TerrainScape waitlist yet.
+              </p>
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  To get your referral code, you need to join the waitlist first.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button asChild size="lg">
+                    <Link to="/#community">Join Waitlist</Link>
+                  </Button>
+                  <Button variant="outline" size="lg" onClick={handleChangeEmail}>
+                    Try Different Email
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </main>
         </div>
       </>
     );
@@ -350,24 +402,32 @@ export default function ReferralDashboard() {
               <Trophy className="w-5 h-5 text-goblin-gold" />
               Top Referrers
             </h3>
-            <div className="space-y-2">
-              {leaderboard.map((entry, idx) => (
-                <div
-                  key={entry.referrer_code}
-                  className={`flex justify-between items-center p-3 rounded-lg ${
-                    entry.referrer_code === referralCode ? "bg-goblin-gold/10 border border-goblin-gold/30" : "bg-muted/20"
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="text-2xl">{idx === 0 ? "🥇" : idx === 1 ? "🥈" : idx === 2 ? "🥉" : `#${idx + 1}`}</div>
-                    <div className="font-mono text-sm">
-                      {entry.referrer_code === referralCode ? "You" : `User #${entry.referrer_code.slice(0, 8)}`}
+            {leaderboard.length === 0 ? (
+              <div className="text-center py-8 text-muted-foreground">
+                <Trophy className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                <p>No referrals yet. Be the first to earn!</p>
+                <p className="text-sm mt-2">Share your link to start climbing the leaderboard.</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {leaderboard.map((entry, idx) => (
+                  <div
+                    key={entry.referrer_code}
+                    className={`flex justify-between items-center p-3 rounded-lg ${
+                      entry.referrer_code === referralCode ? "bg-goblin-gold/10 border border-goblin-gold/30" : "bg-muted/20"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="text-2xl">{idx === 0 ? "🥇" : idx === 1 ? "🥈" : idx === 2 ? "🥉" : `#${idx + 1}`}</div>
+                      <div className="font-mono text-sm">
+                        {entry.referrer_code === referralCode ? "You" : `User #${entry.referrer_code.slice(0, 8)}`}
+                      </div>
                     </div>
+                    <div className="font-bold text-goblin-gold">{entry.total_earned.toLocaleString()} TRN</div>
                   </div>
-                  <div className="font-bold text-goblin-gold">{entry.total_earned.toLocaleString()} TRN</div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
             {userRank && userRank > 10 && (
               <div className="mt-4 p-3 bg-muted/20 rounded-lg text-center">
                 <span className="text-sm text-muted-foreground">Your rank: #{userRank}</span>

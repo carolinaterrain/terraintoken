@@ -46,7 +46,7 @@ export const EcosystemMetrics = () => {
       metrics: [
         { label: "Current Price", value: parseFloat(tokenStats?.priceUsd || "0"), prefix: "$", decimals: 6, color: "text-chart-1" },
         { label: "Market Cap", value: tokenStats?.marketCap || 0, prefix: "$", decimals: 0, color: "text-chart-2" },
-        { label: "Holder Count", value: holderData?.holderCount || 1137, color: "text-chart-3" },
+        { label: "Holder Count", value: holderData?.holderCount || 0, color: "text-chart-3" },
         { label: "24h Volume", value: tokenStats?.volume24h || 0, prefix: "$", decimals: 0, color: "text-chart-4" },
       ]
     },

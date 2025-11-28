@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Check, X, Trophy, Zap, PartyPopper } from "lucide-react";
@@ -340,9 +340,9 @@ const GoblinCave = () => {
           </Tabs>
 
           <div className="text-center mt-12">
-            <a href="/" className="text-primary hover:underline">
+            <Link to="/" className="text-primary hover:underline">
               ← Back to surface
-            </a>
+            </Link>
           </div>
         </div>
       </div>
