@@ -10,16 +10,13 @@ interface Section {
 
 const sections: Section[] = [
   { id: "hero", label: "Overview" },
-  { id: "ecosystem-metrics", label: "Metrics" },
-  { id: "market-landscape", label: "Market" },
-  { id: "revenue-streams", label: "Revenue" },
-  { id: "value-generation", label: "Value" },
+  { id: "why-different", label: "Why Different" },
+  { id: "ecosystem-metrics", label: "Live Metrics" },
+  { id: "value-generation", label: "Value Engine" },
   { id: "investment-tiers", label: "Tiers" },
-  { id: "tokenomics", label: "Roadmap" },
-  { id: "proof-section", label: "Proof" },
-  { id: "use-of-funds", label: "Funds" },
-  { id: "risk-mitigation", label: "Risk" },
-  { id: "investor-form", label: "Apply" },
+  { id: "roadmap", label: "Roadmap" },
+  { id: "proof-section", label: "Trust & Proof" },
+  { id: "investor-cta", label: "Take Action" },
 ];
 
 export const StickyNavigation = () => {

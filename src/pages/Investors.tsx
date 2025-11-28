@@ -1,15 +1,9 @@
 import { InvestorHero } from "@/components/investor/InvestorHero";
 import { EcosystemMetrics } from "@/components/investor/EcosystemMetrics";
-import { RecentDevelopments } from "@/components/investor/RecentDevelopments";
-import { TokenBurnDashboard } from "@/components/investor/TokenBurnDashboard";
-import { MarketLandscape } from "@/components/investor/MarketLandscape";
-import { RevenueStreamsEnhanced } from "@/components/investor/RevenueStreamsEnhanced";
 import { ValueGeneration } from "@/components/investor/ValueGeneration";
 import { InvestmentTiers } from "@/components/investor/InvestmentTiers";
-import { RiskMitigation } from "@/components/investor/RiskMitigation";
-import { InvestorForm } from "@/components/investor/InvestorForm";
 import { ProofSection } from "@/components/investor/ProofSection";
-import { UseOfFunds } from "@/components/investor/UseOfFunds";
+import { InvestorCTA } from "@/components/investor/InvestorCTA";
 import { StickyNavigation } from "@/components/investor/StickyNavigation";
 import { EarlyStageDisclaimer } from "@/components/investor/EarlyStageDisclaimer";
 import { GlassCard } from "@/components/ui/glass-card";
@@ -45,13 +39,13 @@ const Investors = () => {
       <EarlyStageDisclaimer />
 
       <main id="main-content" className="min-h-screen">
-        {/* Hero */}
+        {/* 1. Hero */}
         <section id="hero">
           <InvestorHero />
         </section>
 
-        {/* Investment Narrative */}
-        <section className="py-20 px-4 bg-gradient-to-b from-background to-secondary/5">
+        {/* 2. Why Different */}
+        <section id="why-different" className="py-20 px-4 bg-gradient-to-b from-background to-secondary/5">
           <div className="container mx-auto max-w-4xl">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -142,98 +136,23 @@ const Investors = () => {
           </div>
         </section>
 
-        {/* Live Metrics */}
+        {/* 3. Live Metrics */}
         <section id="ecosystem-metrics">
           <EcosystemMetrics />
         </section>
 
-        {/* Recent Developments */}
-        <section id="recent-developments">
-          <RecentDevelopments />
-        </section>
-
-        {/* Token Burn Dashboard */}
-        <section id="token-burn">
-          <TokenBurnDashboard />
-        </section>
-
-        {/* Market Landscape */}
-        <section id="market-landscape">
-          <MarketLandscape />
-        </section>
-
-        {/* Revenue Streams */}
-        <section id="revenue-streams">
-          <RevenueStreamsEnhanced />
-        </section>
-
-        {/* Token Value Generation */}
+        {/* 4. Value Engine */}
         <section id="value-generation">
           <ValueGeneration />
         </section>
 
-        {/* Investment Tiers */}
+        {/* 5. Investment Tiers */}
         <section id="investment-tiers">
           <InvestmentTiers />
         </section>
 
-        {/* Why Now Section */}
-        <section className="py-20 px-4 bg-gradient-to-b from-background to-primary/5">
-          <div className="container mx-auto max-w-4xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-r from-primary to-chart-2 bg-clip-text text-transparent">
-                Why Now?
-              </h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {[
-                  "2024–2025: Largest AI capital inflow in history",
-                  "Real-world AI + DeFi utility outperforming meme tokens",
-                  "Terrain intelligence is unclaimed territory",
-                  "TRN at intersection of AI, data, real-world use, and crypto",
-                  "TerrainVision, Goblin Market, TRN merging into one ecosystem",
-                  "Marketplace 2026: On-chain data commerce powered by TRN"
-                ].map((point, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <GlassCard className="p-6 text-left hover:scale-105 transition-transform">
-                      <div className="flex items-start gap-3">
-                        <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                        <p className="text-muted-foreground">{point}</p>
-                      </div>
-                    </GlassCard>
-                  </motion.div>
-                ))}
-              </div>
-
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                className="mt-12"
-              >
-                <GlassCard className="p-8 bg-gradient-to-br from-primary/20 to-chart-2/20">
-                  <p className="text-2xl font-bold">
-                    You are positioning as a <span className="text-primary">category leader</span> before the category exists.
-                  </p>
-                </GlassCard>
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Roadmap */}
-        <section id="tokenomics" className="py-20">
+        {/* 6. Roadmap */}
+        <section id="roadmap" className="py-20">
           <div className="container mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -252,24 +171,14 @@ const Investors = () => {
           </div>
         </section>
 
-        {/* Proof & Trust */}
+        {/* 7. Trust & Proof */}
         <section id="proof-section">
           <ProofSection />
         </section>
 
-        {/* Use of Funds */}
-        <section id="use-of-funds">
-          <UseOfFunds />
-        </section>
-
-        {/* Risk Mitigation */}
-        <section id="risk-mitigation">
-          <RiskMitigation />
-        </section>
-
-        {/* Investor Form */}
-        <section id="investor-form">
-          <InvestorForm />
+        {/* 8. Take Action (CTA) */}
+        <section id="investor-cta">
+          <InvestorCTA />
         </section>
 
         {/* Compliance Footer */}
