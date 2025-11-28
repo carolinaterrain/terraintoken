@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { TRN_MINT_ADDRESS, getHolderTier, HOLDER_TIERS } from "../_shared/constants.ts";
+import { TRN_MINT_ADDRESS } from "../_shared/constants.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -18,20 +18,22 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    console.log('Fetching TRN holder data from Helius RPC...');
-
     const HELIUS_API_KEY = Deno.env.get('HELIUS_API_KEY');
 
-    let holders: Array<{ address: string; balance: number }> = [];
-    let isLiveData = false;
+    if (!HELIUS_API_KEY) {
+      throw new Error('HELIUS_API_KEY is not configured');
+    }
 
-    try {
-      if (!HELIUS_API_KEY) {
-        throw new Error('HELIUS_API_KEY is not configured');
-      }
+    console.log('Fetching TRN holder data using paginated getTokenAccounts...');
 
-      console.log('Calling Helius RPC with API key:', HELIUS_API_KEY.substring(0, 8) + '...');
+    // Paginate through ALL token accounts
+    const holders: Array<{ address: string; balance: number }> = [];
+    let cursor: string | undefined;
+    let pageCount = 0;
+    const MAX_PAGES = 50;
+    const PAGE_SIZE = 1000;
 
+    do {
       const response = await fetch(
         `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`,
         {
@@ -39,58 +41,68 @@ serve(async (req) => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             jsonrpc: '2.0',
-            id: 'get-holders',
-            method: 'getTokenLargestAccounts',
-            params: [TRN_MINT_ADDRESS],
+            id: `get-holders-page-${pageCount}`,
+            method: 'getTokenAccounts',
+            params: {
+              mint: TRN_MINT_ADDRESS,
+              limit: PAGE_SIZE,
+              cursor: cursor,
+              options: {
+                showZeroBalance: false,
+              },
+            },
           }),
         }
       );
 
-      console.log('Helius RPC response status:', response.status);
-
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Helius RPC error: ${response.status} - ${errorText}`);
+        console.error(`Helius DAS API error: ${response.status}`, errorText);
+        throw new Error(`Helius DAS API error: ${response.status}`);
       }
 
-      const rpcData = await response.json();
-      console.log('RPC Data structure:', JSON.stringify(rpcData, null, 2));
+      const data = await response.json();
       
-      if (rpcData.error) {
-        throw new Error(`RPC error: ${JSON.stringify(rpcData.error)}`);
+      if (data.error) {
+        console.error('Helius RPC error:', data.error);
+        throw new Error(`Helius RPC error: ${data.error.message || JSON.stringify(data.error)}`);
       }
 
-      const holderData = rpcData.result?.value || [];
-
-      if (holderData.length === 0) {
-        throw new Error('Helius returned no holder data');
-      }
-
-      holders = holderData
-        .map((h: any) => ({
-          address: h.address,
-          balance: parseInt(h.amount, 10) / 1e6, // Convert from raw to TRN with 6 decimals
-        }))
-        .filter((h: any) => h.balance >= 1); // Only holders with >= 1 TRN
-
-      // Validate that we got real wallet addresses (not mock data)
-      const hasRealAddresses = holders.some(h => 
-        h.address.length > 20 && !h.address.startsWith('holder')
-      );
-
-      if (!hasRealAddresses) {
-        throw new Error('Received suspicious data from Helius - addresses look like mock data');
-      }
-
-      isLiveData = true;
-      console.log(`✅ Successfully fetched ${holders.length} LIVE holders from Helius RPC`);
-    } catch (error) {
-      console.error('❌ Error fetching from Helius:', error);
-      console.error('Error details:', error instanceof Error ? error.message : 'Unknown error');
+      const result = data.result;
+      const tokenAccounts = result?.token_accounts || [];
       
-      // DO NOT use fallback mock data - throw error instead
-      throw new Error(`Failed to fetch live holder data: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      // Add non-zero balance accounts to our list
+      for (const acc of tokenAccounts) {
+        const balance = parseInt(acc.amount, 10) / 1e6; // Convert to TRN with 6 decimals
+        if (balance > 0) {
+          holders.push({
+            address: acc.owner,
+            balance: balance,
+          });
+        }
+      }
+      
+      cursor = result?.cursor;
+      pageCount++;
+
+      console.log(`Page ${pageCount}: found ${tokenAccounts.length} accounts (total holders: ${holders.length})`);
+
+      if (tokenAccounts.length < PAGE_SIZE) {
+        break;
+      }
+
+    } while (cursor && pageCount < MAX_PAGES);
+
+    // Validate that we got real wallet addresses
+    const hasRealAddresses = holders.some(h => 
+      h.address.length > 20 && !h.address.startsWith('holder')
+    );
+
+    if (!hasRealAddresses && holders.length > 0) {
+      throw new Error('Received suspicious data from Helius - addresses look like mock data');
     }
+
+    console.log(`✅ Successfully fetched ${holders.length} LIVE holders from Helius DAS API`);
 
     const holderAddresses = holders.map(h => h.address);
     const holderBalances = holders.reduce((acc, h) => {
@@ -110,7 +122,7 @@ serve(async (req) => {
         total_holders: holders.length,
         holder_addresses: holderAddresses,
         holder_balances: holderBalances,
-        is_live_data: isLiveData,
+        is_live_data: true,
       }, {
         onConflict: 'snapshot_date',
       });
@@ -118,6 +130,16 @@ serve(async (req) => {
     if (error) {
       throw error;
     }
+
+    // Also update the holder_count_cache for consistency
+    await supabase
+      .from('holder_count_cache')
+      .upsert({
+        id: 'current',
+        holder_count: holders.length,
+        last_updated: new Date().toISOString(),
+        source: 'helius-das-snapshot',
+      });
 
     console.log('Snapshot saved successfully');
 
