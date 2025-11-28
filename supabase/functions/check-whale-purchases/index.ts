@@ -23,11 +23,11 @@ serve(async (req) => {
     const SUPABASE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const clientIP = getClientIP(req);
     
-    // Rate limiting
+    // Rate limiting - allow 30 requests per hour (more generous for multiple sessions)
     const rateLimitResult = await checkRateLimit(clientIP, {
       endpoint: 'check-whale-purchases',
       windowMs: 3600000, // 1 hour
-      maxRequests: 10
+      maxRequests: 30
     }, SUPABASE_URL, SUPABASE_KEY);
     
     if (!rateLimitResult.allowed) {
