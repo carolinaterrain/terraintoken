@@ -637,6 +637,27 @@ export type Database = {
         }
         Relationships: []
       }
+      holder_count_cache: {
+        Row: {
+          holder_count: number
+          id: string
+          last_updated: string
+          source: string | null
+        }
+        Insert: {
+          holder_count?: number
+          id?: string
+          last_updated?: string
+          source?: string | null
+        }
+        Update: {
+          holder_count?: number
+          id?: string
+          last_updated?: string
+          source?: string | null
+        }
+        Relationships: []
+      }
       holder_snapshots: {
         Row: {
           created_at: string | null
