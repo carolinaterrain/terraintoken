@@ -1,5 +1,7 @@
 import { GlassCard } from "./ui/glass-card";
-import terrainMascot from "@/assets/terrain-mascot.png";
+
+// Use public folder path directly for performance
+const terrainMascot = "/terrain-mascot.png";
 
 const MascotLore = () => {
   return (

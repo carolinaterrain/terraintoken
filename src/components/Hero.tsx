@@ -4,10 +4,12 @@ import { useState, useEffect, memo } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import ContractVerificationBadge from "./ContractVerificationBadge";
-import terrainMascot from "@/assets/terrain-mascot.png";
-import trnCoin from "@/assets/trn-coin.png";
-import heroBackground from "@/assets/hero-terrain-grid.jpg";
 import { useTokenData } from "@/providers/TokenDataProvider";
+
+// Use public folder paths directly for LCP optimization - these match index.html preloads
+const terrainMascot = "/terrain-mascot.png";
+const trnCoin = "/trn-coin.png";
+const heroBackground = "/hero-terrain-grid.jpg";
 
 const Hero = memo(() => {
   const { toast } = useToast();

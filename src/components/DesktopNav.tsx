@@ -3,7 +3,9 @@ import { Button } from "./ui/button";
 import { MessageCircle } from "lucide-react";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { useNavigate, useLocation } from "react-router-dom";
-import trnCoin from "@/assets/trn-coin.png";
+
+// Use public folder path directly for performance - matches index.html preload
+const trnCoin = "/trn-coin.png";
 
 const DesktopNav = () => {
   const [scrolled, setScrolled] = useState(false);

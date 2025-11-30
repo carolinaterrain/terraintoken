@@ -5,6 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Terrain Token (TRN) - First Meme Coin Backed by Real Drainage Contractors</title>
     
+    <!-- Critical CSS for Above-the-Fold Content - Prevents FOUC and improves FCP/LCP -->
+    <style>
+      /* Critical font loading */
+      @font-face {
+        font-family: 'Space Grotesk';
+        font-style: normal;
+        font-weight: 400 700;
+        font-display: swap;
+        src: url(https://fonts.gstatic.com/s/spacegrotesk/v16/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj7oUXskPMBBSSJLm2E.woff2) format('woff2');
+      }
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400 600;
+        font-display: swap;
+        src: url(https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZ9hjp-Ek-_EeA.woff2) format('woff2');
+      }
+      
+      /* Critical layout styles */
+      *, *::before, *::after { box-sizing: border-box; }
+      html { line-height: 1.5; -webkit-text-size-adjust: 100%; }
+      body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: hsl(160 30% 3%); color: hsl(160 10% 95%); }
+      #root { min-height: 100vh; }
+      
+      /* Critical hero skeleton */
+      .hero-skeleton {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, hsl(160 30% 3%) 0%, hsl(160 40% 6%) 100%);
+      }
+      .skeleton-pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        background: hsl(160 20% 15%);
+        border-radius: 0.5rem;
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+      
+      /* Hide content until React hydrates */
+      .loading-placeholder { display: block; }
+      .app-loaded .loading-placeholder { display: none; }
+    </style>
+    
     <!-- DNS Prefetch & Preconnect for Critical Resources -->
     <link rel="dns-prefetch" href="https://api.dexscreener.com" />
     <link rel="dns-prefetch" href="https://dihbqhofqfcvjgpzmskx.supabase.co" />
@@ -12,10 +59,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://api.dexscreener.com" crossorigin />
     
-    <!-- Preload Critical Assets -->
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" />
-    <link rel="preload" as="image" href="/trn-coin.png" fetchpriority="high" />
-    <link rel="preload" as="image" href="/hero-terrain-grid.jpg" fetchpriority="high" />
+    <!-- Preload Critical LCP Images - These MUST match the paths used in Hero.tsx -->
+    <link rel="preload" as="image" href="/trn-coin.png" fetchpriority="high" type="image/png" />
+    <link rel="preload" as="image" href="/terrain-mascot.png" fetchpriority="high" type="image/png" />
     
     <meta name="description" content="Born from the ground down — the first meme coin backed by NDS-certified drainage contractors. Earn TRN by uploading yard photos. Join the terrain revolution." />
     <meta name="author" content="Terrain Token" />
@@ -49,8 +95,12 @@
     <link rel="apple-touch-icon" href="/icon-192.png" />
     <meta name="theme-color" content="#10b981" />
     
-    <!-- Google Fonts with Optimization -->
+    <!-- Non-Critical Google Fonts - Loaded async -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    </noscript>
     
     <!-- Structured Data for SEO -->
     <script type="application/ld+json">
