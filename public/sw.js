@@ -18,6 +18,23 @@ const MAX_AGE = {
   api: 5 * 60 * 1000, // 5 minutes
 };
 
+// Helper: Check if URL is cacheable (only http/https)
+const isCacheableUrl = (url) => {
+  return url.startsWith('http://') || url.startsWith('https://');
+};
+
+// Helper: Safely put response in cache
+const safeCachePut = async (cache, request, response) => {
+  try {
+    if (response && response.ok && isCacheableUrl(request.url)) {
+      await cache.put(request, response.clone());
+    }
+  } catch (error) {
+    // Silently ignore cache put errors (e.g., opaque responses)
+    console.debug('Cache put skipped:', error.message);
+  }
+};
+
 // Install service worker and precache static assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -49,10 +66,16 @@ self.addEventListener('activate', (event) => {
 // Sophisticated fetch strategies
 self.addEventListener('fetch', (event) => {
   const { request } = event;
-  const url = new URL(request.url);
+  
+  // Skip non-HTTP(S) requests (chrome-extension://, data:, blob:, etc.)
+  if (!isCacheableUrl(request.url)) {
+    return;
+  }
 
   // Skip non-GET requests
   if (request.method !== 'GET') return;
+
+  const url = new URL(request.url);
 
   // Strategy 1: Cache-first for static assets (JS, CSS, images, fonts)
   if (
@@ -68,23 +91,16 @@ self.addEventListener('fetch', (event) => {
         return cache.match(request).then((cached) => {
           if (cached) {
             // Return cached version and update in background
-            const fetchPromise = fetch(request)
-              .then((fetchResponse) => {
-                if (fetchResponse && fetchResponse.ok) {
-                  cache.put(request, fetchResponse.clone());
-                }
-                return fetchResponse;
-              })
-              .catch(() => cached);
+            fetch(request)
+              .then((fetchResponse) => safeCachePut(cache, request, fetchResponse))
+              .catch(() => {});
             
             return cached;
           }
           
           // Not in cache, fetch and cache
           return fetch(request).then((fetchResponse) => {
-            if (fetchResponse && fetchResponse.ok) {
-              cache.put(request, fetchResponse.clone());
-            }
+            safeCachePut(cache, request, fetchResponse);
             return fetchResponse;
           });
         });
@@ -103,9 +119,7 @@ self.addEventListener('fetch', (event) => {
       caches.open(API_CACHE).then((cache) => {
         return cache.match(request).then((cached) => {
           const fetchPromise = fetch(request).then((fetchResponse) => {
-            if (fetchResponse && fetchResponse.ok) {
-              cache.put(request, fetchResponse.clone());
-            }
+            safeCachePut(cache, request, fetchResponse);
             return fetchResponse;
           });
           
@@ -121,13 +135,12 @@ self.addEventListener('fetch', (event) => {
   }
 
   // Strategy 3: Network-first for HTML pages
-  if (request.headers.get('accept').includes('text/html')) {
+  if (request.headers.get('accept')?.includes('text/html')) {
     event.respondWith(
       fetch(request)
         .then((fetchResponse) => {
-          const responseClone = fetchResponse.clone();
           caches.open(DYNAMIC_CACHE).then((cache) => {
-            cache.put(request, responseClone);
+            safeCachePut(cache, request, fetchResponse);
           });
           return fetchResponse;
         })
@@ -145,9 +158,8 @@ self.addEventListener('fetch', (event) => {
     fetch(request)
       .then((fetchResponse) => {
         if (fetchResponse && fetchResponse.ok) {
-          const responseClone = fetchResponse.clone();
           caches.open(DYNAMIC_CACHE).then((cache) => {
-            cache.put(request, responseClone);
+            safeCachePut(cache, request, fetchResponse);
           });
         }
         return fetchResponse;

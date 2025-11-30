@@ -6,44 +6,102 @@ type OscillatorType = 'sine' | 'square' | 'sawtooth' | 'triangle';
 // Global volume control (0-1)
 let globalVolume = 0.3;
 
+// Shared AudioContext instance (lazy initialization)
+let audioContext: AudioContext | null = null;
+let isAudioResumed = false;
+
 export const setGlobalSoundVolume = (volume: number) => {
   globalVolume = Math.max(0, Math.min(1, volume));
 };
 
 // Check if user prefers reduced motion (also applies to sounds)
 const prefersReducedMotion = () => {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  return typeof window !== 'undefined' && 
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 };
+
+// Get or create AudioContext (lazy initialization)
+const getAudioContext = (): AudioContext | null => {
+  if (typeof window === 'undefined' || !window.AudioContext) {
+    return null;
+  }
+  
+  if (!audioContext) {
+    try {
+      audioContext = new AudioContext();
+    } catch (error) {
+      console.warn('Failed to create AudioContext:', error);
+      return null;
+    }
+  }
+  
+  return audioContext;
+};
+
+// Resume AudioContext after user gesture
+const resumeAudioContext = async (): Promise<boolean> => {
+  const ctx = getAudioContext();
+  if (!ctx) return false;
+  
+  if (ctx.state === 'suspended') {
+    try {
+      await ctx.resume();
+      isAudioResumed = true;
+      return true;
+    } catch (error) {
+      console.warn('Failed to resume AudioContext:', error);
+      return false;
+    }
+  }
+  
+  isAudioResumed = ctx.state === 'running';
+  return isAudioResumed;
+};
+
+// Setup user interaction listeners to resume audio (runs once)
+if (typeof document !== 'undefined') {
+  const handleUserInteraction = () => {
+    resumeAudioContext();
+  };
+  
+  // Listen for first user interaction
+  document.addEventListener('click', handleUserInteraction, { once: true, passive: true });
+  document.addEventListener('touchstart', handleUserInteraction, { once: true, passive: true });
+  document.addEventListener('keydown', handleUserInteraction, { once: true, passive: true });
+}
 
 // Create a simple tone
 function createTone(frequency: number, duration: number, type: OscillatorType = 'sine') {
   return () => {
-    if (prefersReducedMotion() || !window.AudioContext) return;
+    if (prefersReducedMotion()) return;
+    
+    const ctx = getAudioContext();
+    if (!ctx || ctx.state !== 'running') return;
     
     try {
-      const audioContext = new AudioContext();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
+      const oscillator = ctx.createOscillator();
+      const gainNode = ctx.createGain();
       
       oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
+      gainNode.connect(ctx.destination);
       
       oscillator.type = type;
       oscillator.frequency.value = frequency;
       
       // Fade in/out to prevent clicks
       const volume = globalVolume * 0.15; // Keep sounds subtle
-      gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-      gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.01);
-      gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + duration);
+      gainNode.gain.setValueAtTime(0, ctx.currentTime);
+      gainNode.gain.linearRampToValueAtTime(volume, ctx.currentTime + 0.01);
+      gainNode.gain.linearRampToValueAtTime(0, ctx.currentTime + duration);
       
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + duration);
+      oscillator.start(ctx.currentTime);
+      oscillator.stop(ctx.currentTime + duration);
       
-      // Clean up
-      setTimeout(() => {
-        audioContext.close();
-      }, (duration + 0.1) * 1000);
+      // Clean up oscillator after it stops
+      oscillator.onended = () => {
+        oscillator.disconnect();
+        gainNode.disconnect();
+      };
     } catch (error) {
       console.warn('Sound effect failed:', error);
     }
@@ -105,4 +163,15 @@ export const playSound = (sound: () => void, delay = 0) => {
   } else {
     sound();
   }
+};
+
+// Utility: Check if audio is ready
+export const isAudioReady = (): boolean => {
+  const ctx = getAudioContext();
+  return ctx !== null && ctx.state === 'running';
+};
+
+// Utility: Manually resume audio (for UI controls)
+export const tryResumeAudio = async (): Promise<boolean> => {
+  return resumeAudioContext();
 };
