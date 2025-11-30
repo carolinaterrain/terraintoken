@@ -2,8 +2,9 @@ import { memo, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { PieChart, Coins, Lock, Flame, Users, Clock } from 'lucide-react';
+import { PieChart, Coins, Lock, Flame, Users, ExternalLink, Wallet } from 'lucide-react';
 import { LiveStats, formatTRN, MAX_SUPPLY, calculateSupplyPercentage } from '@/lib/carolinaTerrainSync';
+import { useTreasuryBalance } from '@/hooks/useTreasuryBalance';
 
 interface SupplyDashboardProps {
   stats: LiveStats | null;
@@ -12,6 +13,8 @@ interface SupplyDashboardProps {
 }
 
 export const SupplyDashboard = memo(({ stats, loading, isFallback }: SupplyDashboardProps) => {
+  const { treasuryBalance, loading: treasuryLoading, isLive: treasuryIsLive } = useTreasuryBalance();
+  
   const supplyMetrics = useMemo(() => {
     if (!stats) return null;
 
@@ -115,30 +118,62 @@ export const SupplyDashboard = memo(({ stats, loading, isFallback }: SupplyDashb
               </div>
             </div>
 
-            {/* Coming Soon sections for allocations */}
-            <div className="mt-4 p-4 bg-muted/30 rounded-lg border border-dashed border-border">
-              <div className="flex items-center gap-2 mb-2">
-                <Clock className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm font-medium text-muted-foreground">Allocation Breakdown</span>
-                <Badge variant="outline" className="text-xs">Coming Soon</Badge>
+            {/* Live Treasury Balance */}
+            <div className="mt-4 p-4 bg-primary/5 rounded-lg border border-primary/20">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <Wallet className="h-4 w-4 text-primary" />
+                  <span className="text-sm font-medium text-foreground">Treasury Wallet</span>
+                </div>
+                {treasuryLoading ? (
+                  <Skeleton className="h-5 w-12" />
+                ) : treasuryIsLive ? (
+                  <Badge className="bg-primary/20 text-primary border-primary/30 text-xs">
+                    Live
+                  </Badge>
+                ) : (
+                  <Badge variant="outline" className="text-yellow-500 border-yellow-500/50 text-xs">
+                    Cached
+                  </Badge>
+                )}
               </div>
-              <p className="text-xs text-muted-foreground">
-                Live wallet tracking for Treasury, Founder Holdings, and Community Rewards Pool is in development. 
-                These metrics will show real-time balances from on-chain data.
-              </p>
-              <div className="mt-3 grid grid-cols-3 gap-2">
-                <div className="p-2 bg-muted/50 rounded text-center">
-                  <Lock className="h-4 w-4 mx-auto mb-1 text-blue-500/50" />
-                  <p className="text-xs text-muted-foreground">Treasury</p>
+              
+              {treasuryLoading ? (
+                <Skeleton className="h-8 w-32" />
+              ) : (
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-2xl font-bold text-primary">
+                      {treasuryBalance.balanceFormatted} TRN
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {treasuryBalance.balance.toLocaleString()} TRN exact
+                    </p>
+                  </div>
+                  <a
+                    href={`https://solscan.io/account/${treasuryBalance.walletAddress}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 text-xs text-primary hover:text-primary/80 transition-colors"
+                  >
+                    View on Solscan
+                    <ExternalLink className="h-3 w-3" />
+                  </a>
                 </div>
-                <div className="p-2 bg-muted/50 rounded text-center">
-                  <Lock className="h-4 w-4 mx-auto mb-1 text-purple-500/50" />
-                  <p className="text-xs text-muted-foreground">Founders</p>
-                </div>
-                <div className="p-2 bg-muted/50 rounded text-center">
-                  <span className="text-sm opacity-50">🎁</span>
-                  <p className="text-xs text-muted-foreground">Rewards</p>
-                </div>
+              )}
+            </div>
+
+            {/* Coming Soon - Other Allocations */}
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <div className="p-3 bg-muted/30 rounded-lg border border-dashed border-border text-center">
+                <Lock className="h-4 w-4 mx-auto mb-1 text-purple-500/50" />
+                <p className="text-xs text-muted-foreground">Founders</p>
+                <Badge variant="outline" className="text-xs mt-1">Coming Soon</Badge>
+              </div>
+              <div className="p-3 bg-muted/30 rounded-lg border border-dashed border-border text-center">
+                <span className="text-sm opacity-50">🎁</span>
+                <p className="text-xs text-muted-foreground">Rewards Pool</p>
+                <Badge variant="outline" className="text-xs mt-1">Coming Soon</Badge>
               </div>
             </div>
           </div>

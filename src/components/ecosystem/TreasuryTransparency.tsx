@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Wallet, ArrowUpRight, ArrowDownRight, ExternalLink, PiggyBank, Heart } from 'lucide-react';
 import { TreasuryData, FoundationData, RewardsPoolData, formatTRN, getSolscanTxUrl, FEE_ALLOCATION } from '@/lib/carolinaTerrainSync';
+import { useTreasuryBalance } from '@/hooks/useTreasuryBalance';
 
 interface TreasuryTransparencyProps {
   treasury: TreasuryData | null;
@@ -20,6 +21,8 @@ export const TreasuryTransparency = memo(({
   loading, 
   isFallback 
 }: TreasuryTransparencyProps) => {
+  const { treasuryBalance, loading: treasuryBalanceLoading, isLive: treasuryIsLive } = useTreasuryBalance();
+  
   if (loading) {
     return (
       <Card className="bg-card/50 backdrop-blur border-border/50">
@@ -79,19 +82,55 @@ export const TreasuryTransparency = memo(({
           </div>
         </div>
 
-        {/* Treasury Balance */}
-        {treasury && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 bg-muted/50 rounded-lg text-center">
-              <p className="text-sm text-muted-foreground">Current Balance</p>
-              <p className="text-2xl font-bold text-foreground">
-                {formatTRN(treasury.current_balance)} TRN
-              </p>
+        {/* Live Treasury Balance */}
+        <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg">
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="text-sm font-medium text-foreground">🏦 On-Chain Treasury</h4>
+            {treasuryBalanceLoading ? (
+              <Skeleton className="h-5 w-12" />
+            ) : treasuryIsLive ? (
+              <Badge className="bg-primary/20 text-primary border-primary/30 text-xs">
+                Live from Helius
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="text-yellow-500 border-yellow-500/50 text-xs">
+                Cached
+              </Badge>
+            )}
+          </div>
+          
+          {treasuryBalanceLoading ? (
+            <Skeleton className="h-10 w-48" />
+          ) : (
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-3xl font-bold text-primary">
+                  {treasuryBalance.balanceFormatted} TRN
+                </p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  {treasuryBalance.balance.toLocaleString()} TRN
+                </p>
+              </div>
+              <a
+                href={`https://solscan.io/account/${treasuryBalance.walletAddress}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 px-3 py-2 bg-primary/10 hover:bg-primary/20 rounded-lg text-sm text-primary transition-colors"
+              >
+                <ExternalLink className="h-4 w-4" />
+                Verify on Solscan
+              </a>
             </div>
+          )}
+        </div>
+
+        {/* Legacy Treasury Stats (if available from database) */}
+        {treasury && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="p-4 bg-primary/10 rounded-lg text-center">
               <p className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                 <ArrowUpRight className="h-3 w-3 text-primary" />
-                Total Income
+                Total Income (Recorded)
               </p>
               <p className="text-2xl font-bold text-primary">
                 {formatTRN(treasury.total_income)} TRN
@@ -100,7 +139,7 @@ export const TreasuryTransparency = memo(({
             <div className="p-4 bg-destructive/10 rounded-lg text-center">
               <p className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                 <ArrowDownRight className="h-3 w-3 text-destructive" />
-                Total Expenses
+                Total Expenses (Recorded)
               </p>
               <p className="text-2xl font-bold text-destructive">
                 {formatTRN(treasury.total_expenses)} TRN
