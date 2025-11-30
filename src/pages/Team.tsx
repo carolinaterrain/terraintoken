@@ -52,7 +52,7 @@ const companyStats = [
   {
     icon: Award,
     label: "Years in Business",
-    value: "5+",
+    value: "3+",
     description: "Serving North Carolina"
   },
   {
@@ -70,7 +70,7 @@ const companyStats = [
   {
     icon: Target,
     label: "Established Business",
-    value: "Since 2018",
+    value: "Since 2022",
     description: "Real company backing"
   }
 ];

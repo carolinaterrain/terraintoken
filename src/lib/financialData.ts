@@ -85,7 +85,7 @@ export const equipmentInventory = [
   { name: "Dodge Ram 2020", purchasePrice: 53993.21, currentValue: 53993.21, purchaseDate: "2024" },
   { name: "Dodge Ram 2025", purchasePrice: 55843.00, currentValue: 55843.00, purchaseDate: "2024" },
   { name: "Pressure Washer Rig", purchasePrice: 27060.00, currentValue: 27060.00, purchaseDate: "2024", status: "PAID OFF" },
-  { name: "Tools & Equipment", purchasePrice: 126050.41, currentValue: 126050.41, purchaseDate: "2019-2025" },
+  { name: "Tools & Equipment", purchasePrice: 126050.41, currentValue: 126050.41, purchaseDate: "2022-2025" },
   { name: "Yarbo Mower", purchasePrice: 4458.00, currentValue: 4458.00, purchaseDate: "2024" },
 ];
 
