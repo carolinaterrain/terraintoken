@@ -581,9 +581,14 @@ const TransparencyReportNovember2025 = () => {
                   <ul className="space-y-4">
                     <li>
                       <div className="font-semibold mb-1">Treasury Wallet</div>
-                      <div className="text-sm text-muted-foreground font-mono break-all">
-                        [Placeholder: Treasury wallet address would go here]
-                      </div>
+                      <a 
+                        href="https://solscan.io/account/H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-primary font-mono break-all hover:underline"
+                      >
+                        H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu
+                      </a>
                     </li>
                     <li>
                       <div className="font-semibold mb-1">Liquidity Pool</div>

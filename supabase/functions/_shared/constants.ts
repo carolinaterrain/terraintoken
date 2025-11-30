@@ -1,7 +1,8 @@
 // Shared constants for TRN token across all edge functions
-// IMPORTANT: This is the single source of truth for the TRN mint address
+// IMPORTANT: This is the single source of truth for the TRN mint address and wallets
 
 export const TRN_MINT_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+export const TRN_TREASURY_WALLET = "H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu";
 
 // Whale tiers for purchase tracking
 export const WHALE_TIERS = {

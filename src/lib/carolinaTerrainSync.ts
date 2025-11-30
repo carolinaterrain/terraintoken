@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 // Constants
 export const TRN_MINT_ADDRESS = '2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump';
+export const TRN_TREASURY_WALLET = 'H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu';
 export const TRN_DECIMALS = 6;
 export const MAX_SUPPLY = 1_000_000_000;
 
@@ -278,6 +279,13 @@ export function getSolscanTokenUrl(): string {
  */
 export function getSolscanWalletUrl(address: string): string {
   return `https://solscan.io/account/${address}`;
+}
+
+/**
+ * Get Solscan URL for the TRN Treasury wallet
+ */
+export function getSolscanTreasuryUrl(): string {
+  return `https://solscan.io/account/${TRN_TREASURY_WALLET}`;
 }
 
 /**
