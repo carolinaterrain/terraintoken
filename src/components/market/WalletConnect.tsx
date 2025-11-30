@@ -7,6 +7,7 @@ import { TrendingUp, Bug } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Connection, PublicKey } from "@solana/web3.js";
+import { getSolanaRpcEndpoint } from "@/lib/solanaRpc";
 
 const TRN_MINT = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 const IS_DEV = import.meta.env.DEV;
@@ -200,7 +201,7 @@ export const WalletConnect = () => {
 
   const fetchBalances = async (wallet: PublicKey): Promise<{ sol: number; trn: number }> => {
     try {
-      const connection = new Connection("https://api.mainnet-beta.solana.com");
+      const connection = new Connection(getSolanaRpcEndpoint());
 
       // Fetch SOL balance
       const solLamports = await connection.getBalance(wallet);
