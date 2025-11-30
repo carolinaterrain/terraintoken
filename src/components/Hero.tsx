@@ -269,7 +269,12 @@ const Hero = memo(() => {
                 variant="default"
                 size="lg"
                 className="font-semibold w-full"
-                onClick={() => document.getElementById('community')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => {
+                  window.dispatchEvent(new CustomEvent('changeTab', { detail: { tab: 'community' } }));
+                  setTimeout(() => {
+                    document.getElementById('waitlist-form')?.scrollIntoView({ behavior: 'smooth' });
+                  }, 100);
+                }}
               >
                 🌱 Secure Beta Access
               </Button>

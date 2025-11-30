@@ -266,7 +266,7 @@ export default function ReferralDashboard() {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button asChild size="lg">
-                    <Link to="/#community">Join Waitlist</Link>
+                    <Link to="/">Join Waitlist</Link>
                   </Button>
                   <Button variant="outline" size="lg" onClick={handleChangeEmail}>
                     Try Different Email
