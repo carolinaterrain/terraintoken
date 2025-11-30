@@ -1,14 +1,39 @@
 import { Helmet } from "react-helmet-async";
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import SkipToContent from "@/components/SkipToContent";
 import ScrollProgress from "@/components/ScrollProgress";
-import SmartHeader from "@/components/SmartHeader";
-import Hero from "@/components/Hero";
-import { ResearchModeContent } from "@/components/ResearchModeContent";
 import { useAnalytics } from "@/hooks/useAnalytics";
-import { HeyGenAvatar } from "@/components/HeyGenAvatar";
 import { requestIdleCallback } from "@/lib/performanceUtils";
+import { Skeleton } from "@/components/ui/skeleton";
+
+// Lazy load heavy components
+const SmartHeader = lazy(() => import("@/components/SmartHeader"));
+const Hero = lazy(() => import("@/components/Hero"));
+const ResearchModeContent = lazy(() => import("@/components/ResearchModeContent").then(m => ({ default: m.ResearchModeContent })));
+const HeyGenAvatar = lazy(() => import("@/components/HeyGenAvatar").then(m => ({ default: m.HeyGenAvatar })));
+
+// Lightweight skeleton for hero section
+const HeroSkeleton = () => (
+  <section className="min-h-screen pt-20 flex items-center justify-center">
+    <div className="container mx-auto px-4">
+      <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="flex justify-center">
+          <Skeleton className="w-64 h-64 rounded-full" />
+        </div>
+        <div className="space-y-6">
+          <Skeleton className="h-12 w-3/4" />
+          <Skeleton className="h-6 w-full" />
+          <Skeleton className="h-6 w-2/3" />
+          <div className="flex gap-4">
+            <Skeleton className="h-12 w-32" />
+            <Skeleton className="h-12 w-32" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
 
 const Index = () => {
   const { trackPageView } = useAnalytics();
@@ -63,14 +88,25 @@ const Index = () => {
       
       <SkipToContent />
       <ScrollProgress />
-      <SmartHeader />
+      
+      <Suspense fallback={<div className="h-16 bg-background/95 backdrop-blur-lg border-b border-primary/20" />}>
+        <SmartHeader />
+      </Suspense>
 
       <main id="main-content">
-        <Hero />
-        <ResearchModeContent />
+        <Suspense fallback={<HeroSkeleton />}>
+          <Hero />
+        </Suspense>
+        <Suspense fallback={<div className="min-h-[50vh]" />}>
+          <ResearchModeContent />
+        </Suspense>
       </main>
 
-      <HeyGenAvatar enabled={avatarEnabled} />
+      {avatarEnabled && (
+        <Suspense fallback={null}>
+          <HeyGenAvatar enabled={avatarEnabled} />
+        </Suspense>
+      )}
     </>
   );
 };
