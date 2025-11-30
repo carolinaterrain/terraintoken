@@ -13,9 +13,9 @@ interface TimelineEvent {
 
 const timelineEvents: TimelineEvent[] = [
   { 
-    year: "2019", 
+    year: "August 2022", 
     event: "Carolina Terrain Founded",
-    details: "Started drainage and erosion control services in Waxhaw, NC area",
+    details: "Officially launched drainage and erosion control services in Waxhaw, NC area",
     category: "milestone"
   },
   { 

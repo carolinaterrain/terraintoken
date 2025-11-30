@@ -23,7 +23,7 @@ export const DownloadReports = () => {
     doc.setFontSize(10);
     doc.setTextColor(100, 100, 100);
     doc.text(`Generated: ${new Date().toLocaleDateString()}`, 105, 37, { align: "center" });
-    doc.text("2019 - 2025", 105, 42, { align: "center" });
+    doc.text("2022 - 2025", 105, 42, { align: "center" });
 
     // Key Metrics
     doc.setFontSize(14);
