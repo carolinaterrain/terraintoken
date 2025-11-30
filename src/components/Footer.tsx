@@ -104,7 +104,7 @@ const Footer = () => {
               <MessageCircle className="w-5 h-5" />
             </a>
             <a
-              href="https://discord.gg/terraintoken"
+              href="https://discord.gg/nX5u8ZaH"
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"

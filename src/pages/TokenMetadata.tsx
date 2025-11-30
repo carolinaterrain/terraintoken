@@ -56,7 +56,7 @@ const TokenMetadata = () => {
     { label: "Website", url: "https://terrainvision-ai.com/" },
     { label: "Twitter/X", url: "https://x.com/carolinaterrain" },
     { label: "Telegram", url: "https://t.me/+s6385WFOp21lOGZh" },
-    { label: "Discord", url: "https://discord.gg/terraintoken" },
+    { label: "Discord", url: "https://discord.gg/nX5u8ZaH" },
     { label: "Whitepaper", url: "https://terrainvision-ai.com/whitepaper" }
   ];
 
