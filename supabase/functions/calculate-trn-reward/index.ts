@@ -8,6 +8,48 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Streak bonus multipliers
+const STREAK_MULTIPLIERS: Record<number, number> = {
+  3: 1.2,   // 3-day streak: 20% bonus
+  7: 1.5,   // 7-day streak: 50% bonus
+  14: 2.0,  // 14-day streak: 100% bonus
+  30: 2.5,  // 30-day streak: 150% bonus
+};
+
+function getStreakMultiplier(streak: number): number {
+  if (streak >= 30) return STREAK_MULTIPLIERS[30];
+  if (streak >= 14) return STREAK_MULTIPLIERS[14];
+  if (streak >= 7) return STREAK_MULTIPLIERS[7];
+  if (streak >= 3) return STREAK_MULTIPLIERS[3];
+  return 1.0;
+}
+
+function calculateStreak(lastUploadDate: string | null, currentStreak: number): { newStreak: number; isConsecutive: boolean } {
+  if (!lastUploadDate) {
+    return { newStreak: 1, isConsecutive: false };
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  const lastUpload = new Date(lastUploadDate);
+  lastUpload.setHours(0, 0, 0, 0);
+  
+  const diffTime = today.getTime() - lastUpload.getTime();
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) {
+    // Same day upload - maintain streak but don't increment
+    return { newStreak: currentStreak || 1, isConsecutive: true };
+  } else if (diffDays === 1) {
+    // Consecutive day - increment streak
+    return { newStreak: (currentStreak || 0) + 1, isConsecutive: true };
+  } else {
+    // Streak broken - reset to 1
+    return { newStreak: 1, isConsecutive: false };
+  }
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -69,7 +111,7 @@ serve(async (req) => {
 
     console.log('Calculating TRN reward for:', { mediaId, walletAddress, category, dataConsent });
 
-    // Initialize Supabase client (already initialized for rate limiting)
+    // Initialize Supabase client
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Validate the media exists and hasn't been rewarded yet
@@ -105,29 +147,60 @@ serve(async (req) => {
       );
     }
 
-    let totalTRN = 10; // Base upload reward
+    let baseTRN = 10; // Base upload reward
     const rewards = [{ type: 'upload', amount: 10 }];
 
     // Data consent bonus
     if (dataConsent) {
-      totalTRN += 50;
+      baseTRN += 50;
       rewards.push({ type: 'consent', amount: 50 });
     }
 
     // Wallet address bonus (incentive to provide wallet)
     if (walletAddress) {
-      totalTRN += 5;
+      baseTRN += 5;
       rewards.push({ type: 'wallet', amount: 5 });
     }
 
     // High-value category bonus
     if (['drainage', 'erosion'].includes(category)) {
-      totalTRN += 10;
+      baseTRN += 10;
       rewards.push({ type: 'category', amount: 10 });
     }
 
-    // Insert reward records
+    let totalTRN = baseTRN;
+    let streakInfo = { current: 1, multiplier: 1.0 };
+
+    // Insert reward records and handle streaks
     if (walletAddress) {
+      // Get current user stats to check for achievements and streaks
+      const { data: existingStats } = await supabase
+        .from('user_stats')
+        .select('*')
+        .eq('user_wallet_address', walletAddress)
+        .maybeSingle();
+
+      const currentUploads = existingStats ? existingStats.total_uploads + 1 : 1;
+      const newAchievements = [];
+
+      // Calculate streak
+      const { newStreak, isConsecutive } = calculateStreak(
+        existingStats?.last_upload_date || null,
+        existingStats?.current_streak || 0
+      );
+
+      const multiplier = getStreakMultiplier(newStreak);
+      streakInfo = { current: newStreak, multiplier };
+
+      // Apply streak bonus
+      if (multiplier > 1.0) {
+        const streakBonus = Math.round(baseTRN * (multiplier - 1));
+        totalTRN = baseTRN + streakBonus;
+        rewards.push({ type: 'streak_bonus', amount: streakBonus });
+        console.log(`Streak bonus applied: ${newStreak}-day streak, ${multiplier}x multiplier, +${streakBonus} TRN`);
+      }
+
+      // Insert reward records
       for (const reward of rewards) {
         const { error: rewardError } = await supabase
           .from('trn_rewards')
@@ -143,16 +216,6 @@ serve(async (req) => {
           console.error('Error inserting reward:', rewardError);
         }
       }
-
-      // Get current user stats to check for achievements
-      const { data: existingStats } = await supabase
-        .from('user_stats')
-        .select('*')
-        .eq('user_wallet_address', walletAddress)
-        .maybeSingle();
-
-      const currentUploads = existingStats ? existingStats.total_uploads + 1 : 1;
-      const newAchievements = [];
 
       // Check First Drop achievement (first upload)
       if (currentUploads === 1) {
@@ -188,7 +251,26 @@ serve(async (req) => {
         }
       }
 
-      // NOW update user_stats with the FINAL totalTRN (including achievement bonuses)
+      // Check streak achievements
+      if (newStreak === 7) {
+        const { error } = await supabase
+          .from('user_achievements')
+          .insert({
+            user_wallet_address: walletAddress,
+            achievement_id: 'week_warrior',
+            trn_bonus: 25
+          });
+
+        if (!error) {
+          newAchievements.push({ id: 'week_warrior', name: 'Week Warrior', bonus: 25 });
+          totalTRN += 25;
+          rewards.push({ type: 'achievement_week_warrior', amount: 25 });
+        }
+      }
+
+      // Update user_stats with streak info
+      const longestStreak = Math.max(newStreak, existingStats?.longest_streak || 0);
+
       if (existingStats) {
         const { error: updateError } = await supabase
           .from('user_stats')
@@ -196,6 +278,8 @@ serve(async (req) => {
             total_uploads: currentUploads,
             total_trn_earned: Number(existingStats.total_trn_earned) + totalTRN,
             last_upload_date: new Date().toISOString().split('T')[0],
+            current_streak: newStreak,
+            longest_streak: longestStreak,
             updated_at: new Date().toISOString()
           })
           .eq('user_wallet_address', walletAddress);
@@ -210,7 +294,9 @@ serve(async (req) => {
             user_wallet_address: walletAddress,
             total_uploads: 1,
             total_trn_earned: totalTRN,
-            last_upload_date: new Date().toISOString().split('T')[0]
+            last_upload_date: new Date().toISOString().split('T')[0],
+            current_streak: 1,
+            longest_streak: 1
           });
         
         if (insertError) {
@@ -218,7 +304,7 @@ serve(async (req) => {
         }
       }
 
-      console.log('Final reward calculation:', { totalTRN, achievements: newAchievements.length });
+      console.log('Final reward calculation:', { totalTRN, streak: newStreak, achievements: newAchievements.length });
 
       // Update project_media with TRN earned
       await supabase
@@ -227,14 +313,15 @@ serve(async (req) => {
         .eq('id', mediaId);
 
       // Generate goblin message
-      const goblinMessage = generateGoblinMessage(totalTRN, newAchievements);
+      const goblinMessage = generateGoblinMessage(totalTRN, newAchievements, streakInfo);
 
       return new Response(
         JSON.stringify({ 
           totalTRN, 
           rewards, 
           newAchievements, 
-          goblinMessage 
+          goblinMessage,
+          streakInfo
         }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
@@ -259,7 +346,7 @@ serve(async (req) => {
   }
 });
 
-function generateGoblinMessage(trn: number, achievements: any[]): string {
+function generateGoblinMessage(trn: number, achievements: any[], streakInfo: { current: number; multiplier: number }): string {
   const messages = {
     high: [
       `🎉 Terry the Goblin is impressed! ${trn} TRN earned! Your yard chaos feeds the AI.`,
@@ -279,6 +366,11 @@ function generateGoblinMessage(trn: number, achievements: any[]): string {
   
   const tier = trn >= 75 ? 'high' : trn >= 40 ? 'medium' : 'low';
   let message = messages[tier][Math.floor(Math.random() * messages[tier].length)];
+  
+  // Add streak info
+  if (streakInfo.current >= 3) {
+    message += ` 🔥 ${streakInfo.current}-day streak (${streakInfo.multiplier}x bonus)!`;
+  }
   
   if (achievements.length > 0) {
     message += ` 🏆 ACHIEVEMENT UNLOCKED: ${achievements[0].name}!`;

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
-import { Upload, X, ArrowLeft, AlertCircle, Clock, CheckCircle } from "lucide-react";
+import { Upload, X, ArrowLeft, AlertCircle, Clock, CheckCircle, Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,6 +11,7 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { z } from "zod";
+import { RewardCelebrationModal } from "@/components/earn/RewardCelebrationModal";
 
 const projectSchema = z.object({
   title: z.string().trim().max(200, "Title must be less than 200 characters").optional(),
@@ -43,6 +44,8 @@ const UploadProject = () => {
   const [uploadProgress, setUploadProgress] = useState<string>("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [uploadTimeout, setUploadTimeout] = useState(false);
+  const [newAchievements, setNewAchievements] = useState<Array<{ id: string; name: string; bonus: number }>>([]);
+  const [streakInfo, setStreakInfo] = useState<{ current: number; multiplier: number } | undefined>();
   const timeoutRef = useRef<NodeJS.Timeout>();
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -224,6 +227,8 @@ const UploadProject = () => {
             setUploadProgress("Complete!");
             setEarnedTRN(rewardData.totalTRN || 0);
             setGoblinMessage(rewardData.goblinMessage || "TRN earned!");
+            setNewAchievements(rewardData.newAchievements || []);
+            setStreakInfo(rewardData.streakInfo);
             setShowRewardModal(true);
           }
         } catch (err) {
@@ -532,6 +537,16 @@ const UploadProject = () => {
           </form>
         </GlassCard>
       </div>
+
+      {/* Reward Celebration Modal */}
+      <RewardCelebrationModal
+        isOpen={showRewardModal}
+        onClose={() => setShowRewardModal(false)}
+        earnedTRN={earnedTRN}
+        goblinMessage={goblinMessage}
+        achievements={newAchievements}
+        streakInfo={streakInfo}
+      />
     </div>
   );
 };

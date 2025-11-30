@@ -2451,7 +2451,9 @@ export type Database = {
       user_stats: {
         Row: {
           created_at: string | null
+          current_streak: number | null
           last_upload_date: string | null
+          longest_streak: number | null
           reputation_score: number | null
           streak_days: number | null
           total_shares: number | null
@@ -2463,7 +2465,9 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
+          current_streak?: number | null
           last_upload_date?: string | null
+          longest_streak?: number | null
           reputation_score?: number | null
           streak_days?: number | null
           total_shares?: number | null
@@ -2475,7 +2479,9 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
+          current_streak?: number | null
           last_upload_date?: string | null
+          longest_streak?: number | null
           reputation_score?: number | null
           streak_days?: number | null
           total_shares?: number | null
