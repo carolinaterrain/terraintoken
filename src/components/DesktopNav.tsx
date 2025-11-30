@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "./ui/button";
 import { MessageCircle } from "lucide-react";
 import { useActiveSection } from "@/hooks/useActiveSection";
@@ -10,13 +10,24 @@ const DesktopNav = () => {
   const activeSection = useActiveSection();
   const navigate = useNavigate();
   const location = useLocation();
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      // Throttle with requestAnimationFrame for 60fps
+      if (rafRef.current) return;
+      
+      rafRef.current = requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 50);
+        rafRef.current = null;
+      });
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   const scrollToSection = (id: string) => {

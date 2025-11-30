@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Copy, FileText, TrendingUp, TrendingDown } from "lucide-react";
 import { useState, useEffect, memo } from "react";
 import { useToast } from "@/hooks/use-toast";
-import confetti from "canvas-confetti";
 import { Link } from "react-router-dom";
 import ContractVerificationBadge from "./ContractVerificationBadge";
 import terrainMascot from "@/assets/terrain-mascot.png";
@@ -31,7 +30,9 @@ const Hero = memo(() => {
     "Backed by operations! 💎",
   ];
   
-  const handleGoblinClick = () => {
+  const handleGoblinClick = async () => {
+    // Dynamic import for performance - only loads when clicked
+    const confetti = (await import("canvas-confetti")).default;
     confetti({
       particleCount: 50,
       spread: 50,
