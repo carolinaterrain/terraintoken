@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -10,7 +11,10 @@ import {
   Heart,
   CheckCircle,
   ExternalLink,
-  ArrowLeft
+  ArrowLeft,
+  Copy,
+  Check,
+  Wallet
 } from "lucide-react";
 import DesktopNav from "@/components/DesktopNav";
 import Footer from "@/components/Footer";
@@ -18,6 +22,10 @@ import ScrollProgress from "@/components/ScrollProgress";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import { spacing, typography } from "@/lib/spacing";
+import { toast } from "@/hooks/use-toast";
+
+const PHILANTHROPIC_WALLET = "H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu";
+const DEV_TEAM_WALLET = "B3L92AEPpc3HGhxM86GBvSMR54Y88vFV3uuG3kVJ9ER4";
 
 const impactCategories = [
   {
@@ -57,6 +65,26 @@ const benefits = [
 ];
 
 const PhilanthropicFund = () => {
+  const [copiedWallet, setCopiedWallet] = useState<string | null>(null);
+
+  const copyToClipboard = async (wallet: string, label: string) => {
+    try {
+      await navigator.clipboard.writeText(wallet);
+      setCopiedWallet(wallet);
+      toast({
+        title: "Wallet address copied!",
+        description: `${label} address copied to clipboard.`,
+      });
+      setTimeout(() => setCopiedWallet(null), 2000);
+    } catch {
+      toast({
+        title: "Failed to copy",
+        description: "Please copy the address manually.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -282,6 +310,114 @@ const PhilanthropicFund = () => {
                 </Button>
               </GlassCard>
             </motion.div>
+          </div>
+        </section>
+
+        {/* Support the Mission */}
+        <section className={spacing.section.standard}>
+          <div className="container mx-auto px-4 max-w-4xl">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="text-center mb-10"
+            >
+              <h2 className={`${typography.h2} font-bold text-foreground mb-4`}>
+                Support the Mission
+              </h2>
+              <p className={`${typography.body} text-muted-foreground max-w-2xl mx-auto`}>
+                Every contribution—small or large—goes directly to accelerating what this community builds.
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Philanthropic Fund Wallet */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+              >
+                <GlassCard className="p-6 h-full border-emerald-500/30 bg-emerald-500/5">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                      <Heart className="w-5 h-5 text-emerald-500" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-foreground">Philanthropic Fund</h3>
+                      <span className="text-xs text-emerald-500">SOL / TRN</span>
+                    </div>
+                  </div>
+                  
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Supports environmental projects, storm-relief, veterans, seniors, and community initiatives.
+                  </p>
+                  
+                  <div className="flex items-center gap-2 bg-background/50 rounded-lg p-3 border border-border">
+                    <Wallet className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                    <code className="text-xs text-muted-foreground truncate flex-1">
+                      {PHILANTHROPIC_WALLET}
+                    </code>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 w-8 p-0 flex-shrink-0"
+                      onClick={() => copyToClipboard(PHILANTHROPIC_WALLET, "Philanthropic Fund")}
+                    >
+                      {copiedWallet === PHILANTHROPIC_WALLET ? (
+                        <Check className="w-4 h-4 text-emerald-500" />
+                      ) : (
+                        <Copy className="w-4 h-4" />
+                      )}
+                    </Button>
+                  </div>
+                </GlassCard>
+              </motion.div>
+
+              {/* Dev Team Wallet */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              >
+                <GlassCard className="p-6 h-full border-violet-500/30 bg-violet-500/5">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-full bg-violet-500/20 flex items-center justify-center">
+                      <Users className="w-5 h-5 text-violet-500" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-foreground">Project Development</h3>
+                      <span className="text-xs text-violet-500">SOL / TRN</span>
+                    </div>
+                  </div>
+                  
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Helps fund engineering, infrastructure, servers, and ongoing TRN ecosystem upgrades.
+                  </p>
+                  
+                  <div className="flex items-center gap-2 bg-background/50 rounded-lg p-3 border border-border">
+                    <Wallet className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                    <code className="text-xs text-muted-foreground truncate flex-1">
+                      {DEV_TEAM_WALLET}
+                    </code>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 w-8 p-0 flex-shrink-0"
+                      onClick={() => copyToClipboard(DEV_TEAM_WALLET, "Dev Team")}
+                    >
+                      {copiedWallet === DEV_TEAM_WALLET ? (
+                        <Check className="w-4 h-4 text-violet-500" />
+                      ) : (
+                        <Copy className="w-4 h-4" />
+                      )}
+                    </Button>
+                  </div>
+                </GlassCard>
+              </motion.div>
+            </div>
           </div>
         </section>
 
