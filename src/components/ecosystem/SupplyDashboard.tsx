@@ -2,7 +2,7 @@ import { memo, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { PieChart, Coins, Lock, Flame, Users } from 'lucide-react';
+import { PieChart, Coins, Lock, Flame, Users, Clock } from 'lucide-react';
 import { LiveStats, formatTRN, MAX_SUPPLY, calculateSupplyPercentage } from '@/lib/carolinaTerrainSync';
 
 interface SupplyDashboardProps {
@@ -18,22 +18,12 @@ export const SupplyDashboard = memo(({ stats, loading, isFallback }: SupplyDashb
     const totalBurned = stats.total_burned || 0;
     const circulatingSupply = stats.current_supply || MAX_SUPPLY;
     const maxSupply = stats.max_supply || MAX_SUPPLY;
-    
-    // Estimated allocations (these would come from actual data in production)
-    const treasuryHoldings = maxSupply * 0.20; // 20% Treasury
-    const founderHoldings = maxSupply * 0.10; // 10% Founders (locked)
-    const communityRewards = maxSupply * 0.05; // 5% Rewards Pool
-    const publicCirculating = circulatingSupply - treasuryHoldings - founderHoldings - communityRewards;
 
     return {
       maxSupply,
       circulatingSupply,
       totalBurned,
       effectiveSupply: maxSupply - totalBurned,
-      publicCirculating: Math.max(0, publicCirculating),
-      treasuryHoldings,
-      founderHoldings,
-      communityRewards,
       burnPercentage: calculateSupplyPercentage(totalBurned, maxSupply),
     };
   }, [stats]);
@@ -71,7 +61,7 @@ export const SupplyDashboard = memo(({ stats, loading, isFallback }: SupplyDashb
         )}
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* Supply Overview */}
+        {/* Supply Overview - Live Data */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="p-4 bg-muted/50 rounded-lg text-center">
             <Coins className="h-6 w-6 mx-auto mb-2 text-primary" />
@@ -103,71 +93,11 @@ export const SupplyDashboard = memo(({ stats, loading, isFallback }: SupplyDashb
           </div>
         </div>
 
-        {/* Visual Supply Distribution */}
+        {/* Supply Distribution - Coming Soon for allocations */}
         <div>
           <h4 className="text-sm font-medium mb-3 text-foreground">Supply Distribution</h4>
           <div className="space-y-3">
-            {/* Public Circulating */}
-            <div>
-              <div className="flex justify-between text-sm mb-1">
-                <span className="text-muted-foreground flex items-center gap-1">
-                  <Users className="h-3 w-3" /> Public Circulating
-                </span>
-                <span className="text-foreground font-medium">
-                  {formatTRN(supplyMetrics?.publicCirculating || 0)} (65%)
-                </span>
-              </div>
-              <div className="h-3 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-primary" style={{ width: '65%' }} />
-              </div>
-            </div>
-
-            {/* Treasury */}
-            <div>
-              <div className="flex justify-between text-sm mb-1">
-                <span className="text-muted-foreground flex items-center gap-1">
-                  <Lock className="h-3 w-3" /> Treasury Holdings
-                </span>
-                <span className="text-foreground font-medium">
-                  {formatTRN(supplyMetrics?.treasuryHoldings || 0)} (20%)
-                </span>
-              </div>
-              <div className="h-3 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-blue-500" style={{ width: '20%' }} />
-              </div>
-            </div>
-
-            {/* Founder Holdings */}
-            <div>
-              <div className="flex justify-between text-sm mb-1">
-                <span className="text-muted-foreground flex items-center gap-1">
-                  <Lock className="h-3 w-3" /> Founder Holdings (Locked)
-                </span>
-                <span className="text-foreground font-medium">
-                  {formatTRN(supplyMetrics?.founderHoldings || 0)} (10%)
-                </span>
-              </div>
-              <div className="h-3 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-purple-500" style={{ width: '10%' }} />
-              </div>
-            </div>
-
-            {/* Rewards Pool */}
-            <div>
-              <div className="flex justify-between text-sm mb-1">
-                <span className="text-muted-foreground flex items-center gap-1">
-                  🎁 Community Rewards Pool
-                </span>
-                <span className="text-foreground font-medium">
-                  {formatTRN(supplyMetrics?.communityRewards || 0)} (5%)
-                </span>
-              </div>
-              <div className="h-3 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-primary/70" style={{ width: '5%' }} />
-              </div>
-            </div>
-
-            {/* Burned */}
+            {/* Burned - Live Data */}
             <div>
               <div className="flex justify-between text-sm mb-1">
                 <span className="text-muted-foreground flex items-center gap-1">
@@ -182,6 +112,33 @@ export const SupplyDashboard = memo(({ stats, loading, isFallback }: SupplyDashb
                   className="h-full bg-gradient-to-r from-destructive to-orange-500" 
                   style={{ width: `${Math.min((supplyMetrics?.burnPercentage || 0) * 10, 100)}%` }} 
                 />
+              </div>
+            </div>
+
+            {/* Coming Soon sections for allocations */}
+            <div className="mt-4 p-4 bg-muted/30 rounded-lg border border-dashed border-border">
+              <div className="flex items-center gap-2 mb-2">
+                <Clock className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium text-muted-foreground">Allocation Breakdown</span>
+                <Badge variant="outline" className="text-xs">Coming Soon</Badge>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Live wallet tracking for Treasury, Founder Holdings, and Community Rewards Pool is in development. 
+                These metrics will show real-time balances from on-chain data.
+              </p>
+              <div className="mt-3 grid grid-cols-3 gap-2">
+                <div className="p-2 bg-muted/50 rounded text-center">
+                  <Lock className="h-4 w-4 mx-auto mb-1 text-blue-500/50" />
+                  <p className="text-xs text-muted-foreground">Treasury</p>
+                </div>
+                <div className="p-2 bg-muted/50 rounded text-center">
+                  <Lock className="h-4 w-4 mx-auto mb-1 text-purple-500/50" />
+                  <p className="text-xs text-muted-foreground">Founders</p>
+                </div>
+                <div className="p-2 bg-muted/50 rounded text-center">
+                  <span className="text-sm opacity-50">🎁</span>
+                  <p className="text-xs text-muted-foreground">Rewards</p>
+                </div>
               </div>
             </div>
           </div>

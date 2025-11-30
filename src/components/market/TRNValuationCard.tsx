@@ -15,6 +15,7 @@ interface ValuationData {
   waitlistSize: number;
   circulatingSupply: number;
   marketPrice: number;
+  isSupplyLive: boolean;
 }
 
 export function TRNValuationCard() {
@@ -23,23 +24,29 @@ export function TRNValuationCard() {
   const { data: valuation, isLoading } = useQuery({
     queryKey: ["trn-valuation"],
     queryFn: async () => {
-      // Fetch real data
-      const [waitlistResult, snapshotResult] = await Promise.all([
+      // Fetch real data in parallel
+      const [waitlistResult, snapshotResult, supplyResult] = await Promise.all([
         supabase.from("terrainscape_waitlist").select("*", { count: "exact", head: true }),
         supabase.from("holder_snapshots").select("total_holders").order("snapshot_date", { ascending: false }).limit(1).maybeSingle(),
+        supabase.functions.invoke("fetch-token-supply"),
       ]);
 
       // Get real business data
       const equipmentData = getCumulativeEquipmentValue();
       const financialData = calculateMetrics();
       
+      // Use live supply if available, otherwise use fallback
+      const liveSupply = supplyResult.data?.circulatingSupply;
+      const isSupplyLive = !supplyResult.error && liveSupply && !supplyResult.data?.isStale;
+      
       const data: ValuationData = {
         monthlyRevenue: financialData.avgMonthlyRevenue,
         equipmentValue: equipmentData.totalCurrentValue,
         holderCount: snapshotResult.data?.total_holders || 0,
         waitlistSize: waitlistResult.count || 0,
-        circulatingSupply: 1000000000, // 1B TRN fixed supply
+        circulatingSupply: liveSupply || 1000000000, // Fallback to 1B if API fails
         marketPrice: tokenStats?.priceUsd ? parseFloat(tokenStats.priceUsd.replace(/[^0-9.]/g, '')) : 0,
+        isSupplyLive: !!isSupplyLive,
       };
 
       return data;
@@ -75,6 +82,11 @@ export function TRNValuationCard() {
     <Card className="p-6 border-terrain-purple/30">
       <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
         🔮 TRN Intrinsic Value Calculator
+        {!valuation.isSupplyLive && (
+          <Badge variant="outline" className="text-yellow-500 border-yellow-500/50 text-xs">
+            Estimated Supply
+          </Badge>
+        )}
       </h3>
 
       {/* Fair Value vs Market Price */}
@@ -122,6 +134,10 @@ export function TRNValuationCard() {
         <div className="flex justify-between items-center font-bold text-base">
           <span>Total Ecosystem Value</span>
           <span className="text-goblin-gold">${totalEcosystemValue.toLocaleString()}</span>
+        </div>
+        <div className="flex justify-between items-center text-xs text-muted-foreground">
+          <span>Circulating Supply</span>
+          <span>{(valuation.circulatingSupply / 1000000000).toFixed(3)}B TRN</span>
         </div>
       </div>
 
