@@ -1,4 +1,4 @@
-import { MessageCircle, Users, Twitter, Shield, TrendingUp, ExternalLink } from "lucide-react";
+import { MessageCircle, Users, Twitter, Shield, TrendingUp, ExternalLink, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { GlassCard } from "@/components/ui/glass-card";
 import { useTokenSupply, formatSupply } from "@/hooks/useTokenSupply";
@@ -118,6 +118,15 @@ const Footer = () => {
               className="text-muted-foreground hover:text-primary transition-colors"
             >
               <Twitter className="w-5 h-5" />
+            </a>
+            <a
+              href="https://terrainvision-ai.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-primary transition-colors"
+              title="Terrain Vision AI"
+            >
+              <Sparkles className="w-5 h-5" />
             </a>
           </div>
         </div>

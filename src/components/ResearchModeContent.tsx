@@ -19,7 +19,6 @@ const OriginStory = lazy(() => import("@/components/OriginStory"));
 const RealWorldRoots = lazy(() => import("@/components/RealWorldRoots"));
 const MascotLore = lazy(() => import("@/components/MascotLore"));
 const LiveProof = lazy(() => import("@/components/LiveProof"));
-const Community = lazy(() => import("@/components/Community"));
 const FAQ = lazy(() => import("@/components/FAQ"));
 const Footer = lazy(() => import("@/components/Footer"));
 
@@ -101,7 +100,6 @@ export const ResearchModeContent = () => {
           <Suspense fallback={<LoadingSection />}><RealWorldRoots /></Suspense>
           <Suspense fallback={<LoadingSection />}><MascotLore /></Suspense>
           <Suspense fallback={<LoadingSection />}><LiveProof /></Suspense>
-          <Suspense fallback={<LoadingSection />}><Community /></Suspense>
         </TabsContent>
       </Tabs>
 

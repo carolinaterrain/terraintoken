@@ -8,7 +8,6 @@ import Leaderboard from "@/components/earn/Leaderboard";
 import MyRewardsDashboard from "@/components/earn/MyRewardsDashboard";
 import AchievementBadges from "@/components/earn/AchievementBadges";
 import LegalDisclaimers from "@/components/earn/LegalDisclaimers";
-import AnnouncementBanner from "@/components/AnnouncementBanner";
 import DesktopNav from "@/components/DesktopNav";
 import Footer from "@/components/Footer";
 
@@ -24,7 +23,6 @@ const EarnTRN = () => {
       </Helmet>
 
       <ScrollProgress />
-      <AnnouncementBanner />
       <DesktopNav />
       
       <main id="main-content" className="min-h-screen bg-gradient-to-b from-background to-background/50 pt-16">

@@ -14,9 +14,6 @@ export const useKeyboardShortcuts = () => {
           case "r":
             document.getElementById("roadmap")?.scrollIntoView({ behavior: "smooth" });
             break;
-          case "c":
-            document.getElementById("community")?.scrollIntoView({ behavior: "smooth" });
-            break;
         }
         lastKey = "";
         return;
