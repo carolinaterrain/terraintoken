@@ -1,6 +1,10 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, lazy, Suspense } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { KeyboardShortcutsModal } from "@/components/KeyboardShortcutsModal";
+
+// Lazy load KeyboardShortcutsModal - only loads when user presses '?'
+const KeyboardShortcutsModal = lazy(() => 
+  import("@/components/KeyboardShortcutsModal").then(m => ({ default: m.KeyboardShortcutsModal }))
+);
 
 // Dynamic confetti loader - only loads when needed
 const fireConfetti = async (options: Parameters<typeof import("canvas-confetti").default>[0]) => {
@@ -20,13 +24,23 @@ export const useEasterEggs = () => {
   const [mascotBadgeUnlocked, setMascotBadgeUnlocked] = useState(() => {
     return localStorage.getItem('trn-mascot-badge') === 'true';
   });
+  const [isInitialized, setIsInitialized] = useState(false);
   const { toast } = useToast();
 
-  // Check for saved badge
+  // Defer initialization using requestIdleCallback
   useEffect(() => {
-    const hasBadge = localStorage.getItem("trn-secret-badge");
-    if (hasBadge === "true") {
-      setShowBadge(true);
+    const initEasterEggs = () => {
+      const hasBadge = localStorage.getItem("trn-secret-badge");
+      if (hasBadge === "true") {
+        setShowBadge(true);
+      }
+      setIsInitialized(true);
+    };
+
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(initEasterEggs, { timeout: 2000 });
+    } else {
+      setTimeout(initEasterEggs, 100);
     }
   }, []);
 
@@ -320,12 +334,19 @@ export const useEasterEggs = () => {
     return () => window.removeEventListener("scroll", handleScrollToBottom);
   }, [handleScrollToBottom]);
 
+  // Don't render anything until initialized
+  if (!isInitialized) return null;
+
   return (
     <>
-      <KeyboardShortcutsModal 
-        open={showShortcuts} 
-        onOpenChange={setShowShortcuts} 
-      />
+      {showShortcuts && (
+        <Suspense fallback={null}>
+          <KeyboardShortcutsModal 
+            open={showShortcuts} 
+            onOpenChange={setShowShortcuts} 
+          />
+        </Suspense>
+      )}
       {showBadge && (
         <div className="fixed bottom-24 md:bottom-20 right-4 z-60 animate-bounce">
           <div className="bg-primary/20 backdrop-blur-sm border border-primary/40 rounded-lg p-3 shadow-lg">
