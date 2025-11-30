@@ -1,11 +1,23 @@
 import { GlassCard } from "@/components/ui/glass-card";
-import { Activity, Database, Users, Clock } from "lucide-react";
+import { Activity, Database, Users, Clock, Mail, Wallet, CheckCircle2, Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { format, subDays } from "date-fns";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 
 const LiveProof = () => {
+  // Waitlist form state
+  const [email, setEmail] = useState("");
+  const [walletAddress, setWalletAddress] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [referralCode, setReferralCode] = useState("");
+
   // Total photos contributed
   const { data: totalPhotos } = useQuery({
     queryKey: ['total-photos'],
@@ -102,6 +114,45 @@ const LiveProof = () => {
     return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
   };
 
+  const handleWaitlistSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email || !email.includes('@')) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('join-waitlist', {
+        body: {
+          email: email.toLowerCase().trim(),
+          wallet_address: walletAddress.trim() || undefined,
+          utm_source: 'website'
+        }
+      });
+      
+      if (error) throw error;
+      
+      if (data?.referral_code) {
+        setReferralCode(data.referral_code);
+      }
+      
+      setIsSubmitted(true);
+      toast.success('Welcome to the TerrainScape waitlist!');
+    } catch (error: any) {
+      console.error('Waitlist signup error:', error);
+      if (error.message?.includes('already registered')) {
+        toast.error('This email is already on the waitlist');
+      } else {
+        toast.error('Failed to join waitlist. Please try again.');
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section className="py-20 px-4 relative overflow-hidden bg-gradient-to-b from-background to-muted/20">
       <div className="container mx-auto max-w-6xl relative">
@@ -168,7 +219,7 @@ const LiveProof = () => {
         </GlassCard>
 
         {/* Recent Activity Feed */}
-        <GlassCard className="p-6">
+        <GlassCard className="p-6 mb-12">
           <div className="flex items-center gap-2 mb-4">
             <Clock className="w-5 h-5 text-primary" />
             <h3 className="font-display text-xl font-bold">Recent Activity</h3>
@@ -195,6 +246,96 @@ const LiveProof = () => {
             ))}
           </div>
         </GlassCard>
+
+        {/* TerrainScape Waitlist Form */}
+        <div id="waitlist-form">
+          <GlassCard className="p-8 border-2 border-primary/30 bg-gradient-to-br from-primary/5 via-background to-chart-3/5">
+          <div className="max-w-xl mx-auto">
+            {isSubmitted ? (
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mx-auto">
+                  <CheckCircle2 className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="font-display text-2xl font-bold">You're on the List!</h3>
+                <p className="text-muted-foreground">
+                  We'll notify you when TerrainScape launches. Get ready to play!
+                </p>
+                {referralCode && (
+                  <div className="mt-6 p-4 bg-muted/30 rounded-lg">
+                    <p className="text-sm text-muted-foreground mb-2">Your referral code:</p>
+                    <p className="font-mono text-lg font-bold text-primary">{referralCode}</p>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Share this code to earn 5,000 TRN per referral!
+                    </p>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <div className="text-center mb-6">
+                  <span className="text-4xl">🎮</span>
+                  <h3 className="font-display text-2xl font-bold mt-2">Join TerrainScape Waitlist</h3>
+                  <p className="text-muted-foreground mt-2">
+                    Be first to play the AI-powered drainage simulation game. <span className="text-primary font-semibold">Coming 2026</span>
+                  </p>
+                </div>
+                
+                <form onSubmit={handleWaitlistSubmit} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="waitlist-email" className="flex items-center gap-2">
+                      <Mail className="w-4 h-4" />
+                      Email Address *
+                    </Label>
+                    <Input
+                      id="waitlist-email"
+                      type="email"
+                      placeholder="your@email.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="bg-background/50"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="waitlist-wallet" className="flex items-center gap-2">
+                      <Wallet className="w-4 h-4" />
+                      Solana Wallet (Optional)
+                    </Label>
+                    <Input
+                      id="waitlist-wallet"
+                      type="text"
+                      placeholder="Your Solana wallet address"
+                      value={walletAddress}
+                      onChange={(e) => setWalletAddress(e.target.value)}
+                      className="bg-background/50 font-mono text-sm"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Add your wallet to receive TRN rewards automatically
+                    </p>
+                  </div>
+                  
+                  <Button 
+                    type="submit" 
+                    size="lg" 
+                    className="w-full font-semibold"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Joining...
+                      </>
+                    ) : (
+                      <>🌱 Secure Beta Access</>
+                    )}
+                  </Button>
+                </form>
+              </>
+            )}
+          </div>
+        </GlassCard>
+        </div>
       </div>
     </section>
   );
