@@ -2112,6 +2112,7 @@ export type Database = {
           price_change_24h: number | null
           price_sol: number | null
           price_usd: number | null
+          total_burned: number | null
           total_issued: number
           updated_at: string | null
           volume_24h_usd: number | null
@@ -2127,6 +2128,7 @@ export type Database = {
           price_change_24h?: number | null
           price_sol?: number | null
           price_usd?: number | null
+          total_burned?: number | null
           total_issued?: number
           updated_at?: string | null
           volume_24h_usd?: number | null
@@ -2142,6 +2144,7 @@ export type Database = {
           price_change_24h?: number | null
           price_sol?: number | null
           price_usd?: number | null
+          total_burned?: number | null
           total_issued?: number
           updated_at?: string | null
           volume_24h_usd?: number | null
