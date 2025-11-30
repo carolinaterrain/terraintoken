@@ -38,17 +38,43 @@ export const WalletConnect = () => {
 
   const trackWalletConnection = async (address: string) => {
     try {
-      await supabase.from("wallet_connections").upsert(
-        {
-          wallet_address: address,
-          last_seen_at: new Date().toISOString(),
-        },
-        {
-          onConflict: "wallet_address",
+      // First try to update existing record
+      const { data: existing, error: selectError } = await supabase
+        .from("wallet_connections")
+        .select("id")
+        .eq("wallet_address", address)
+        .maybeSingle();
+
+      if (selectError) {
+        console.warn("Error checking wallet connection:", selectError.message);
+        return; // Silent fail - wallet tracking is non-critical
+      }
+
+      if (existing) {
+        // Update existing record
+        const { error: updateError } = await supabase
+          .from("wallet_connections")
+          .update({ last_seen_at: new Date().toISOString() })
+          .eq("wallet_address", address);
+        
+        if (updateError) {
+          console.warn("Error updating wallet connection:", updateError.message);
         }
-      );
+      } else {
+        // Insert new record
+        const { error: insertError } = await supabase
+          .from("wallet_connections")
+          .insert({
+            wallet_address: address,
+            last_seen_at: new Date().toISOString(),
+          });
+        
+        if (insertError) {
+          console.warn("Error inserting wallet connection:", insertError.message);
+        }
+      }
     } catch (error) {
-      console.error("Error tracking wallet connection:", error);
+      console.warn("Wallet tracking failed (non-critical):", error);
     }
   };
 

@@ -144,45 +144,18 @@ serve(async (req) => {
         }
       }
 
-      // Update or insert user stats
+      // Get current user stats to check for achievements
       const { data: existingStats } = await supabase
         .from('user_stats')
         .select('*')
         .eq('user_wallet_address', walletAddress)
         .maybeSingle();
 
-      if (existingStats) {
-        await supabase
-          .from('user_stats')
-          .update({
-            total_uploads: existingStats.total_uploads + 1,
-            total_trn_earned: Number(existingStats.total_trn_earned) + totalTRN,
-            last_upload_date: new Date().toISOString().split('T')[0],
-            updated_at: new Date().toISOString()
-          })
-          .eq('user_wallet_address', walletAddress);
-      } else {
-        await supabase
-          .from('user_stats')
-          .insert({
-            user_wallet_address: walletAddress,
-            total_uploads: 1,
-            total_trn_earned: totalTRN,
-            last_upload_date: new Date().toISOString().split('T')[0]
-          });
-      }
-
-      // Check for achievements
-      const { data: statsAfter } = await supabase
-        .from('user_stats')
-        .select('*')
-        .eq('user_wallet_address', walletAddress)
-        .maybeSingle();
-
+      const currentUploads = existingStats ? existingStats.total_uploads + 1 : 1;
       const newAchievements = [];
 
-      // Check First Drop achievement
-      if (statsAfter && statsAfter.total_uploads === 1) {
+      // Check First Drop achievement (first upload)
+      if (currentUploads === 1) {
         const { error } = await supabase
           .from('user_achievements')
           .insert({
@@ -194,11 +167,12 @@ serve(async (req) => {
         if (!error) {
           newAchievements.push({ id: 'first_drop', name: 'First Drop', bonus: 10 });
           totalTRN += 10;
+          rewards.push({ type: 'achievement_first_drop', amount: 10 });
         }
       }
 
-      // Check Data Knight achievement
-      if (statsAfter && statsAfter.total_uploads === 10) {
+      // Check Data Knight achievement (10th upload)
+      if (currentUploads === 10) {
         const { error } = await supabase
           .from('user_achievements')
           .insert({
@@ -210,8 +184,41 @@ serve(async (req) => {
         if (!error) {
           newAchievements.push({ id: 'data_knight', name: 'Data Knight', bonus: 50 });
           totalTRN += 50;
+          rewards.push({ type: 'achievement_data_knight', amount: 50 });
         }
       }
+
+      // NOW update user_stats with the FINAL totalTRN (including achievement bonuses)
+      if (existingStats) {
+        const { error: updateError } = await supabase
+          .from('user_stats')
+          .update({
+            total_uploads: currentUploads,
+            total_trn_earned: Number(existingStats.total_trn_earned) + totalTRN,
+            last_upload_date: new Date().toISOString().split('T')[0],
+            updated_at: new Date().toISOString()
+          })
+          .eq('user_wallet_address', walletAddress);
+        
+        if (updateError) {
+          console.error('Error updating user_stats:', updateError);
+        }
+      } else {
+        const { error: insertError } = await supabase
+          .from('user_stats')
+          .insert({
+            user_wallet_address: walletAddress,
+            total_uploads: 1,
+            total_trn_earned: totalTRN,
+            last_upload_date: new Date().toISOString().split('T')[0]
+          });
+        
+        if (insertError) {
+          console.error('Error inserting user_stats:', insertError);
+        }
+      }
+
+      console.log('Final reward calculation:', { totalTRN, achievements: newAchievements.length });
 
       // Update project_media with TRN earned
       await supabase
