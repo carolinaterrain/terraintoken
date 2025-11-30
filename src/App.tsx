@@ -1,7 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { HelmetProvider } from "react-helmet-async";
 import { lazy, Suspense } from "react";
@@ -11,6 +9,9 @@ import { useEasterEggs } from "./hooks/useEasterEggs";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
 import { TokenDataProvider } from "./providers/TokenDataProvider";
 
+// Lazy load toast systems - only needed when toasts are triggered
+const Toaster = lazy(() => import("@/components/ui/toaster").then(m => ({ default: m.Toaster })));
+const Sonner = lazy(() => import("@/components/ui/sonner").then(m => ({ default: m.Toaster })));
 // Lazy load all pages for optimal code splitting
 const Index = lazy(() => import("./pages/Index"));
 const EarnTRN = lazy(() => import("./pages/EarnTRN"));
@@ -126,9 +127,9 @@ const App = () => {
             <TooltipProvider>
               <Suspense fallback={null}>
                 <PerformanceMonitor />
+                <Toaster />
+                <Sonner />
               </Suspense>
-              <Toaster />
-              <Sonner />
               <AppContent />
             </TooltipProvider>
           </HelmetProvider>
