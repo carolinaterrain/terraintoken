@@ -49,13 +49,25 @@ Deno.serve(async (req) => {
       .select()
       .single();
 
-    // Record burn
+    // Record burn with verification placeholder
+    if (!buyerWallet) {
+      throw new Error('buyer_wallet is required for burn tracking');
+    }
+    
     await supabase.from('token_burns').insert({
       burn_source: 'marketplace_fee',
       burn_amount: feeBurned,
       user_wallet: buyerWallet,
       related_transaction_id: transaction.id,
+      transaction_signature: 'pending_verification',
+      metadata: {
+        item_id: itemId,
+        verification_status: 'pending',
+        recorded_at: new Date().toISOString()
+      }
     });
+    
+    console.log(`[Burn] Marketplace fee burn recorded: ${feeBurned} TRN from ${buyerWallet}`);
 
     // Update item stats
     await supabase

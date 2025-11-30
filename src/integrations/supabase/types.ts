@@ -2113,6 +2113,7 @@ export type Database = {
           price_sol: number | null
           price_usd: number | null
           total_issued: number
+          updated_at: string | null
           volume_24h_usd: number | null
         }
         Insert: {
@@ -2127,6 +2128,7 @@ export type Database = {
           price_sol?: number | null
           price_usd?: number | null
           total_issued?: number
+          updated_at?: string | null
           volume_24h_usd?: number | null
         }
         Update: {
@@ -2141,6 +2143,7 @@ export type Database = {
           price_sol?: number | null
           price_usd?: number | null
           total_issued?: number
+          updated_at?: string | null
           volume_24h_usd?: number | null
         }
         Relationships: []
