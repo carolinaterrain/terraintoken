@@ -27,19 +27,27 @@ serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-    // Get the latest stats row
-    const { data, error } = await supabase
-      .from('trn_live_stats')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single();
+    // Fetch latest stats and burn totals in parallel
+    const [statsResult, burnResult] = await Promise.all([
+      supabase
+        .from('trn_live_stats')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single(),
+      supabase
+        .from('token_burns')
+        .select('burn_amount')
+    ]);
 
-    if (error) {
-      console.error('Error fetching live stats:', error);
+    if (statsResult.error) {
+      console.error('Error fetching live stats:', statsResult.error);
       
       // Return fallback data if no stats found
-      if (error.code === 'PGRST116') {
+      if (statsResult.error.code === 'PGRST116') {
+        // Calculate burn total even in fallback mode
+        const totalBurned = burnResult.data?.reduce((sum, b) => sum + (Number(b.burn_amount) || 0), 0) || 0;
+        
         return new Response(
           JSON.stringify({
             current_supply: 550000000,
@@ -52,6 +60,7 @@ serve(async (req) => {
             market_cap_usd: 55,
             volume_24h_usd: 0,
             liquidity_usd: 0,
+            total_burned: totalBurned,
             created_at: new Date().toISOString(),
             is_fallback: true,
           }),
@@ -60,10 +69,20 @@ serve(async (req) => {
       }
 
       return new Response(
-        JSON.stringify({ error: 'Failed to fetch stats', details: error.message }),
+        JSON.stringify({ error: 'Failed to fetch stats', details: statsResult.error.message }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+
+    // Calculate live total burned from token_burns table
+    const totalBurned = burnResult.data?.reduce((sum, b) => sum + (Number(b.burn_amount) || 0), 0) || 0;
+
+    // Log for debugging
+    console.log('Stats fetched successfully:', {
+      hasStats: !!statsResult.data,
+      totalBurned,
+      burnRecordCount: burnResult.data?.length || 0
+    });
 
     // Add cache headers for performance
     const headers = {
@@ -74,7 +93,8 @@ serve(async (req) => {
 
     return new Response(
       JSON.stringify({
-        ...data,
+        ...statsResult.data,
+        total_burned: totalBurned, // Always use live burn total from token_burns
         is_fallback: false,
       }),
       { status: 200, headers }
