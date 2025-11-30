@@ -302,3 +302,140 @@ export function calculateBurnRate(totalBurned: number, daysSinceLaunch: number):
   if (daysSinceLaunch <= 0) return 0;
   return totalBurned / daysSinceLaunch;
 }
+
+// Burn Sources
+export type BurnSource = 
+  | 'marketplace_fee'
+  | 'energy_purchase'
+  | 'prediction_stake'
+  | 'gamification'
+  | 'mystery_box'
+  | 'season_pass'
+  | 'manual';
+
+export interface BurnResult {
+  success: boolean;
+  burnId?: string;
+  amount?: number;
+  error?: string;
+}
+
+/**
+ * Record a TRN burn event to Supabase
+ * This function records burns for tracking - actual on-chain burns happen separately
+ */
+export async function burnTRN(
+  amount: number,
+  burnSource: BurnSource,
+  userWallet: string,
+  metadata?: Record<string, unknown>
+): Promise<BurnResult> {
+  console.log('[burnTRN] === START BURN RECORD ===');
+  console.log('[burnTRN] Amount:', amount);
+  console.log('[burnTRN] Source:', burnSource);
+  console.log('[burnTRN] Wallet:', userWallet);
+  
+  // Validation
+  if (!amount || amount <= 0) {
+    console.error('[burnTRN] Invalid amount:', amount);
+    return { success: false, error: 'Invalid burn amount' };
+  }
+  
+  if (!userWallet || userWallet.trim() === '') {
+    console.error('[burnTRN] Missing wallet address');
+    return { success: false, error: 'User wallet address is required' };
+  }
+  
+  const validation = validateSolanaAddress(userWallet);
+  if (!validation.isValid) {
+    console.error('[burnTRN] Invalid wallet:', validation.error);
+    return { success: false, error: validation.error };
+  }
+  
+  try {
+    const burnRecord = {
+      burn_amount: amount,
+      burn_source: burnSource,
+      user_wallet: userWallet,
+      transaction_signature: 'pending_verification',
+      metadata: {
+        ...metadata,
+        recorded_at: new Date().toISOString(),
+        source: 'frontend_burnTRN'
+      }
+    };
+    
+    console.log('[burnTRN] Inserting record:', JSON.stringify(burnRecord));
+    
+    const { data, error } = await supabase
+      .from('token_burns')
+      .insert(burnRecord)
+      .select()
+      .single();
+    
+    if (error) {
+      console.error('[burnTRN] Insert FAILED:', error);
+      return { success: false, error: error.message };
+    }
+    
+    console.log('[burnTRN] Insert SUCCESS:', data);
+    console.log('[burnTRN] === END BURN RECORD ===');
+    
+    return {
+      success: true,
+      burnId: data.id,
+      amount: data.burn_amount
+    };
+  } catch (error) {
+    console.error('[burnTRN] EXCEPTION:', error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Unknown error' 
+    };
+  }
+}
+
+/**
+ * Get total burned amount from database
+ */
+export async function getTotalBurned(): Promise<number> {
+  try {
+    const { data, error } = await supabase
+      .from('token_burns')
+      .select('burn_amount');
+    
+    if (error) {
+      console.error('[getTotalBurned] Error:', error);
+      return 0;
+    }
+    
+    return data?.reduce((sum, burn) => sum + (burn.burn_amount || 0), 0) || 0;
+  } catch (error) {
+    console.error('[getTotalBurned] Exception:', error);
+    return 0;
+  }
+}
+
+/**
+ * Refresh holder distribution cache by calling the edge function
+ */
+export async function refreshHolderDistribution(): Promise<boolean> {
+  console.log('[refreshHolderDistribution] Triggering cache refresh...');
+  
+  try {
+    const { data, error } = await supabase.functions.invoke('fetch-holder-data', {
+      body: { forceRefresh: true }
+    });
+    
+    if (error) {
+      console.error('[refreshHolderDistribution] Error:', error);
+      return false;
+    }
+    
+    console.log('[refreshHolderDistribution] Success:', data);
+    return true;
+  } catch (error) {
+    console.error('[refreshHolderDistribution] Exception:', error);
+    return false;
+  }
+}

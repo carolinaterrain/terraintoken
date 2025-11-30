@@ -47,32 +47,65 @@ export const WalletConnect = () => {
   }, [connected, publicKey]);
 
   const trackWalletConnection = async (address: string) => {
+    console.log('[WalletConnect] === START TRACKING ===');
+    console.log('[WalletConnect] Wallet address:', address);
+    console.log('[WalletConnect] Timestamp:', new Date().toISOString());
+    
     try {
-      console.log('[WalletConnect] Tracking wallet:', address);
+      // Step 1: Try upsert
+      const payload = {
+        wallet_address: address,
+        last_seen_at: new Date().toISOString(),
+      };
+      console.log('[WalletConnect] Upsert payload:', JSON.stringify(payload));
       
-      // Use upsert with ON CONFLICT for atomic operation
-      const { data, error } = await supabase
+      const { data, error, status, statusText } = await supabase
         .from("wallet_connections")
-        .upsert(
-          {
-            wallet_address: address,
-            last_seen_at: new Date().toISOString(),
-          },
-          { 
-            onConflict: 'wallet_address',
-            ignoreDuplicates: false 
-          }
-        )
+        .upsert(payload, { 
+          onConflict: 'wallet_address',
+          ignoreDuplicates: false 
+        })
         .select();
 
+      console.log('[WalletConnect] Response status:', status, statusText);
+      
       if (error) {
-        console.error("[WalletConnect] Upsert failed:", error.message, error.details, error.hint);
+        console.error("[WalletConnect] Upsert FAILED:", {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        });
+        
+        // Step 2: If upsert fails, try direct insert as fallback
+        console.log('[WalletConnect] Attempting direct insert fallback...');
+        const { data: insertData, error: insertError } = await supabase
+          .from("wallet_connections")
+          .insert(payload)
+          .select();
+          
+        if (insertError) {
+          console.error("[WalletConnect] Direct insert FAILED:", insertError);
+          toast({
+            title: "Tracking Issue",
+            description: `Unable to track wallet: ${insertError.message}`,
+            variant: "destructive"
+          });
+        } else {
+          console.log('[WalletConnect] Direct insert SUCCESS:', insertData);
+        }
         return;
       }
       
-      console.log('[WalletConnect] Tracked successfully:', data);
+      console.log('[WalletConnect] Upsert SUCCESS:', data);
+      console.log('[WalletConnect] === END TRACKING ===');
     } catch (error) {
-      console.error("[WalletConnect] Tracking exception:", error);
+      console.error("[WalletConnect] EXCEPTION:", error);
+      toast({
+        title: "Connection Error",
+        description: "Failed to track wallet connection",
+        variant: "destructive"
+      });
     }
   };
 
