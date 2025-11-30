@@ -17,7 +17,7 @@ export const NewsletterSignup = () => {
           </a>
         </Button>
         <Button size="lg" variant="outline" className="border-primary" asChild>
-          <a href="https://discord.gg/terraintoken" target="_blank" rel="noopener noreferrer">
+          <a href="https://discord.gg/nX5u8ZaH" target="_blank" rel="noopener noreferrer">
             Join Discord 💬
           </a>
         </Button>
