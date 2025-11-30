@@ -58,13 +58,25 @@ Deno.serve(async (req) => {
       .select()
       .single();
 
-    // Record burn
+    // Record burn with verification placeholder
+    if (!walletAddress) {
+      throw new Error('wallet_address is required for burn tracking');
+    }
+    
     await supabase.from('token_burns').insert({
       burn_source: 'energy_purchase',
       burn_amount: trnBurned,
       user_wallet: walletAddress,
       related_transaction_id: purchase.id,
+      transaction_signature: 'pending_verification',
+      metadata: {
+        package_type: packageType,
+        verification_status: 'pending',
+        recorded_at: new Date().toISOString()
+      }
     });
+    
+    console.log(`[Burn] Energy purchase burn recorded: ${trnBurned} TRN from ${walletAddress}`);
 
     return new Response(JSON.stringify({ success: true, purchase }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

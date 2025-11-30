@@ -16,75 +16,74 @@ export const WalletConnect = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (connected && publicKey) {
-      trackWalletConnection(publicKey.toBase58());
-      fetchBalances(publicKey);
-      
-      // Emit wallet changed event with SOL balance
-      window.dispatchEvent(
-        new CustomEvent("walletChanged", { 
-          detail: {
-            address: publicKey.toBase58(),
-            solBalance: solBalance
-          }
-        })
-      );
-    } else {
-      setTrnBalance(0);
-      setSOLBalance(0);
-      window.dispatchEvent(new CustomEvent("walletChanged", { detail: null }));
-    }
+    const handleConnection = async () => {
+      if (connected && publicKey) {
+        const address = publicKey.toBase58();
+        console.log('[WalletConnect] Connected:', address);
+        
+        // Track connection first
+        await trackWalletConnection(address);
+        
+        // Then fetch balances
+        const balances = await fetchBalances(publicKey);
+        
+        // Emit wallet changed event with SOL balance
+        window.dispatchEvent(
+          new CustomEvent("walletChanged", { 
+            detail: {
+              address,
+              solBalance: balances.sol
+            }
+          })
+        );
+      } else {
+        setTrnBalance(0);
+        setSOLBalance(0);
+        window.dispatchEvent(new CustomEvent("walletChanged", { detail: null }));
+      }
+    };
+    
+    handleConnection();
   }, [connected, publicKey]);
 
   const trackWalletConnection = async (address: string) => {
     try {
-      // First try to update existing record
-      const { data: existing, error: selectError } = await supabase
+      console.log('[WalletConnect] Tracking wallet:', address);
+      
+      // Use upsert with ON CONFLICT for atomic operation
+      const { data, error } = await supabase
         .from("wallet_connections")
-        .select("id")
-        .eq("wallet_address", address)
-        .maybeSingle();
-
-      if (selectError) {
-        console.warn("Error checking wallet connection:", selectError.message);
-        return; // Silent fail - wallet tracking is non-critical
-      }
-
-      if (existing) {
-        // Update existing record
-        const { error: updateError } = await supabase
-          .from("wallet_connections")
-          .update({ last_seen_at: new Date().toISOString() })
-          .eq("wallet_address", address);
-        
-        if (updateError) {
-          console.warn("Error updating wallet connection:", updateError.message);
-        }
-      } else {
-        // Insert new record
-        const { error: insertError } = await supabase
-          .from("wallet_connections")
-          .insert({
+        .upsert(
+          {
             wallet_address: address,
             last_seen_at: new Date().toISOString(),
-          });
-        
-        if (insertError) {
-          console.warn("Error inserting wallet connection:", insertError.message);
-        }
+          },
+          { 
+            onConflict: 'wallet_address',
+            ignoreDuplicates: false 
+          }
+        )
+        .select();
+
+      if (error) {
+        console.error("[WalletConnect] Upsert failed:", error.message, error.details, error.hint);
+        return;
       }
+      
+      console.log('[WalletConnect] Tracked successfully:', data);
     } catch (error) {
-      console.warn("Wallet tracking failed (non-critical):", error);
+      console.error("[WalletConnect] Tracking exception:", error);
     }
   };
 
-  const fetchBalances = async (wallet: PublicKey) => {
+  const fetchBalances = async (wallet: PublicKey): Promise<{ sol: number; trn: number }> => {
     try {
       const connection = new Connection("https://api.mainnet-beta.solana.com");
 
       // Fetch SOL balance
-      const solBalance = await connection.getBalance(wallet);
-      setSOLBalance(solBalance / 1e9); // Convert lamports to SOL
+      const solLamports = await connection.getBalance(wallet);
+      const sol = solLamports / 1e9;
+      setSOLBalance(sol);
 
       // Fetch TRN token balance
       const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
@@ -92,18 +91,18 @@ export const WalletConnect = () => {
         { mint: new PublicKey(TRN_MINT) }
       );
 
+      let trn = 0;
       if (tokenAccounts.value.length > 0) {
-        const balance =
-          tokenAccounts.value[0].account.data.parsed.info.tokenAmount.uiAmount;
-        setTrnBalance(balance || 0);
-      } else {
-        setTrnBalance(0);
+        trn = tokenAccounts.value[0].account.data.parsed.info.tokenAmount.uiAmount || 0;
       }
+      setTrnBalance(trn);
+      
+      return { sol, trn };
     } catch (error) {
-      console.error("Error fetching balances:", error);
-      // Fallback to 0
+      console.error("[WalletConnect] Error fetching balances:", error);
       setTrnBalance(0);
       setSOLBalance(0);
+      return { sol: 0, trn: 0 };
     }
   };
 
