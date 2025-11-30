@@ -1,11 +1,16 @@
 import { Helmet } from "react-helmet-async";
-import { lazy, Suspense } from "react";
-import { Loader2 } from "lucide-react";
+import { lazy, Suspense, useState } from "react";
+import { Loader2, Bug, Flame } from "lucide-react";
 import { useGoblinMarketData } from "@/hooks/useGoblinMarketData";
 import { SolanaWalletProvider } from "@/providers/WalletProvider";
 import { LazySection } from "@/components/ui/lazy-section";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DashboardErrorBoundary } from "@/components/charts/DashboardErrorBoundary";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import { burnTRN, getTotalBurned } from "@/lib/carolinaTerrainSync";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 // Critical components - Load immediately
 import { DexScreenerChart } from "@/components/market/DexScreenerChart";
@@ -26,7 +31,142 @@ const ComponentFallback = () => (
   </div>
 );
 
-const GoblinMarket = () => {
+const IS_DEV = import.meta.env.DEV;
+
+// Dev Debug Panel Component
+const DevDebugPanel = () => {
+  const { publicKey, connected } = useWallet();
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+  const [totalBurned, setTotalBurned] = useState<number | null>(null);
+
+  const handleTestBurn = async () => {
+    if (!connected || !publicKey) {
+      toast({
+        title: "Wallet Not Connected",
+        description: "Please connect your wallet first to test burn functionality.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    console.log('[DevDebug] === TEST BURN START ===');
+    console.log('[DevDebug] Wallet:', publicKey.toBase58());
+
+    try {
+      const result = await burnTRN(
+        100, // Test amount
+        'gamification', // Source type
+        publicKey.toBase58(), // User wallet
+        { 
+          test: true, 
+          reason: 'dev_verification',
+          timestamp: new Date().toISOString()
+        }
+      );
+
+      console.log('[DevDebug] Burn result:', result);
+
+      if (result.success) {
+        toast({
+          title: "Test Burn Recorded",
+          description: `Burn ID: ${result.burnId?.slice(0, 8)}... Amount: 100 TRN`,
+        });
+      } else {
+        toast({
+          title: "Burn Failed",
+          description: result.error || "Unknown error",
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      console.error('[DevDebug] Burn exception:', error);
+      toast({
+        title: "Burn Exception",
+        description: error instanceof Error ? error.message : "Unknown error",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleFetchTotalBurned = async () => {
+    setIsLoading(true);
+    console.log('[DevDebug] Fetching total burned...');
+    
+    try {
+      const total = await getTotalBurned();
+      console.log('[DevDebug] Total burned:', total);
+      setTotalBurned(total);
+      toast({
+        title: "Total Burned Fetched",
+        description: `${total.toLocaleString()} TRN total burned`,
+      });
+    } catch (error) {
+      console.error('[DevDebug] Fetch error:', error);
+      toast({
+        title: "Fetch Failed",
+        description: error instanceof Error ? error.message : "Unknown error",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (!IS_DEV) return null;
+
+  return (
+    <Card className="p-4 bg-gradient-to-br from-orange-950/50 to-red-950/50 border-orange-500/30">
+      <div className="flex items-center gap-2 mb-3">
+        <Bug className="w-4 h-4 text-orange-500" />
+        <h3 className="font-bold text-orange-500">Dev Debug Panel</h3>
+      </div>
+      
+      <div className="space-y-3">
+        <div className="text-xs text-muted-foreground">
+          Connected: {connected ? publicKey?.toBase58().slice(0, 8) + '...' : 'No'}
+        </div>
+        
+        <div className="grid grid-cols-2 gap-2">
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={handleTestBurn}
+            disabled={isLoading || !connected}
+            className="text-xs border-orange-500/50 hover:bg-orange-500/20"
+          >
+            <Flame className="w-3 h-3 mr-1" />
+            Test Burn (100 TRN)
+          </Button>
+          
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={handleFetchTotalBurned}
+            disabled={isLoading}
+            className="text-xs border-orange-500/50 hover:bg-orange-500/20"
+          >
+            Fetch Total Burned
+          </Button>
+        </div>
+
+        {totalBurned !== null && (
+          <div className="text-xs p-2 bg-background/50 rounded">
+            <span className="text-muted-foreground">Total Burned: </span>
+            <span className="font-mono font-bold text-orange-500">
+              {totalBurned.toLocaleString()} TRN
+            </span>
+          </div>
+        )}
+      </div>
+    </Card>
+  );
+};
+
+const GoblinMarketContent = () => {
   const { data: marketData, isLoading } = useGoblinMarketData();
 
   const marketStats = marketData?.stats || {
@@ -50,6 +190,62 @@ const GoblinMarket = () => {
   }
 
   return (
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <div className="container mx-auto px-4 py-6">
+        <div className="flex items-center justify-between">
+          <BackToHome />
+          <div className="flex items-center gap-4">
+            <LiveViewersCounter />
+            <WalletConnect />
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <main className="container mx-auto px-4 pb-20 space-y-6">
+        {/* Title Section */}
+        <div className="text-center space-y-2">
+          <h1 className="text-4xl lg:text-6xl font-bold font-display bg-gradient-to-r from-goblin-green via-goblin-gold to-terrain-purple bg-clip-text text-transparent">
+            🟢 Goblin Market
+          </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Watch Terro the Terrain Goblin guard the TRN market. Live price data, 
+            trading charts, and holder progress—all in one enchanted panel.
+          </p>
+        </div>
+
+        {/* Dev Debug Panel - Only in development */}
+        {IS_DEV && <DevDebugPanel />}
+
+        {/* Main Chart - Full Width */}
+        <DashboardErrorBoundary componentName="Price Chart">
+          <DexScreenerChart />
+        </DashboardErrorBoundary>
+
+        {/* Holder Tracker & Price Alerts */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <DashboardErrorBoundary componentName="Holder Tracker">
+            <LiveHolderTracker />
+          </DashboardErrorBoundary>
+          <DashboardErrorBoundary componentName="Price Alerts">
+            <PriceAlerts currentPrice={parseFloat(marketStats.priceUsd)} />
+          </DashboardErrorBoundary>
+        </div>
+
+        {/* Jupiter Swap - Lazy load */}
+        <LazySection fallback={<Skeleton className="h-96" />}>
+          <Suspense fallback={<ComponentFallback />}>
+            <JupiterSwap />
+          </Suspense>
+        </LazySection>
+      </main>
+    </div>
+  );
+};
+
+const GoblinMarket = () => {
+  return (
     <SolanaWalletProvider>
       <Helmet>
         <title>Goblin Market - Live TRN Price & Trading | Terrain Token</title>
@@ -58,55 +254,7 @@ const GoblinMarket = () => {
           content="Watch the Goblin Market live! Real-time TRN price, trading charts, holder stats, and market sentiment. Join the goblin horde today."
         />
       </Helmet>
-
-      <div className="min-h-screen bg-background">
-        {/* Header */}
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <BackToHome />
-            <div className="flex items-center gap-4">
-              <LiveViewersCounter />
-              <WalletConnect />
-            </div>
-          </div>
-        </div>
-
-        {/* Main Content */}
-        <main className="container mx-auto px-4 pb-20 space-y-6">
-          {/* Title Section */}
-          <div className="text-center space-y-2">
-            <h1 className="text-4xl lg:text-6xl font-bold font-display bg-gradient-to-r from-goblin-green via-goblin-gold to-terrain-purple bg-clip-text text-transparent">
-              🟢 Goblin Market
-            </h1>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Watch Terro the Terrain Goblin guard the TRN market. Live price data, 
-              trading charts, and holder progress—all in one enchanted panel.
-            </p>
-          </div>
-
-          {/* Main Chart - Full Width */}
-          <DashboardErrorBoundary componentName="Price Chart">
-            <DexScreenerChart />
-          </DashboardErrorBoundary>
-
-          {/* Holder Tracker & Price Alerts */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <DashboardErrorBoundary componentName="Holder Tracker">
-              <LiveHolderTracker />
-            </DashboardErrorBoundary>
-            <DashboardErrorBoundary componentName="Price Alerts">
-              <PriceAlerts currentPrice={parseFloat(marketStats.priceUsd)} />
-            </DashboardErrorBoundary>
-          </div>
-
-          {/* Jupiter Swap - Lazy load */}
-          <LazySection fallback={<Skeleton className="h-96" />}>
-            <Suspense fallback={<ComponentFallback />}>
-              <JupiterSwap />
-            </Suspense>
-          </LazySection>
-        </main>
-      </div>
+      <GoblinMarketContent />
     </SolanaWalletProvider>
   );
 };
