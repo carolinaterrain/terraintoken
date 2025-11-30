@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import { Coins, Sparkles, CheckCircle2, ArrowRight } from "lucide-react";
 import ScrollProgress from "@/components/ScrollProgress";
 import BackToHome from "@/components/BackToHome";
-import AnnouncementBanner from "@/components/AnnouncementBanner";
 import DesktopNav from "@/components/DesktopNav";
 import Footer from "@/components/Footer";
 import { GlassCard } from "@/components/ui/glass-card";
@@ -110,7 +109,6 @@ const RedeemTRN = () => {
           <title>Redemption Submitted | Terrain Token</title>
         </Helmet>
         <ScrollProgress />
-        <AnnouncementBanner />
         <DesktopNav />
         <main className="min-h-screen bg-gradient-to-b from-background to-background/50 pt-32 pb-20 px-4">
           <BackToHome />
@@ -160,7 +158,6 @@ const RedeemTRN = () => {
       </Helmet>
 
       <ScrollProgress />
-      <AnnouncementBanner />
       <DesktopNav />
 
       <main className="min-h-screen bg-gradient-to-b from-background to-background/50 pt-32 pb-20 px-4">
