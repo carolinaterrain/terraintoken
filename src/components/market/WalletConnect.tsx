@@ -190,7 +190,7 @@ export const WalletConnect = () => {
       const { data: allRows, error: queryError } = await supabase
         .from("wallet_connections")
         .select("*")
-        .order("created_at", { ascending: false })
+        .order("last_seen_at", { ascending: false })
         .limit(5);
       
       console.log('[WalletConnect] Recent wallet_connections rows:', allRows);
