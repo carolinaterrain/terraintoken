@@ -178,6 +178,12 @@ const Footer = () => {
             >
               Token Metadata
             </Link>
+            <Link 
+              to="/philanthropic-fund" 
+              className="text-xs text-primary hover:underline font-medium"
+            >
+              Philanthropic Fund
+            </Link>
             <a 
               href="https://solscan.io/token/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump" 
               target="_blank"
