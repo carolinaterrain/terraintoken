@@ -2,17 +2,20 @@ import { useEffect, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { Card } from "@/components/ui/card";
-import { TrendingUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { TrendingUp, Bug } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Connection, PublicKey } from "@solana/web3.js";
 
 const TRN_MINT = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+const IS_DEV = import.meta.env.DEV;
 
 export const WalletConnect = () => {
   const { publicKey, connected, disconnect } = useWallet();
   const [trnBalance, setTrnBalance] = useState<number>(0);
   const [solBalance, setSOLBalance] = useState<number>(0);
+  const [showDebug, setShowDebug] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -22,7 +25,7 @@ export const WalletConnect = () => {
         console.log('[WalletConnect] Connected:', address);
         
         // Track connection first
-        await trackWalletConnection(address);
+        const trackingSuccess = await trackWalletConnection(address);
         
         // Then fetch balances
         const balances = await fetchBalances(publicKey);
@@ -32,7 +35,8 @@ export const WalletConnect = () => {
           new CustomEvent("walletChanged", { 
             detail: {
               address,
-              solBalance: balances.sol
+              solBalance: balances.sol,
+              trackingSuccess
             }
           })
         );
@@ -46,7 +50,7 @@ export const WalletConnect = () => {
     handleConnection();
   }, [connected, publicKey]);
 
-  const trackWalletConnection = async (address: string) => {
+  const trackWalletConnection = async (address: string): Promise<boolean> => {
     console.log('[WalletConnect] === START TRACKING ===');
     console.log('[WalletConnect] Wallet address:', address);
     console.log('[WalletConnect] Timestamp:', new Date().toISOString());
@@ -91,14 +95,21 @@ export const WalletConnect = () => {
             description: `Unable to track wallet: ${insertError.message}`,
             variant: "destructive"
           });
+          return false;
         } else {
           console.log('[WalletConnect] Direct insert SUCCESS:', insertData);
+          // Verify the insert
+          return await verifyWalletPersistence(address);
         }
-        return;
       }
       
       console.log('[WalletConnect] Upsert SUCCESS:', data);
+      
+      // Step 3: VERIFICATION - Query to confirm data persisted
+      const verified = await verifyWalletPersistence(address);
+      
       console.log('[WalletConnect] === END TRACKING ===');
+      return verified;
     } catch (error) {
       console.error("[WalletConnect] EXCEPTION:", error);
       toast({
@@ -106,6 +117,84 @@ export const WalletConnect = () => {
         description: "Failed to track wallet connection",
         variant: "destructive"
       });
+      return false;
+    }
+  };
+
+  const verifyWalletPersistence = async (address: string): Promise<boolean> => {
+    console.log('[WalletConnect] === VERIFICATION START ===');
+    
+    const { data: verifyData, error: verifyError } = await supabase
+      .from("wallet_connections")
+      .select("*")
+      .eq("wallet_address", address)
+      .maybeSingle();
+
+    console.log('[WalletConnect] Verification query result:', { verifyData, verifyError });
+
+    if (verifyError) {
+      console.error("[WalletConnect] VERIFICATION QUERY FAILED:", verifyError);
+      toast({
+        title: "Verification Failed",
+        description: `Could not verify wallet persistence: ${verifyError.message}`,
+        variant: "destructive"
+      });
+      return false;
+    }
+
+    if (!verifyData) {
+      console.error("[WalletConnect] ❌ VERIFICATION FAILED - Data not persisted!");
+      console.error("[WalletConnect] Row should exist but doesn't. RLS or table issue.");
+      toast({
+        title: "Persistence Issue",
+        description: "Wallet connection was not saved. Check console for details.",
+        variant: "destructive"
+      });
+      return false;
+    }
+
+    console.log('[WalletConnect] ✅ VERIFIED - Row exists:', verifyData);
+    toast({
+      title: "Wallet Tracked",
+      description: "Connection recorded successfully!",
+    });
+    return true;
+  };
+
+  // Dev-only: Manual test insert
+  const testDirectInsert = async () => {
+    const testAddress = "TestWallet_" + Date.now();
+    console.log('[WalletConnect] === DEV TEST INSERT ===');
+    console.log('[WalletConnect] Test address:', testAddress);
+    
+    const { data, error, status } = await supabase
+      .from("wallet_connections")
+      .insert({ wallet_address: testAddress, last_seen_at: new Date().toISOString() })
+      .select();
+    
+    console.log('[WalletConnect] Test insert result:', { data, error, status });
+    
+    if (error) {
+      toast({
+        title: "Test Insert Failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    } else {
+      toast({
+        title: "Test Insert Succeeded",
+        description: `Created row for ${testAddress}`,
+      });
+      
+      // Query all rows to see the state
+      const { data: allRows, error: queryError } = await supabase
+        .from("wallet_connections")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(5);
+      
+      console.log('[WalletConnect] Recent wallet_connections rows:', allRows);
+      console.log('[WalletConnect] Query error:', queryError);
     }
   };
 
@@ -158,7 +247,22 @@ export const WalletConnect = () => {
   };
 
   if (!connected || !publicKey) {
-    return <WalletMultiButton className="!bg-gradient-to-r !from-goblin-green !to-terrain-purple hover:!from-goblin-green/90 hover:!to-terrain-purple/90 !text-sm !font-medium" />;
+    return (
+      <div className="flex flex-col gap-2">
+        <WalletMultiButton className="!bg-gradient-to-r !from-goblin-green !to-terrain-purple hover:!from-goblin-green/90 hover:!to-terrain-purple/90 !text-sm !font-medium" />
+        {IS_DEV && (
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={testDirectInsert}
+            className="text-xs"
+          >
+            <Bug className="w-3 h-3 mr-1" />
+            Test DB Insert
+          </Button>
+        )}
+      </div>
+    );
   }
 
   const { tier, color } = getHolderTier(trnBalance);
@@ -194,6 +298,42 @@ export const WalletConnect = () => {
           SOL: {solBalance.toFixed(4)}
         </p>
       </div>
+
+      {/* Dev Debug Tools */}
+      {IS_DEV && (
+        <div className="mt-3 pt-3 border-t border-goblin-gold/20">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => setShowDebug(!showDebug)}
+            className="text-xs w-full"
+          >
+            <Bug className="w-3 h-3 mr-1" />
+            {showDebug ? 'Hide' : 'Show'} Debug Tools
+          </Button>
+          
+          {showDebug && (
+            <div className="mt-2 space-y-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={testDirectInsert}
+                className="text-xs w-full"
+              >
+                Test DB Insert
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => trackWalletConnection(publicKey.toBase58())}
+                className="text-xs w-full"
+              >
+                Re-track This Wallet
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
     </Card>
   );
 };
