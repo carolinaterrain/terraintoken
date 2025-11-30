@@ -1,7 +1,12 @@
-import { useEffect, useState } from "react";
-import confetti from "canvas-confetti";
+import { useEffect, useState, useCallback } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { KeyboardShortcutsModal } from "@/components/KeyboardShortcutsModal";
+
+// Dynamic confetti loader - only loads when needed
+const fireConfetti = async (options: Parameters<typeof import("canvas-confetti").default>[0]) => {
+  const confetti = (await import("canvas-confetti")).default;
+  confetti(options);
+};
 
 export const useEasterEggs = () => {
   const [goblinClicks, setGoblinClicks] = useState(0);
@@ -83,9 +88,9 @@ export const useEasterEggs = () => {
     };
   }, [mascotClickCount, mascotBadgeUnlocked]);
 
-  const triggerMudFart = () => {
+  const triggerMudFart = useCallback(async () => {
     // Brown particle explosion
-    confetti({
+    await fireConfetti({
       particleCount: 100,
       spread: 70,
       origin: { y: 0.6 },
@@ -93,8 +98,8 @@ export const useEasterEggs = () => {
     });
 
     // Coin rain
-    setTimeout(() => {
-      confetti({
+    setTimeout(async () => {
+      await fireConfetti({
         particleCount: 50,
         spread: 100,
         origin: { y: 0 },
@@ -107,16 +112,16 @@ export const useEasterEggs = () => {
       title: "Oops! hehe~ 💨",
       description: "Goblin activated mud fart mode",
     });
-  };
+  }, [toast]);
 
-  const triggerDogeGoblin = () => {
+  const triggerDogeGoblin = useCallback(() => {
     toast({
       title: "You've unlocked DOGE-GOBLIN MODE 🐕⛏️",
       description: "Such wow. Much erosion.",
     });
-  };
+  }, [toast]);
 
-  const triggerScreenShake = () => {
+  const triggerScreenShake = useCallback(() => {
     document.body.style.animation = "shake 0.5s";
     document.body.style.animationIterationCount = "3";
     
@@ -128,11 +133,11 @@ export const useEasterEggs = () => {
     setTimeout(() => {
       document.body.style.animation = "";
     }, 1500);
-  };
+  }, [toast]);
 
-  const triggerDrainMode = () => {
+  const triggerDrainMode = useCallback(async () => {
     // Water drop confetti only - no screen tilt
-    confetti({
+    await fireConfetti({
       particleCount: 50,
       spread: 60,
       origin: { y: 0.8 },
@@ -147,14 +152,14 @@ export const useEasterEggs = () => {
     localStorage.setItem('trn-drain-discovered', 'true');
     const discoveries = parseInt(localStorage.getItem('trn-easter-egg-count') || '0');
     localStorage.setItem('trn-easter-egg-count', String(discoveries + 1));
-  };
+  }, [toast]);
 
-  const triggerVibeMode = () => {
+  const triggerVibeMode = useCallback(async () => {
     const audioEvent = new CustomEvent('trn-audio-play');
     window.dispatchEvent(audioEvent);
     
     // Simplified confetti - less particles
-    confetti({
+    await fireConfetti({
       particleCount: 30,
       spread: 70,
       origin: { y: 0.6 },
@@ -170,14 +175,14 @@ export const useEasterEggs = () => {
     localStorage.setItem('trn-vibe-discovered', 'true');
     const discoveries = parseInt(localStorage.getItem('trn-easter-egg-count') || '0');
     localStorage.setItem('trn-easter-egg-count', String(discoveries + 1));
-  };
+  }, [toast]);
 
-  const handleMascotClickEasterEgg = () => {
+  const handleMascotClickEasterEgg = useCallback(async () => {
     const newCount = mascotClickCount + 1;
     setMascotClickCount(newCount);
     
     if (newCount === 5 && !mascotBadgeUnlocked) {
-      confetti({
+      await fireConfetti({
         particleCount: 100,
         spread: 160,
         origin: { y: 0.6 },
@@ -199,15 +204,18 @@ export const useEasterEggs = () => {
     setTimeout(() => {
       setMascotClickCount(0);
     }, 2000);
-  };
+  }, [mascotClickCount, mascotBadgeUnlocked, toast]);
 
-  const triggerRaveMode = () => {
+  const triggerRaveMode = useCallback(async () => {
     setRaveMode(true);
     
     toast({
       title: "GOBLIN RAVE ACTIVATED! 🎉🕺",
       description: "Dance like nobody's watching",
     });
+
+    // Load confetti once for rave mode
+    const confetti = (await import("canvas-confetti")).default;
 
     // Disco confetti
     const duration = 10000;
@@ -238,13 +246,13 @@ export const useEasterEggs = () => {
     setTimeout(() => {
       setRaveMode(false);
     }, duration);
-  };
+  }, [toast]);
 
-  const triggerSecretBadge = () => {
+  const triggerSecretBadge = useCallback(async () => {
     localStorage.setItem("trn-secret-badge", "true");
     setShowBadge(true);
     
-    confetti({
+    await fireConfetti({
       particleCount: 100,
       spread: 70,
       origin: { y: 0.8 },
@@ -255,9 +263,9 @@ export const useEasterEggs = () => {
       title: "🏅 Secret Erosion Master Badge Unlocked!",
       description: "You've discovered the hidden achievement!",
     });
-  };
+  }, [toast]);
 
-  const handleGoblinClick = () => {
+  const handleGoblinClick = useCallback(() => {
     const newCount = goblinClicks + 1;
     setGoblinClicks(newCount);
 
@@ -265,9 +273,9 @@ export const useEasterEggs = () => {
       triggerMudFart();
       setTimeout(() => setGoblinClicks(0), 2000);
     }
-  };
+  }, [goblinClicks, triggerMudFart]);
 
-  const handleCoinClick = () => {
+  const handleCoinClick = useCallback(() => {
     const newCount = coinClicks + 1;
     setCoinClicks(newCount);
 
@@ -275,18 +283,18 @@ export const useEasterEggs = () => {
       triggerDogeGoblin();
       setTimeout(() => setCoinClicks(0), 2000);
     }
-  };
+  }, [coinClicks, triggerDogeGoblin]);
 
-  const handleFooterClick = () => {
+  const handleFooterClick = useCallback(() => {
     const newCount = footerClicks + 1;
     setFooterClicks(newCount);
 
     if (newCount === 10) {
       triggerSecretBadge();
     }
-  };
+  }, [footerClicks, triggerSecretBadge]);
 
-  const handleScrollToBottom = () => {
+  const handleScrollToBottom = useCallback(async () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
       const hasShownBedrock = sessionStorage.getItem("trn-bedrock-shown");
       if (!hasShownBedrock) {
@@ -296,7 +304,7 @@ export const useEasterEggs = () => {
           description: "The deepest layer! Achievement unlocked.",
         });
         
-        confetti({
+        await fireConfetti({
           particleCount: 50,
           spread: 60,
           origin: { y: 1 },
@@ -304,13 +312,13 @@ export const useEasterEggs = () => {
         });
       }
     }
-  };
+  }, [toast]);
 
   // Scroll listener for bedrock achievement
   useEffect(() => {
     window.addEventListener("scroll", handleScrollToBottom);
     return () => window.removeEventListener("scroll", handleScrollToBottom);
-  }, []);
+  }, [handleScrollToBottom]);
 
   return (
     <>

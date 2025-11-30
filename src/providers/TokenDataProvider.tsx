@@ -1,8 +1,9 @@
-import { createContext, useContext, ReactNode } from 'react';
+import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchTRNStats } from '@/lib/api';
 import { supabase } from '@/integrations/supabase/client';
 import { useSmartPolling } from '@/hooks/useSmartPolling';
+import { requestIdleCallback } from '@/lib/performanceUtils';
 
 interface TokenData {
   stats: any;
@@ -16,6 +17,28 @@ interface TokenData {
   };
 }
 
+// Fallback data for immediate render
+const FALLBACK_STATS = {
+  price: "$--",
+  priceChange24h: "--",
+  volume24h: "$--",
+  marketCap: "$--",
+};
+
+const FALLBACK_SUPPLY = {
+  totalSupply: 1006699550,
+  circulatingSupply: 550000000,
+  decimals: 2,
+  lastUpdated: new Date().toISOString(),
+  isStale: true,
+};
+
+const FALLBACK_HOLDER_COUNT = {
+  holderCount: 0,
+  lastUpdated: new Date().toISOString(),
+  source: 'fallback'
+};
+
 const TokenDataContext = createContext<TokenData | null>(null);
 
 export const useTokenData = () => {
@@ -27,15 +50,30 @@ export const useTokenData = () => {
 };
 
 export const TokenDataProvider = ({ children }: { children: ReactNode }) => {
+  // Defer data fetching until page is interactive
+  const [enabled, setEnabled] = useState(false);
+  
+  useEffect(() => {
+    const id = requestIdleCallback(() => {
+      setEnabled(true);
+    });
+    return () => {
+      if (typeof window !== 'undefined' && 'cancelIdleCallback' in window) {
+        window.cancelIdleCallback(id as number);
+      }
+    };
+  }, []);
+
   const statsPolling = useSmartPolling(60000);
   const supplyPolling = useSmartPolling(300000);
   const holderPolling = useSmartPolling(120000);
 
-  // Fetch token stats
+  // Fetch token stats - deferred
   const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ['token-stats'],
     queryFn: fetchTRNStats,
-    refetchInterval: statsPolling,
+    enabled,
+    refetchInterval: enabled ? statsPolling : false,
     staleTime: 55000,
     gcTime: 600000,
     refetchOnWindowFocus: false,
@@ -43,47 +81,44 @@ export const TokenDataProvider = ({ children }: { children: ReactNode }) => {
     retry: 2,
   });
 
-  // Fetch token supply
+  // Fetch token supply - deferred
   const { data: supply, isLoading: supplyLoading } = useQuery({
     queryKey: ['token-supply'],
     queryFn: async () => {
       const { data, error } = await supabase.functions.invoke('fetch-token-supply');
       if (error) {
         console.error('Error fetching token supply:', error);
-        return {
-          totalSupply: 1006699550,
-          circulatingSupply: 550000000,
-          decimals: 2,
-          lastUpdated: new Date().toISOString(),
-          isStale: true,
-        };
+        return FALLBACK_SUPPLY;
       }
       return data;
     },
-    refetchInterval: supplyPolling,
+    enabled,
+    refetchInterval: enabled ? supplyPolling : false,
     staleTime: 240000,
   });
 
-  // Fetch holder count
+  // Fetch holder count - deferred
   const { data: holderCount, isLoading: holderLoading } = useQuery({
     queryKey: ['live-holder-count'],
     queryFn: async () => {
       const { data, error } = await supabase.functions.invoke('fetch-trn-holders');
       if (error) {
         console.error('Error fetching holder count:', error);
-        return { holderCount: 0, lastUpdated: new Date().toISOString(), source: 'error' };
+        return FALLBACK_HOLDER_COUNT;
       }
       return data;
     },
-    refetchInterval: holderPolling,
+    enabled,
+    refetchInterval: enabled ? holderPolling : false,
     staleTime: 100000,
   });
 
+  // Provide fallback data immediately, then swap to live data when available
   const value: TokenData = {
-    stats,
-    supply,
-    holderCount,
-    isLoading: statsLoading || supplyLoading || holderLoading,
+    stats: stats || FALLBACK_STATS,
+    supply: supply || FALLBACK_SUPPLY,
+    holderCount: holderCount || FALLBACK_HOLDER_COUNT,
+    isLoading: enabled && (statsLoading || supplyLoading || holderLoading),
     dataSource: {
       stats: stats?.marketCap !== "$--" ? 'live' : 'fallback',
       supply: supply?.isStale ? 'fallback' : 'live',

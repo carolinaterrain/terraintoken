@@ -86,7 +86,6 @@ const AppContent = () => {
             <Route path="/redeem-trn" element={<RedeemTRN />} />
             <Route path="/claim-reward" element={<ClaimInvoiceReward />} />
             <Route path="/market" element={<GoblinMarket />} />
-            <Route path="/goblin-market" element={<Navigate to="/market" replace />} />
             <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
             <Route path="/admin/unified" element={<AdminRoute><UnifiedAdminDashboard /></AdminRoute>} />
             <Route path="/admin/waitlist" element={<AdminRoute><WaitlistDashboard /></AdminRoute>} />
