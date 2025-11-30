@@ -81,7 +81,6 @@ const AppContent = () => {
             <Route path="/submit-meme" element={<SubmitMeme />} />
             <Route path="/goblin-cave" element={<GoblinCave />} />
             <Route path="/upload-project" element={<UploadProject />} />
-            <Route path="/upload" element={<Navigate to="/upload-project" replace />} />
             <Route path="/upload-testimonial" element={<UploadTestimonial />} />
             <Route path="/earn-trn" element={<EarnTRN />} />
             <Route path="/redeem-trn" element={<RedeemTRN />} />

@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import SkipToContent from "@/components/SkipToContent";
 import ScrollProgress from "@/components/ScrollProgress";
@@ -8,15 +8,29 @@ import Hero from "@/components/Hero";
 import { ResearchModeContent } from "@/components/ResearchModeContent";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { HeyGenAvatar } from "@/components/HeyGenAvatar";
+import { requestIdleCallback } from "@/lib/performanceUtils";
 
 const Index = () => {
   const { trackPageView } = useAnalytics();
   const location = useLocation();
   const navigate = useNavigate();
+  const [avatarEnabled, setAvatarEnabled] = useState(false);
 
   useEffect(() => {
     trackPageView(location.pathname);
   }, [location.pathname, trackPageView]);
+
+  // Defer HeyGen avatar loading until page is interactive
+  useEffect(() => {
+    const id = requestIdleCallback(() => {
+      setAvatarEnabled(true);
+    });
+    return () => {
+      if (typeof window !== 'undefined' && 'cancelIdleCallback' in window) {
+        window.cancelIdleCallback(id as number);
+      }
+    };
+  }, []);
 
   // Handle navigation with tab/scroll state
   useEffect(() => {
@@ -56,7 +70,7 @@ const Index = () => {
         <ResearchModeContent />
       </main>
 
-      <HeyGenAvatar enabled={true} />
+      <HeyGenAvatar enabled={avatarEnabled} />
     </>
   );
 };
