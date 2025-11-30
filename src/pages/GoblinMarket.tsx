@@ -1,10 +1,8 @@
 import { Helmet } from "react-helmet-async";
-import { lazy, Suspense, useState } from "react";
+import { useState } from "react";
 import { Loader2, Bug, Flame } from "lucide-react";
 import { useGoblinMarketData } from "@/hooks/useGoblinMarketData";
 import { SolanaWalletProvider } from "@/providers/WalletProvider";
-import { LazySection } from "@/components/ui/lazy-section";
-import { Skeleton } from "@/components/ui/skeleton";
 import { DashboardErrorBoundary } from "@/components/charts/DashboardErrorBoundary";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -21,15 +19,6 @@ import BackToHome from "@/components/BackToHome";
 // Above-the-fold components - Load on mount
 import { LiveHolderTracker } from "@/components/market/LiveHolderTracker";
 import { PriceAlerts } from "@/components/market/PriceAlerts";
-
-// Below-the-fold components - Lazy load
-const JupiterSwap = lazy(() => import("@/components/market/JupiterSwap").then(m => ({ default: m.JupiterSwap })));
-
-const ComponentFallback = () => (
-  <div className="flex items-center justify-center p-8">
-    <Loader2 className="w-6 h-6 animate-spin text-goblin-gold" />
-  </div>
-);
 
 const IS_DEV = import.meta.env.DEV;
 
@@ -233,12 +222,6 @@ const GoblinMarketContent = () => {
           </DashboardErrorBoundary>
         </div>
 
-        {/* Jupiter Swap - Lazy load */}
-        <LazySection fallback={<Skeleton className="h-96" />}>
-          <Suspense fallback={<ComponentFallback />}>
-            <JupiterSwap />
-          </Suspense>
-        </LazySection>
       </main>
     </div>
   );
