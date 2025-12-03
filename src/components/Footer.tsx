@@ -184,6 +184,18 @@ const Footer = () => {
             >
               Philanthropic Fund
             </Link>
+            <Link 
+              to="/refer" 
+              className="text-xs text-primary hover:underline font-medium"
+            >
+              Refer & Earn
+            </Link>
+            <Link 
+              to="/video-updates" 
+              className="text-xs text-primary hover:underline font-medium"
+            >
+              Updates
+            </Link>
             <a 
               href="https://solscan.io/token/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump" 
               target="_blank"
