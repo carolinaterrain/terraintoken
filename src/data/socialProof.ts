@@ -1,7 +1,7 @@
 export interface SocialComment {
   id: string;
   username: string;
-  platform: 'reddit' | 'twitter' | 'telegram' | 'discord';
+  platform: 'reddit' | 'twitter' | 'discord';
   text: string;
   timestamp: string;
   upvotes?: number;
@@ -86,6 +86,5 @@ export const socialComments: SocialComment[] = [
 export const platformColors = {
   reddit: 'hsl(16, 100%, 50%)',
   twitter: 'hsl(203, 89%, 53%)',
-  telegram: 'hsl(200, 83%, 58%)',
   discord: 'hsl(235, 86%, 65%)',
 } as const;

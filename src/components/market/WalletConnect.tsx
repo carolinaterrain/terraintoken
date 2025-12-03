@@ -250,7 +250,7 @@ export const WalletConnect = () => {
   if (!connected || !publicKey) {
     return (
       <div className="flex flex-col gap-2">
-        <WalletMultiButton className="!bg-primary !hover:bg-primary/90 !text-primary-foreground !rounded-lg !py-2 !px-4 !text-sm !font-medium !border-0 !shadow-md" />
+        <WalletMultiButton className="!bg-primary hover:!bg-primary/90 !text-primary-foreground !rounded-lg !py-2 !px-4 !text-sm !font-medium !border-0 !shadow-md" />
         {IS_DEV && (
           <Button 
             variant="outline" 
