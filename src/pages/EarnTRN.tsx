@@ -4,7 +4,6 @@ import BackToHome from "@/components/BackToHome";
 import EarnHero from "@/components/earn/EarnHero";
 import EarnActionCards from "@/components/earn/EarnActionCards";
 import HowItWorks from "@/components/earn/HowItWorks";
-import DailyQuests from "@/components/earn/DailyQuests";
 import Leaderboard from "@/components/earn/Leaderboard";
 import MyRewardsDashboard from "@/components/earn/MyRewardsDashboard";
 import AchievementBadges from "@/components/earn/AchievementBadges";
@@ -31,7 +30,6 @@ const EarnTRN = () => {
         <EarnHero />
         <EarnActionCards />
         <HowItWorks />
-        <DailyQuests />
         <Leaderboard />
         <MyRewardsDashboard />
         <AchievementBadges />
