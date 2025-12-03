@@ -9,47 +9,21 @@ import { Skeleton } from "@/components/ui/skeleton";
 export const EcosystemProof = () => {
   const navigate = useNavigate();
 
-  // Fetch total photos contributed
-  const { data: photosCount, isLoading: photosLoading } = useQuery({
-    queryKey: ['ecosystem-photos'],
+  // Fetch contribution stats from edge function (bypasses RLS for accurate counts)
+  const { data: stats, isLoading } = useQuery({
+    queryKey: ['contribution-stats'],
     queryFn: async () => {
-      const { count, error } = await supabase
-        .from('project_media')
-        .select('*', { count: 'exact', head: true });
+      const { data, error } = await supabase.functions.invoke('get-contribution-stats');
       if (error) throw error;
-      return count || 0;
+      return data as {
+        photos: number;
+        trn_distributed: number;
+        contributors: number;
+        last_updated: string;
+      };
     },
-    staleTime: 60000,
+    staleTime: 60000, // Cache for 60 seconds
   });
-
-  // Fetch total TRN distributed
-  const { data: totalTRN, isLoading: trnLoading } = useQuery({
-    queryKey: ['ecosystem-trn'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('trn_rewards')
-        .select('trn_amount');
-      if (error) throw error;
-      return data?.reduce((sum, r) => sum + (r.trn_amount || 0), 0) || 0;
-    },
-    staleTime: 60000,
-  });
-
-  // Fetch active contributors (unique wallets with uploads)
-  const { data: contributorsCount, isLoading: contributorsLoading } = useQuery({
-    queryKey: ['ecosystem-contributors'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('user_stats')
-        .select('*')
-        .gt('total_uploads', 0);
-      if (error) throw error;
-      return data?.length || 0;
-    },
-    staleTime: 60000,
-  });
-
-  const isLoading = photosLoading || trnLoading || contributorsLoading;
 
   return (
     <section className="py-12 bg-gradient-to-b from-primary/5 to-background border-y border-primary/10">
@@ -74,7 +48,7 @@ export const EcosystemProof = () => {
               {isLoading ? (
                 <Skeleton className="h-10 w-20 mx-auto" />
               ) : (
-                <CountUp end={photosCount || 0} duration={2} />
+                <CountUp end={stats?.photos || 0} duration={2} />
               )}
             </div>
             <p className="text-muted-foreground text-sm">Photos Contributed</p>
@@ -89,7 +63,7 @@ export const EcosystemProof = () => {
               {isLoading ? (
                 <Skeleton className="h-10 w-24 mx-auto" />
               ) : (
-                <><CountUp end={totalTRN || 0} duration={2} separator="," /> <span className="text-xl">TRN</span></>
+                <><CountUp end={stats?.trn_distributed || 0} duration={2} separator="," /> <span className="text-xl">TRN</span></>
               )}
             </div>
             <p className="text-muted-foreground text-sm">TRN Distributed</p>
@@ -104,7 +78,7 @@ export const EcosystemProof = () => {
               {isLoading ? (
                 <Skeleton className="h-10 w-16 mx-auto" />
               ) : (
-                <CountUp end={contributorsCount || 0} duration={2} />
+                <CountUp end={stats?.contributors || 0} duration={2} />
               )}
             </div>
             <p className="text-muted-foreground text-sm">Active Contributors</p>
