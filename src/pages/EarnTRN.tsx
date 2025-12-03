@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import ScrollProgress from "@/components/ScrollProgress";
 import BackToHome from "@/components/BackToHome";
 import EarnHero from "@/components/earn/EarnHero";
+import EarnActionCards from "@/components/earn/EarnActionCards";
 import HowItWorks from "@/components/earn/HowItWorks";
 import DailyQuests from "@/components/earn/DailyQuests";
 import Leaderboard from "@/components/earn/Leaderboard";
@@ -28,6 +29,7 @@ const EarnTRN = () => {
       <main id="main-content" className="min-h-screen bg-gradient-to-b from-background to-background/50 pt-16">
         <BackToHome />
         <EarnHero />
+        <EarnActionCards />
         <HowItWorks />
         <DailyQuests />
         <Leaderboard />

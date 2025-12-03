@@ -194,7 +194,13 @@ const Footer = () => {
               to="/video-updates" 
               className="text-xs text-primary hover:underline font-medium"
             >
-              Updates
+              Video Updates
+            </Link>
+            <Link 
+              to="/updates" 
+              className="text-xs text-primary hover:underline font-medium"
+            >
+              Blog
             </Link>
             <a 
               href="https://solscan.io/token/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump" 
