@@ -5,11 +5,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useTabPersistence } from "@/hooks/useTabPersistence";
 import { useTabAnalytics } from "@/hooks/useTabAnalytics";
 import { supabase } from "@/integrations/supabase/client";
-import { LayoutDashboard, Image, Users, BarChart3, TestTube2, Filter, Activity, Gift, DollarSign, UserPlus, Code2 } from "lucide-react";
+import { LayoutDashboard, Image, Users, BarChart3, TestTube2, Filter, Activity, DollarSign, UserPlus, Code2 } from "lucide-react";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Card } from "@/components/ui/card";
 import { RedemptionsTab } from "@/components/admin/RedemptionsTab";
-import { InvoiceCodesTab } from "@/components/admin/InvoiceCodesTab";
 import { ReferralsTab } from "@/components/admin/ReferralsTab";
 import { CodeHealthTab } from "@/components/admin/CodeHealthTab";
 
@@ -134,10 +133,6 @@ const UnifiedAdminDashboard = () => {
                   <DollarSign className="w-4 h-4" />
                   Redemptions
                 </TabsTrigger>
-                <TabsTrigger value="invoicecodes" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-6 py-4 gap-2">
-                  <Gift className="w-4 h-4" />
-                  Invoice Codes
-                </TabsTrigger>
                 <TabsTrigger value="referrals" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-6 py-4 gap-2">
                   <UserPlus className="w-4 h-4" />
                   Referrals
@@ -258,12 +253,6 @@ const UnifiedAdminDashboard = () => {
               </Suspense>
             </TabsContent>
 
-            {/* Invoice Codes Tab */}
-            <TabsContent value="invoicecodes">
-              <Suspense fallback={<LoadingSection />}>
-                <InvoiceCodesTab />
-              </Suspense>
-            </TabsContent>
 
             {/* Referrals Tab */}
             <TabsContent value="referrals">

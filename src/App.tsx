@@ -16,7 +16,7 @@ const Sonner = lazy(() => import("@/components/ui/sonner").then(m => ({ default:
 const Index = lazy(() => import("./pages/Index"));
 const EarnTRN = lazy(() => import("./pages/EarnTRN"));
 const RedeemTRN = lazy(() => import("./pages/RedeemTRN"));
-const ClaimInvoiceReward = lazy(() => import("./pages/ClaimInvoiceReward"));
+
 const GoblinCave = lazy(() => import("./pages/GoblinCave"));
 const GoblinMarket = lazy(() => import("./pages/GoblinMarket"));
 const Whitepaper = lazy(() => import("./pages/Whitepaper"));
@@ -86,7 +86,7 @@ const AppContent = () => {
             
             <Route path="/earn-trn" element={<EarnTRN />} />
             <Route path="/redeem-trn" element={<RedeemTRN />} />
-            <Route path="/claim-reward" element={<ClaimInvoiceReward />} />
+            
             <Route path="/market" element={<GoblinMarket />} />
             <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
             <Route path="/admin/unified" element={<AdminRoute><UnifiedAdminDashboard /></AdminRoute>} />
