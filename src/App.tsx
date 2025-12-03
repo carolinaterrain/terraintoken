@@ -32,7 +32,6 @@ const AnalyticsDashboard = lazy(() => import("./pages/AnalyticsDashboard"));
 const ABTestsDashboard = lazy(() => import("./pages/ABTestsDashboard"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const PressKit = lazy(() => import("./pages/PressKit"));
-const VideoUpdates = lazy(() => import("./pages/VideoUpdates"));
 const TransparencyHub = lazy(() => import("./pages/TransparencyHub"));
 const FunnelAnalytics = lazy(() => import("./pages/FunnelAnalytics"));
 const HowTerrainTokenStarted = lazy(() => import("./pages/blog/how-terrain-token-started"));
@@ -99,7 +98,6 @@ const AppContent = () => {
             <Route path="/team" element={<Team />} />
             <Route path="/press" element={<PressKit />} />
             <Route path="/token-metadata" element={<TokenMetadata />} />
-            <Route path="/video-updates" element={<VideoUpdates />} />
             <Route path="/blog/how-terrain-token-started" element={<HowTerrainTokenStarted />} />
             <Route path="/blog/why-meme-coins-need-real-world-backing" element={<WhyMemeCoinsNeedRealWorldBacking />} />
             <Route path="/blog/ai-powered-drainage-analysis-future" element={<AIPoweredDrainageAnalysisFuture />} />
