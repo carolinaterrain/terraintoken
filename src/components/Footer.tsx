@@ -191,12 +191,6 @@ const Footer = () => {
               Refer & Earn
             </Link>
             <Link 
-              to="/video-updates" 
-              className="text-xs text-primary hover:underline font-medium"
-            >
-              Video Updates
-            </Link>
-            <Link 
               to="/updates" 
               className="text-xs text-primary hover:underline font-medium"
             >

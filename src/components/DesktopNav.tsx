@@ -46,7 +46,6 @@ const DesktopNav = () => {
     { id: "hero", label: "Home", isRoute: false },
     { id: "market", label: "Market", isRoute: true },
     { id: "earn-trn", label: "Earn", isRoute: true },
-    { id: "video-updates", label: "Videos", isRoute: true },
     { id: "investors", label: "Invest", isRoute: true },
     { id: "team", label: "About", isRoute: true },
   ];

@@ -1,4 +1,4 @@
-import { Home, Video, Briefcase, Gift, TrendingUp, MoreHorizontal, Heart, FileText, Shield, Newspaper, BookOpen, Users, X } from "lucide-react";
+import { Home, Briefcase, Gift, TrendingUp, MoreHorizontal, Heart, FileText, Shield, Newspaper, BookOpen, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
@@ -38,7 +38,6 @@ const MobileNav = () => {
   ];
 
   const moreItems = [
-    { path: "/video-updates", label: "Videos", icon: Video },
     { path: "/team", label: "About", icon: Users },
     { path: "/philanthropic-fund", label: "Philanthropic Fund", icon: Heart },
     { path: "/whitepaper", label: "Whitepaper", icon: FileText },
