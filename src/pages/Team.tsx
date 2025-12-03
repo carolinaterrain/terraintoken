@@ -23,21 +23,8 @@ interface TeamMember {
 
 const team: TeamMember[] = [
   {
-    name: "Zac Hyman",
-    role: "Co-Founder & CEO",
-    bio: "Licensed NC Landscape Contractor with a passion for innovation. Zac founded Carolina Terrain LLC to bring professional-grade drainage solutions to homeowners. Now bridging traditional landscaping with blockchain technology through TRN.",
-    image: zachHyman,
-    certifications: [
-      "Licensed NC Landscape Contractor (CL.1872)",
-      "NDS Certified Property Drainage Contractor",
-      "Keystone Certified Hardscape Contractor"
-    ],
-    linkedin: "https://www.linkedin.com/in/zachyman",
-    twitter: "https://x.com/carolinaterrain"
-  },
-  {
     name: "Alex Purdy",
-    role: "Co-Founder & CTO",
+    role: "Founder",
     bio: "Tech visionary and drainage expert. Alex combines deep technical expertise with hands-on field experience. Leads the development of TerrainVision AI and the integration of blockchain technology into Carolina Terrain's operations.",
     image: alexPurdy,
     certifications: [
@@ -46,6 +33,17 @@ const team: TeamMember[] = [
       "Unilock Lifetime Warranty Certified"
     ],
     linkedin: "https://www.linkedin.com/in/alexpurdy"
+  },
+  {
+    name: "Zac Hyman",
+    role: "Co-Founder",
+    bio: "Licensed NC Landscape Contractor with a passion for innovation. Zac founded Carolina Terrain LLC to bring professional-grade drainage solutions to homeowners. Now bridging traditional landscaping with blockchain technology through TRN.",
+    image: zachHyman,
+    certifications: [
+      "Licensed NC Landscape Contractor (CL.1872)",
+      "NDS Certified Property Drainage Contractor",
+      "Keystone Certified Hardscape Contractor"
+    ]
   }
 ];
 
@@ -262,7 +260,7 @@ const Team = () => {
               "We started Carolina Terrain to solve drainage problems. We launched Terrain Token to prove that meme coins can be more than speculation—they can be backed by real work, real revenue, and real people."
             </p>
             <p className="text-sm text-primary italic">
-              — Zac Hyman & Alex Purdy, Co-Founders
+              — Alex Purdy, Founder & Zac Hyman, Co-Founder
             </p>
           </GlassCard>
 
