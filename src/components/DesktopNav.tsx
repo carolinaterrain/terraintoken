@@ -2,6 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "./ui/button";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { useNavigate, useLocation } from "react-router-dom";
+import { ChevronDown, Heart, FileText, Shield, Newspaper, BookOpen, Users } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 // Use public folder path directly for performance - matches index.html preload
 const trnCoin = "/trn-coin.png";
@@ -43,6 +50,17 @@ const DesktopNav = () => {
     { id: "investors", label: "Invest", isRoute: true },
     { id: "team", label: "About", isRoute: true },
   ];
+
+  const moreItems = [
+    { path: "/philanthropic-fund", label: "Philanthropic Fund", icon: Heart },
+    { path: "/whitepaper", label: "Whitepaper", icon: FileText },
+    { path: "/transparency", label: "Transparency Hub", icon: Shield },
+    { path: "/press-kit", label: "Press Kit", icon: Newspaper },
+    { path: "/updates", label: "Blog", icon: BookOpen },
+    { path: "/referral", label: "Refer & Earn", icon: Users },
+  ];
+
+  const isMoreActive = moreItems.some(item => location.pathname === item.path);
 
   return (
     <nav
@@ -100,6 +118,40 @@ const DesktopNav = () => {
                 )}
               </button>
             ))}
+
+            {/* More Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className={`px-4 py-2 text-sm font-medium transition-all relative hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded flex items-center gap-1 ${
+                    isMoreActive ? "text-primary" : "text-muted-foreground"
+                  }`}
+                >
+                  More
+                  <ChevronDown className="h-3 w-3" />
+                  {isMoreActive && (
+                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
+                  )}
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                {moreItems.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <DropdownMenuItem
+                      key={item.path}
+                      onClick={() => navigate(item.path)}
+                      className={`cursor-pointer ${
+                        location.pathname === item.path ? "bg-primary/10 text-primary" : ""
+                      }`}
+                    >
+                      <Icon className="mr-2 h-4 w-4" />
+                      {item.label}
+                    </DropdownMenuItem>
+                  );
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           {/* Right CTAs */}
