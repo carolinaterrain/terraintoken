@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { GlassCard } from "@/components/ui/glass-card";
-import { Camera, Users, Percent } from "lucide-react";
+import { Camera, Percent } from "lucide-react";
 
 const actions = [
   {
@@ -9,13 +9,6 @@ const actions = [
     description: "Submit terrain photos to train our AI and earn up to 75 TRN per upload",
     href: "/upload-project",
     reward: "Up to 75 TRN",
-  },
-  {
-    icon: Users,
-    title: "Refer Friends",
-    description: "Share your referral link and earn bonus TRN when friends join",
-    href: "/refer",
-    reward: "Referral bonuses",
   },
   {
     icon: Percent,
@@ -29,11 +22,11 @@ const actions = [
 const EarnActionCards = () => {
   return (
     <section className="py-12 px-4">
-      <div className="container mx-auto max-w-5xl">
+      <div className="container mx-auto max-w-4xl">
         <h2 className="font-display text-2xl md:text-3xl font-bold text-center mb-8">
           Choose How to <span className="text-primary">Earn</span>
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {actions.map((action) => {
             const Icon = action.icon;
             return (
