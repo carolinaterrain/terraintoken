@@ -47,7 +47,7 @@ export const ResearchModeContent = () => {
 
   return (
     <>
-      <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-xl border-b">
+      <div className="sticky top-[56px] z-40 bg-background/95 backdrop-blur-xl border-b">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="container mx-auto overflow-x-auto scrollbar-hide">
             <TabsList className="w-max min-w-full justify-start h-auto p-0 bg-transparent border-0 rounded-none">

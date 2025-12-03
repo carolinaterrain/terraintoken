@@ -102,7 +102,7 @@ const Hero = memo(() => {
 
       {/* Live Price Ticker */}
       {tokenStats && (
-        <div className="absolute top-20 left-0 right-0 bg-gradient-to-r from-chart-1/20 via-chart-3/20 to-chart-1/20 border-y border-primary/20 backdrop-blur-sm z-20">
+        <div className="absolute top-20 left-0 right-0 bg-gradient-to-r from-chart-1/20 via-chart-3/20 to-chart-1/20 border-y border-primary/20 backdrop-blur-sm z-30">
           <div className="container mx-auto px-4 py-3">
             <div className="flex items-center justify-center gap-4 md:gap-8 text-xs md:text-sm flex-wrap">
               <div className="flex items-center gap-2">
