@@ -311,8 +311,8 @@ const AudioControl = () => {
 
       <div 
         className={cn(
-          "fixed z-45 transition-all duration-300",
-          "bottom-4 right-4 md:top-20 md:bottom-auto"
+          "fixed z-40 transition-all duration-300",
+          "bottom-4 left-4"
         )}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -348,8 +348,7 @@ const AudioControl = () => {
           <Card 
             className={cn(
               "absolute bg-background/98 backdrop-blur-md border-primary/30 shadow-glow p-4 space-y-3 w-64 animate-fade-in",
-              "bottom-full mb-2 right-0",
-              "sm:right-full sm:bottom-auto sm:top-0 sm:mr-2 sm:mb-0"
+              "bottom-full mb-2 left-0"
             )}
             onMouseEnter={() => {
               if (hoverTimeoutRef.current) {

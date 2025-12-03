@@ -250,7 +250,7 @@ export const WalletConnect = () => {
   if (!connected || !publicKey) {
     return (
       <div className="flex flex-col gap-2">
-        <WalletMultiButton className="!bg-gradient-to-r !from-goblin-green !to-terrain-purple hover:!from-goblin-green/90 hover:!to-terrain-purple/90 !text-sm !font-medium" />
+        <WalletMultiButton className="!bg-primary !hover:bg-primary/90 !text-primary-foreground !rounded-lg !py-2 !px-4 !text-sm !font-medium !border-0 !shadow-md" />
         {IS_DEV && (
           <Button 
             variant="outline" 
@@ -259,7 +259,7 @@ export const WalletConnect = () => {
             className="text-xs"
           >
             <Bug className="w-3 h-3 mr-1" />
-            Test DB Insert
+            Test DB
           </Button>
         )}
       </div>
