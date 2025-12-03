@@ -261,19 +261,11 @@ const Hero = memo(() => {
           {/* Community CTA */}
           <div className="mt-8 p-4 rounded-xl bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20">
             <p className="text-sm text-muted-foreground mb-2">
-              <span className="text-primary font-semibold">Join the Community</span> — Connect with TRN holders on Telegram and Discord
+              <span className="text-primary font-semibold">Join the Community</span> — Connect with TRN holders on Discord
             </p>
             <div className="flex gap-3">
               <a 
-                href="https://t.me/+s6385WFOp21lOGZh" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-xs text-primary hover:underline"
-              >
-                💬 Telegram
-              </a>
-              <a 
-                href="https://discord.gg/nX5u8ZaH" 
+                href="https://discord.gg/BmUmr2Kx" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-xs text-primary hover:underline"

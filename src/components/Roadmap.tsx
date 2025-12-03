@@ -31,7 +31,7 @@ const phases = [
     status: "current",
     progress: 75,
     timeline: "Q3-Q4 2025",
-    milestones: ["1000+ Telegram members", "Whitepaper released", "Meme contests", "First partnerships"]
+    milestones: ["1000+ Discord members", "Whitepaper released", "Meme contests", "First partnerships"]
   },
   {
     phase: "Phase 2",

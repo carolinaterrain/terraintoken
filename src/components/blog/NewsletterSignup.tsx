@@ -8,16 +8,11 @@ export const NewsletterSignup = () => {
         Stay <span className="text-primary">Updated</span>
       </h3>
       <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-        Join our Telegram and Discord to get instant updates on new blog posts, transparency reports, and major announcements.
+        Join our Discord to get instant updates on new blog posts, transparency reports, and major announcements.
       </p>
-      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+      <div className="flex justify-center">
         <Button size="lg" asChild>
-          <a href="https://t.me/+s6385WFOp21lOGZh" target="_blank" rel="noopener noreferrer">
-            Join Telegram 📱
-          </a>
-        </Button>
-        <Button size="lg" variant="outline" className="border-primary" asChild>
-          <a href="https://discord.gg/nX5u8ZaH" target="_blank" rel="noopener noreferrer">
+          <a href="https://discord.gg/BmUmr2Kx" target="_blank" rel="noopener noreferrer">
             Join Discord 💬
           </a>
         </Button>
