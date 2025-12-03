@@ -46,7 +46,7 @@ const DesktopNav = () => {
 
   return (
     <nav
-      className={`hidden md:block fixed top-12 left-0 right-0 z-[90] transition-all duration-300 animate-slide-in-down ${
+      className={`hidden md:block relative z-[90] transition-all duration-300 ${
         scrolled
           ? "bg-background/80 backdrop-blur-xl border-b border-border shadow-lg"
           : "bg-transparent"
