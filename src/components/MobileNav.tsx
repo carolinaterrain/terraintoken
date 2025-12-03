@@ -25,7 +25,7 @@ const MobileNav = () => {
     { path: "/", label: "Home", icon: Home, onClick: handleHomeClick },
     { path: "/earn-trn", label: "Earn", icon: Gift },
     { path: "/market", label: "Market", icon: TrendingUp },
-    { path: "/video-updates", label: "Updates", icon: Video },
+    { path: "/video-updates", label: "Videos", icon: Video },
     { path: "/investors", label: "Invest", icon: Briefcase },
   ];
 
