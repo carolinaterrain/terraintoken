@@ -1,6 +1,7 @@
 import { GlassCard } from "@/components/ui/glass-card";
-import { Shield, CheckCircle, Lock, TrendingUp, Copy, ExternalLink, AlertCircle } from "lucide-react";
+import { Shield, CheckCircle, Lock, TrendingUp, Copy, ExternalLink, AlertCircle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useTokenSupply, formatSupply } from "@/hooks/useTokenSupply";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -207,6 +208,14 @@ const Transparency = () => {
                   <p className="text-sm text-muted-foreground mb-1">Google Reviews</p>
                   <p className="font-display text-lg font-bold text-primary">125+ ⭐⭐⭐⭐⭐</p>
                 </div>
+              </div>
+              <div className="mt-6">
+                <Button asChild>
+                  <Link to="/transparency" className="inline-flex items-center gap-2">
+                    View Full Transparency Hub
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </Button>
               </div>
             </div>
           </GlassCard>
