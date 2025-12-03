@@ -1,4 +1,4 @@
-import { Coins, Gift, ArrowRight, Sparkles } from "lucide-react";
+import { Coins, ArrowRight, Sparkles } from "lucide-react";
 import { GlassCard } from "./ui/glass-card";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
@@ -15,15 +15,6 @@ const RealUtility = () => {
       cta: "Redeem Now",
       link: "/redeem-trn",
       badge: "Real Savings",
-    },
-    {
-      icon: <Gift className="w-8 h-8 text-primary" />,
-      title: "Invoice Rewards",
-      description: "Paid a Carolina Terrain invoice? Claim 10,000 TRN instantly",
-      benefits: ["Free TRN tokens", "90 days to claim", "One per invoice"],
-      cta: "Claim Reward",
-      link: "/claim-reward",
-      badge: "Free TRN",
     },
   ];
 
@@ -43,12 +34,12 @@ const RealUtility = () => {
             TRN Has <span className="text-primary">Real Value</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Unlike most meme coins, TRN is backed by actual business utility. Redeem for discounts or claim free tokens.
+            Unlike most meme coins, TRN is backed by actual business utility. Redeem for real discounts.
           </p>
         </div>
 
-        {/* Feature Cards */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        {/* Feature Card */}
+        <div className="max-w-md mx-auto">
           {features.map((feature, index) => (
             <GlassCard
               key={index}
@@ -81,20 +72,6 @@ const RealUtility = () => {
                     >
                       <div className="w-1.5 h-1.5 rounded-full bg-primary" />
                       <span>{tier}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {feature.benefits && (
-                <div className="space-y-2">
-                  {feature.benefits.map((benefit, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center gap-2 text-sm text-muted-foreground"
-                    >
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                      <span>{benefit}</span>
                     </div>
                   ))}
                 </div>

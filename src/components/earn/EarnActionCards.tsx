@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { GlassCard } from "@/components/ui/glass-card";
-import { Camera, Receipt, Users, Percent } from "lucide-react";
+import { Camera, Users, Percent } from "lucide-react";
 
 const actions = [
   {
@@ -9,13 +9,6 @@ const actions = [
     description: "Submit terrain photos to train our AI and earn up to 75 TRN per upload",
     href: "/upload-project",
     reward: "Up to 75 TRN",
-  },
-  {
-    icon: Receipt,
-    title: "Claim Invoice Reward",
-    description: "Carolina Terrain customers can claim TRN rewards with their invoice code",
-    href: "/claim-reward",
-    reward: "Varies by invoice",
   },
   {
     icon: Users,
@@ -40,7 +33,7 @@ const EarnActionCards = () => {
         <h2 className="font-display text-2xl md:text-3xl font-bold text-center mb-8">
           Choose How to <span className="text-primary">Earn</span>
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {actions.map((action) => {
             const Icon = action.icon;
             return (

@@ -745,51 +745,6 @@ export type Database = {
         }
         Relationships: []
       }
-      invoice_codes: {
-        Row: {
-          code: string
-          created_at: string
-          customer_email: string | null
-          customer_name: string | null
-          expires_at: string
-          id: string
-          invoice_amount: number | null
-          invoice_number: string
-          redeemed_at: string | null
-          redeemed_by_wallet: string | null
-          status: string
-          trn_reward: number
-        }
-        Insert: {
-          code: string
-          created_at?: string
-          customer_email?: string | null
-          customer_name?: string | null
-          expires_at?: string
-          id?: string
-          invoice_amount?: number | null
-          invoice_number: string
-          redeemed_at?: string | null
-          redeemed_by_wallet?: string | null
-          status?: string
-          trn_reward?: number
-        }
-        Update: {
-          code?: string
-          created_at?: string
-          customer_email?: string | null
-          customer_name?: string | null
-          expires_at?: string
-          id?: string
-          invoice_amount?: number | null
-          invoice_number?: string
-          redeemed_at?: string | null
-          redeemed_by_wallet?: string | null
-          status?: string
-          trn_reward?: number
-        }
-        Relationships: []
-      }
       live_viewers: {
         Row: {
           created_at: string | null
@@ -2659,7 +2614,6 @@ export type Database = {
     Functions: {
       cleanup_rate_limits: { Args: never; Returns: undefined }
       cleanup_stale_viewers: { Args: never; Returns: undefined }
-      expire_old_invoice_codes: { Args: never; Returns: undefined }
       get_public_leaderboard: {
         Args: { limit_count?: number }
         Returns: {
