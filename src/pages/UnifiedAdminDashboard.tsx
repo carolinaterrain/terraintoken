@@ -52,12 +52,11 @@ const UnifiedAdminDashboard = () => {
 
   const fetchStats = async () => {
     try {
-      const [uploads, rewards, users, pending, waitlist, analytics, abtests] = await Promise.all([
+      const [uploads, rewards, users, pending, analytics, abtests] = await Promise.all([
         supabase.from('project_media').select('*', { count: 'exact', head: true }),
         supabase.from('trn_rewards').select('trn_amount'),
         supabase.from('user_stats').select('*', { count: 'exact', head: true }),
         supabase.from('project_media').select('*', { count: 'exact', head: true }).eq('validation_status', 'pending'),
-        supabase.from('terrainscape_waitlist').select('*', { count: 'exact', head: true }),
         supabase.from('analytics_events').select('*', { count: 'exact', head: true }),
         supabase.from('ab_tests').select('*', { count: 'exact', head: true }).eq('status', 'active')
       ]);
@@ -69,7 +68,7 @@ const UnifiedAdminDashboard = () => {
         totalTRN,
         totalUsers: users.count || 0,
         pendingValidations: pending.count || 0,
-        totalWaitlist: waitlist.count || 0,
+        totalWaitlist: 0,
         totalAnalyticsEvents: analytics.count || 0,
         activeABTests: abtests.count || 0
       });
@@ -109,9 +108,9 @@ const UnifiedAdminDashboard = () => {
                   <Image className="w-4 h-4" />
                   Content
                 </TabsTrigger>
-                <TabsTrigger value="waitlist" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-6 py-4 gap-2">
+                <TabsTrigger value="community" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-6 py-4 gap-2">
                   <Users className="w-4 h-4" />
-                  Waitlist
+                  Community
                 </TabsTrigger>
                 <TabsTrigger value="analytics" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-6 py-4 gap-2">
                   <BarChart3 className="w-4 h-4" />
@@ -167,7 +166,7 @@ const UnifiedAdminDashboard = () => {
                   <div className="text-3xl font-bold text-primary">{stats.pendingValidations}</div>
                 </GlassCard>
                 <GlassCard className="p-6">
-                  <div className="text-sm text-muted-foreground mb-2">Waitlist Count</div>
+                  <div className="text-sm text-muted-foreground mb-2">Meme Submissions</div>
                   <div className="text-3xl font-bold text-primary">{stats.totalWaitlist}</div>
                 </GlassCard>
                 <GlassCard className="p-6">
@@ -196,12 +195,12 @@ const UnifiedAdminDashboard = () => {
               </Suspense>
             </TabsContent>
 
-            {/* Waitlist Tab */}
-            <TabsContent value="waitlist">
+            {/* Community Tab */}
+            <TabsContent value="community">
               <Suspense fallback={<LoadingSection />}>
                 <Card className="p-6">
-                  <h3 className="text-xl font-bold mb-4">Waitlist Management</h3>
-                  <p className="text-muted-foreground">Legacy WaitlistDashboard content will be integrated here...</p>
+                  <h3 className="text-xl font-bold mb-4">Community Management</h3>
+                  <p className="text-muted-foreground">View and manage community contributors and their submissions.</p>
                 </Card>
               </Suspense>
             </TabsContent>

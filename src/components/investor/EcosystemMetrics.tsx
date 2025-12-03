@@ -17,13 +17,13 @@ export const EcosystemMetrics = () => {
   const businessMetrics = calculateMetrics();
   const equipmentValue = 172591.78; // Current equipment value from balance sheet
 
-  // Get waitlist count
-  const { data: waitlistCount } = useQuery({
-    queryKey: ['waitlist-count'],
+  // Get community members count (project contributors)
+  const { data: communityCount } = useQuery({
+    queryKey: ['community-count'],
     queryFn: async () => {
       const { count } = await supabase
-        .from('terrainscape_waitlist')
-        .select('*', { count: 'exact', head: true });
+        .from('project_media')
+        .select('user_wallet_address', { count: 'exact', head: true });
       return count || 0;
     },
   });
@@ -64,7 +64,7 @@ export const EcosystemMetrics = () => {
       title: "Network Activity",
       icon: Activity,
       metrics: [
-        { label: "Waitlist Size", value: waitlistCount || 0, color: "text-chart-1" },
+        { label: "Community Contributors", value: communityCount || 0, color: "text-chart-1" },
         { label: "TerrainVision Analyses", value: analysisCount || 0, color: "text-chart-2" },
         { label: "Active Tools", value: 8, color: "text-chart-3" },
         { label: "Regional Coverage", value: 2, suffix: " states", color: "text-chart-4" },
