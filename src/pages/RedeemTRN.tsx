@@ -21,16 +21,16 @@ const TIERS = [
   {
     id: "bronze",
     name: "Bronze",
-    trnRequired: 50000,
-    discount: 50,
+    trnRequired: 500,
+    discount: 10,
     description: "Perfect for small drainage assessments",
     icon: "🥉",
   },
   {
     id: "silver",
     name: "Silver",
-    trnRequired: 150000,
-    discount: 200,
+    trnRequired: 2000,
+    discount: 50,
     description: "Ideal for mid-size drainage installations",
     icon: "🥈",
     popular: true,
@@ -38,8 +38,8 @@ const TIERS = [
   {
     id: "gold",
     name: "Gold",
-    trnRequired: 500000,
-    discount: 750,
+    trnRequired: 10000,
+    discount: 200,
     description: "Best value for major terrain projects",
     icon: "🥇",
   },
@@ -347,7 +347,7 @@ const RedeemTRN = () => {
             <div className="grid gap-6">
               {[
                 { step: 1, title: "Hold TRN", desc: "Acquire TRN tokens and hold them in your Solana wallet" },
-                { step: 2, title: "Choose Tier", desc: "Select Bronze (50k TRN), Silver (150k TRN), or Gold (500k TRN)" },
+                { step: 2, title: "Choose Tier", desc: "Select Bronze (500 TRN), Silver (2k TRN), or Gold (10k TRN)" },
                 { step: 3, title: "Submit Request", desc: "Fill out the redemption form with your wallet address" },
                 { step: 4, title: "Get Verified", desc: "We verify your balance within 24 hours" },
                 { step: 5, title: "Receive Code", desc: "Get your discount code via email" },

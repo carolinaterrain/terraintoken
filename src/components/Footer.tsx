@@ -185,12 +185,6 @@ const Footer = () => {
               Philanthropic Fund
             </Link>
             <Link 
-              to="/refer" 
-              className="text-xs text-primary hover:underline font-medium"
-            >
-              Refer & Earn
-            </Link>
-            <Link 
               to="/updates" 
               className="text-xs text-primary hover:underline font-medium"
             >

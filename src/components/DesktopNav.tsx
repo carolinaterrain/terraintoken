@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "./ui/button";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ChevronDown, Heart, FileText, Shield, Newspaper, BookOpen, Users } from "lucide-react";
+import { ChevronDown, Heart, FileText, Shield, Newspaper, BookOpen, Gift } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -54,9 +54,9 @@ const DesktopNav = () => {
     { path: "/philanthropic-fund", label: "Philanthropic Fund", icon: Heart },
     { path: "/whitepaper", label: "Whitepaper", icon: FileText },
     { path: "/transparency", label: "Transparency Hub", icon: Shield },
-    { path: "/press-kit", label: "Press Kit", icon: Newspaper },
+    { path: "/press", label: "Press Kit", icon: Newspaper },
     { path: "/updates", label: "Blog", icon: BookOpen },
-    { path: "/referral", label: "Refer & Earn", icon: Users },
+    { path: "/redeem-trn", label: "Redeem TRN", icon: Gift },
   ];
 
   const isMoreActive = moreItems.some(item => location.pathname === item.path);
