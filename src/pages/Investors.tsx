@@ -6,6 +6,7 @@ import { ProofSection } from "@/components/investor/ProofSection";
 import { InvestorCTA } from "@/components/investor/InvestorCTA";
 import { StickyNavigation } from "@/components/investor/StickyNavigation";
 import { EarlyStageDisclaimer } from "@/components/investor/EarlyStageDisclaimer";
+import { ProtocolComparison } from "@/components/investor/ProtocolComparison";
 import { GlassCard } from "@/components/ui/glass-card";
 import Roadmap from "@/components/Roadmap";
 import { motion } from "framer-motion";
@@ -20,14 +21,14 @@ const Investors = () => {
   return (
     <>
       <Helmet>
-        <title>TRN Investors - Terrain Token Investment Opportunities</title>
+        <title>TRN Investors - Ground-Truth Oracle for the Physical World</title>
         <meta
           name="description"
-          content="Invest in the first terrain-intelligence token ecosystem. TRN powers TerrainVision AI, Goblin Market, and the emerging Terrain Data Marketplace with real utility and adoption."
+          content="TRN powers the Data-Compute-Energy Nexus of Web3. The first ground-truth oracle for terrain intelligence, connecting DePIN, ReFi, and DeSci ecosystems."
         />
-        <meta name="keywords" content="TRN investment, terrain token, crypto investment, Web3 utility token, AI blockchain" />
-        <meta property="og:title" content="TRN Investors - Strategic Investment Opportunities" />
-        <meta property="og:description" content="Join the terrain intelligence revolution. Real utility. Real adoption. Real returns." />
+        <meta name="keywords" content="TRN investment, terrain token, DePIN, ReFi, DeSci, Web3 infrastructure, ground-truth oracle" />
+        <meta property="og:title" content="TRN - The Data-Compute-Energy Nexus of Web3" />
+        <meta property="og:description" content="First ground-truth oracle for the physical world. Real terrain data powering AI, compute, and climate infrastructure." />
       </Helmet>
 
       <SkipToContent />
@@ -44,7 +45,10 @@ const Investors = () => {
           <InvestorHero />
         </section>
 
-        {/* 2. Why Different */}
+        {/* 2. Protocol Comparison - NEW */}
+        <ProtocolComparison />
+
+        {/* 3. Why Different */}
         <section id="why-different" className="py-20 px-4 bg-gradient-to-b from-background to-secondary/5">
           <div className="container mx-auto max-w-4xl">
             <motion.div
@@ -136,22 +140,22 @@ const Investors = () => {
           </div>
         </section>
 
-        {/* 3. Live Metrics */}
+        {/* 4. Live Metrics */}
         <section id="ecosystem-metrics">
           <EcosystemMetrics />
         </section>
 
-        {/* 4. Value Engine */}
+        {/* 5. Value Engine */}
         <section id="value-generation">
           <ValueGeneration />
         </section>
 
-        {/* 5. Investment Tiers */}
+        {/* 6. Investment Tiers */}
         <section id="investment-tiers">
           <InvestmentTiers />
         </section>
 
-        {/* 6. Roadmap */}
+        {/* 7. Roadmap */}
         <section id="roadmap" className="py-20">
           <div className="container mx-auto">
             <motion.div
@@ -171,12 +175,12 @@ const Investors = () => {
           </div>
         </section>
 
-        {/* 7. Trust & Proof */}
+        {/* 8. Trust & Proof */}
         <section id="proof-section">
           <ProofSection />
         </section>
 
-        {/* 8. Take Action (CTA) */}
+        {/* 9. Take Action (CTA) */}
         <section id="investor-cta">
           <InvestorCTA />
         </section>
