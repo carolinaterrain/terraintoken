@@ -75,13 +75,13 @@ const phases = [
   },
   {
     phase: "Phase 6",
-    title: "TerrainScape MMO",
+    title: "Terrain Academy",
     icon: Gamepad2,
-    description: "Launch educational play-to-earn game for global workforce training",
+    description: "Launch educational platform for terrain analysis training and certification",
     status: "future",
     progress: 0,
     timeline: "2026+",
-    milestones: ["Beta launch with 50 quests", "Job placement partnerships", "Mobile app (10 languages)", "100k+ active players"]
+    milestones: ["Training platform launch", "Industry certifications", "Mobile app (10 languages)", "100k+ active users"]
   }
 ];
 

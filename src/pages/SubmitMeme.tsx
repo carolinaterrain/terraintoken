@@ -9,6 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import confetti from "canvas-confetti";
 import { z } from "zod";
+import SmartHeader from "@/components/SmartHeader";
+import Footer from "@/components/Footer";
 
 const GOBLIN_IMAGES = [
   "🌱", "⛏️", "💎", "🌍", "⚡"
@@ -197,16 +199,18 @@ const SubmitMeme = () => {
   const captchaPassed = captchaClicks.length === 3 && captchaClicks.every(i => i === 1);
 
   return (
-    <div className="min-h-screen bg-background py-20 px-4">
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
-            🌱 BURY YOUR MEME IN THE SACRED GROUNDS
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            Submit your best TRN meme and join the erosion revolution!
-          </p>
-        </div>
+    <div className="min-h-screen bg-background">
+      <SmartHeader />
+      <div className="pt-24 pb-20 px-4">
+        <div className="max-w-2xl mx-auto">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
+              🌱 BURY YOUR MEME IN THE SACRED GROUNDS
+            </h1>
+            <p className="text-lg text-muted-foreground">
+              Submit your best TRN meme and join the erosion revolution!
+            </p>
+          </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Image Upload */}
@@ -354,12 +358,14 @@ const SubmitMeme = () => {
           </Button>
         </form>
 
-        <div className="text-center mt-8">
-          <a href="/" className="text-primary hover:underline">
-            ← Back to home
-          </a>
+          <div className="text-center mt-8">
+            <a href="/" className="text-primary hover:underline">
+              ← Back to home
+            </a>
+          </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

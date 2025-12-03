@@ -14,7 +14,7 @@ export const UtilityHookSection = () => {
     },
     {
       icon: TrendingUp,
-      text: "As more users adopt TerrainScape platform, demand for TRN may increase organically.",
+      text: "As more users adopt the Terrain ecosystem, demand for TRN may increase organically.",
       color: "terrain-purple",
     },
   ];

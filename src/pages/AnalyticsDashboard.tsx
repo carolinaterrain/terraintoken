@@ -38,7 +38,7 @@ const AnalyticsDashboard = () => {
         .gte('created_at', today.toISOString());
 
       const { count: todayConversions } = await supabase
-        .from('terrainscape_waitlist')
+        .from('project_media')
         .select('*', { count: 'exact', head: true })
         .gte('created_at', today.toISOString());
 
@@ -265,8 +265,8 @@ const AnalyticsDashboard = () => {
               <div className="space-y-4">
                 {[
                   { step: 'Homepage Visit', count: 10000, percentage: 100, color: 'bg-primary' },
-                  { step: 'TerrainScape View', count: 5500, percentage: 55, color: 'bg-chart-1' },
-                  { step: 'Waitlist CTA Click', count: 3850, percentage: 38.5, color: 'bg-chart-2' },
+                  { step: 'Earn Page View', count: 5500, percentage: 55, color: 'bg-chart-1' },
+                  { step: 'Upload CTA Click', count: 3850, percentage: 38.5, color: 'bg-chart-2' },
                   { step: 'Form Start', count: 3080, percentage: 30.8, color: 'bg-chart-3' },
                   { step: 'Form Submit', count: 2772, percentage: 27.7, color: 'bg-chart-4' },
                   { step: 'Success', count: 2633, percentage: 26.3, color: 'bg-chart-5' },
