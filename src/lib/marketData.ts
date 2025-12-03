@@ -164,3 +164,190 @@ export const marketPositioning = {
     flywheel: 'Data contributions improve AI accuracy, which attracts more users, which increases token demand'
   }
 };
+
+// Protocol comparison data based on strategic research
+export interface ProtocolComparison {
+  name: string;
+  category: 'Data' | 'Compute' | 'Climate/ReFi' | 'Infrastructure' | 'Oracle';
+  focus: string;
+  dataType: string;
+  trnSynergy: string;
+  fdv?: string;
+  color: string;
+}
+
+export const protocolComparison: ProtocolComparison[] = [
+  {
+    name: 'Hivemapper',
+    category: 'Data',
+    focus: 'Street-level mapping',
+    dataType: 'Road imagery, GPS',
+    trnSynergy: 'Complementary ground-truth: terrain + roads = complete property intelligence',
+    fdv: '$150M+',
+    color: 'hsl(var(--chart-1))'
+  },
+  {
+    name: 'WeatherXM',
+    category: 'Data',
+    focus: 'Weather stations',
+    dataType: 'Temperature, humidity, precipitation',
+    trnSynergy: 'Weather data enhances drainage timing predictions',
+    fdv: '$50M+',
+    color: 'hsl(var(--chart-1))'
+  },
+  {
+    name: 'Ocean Protocol',
+    category: 'Data',
+    focus: 'Data marketplace',
+    dataType: 'Generic datasets',
+    trnSynergy: 'Terrain data marketplace integration potential',
+    fdv: '$200M+',
+    color: 'hsl(var(--chart-1))'
+  },
+  {
+    name: 'Switchboard',
+    category: 'Oracle',
+    focus: 'Solana oracles',
+    dataType: 'Price feeds, randomness',
+    trnSynergy: 'TRN can serve as terrain oracle feed provider',
+    fdv: '$100M+',
+    color: 'hsl(var(--chart-4))'
+  },
+  {
+    name: 'Render',
+    category: 'Compute',
+    focus: 'GPU rendering',
+    dataType: 'Compute jobs',
+    trnSynergy: 'Distributed compute for terrain AI processing',
+    fdv: '$2B+',
+    color: 'hsl(var(--chart-2))'
+  },
+  {
+    name: 'Akash',
+    category: 'Compute',
+    focus: 'Decentralized cloud',
+    dataType: 'General compute',
+    trnSynergy: 'Cost-effective infrastructure for TerrainVision AI',
+    fdv: '$500M+',
+    color: 'hsl(var(--chart-2))'
+  },
+  {
+    name: 'Toucan',
+    category: 'Climate/ReFi',
+    focus: 'Carbon credits',
+    dataType: 'Offset certificates',
+    trnSynergy: 'Compute-to-offset integration for sustainable AI',
+    fdv: '$50M+',
+    color: 'hsl(var(--chart-3))'
+  },
+  {
+    name: 'Regen Network',
+    category: 'Climate/ReFi',
+    focus: 'Ecological credits',
+    dataType: 'Land stewardship',
+    trnSynergy: 'Impact certificates for terrain contributions',
+    fdv: '$30M+',
+    color: 'hsl(var(--chart-3))'
+  },
+  {
+    name: 'KlimaDAO',
+    category: 'Climate/ReFi',
+    focus: 'Carbon DeFi',
+    dataType: 'Carbon reserves',
+    trnSynergy: 'Treasury carbon offset mechanism',
+    fdv: '$20M+',
+    color: 'hsl(var(--chart-3))'
+  },
+  {
+    name: 'Peaq',
+    category: 'Infrastructure',
+    focus: 'Machine DIDs',
+    dataType: 'Device identity',
+    trnSynergy: 'FlowGuardian sensor verification and device registry',
+    fdv: '$200M+',
+    color: 'hsl(var(--chart-5))'
+  },
+  {
+    name: 'Wormhole',
+    category: 'Infrastructure',
+    focus: 'Cross-chain bridge',
+    dataType: 'Asset transfers',
+    trnSynergy: 'Multi-chain TRN expansion pathway',
+    fdv: '$1B+',
+    color: 'hsl(var(--chart-5))'
+  },
+  {
+    name: 'TRN',
+    category: 'Data',
+    focus: 'Terrain intelligence',
+    dataType: 'Drainage, grading, erosion',
+    trnSynergy: 'The connective tissue of the physical-digital stack',
+    fdv: '$25K',
+    color: 'hsl(var(--primary))'
+  }
+];
+
+// Physical stack layers for visualization
+export interface PhysicalStackLayer {
+  name: string;
+  description: string;
+  components: string[];
+  color: string;
+  icon: string;
+}
+
+export const physicalStackLayers: PhysicalStackLayer[] = [
+  {
+    name: 'Value Layer',
+    description: 'Token economics and DeFi integration',
+    components: ['TRN Token', 'Impact Credits', 'Staking', 'Governance'],
+    color: 'hsl(var(--chart-4))',
+    icon: 'Coins'
+  },
+  {
+    name: 'Data Layer',
+    description: 'Terrain intelligence and sensor networks',
+    components: ['TerrainVision AI', 'Sensor Networks', 'Oracle Feeds', 'Data Marketplace'],
+    color: 'hsl(var(--chart-1))',
+    icon: 'Database'
+  },
+  {
+    name: 'Compute Layer',
+    description: 'Distributed processing infrastructure',
+    components: ['AI Processing', 'Edge Nodes', 'Distributed Compute', 'Model Training'],
+    color: 'hsl(var(--chart-2))',
+    icon: 'Cpu'
+  },
+  {
+    name: 'Energy Layer',
+    description: 'Clean energy and grid optimization',
+    components: ['FlowGuardian', 'Grid Optimization', 'Renewable Integration', 'Carbon Tracking'],
+    color: 'hsl(var(--chart-3))',
+    icon: 'Zap'
+  }
+];
+
+// TRN unique positioning
+export const trnPositioning = {
+  tagline: 'Watts to Sats: From Energy to Intelligence to Value',
+  uniqueValue: 'First protocol to unify physical infrastructure data with tokenized incentives',
+  keyDifferentiators: [
+    {
+      title: 'Ground-Truth Oracle',
+      description: 'Real terrain data from licensed contractors, not synthetic or scraped'
+    },
+    {
+      title: 'Proof-of-Terrain',
+      description: 'Verified contributions from actual site work, not just sensor readings'
+    },
+    {
+      title: 'Physical-Digital Bridge',
+      description: 'Connects $30B drainage market to Web3 infrastructure'
+    },
+    {
+      title: 'Multi-Protocol Hub',
+      description: 'Integration points with data, compute, climate, and infrastructure protocols'
+    }
+  ],
+  categories: ['DePIN', 'ReFi', 'DeSci'] as const
+};

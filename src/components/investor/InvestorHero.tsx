@@ -1,13 +1,25 @@
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, Shield, Users, Rocket, Activity } from "lucide-react";
+import { TrendingUp, Shield, Users, Rocket, Activity, Database, Cpu, Leaf } from "lucide-react";
 import { useTokenStats } from "@/hooks/useTokenStats";
 import { useLiveHolderCount } from "@/hooks/useLiveHolderCount";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import CountUp from "react-countup";
 import { motion } from "framer-motion";
+
+// Parse formatted market cap string (e.g., "$22.30K") to number
+const parseMarketCap = (marketCapStr: string | undefined): number => {
+  if (!marketCapStr || marketCapStr === "$--") return 0;
+  const cleaned = marketCapStr.replace(/[$,]/g, '');
+  const multipliers: Record<string, number> = { K: 1e3, M: 1e6, B: 1e9 };
+  const match = cleaned.match(/^([\d.]+)([KMB])?$/i);
+  if (!match) return 0;
+  const value = parseFloat(match[1]);
+  const multiplier = match[2] ? multipliers[match[2].toUpperCase()] : 1;
+  return value * multiplier;
+};
 
 export const InvestorHero = () => {
   const { data: tokenStats } = useTokenStats();
@@ -28,6 +40,8 @@ export const InvestorHero = () => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const marketCapValue = parseMarketCap(tokenStats?.marketCap);
+
   const stats = [
     {
       label: "Token Holders",
@@ -38,7 +52,7 @@ export const InvestorHero = () => {
     },
     {
       label: "Market Cap",
-      value: tokenStats?.marketCap || 0,
+      value: marketCapValue,
       prefix: "$",
       icon: TrendingUp,
       color: "text-chart-2",
@@ -80,29 +94,50 @@ export const InvestorHero = () => {
             transition={{ delay: 0.2 }}
           >
             <Badge variant="secondary" className="mb-4 text-sm px-4 py-2">
-              <TrendingUp className="w-4 h-4 mr-2" />
-              First-Mover in Terrain Intelligence
+              <Database className="w-4 h-4 mr-2" />
+              First Ground-Truth Oracle for the Physical World
             </Badge>
           </motion.div>
 
           {/* Headline */}
           <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-primary via-chart-2 to-chart-3 bg-clip-text text-transparent leading-tight">
-            Invest in the First Terrain-Intelligence Token Ecosystem
+            The Data–Compute–Energy Nexus of Web3
           </h1>
 
           {/* Subline */}
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            TRN powers the tools, rewards, and data layers behind <span className="text-primary font-semibold">TerrainVision AI</span>, <span className="text-chart-2 font-semibold">Goblin Market</span>, and the emerging <span className="text-chart-3 font-semibold">Terrain Data Marketplace</span>. A real-product ecosystem backed by contractor-validated workflows, AI tools, and expanding user activity.
+            TRN powers terrain intelligence at the convergence of <span className="text-primary font-semibold">real-world data</span>, <span className="text-chart-2 font-semibold">distributed compute</span>, and <span className="text-chart-3 font-semibold">clean energy infrastructure</span> — the physical stack that makes AI useful.
           </p>
+
+          {/* Category Badges */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="flex flex-wrap gap-3 justify-center"
+          >
+            <Badge variant="outline" className="text-sm px-3 py-1 border-chart-1/50 text-chart-1">
+              <Database className="w-3 h-3 mr-1" />
+              DePIN
+            </Badge>
+            <Badge variant="outline" className="text-sm px-3 py-1 border-chart-3/50 text-chart-3">
+              <Leaf className="w-3 h-3 mr-1" />
+              ReFi
+            </Badge>
+            <Badge variant="outline" className="text-sm px-3 py-1 border-chart-2/50 text-chart-2">
+              <Cpu className="w-3 h-3 mr-1" />
+              DeSci
+            </Badge>
+          </motion.div>
 
           {/* CTAs */}
           <div className="flex flex-wrap gap-4 justify-center pt-6">
             <Button 
               size="lg" 
               className="text-lg px-8"
-              onClick={() => scrollToSection('investment-tiers')}
+              onClick={() => scrollToSection('protocol-comparison')}
             >
-              Discover TRN Utility
+              See Protocol Positioning
             </Button>
             <Button 
               size="lg" 
