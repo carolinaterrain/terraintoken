@@ -132,7 +132,7 @@ export function InvestorCTA() {
           <p className="text-sm text-muted-foreground">
             📧 <span className="text-foreground font-medium">info@carolinaterrain.com</span>
             <span className="mx-3">•</span>
-            Investment tiers from $500 to $50,000+
+            Investment tiers from $1K to $1M
           </p>
         </motion.div>
       </div>

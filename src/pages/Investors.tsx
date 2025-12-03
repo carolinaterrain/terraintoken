@@ -10,7 +10,6 @@ import { ProtocolComparison } from "@/components/investor/ProtocolComparison";
 import { GlassCard } from "@/components/ui/glass-card";
 import Roadmap from "@/components/Roadmap";
 import { motion } from "framer-motion";
-import { TrendingUp, Target, Rocket } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import SmartHeader from "@/components/SmartHeader";
 import ScrollProgress from "@/components/ScrollProgress";
@@ -45,102 +44,10 @@ const Investors = () => {
           <InvestorHero />
         </section>
 
-        {/* 2. Protocol Comparison - NEW */}
+        {/* 2. Protocol Comparison */}
         <ProtocolComparison />
 
-        {/* 3. Why Different */}
-        <section id="why-different" className="py-20 px-4 bg-gradient-to-b from-background to-secondary/5">
-          <div className="container mx-auto max-w-4xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-12"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-chart-2 bg-clip-text text-transparent">
-                Why Terrain Tokens Are Different
-              </h2>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-              {[
-                {
-                  icon: Target,
-                  title: "Most Tokens Launch With",
-                  items: ["Nothing behind them", "No real products", "Pure speculation", "Empty roadmaps"]
-                },
-                {
-                  icon: Rocket,
-                  title: "TRN Launches With",
-                  items: [
-                    "Working AI platform (TerrainVision)",
-                    "Live rewards system",
-                    "Tools used across NC/SC",
-                    "Data-backed models",
-                    "2026 Marketplace roadmap",
-                    "Real demand"
-                  ],
-                  highlight: true
-                },
-                {
-                  icon: TrendingUp,
-                  title: "The Opportunity",
-                  items: [
-                    "Multi-billion dollar gap in AI",
-                    "First terrain-data ecosystem",
-                    "Category leadership position",
-                    "Real-world utility driving adoption"
-                  ]
-                }
-              ].map((column, index) => {
-                const Icon = column.icon;
-                return (
-                  <motion.div
-                    key={column.title}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <GlassCard 
-                      className={`p-6 h-full ${column.highlight ? 'border-primary/40 shadow-xl' : ''}`}
-                    >
-                      <Icon className={`w-8 h-8 ${column.highlight ? 'text-primary' : 'text-muted-foreground'} mb-4`} />
-                      <h3 className="text-lg font-bold mb-4">{column.title}</h3>
-                      <ul className="space-y-2">
-                        {column.items.map((item, i) => (
-                          <li key={i} className="text-sm text-muted-foreground flex items-start">
-                            <span className={`mr-2 ${column.highlight ? 'text-chart-3' : 'text-muted-foreground'}`}>
-                              {column.highlight ? '✓' : '×'}
-                            </span>
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </GlassCard>
-                  </motion.div>
-                );
-              })}
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-            >
-              <GlassCard className="p-8 text-center bg-gradient-to-br from-primary/10 to-chart-2/10">
-                <p className="text-xl font-semibold leading-relaxed">
-                  Terrain intelligence is a multi-billion-dollar gap in AI.
-                  <br />
-                  <span className="text-primary">TRN is the first token anchored to a real terrain-data ecosystem.</span>
-                </p>
-              </GlassCard>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* 4. Live Metrics */}
+        {/* 3. Live Metrics */}
         <section id="ecosystem-metrics">
           <EcosystemMetrics />
         </section>
