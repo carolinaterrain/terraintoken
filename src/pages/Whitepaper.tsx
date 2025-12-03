@@ -32,7 +32,7 @@ const Whitepaper = () => {
     {
       icon: Zap,
       title: "Ecosystem Products",
-      description: "TerrainVision AI (planned), Telegram Tip Bot (live), community engagement tools, and future AI-powered terrain analysis services."
+      description: "TerrainVision AI (planned), Discord Bot (live), community engagement tools, and future AI-powered terrain analysis services."
     },
     {
       icon: Target,
@@ -64,7 +64,7 @@ const Whitepaper = () => {
     "Energy/XP System planned for token utility",
     "Liquidity Locked for community protection",
     "Team tokens locked 1 year + quarterly vesting",
-    "Telegram Tip Bot live for community rewards"
+    "Discord Bot live for community rewards"
   ];
 
   return (

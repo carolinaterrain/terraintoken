@@ -493,7 +493,6 @@ const TransparencyReportNovember2025 = () => {
 
                 <ul className="list-disc pl-6 space-y-2">
                   <li><strong>Twitter:</strong> 8,500 followers (+45% MoM)</li>
-                  <li><strong>Telegram:</strong> 2,300 members (+38% MoM)</li>
                   <li><strong>Discord:</strong> 1,800 members (+50% MoM)</li>
                   <li><strong>Engagement rate:</strong> 6.2% (above industry avg of 2-3%)</li>
                 </ul>

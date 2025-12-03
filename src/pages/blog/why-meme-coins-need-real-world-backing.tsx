@@ -238,7 +238,7 @@ const WhyMemeCoinsNeedRealWorldBacking = () => {
                 <h3 className="font-display text-2xl font-bold mt-8 mb-4">Step 1: Create Hype</h3>
 
                 <p>
-                  Launch with eye-catching name, viral meme, or celebrity association. Flood Twitter, Discord, Telegram with coordinated marketing. Use bots to inflate engagement metrics.
+                  Launch with eye-catching name, viral meme, or celebrity association. Flood Twitter and Discord with coordinated marketing. Use bots to inflate engagement metrics.
                 </p>
 
                 <h3 className="font-display text-2xl font-bold mt-8 mb-4">Step 2: Build FOMO</h3>
@@ -461,7 +461,7 @@ const WhyMemeCoinsNeedRealWorldBacking = () => {
                 <ul className="list-disc pl-6 space-y-2">
                   <li>See detailed breakdowns of revenue, holders, and treasury activity</li>
                   <li>Compare month-over-month to verify claims</li>
-                  <li>Ask questions in Discord/Telegram—team responds daily</li>
+                  <li>Ask questions in Discord—team responds daily</li>
                 </ul>
 
                 <h2 id="faq" className="font-display text-3xl font-bold mt-12 mb-6">
