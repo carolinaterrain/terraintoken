@@ -258,29 +258,28 @@ const Hero = memo(() => {
             </Button>
           </div>
 
-          {/* Inline Waitlist CTA */}
-          <div className="mt-8 p-6 bg-gradient-to-br from-primary/10 via-chart-3/10 to-primary/5 border-2 border-primary/30 rounded-xl backdrop-blur-sm">
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">🎮</span>
-                <h3 className="font-display text-xl font-bold">Join TerrainScape Waitlist</h3>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Be first to play the AI-powered drainage game. <span className="text-primary font-semibold">Coming 2026</span>
-              </p>
-              <Button
-                variant="default"
-                size="lg"
-                className="font-semibold w-full"
-                onClick={() => {
-                  window.dispatchEvent(new CustomEvent('changeTab', { detail: { tab: 'community' } }));
-                  setTimeout(() => {
-                    document.getElementById('waitlist-form')?.scrollIntoView({ behavior: 'smooth' });
-                  }, 100);
-                }}
+          {/* Community CTA */}
+          <div className="mt-8 p-4 rounded-xl bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20">
+            <p className="text-sm text-muted-foreground mb-2">
+              <span className="text-primary font-semibold">Join the Community</span> — Connect with TRN holders on Telegram and Discord
+            </p>
+            <div className="flex gap-3">
+              <a 
+                href="https://t.me/+s6385WFOp21lOGZh" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-xs text-primary hover:underline"
               >
-                🌱 Secure Beta Access
-              </Button>
+                💬 Telegram
+              </a>
+              <a 
+                href="https://discord.gg/nX5u8ZaH" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-xs text-primary hover:underline"
+              >
+                🎮 Discord
+              </a>
             </div>
           </div>
         </div>

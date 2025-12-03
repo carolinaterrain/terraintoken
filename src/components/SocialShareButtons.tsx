@@ -15,7 +15,7 @@ export const SocialShareButtons = ({
   title, 
   description, 
   url = typeof window !== 'undefined' ? window.location.href : '',
-  hashtags = ['TerrainToken', 'TRN', 'TerrainScape'],
+  hashtags = ['TerrainToken', 'TRN', 'CarolinaTerrain'],
   via = 'carolinaterrain'
 }: SocialShareButtonsProps) => {
   const [copied, setCopied] = useState(false);

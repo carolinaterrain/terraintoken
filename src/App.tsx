@@ -27,7 +27,6 @@ const SubmitMeme = lazy(() => import("./pages/SubmitMeme"));
 
 const UploadProject = lazy(() => import("./pages/UploadProject"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
-const WaitlistDashboard = lazy(() => import("./pages/WaitlistDashboard"));
 const AnalyticsDashboard = lazy(() => import("./pages/AnalyticsDashboard"));
 const ABTestsDashboard = lazy(() => import("./pages/ABTestsDashboard"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -39,7 +38,6 @@ const WhyMemeCoinsNeedRealWorldBacking = lazy(() => import("./pages/blog/why-mem
 const AIPoweredDrainageAnalysisFuture = lazy(() => import("./pages/blog/ai-powered-drainage-analysis-future"));
 const TransparencyReportNovember2025 = lazy(() => import("./pages/blog/transparency-report-november-2025"));
 const RiskDisclosure = lazy(() => import("./pages/RiskDisclosure"));
-const ReferralDashboard = lazy(() => import("./pages/ReferralDashboard"));
 const UnifiedAdminDashboard = lazy(() => import("./pages/UnifiedAdminDashboard"));
 const Investors = lazy(() => import("./pages/Investors"));
 const PhilanthropicFund = lazy(() => import("./pages/PhilanthropicFund"));
@@ -89,10 +87,8 @@ const AppContent = () => {
             <Route path="/market" element={<GoblinMarket />} />
             <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
             <Route path="/admin/unified" element={<AdminRoute><UnifiedAdminDashboard /></AdminRoute>} />
-            <Route path="/admin/waitlist" element={<AdminRoute><WaitlistDashboard /></AdminRoute>} />
             <Route path="/admin/analytics" element={<AdminRoute><AnalyticsDashboard /></AdminRoute>} />
             <Route path="/admin/ab-tests" element={<AdminRoute><ABTestsDashboard /></AdminRoute>} />
-            <Route path="/refer" element={<ReferralDashboard />} />
             <Route path="/whitepaper" element={<Whitepaper />} />
             <Route path="/updates" element={<Updates />} />
             <Route path="/team" element={<Team />} />

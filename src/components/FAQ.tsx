@@ -59,10 +59,6 @@ const faqs = [
   {
     question: "How do I buy TRN?",
     answer: "TRN graduated from pump.fun and is now available on Raydium and Jupiter aggregator. Simply connect your Solana wallet, swap SOL for TRN, and you're in! Check our official social channels for the latest trading information and contract address."
-  },
-  {
-    question: "When will TerrainScape launch?",
-    answer: "TerrainScape is currently in development with public beta planned for Q1 2026. Early access is prioritized for TRN holders who join the waitlist now. Join at terraintoken.com to secure your spot!"
   }
 ];
 
