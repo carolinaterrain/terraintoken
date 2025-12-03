@@ -24,7 +24,7 @@ const TokenMetadata = lazy(() => import("./pages/TokenMetadata"));
 const Updates = lazy(() => import("./pages/Updates"));
 const Team = lazy(() => import("./pages/Team"));
 const SubmitMeme = lazy(() => import("./pages/SubmitMeme"));
-const UploadTestimonial = lazy(() => import("./pages/UploadTestimonial"));
+
 const UploadProject = lazy(() => import("./pages/UploadProject"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const WaitlistDashboard = lazy(() => import("./pages/WaitlistDashboard"));
@@ -83,7 +83,7 @@ const AppContent = () => {
             <Route path="/submit-meme" element={<SubmitMeme />} />
             <Route path="/goblin-cave" element={<GoblinCave />} />
             <Route path="/upload-project" element={<UploadProject />} />
-            <Route path="/upload-testimonial" element={<UploadTestimonial />} />
+            
             <Route path="/earn-trn" element={<EarnTRN />} />
             <Route path="/redeem-trn" element={<RedeemTRN />} />
             <Route path="/claim-reward" element={<ClaimInvoiceReward />} />
