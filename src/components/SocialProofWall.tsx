@@ -71,7 +71,7 @@ export const SocialProofWall = () => {
 
         <div className="mt-8 text-center">
           <p className="text-xs text-muted-foreground italic">
-            Real comments from Reddit, Twitter, Telegram, and Discord. Updated daily.
+            Selected community reactions from social platforms.
           </p>
         </div>
       </div>

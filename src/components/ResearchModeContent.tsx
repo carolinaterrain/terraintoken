@@ -5,7 +5,6 @@ import { useTabPersistence } from "@/hooks/useTabPersistence";
 import { useTabAnalytics } from "@/hooks/useTabAnalytics";
 
 const QuickStartGuide = lazy(() => import("@/components/QuickStartGuide").then(m => ({ default: m.QuickStartGuide })));
-const AnalyzeToEarnHero = lazy(() => import("@/components/AnalyzeToEarnHero"));
 const EcosystemProof = lazy(() => import("@/components/ecosystem/EcosystemProof").then(m => ({ default: m.EcosystemProof })));
 const HowToBuy = lazy(() => import("@/components/HowToBuy"));
 const SocialProofWall = lazy(() => import("@/components/SocialProofWall").then(m => ({ default: m.SocialProofWall })));
@@ -80,7 +79,6 @@ export const ResearchModeContent = () => {
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsContent value="overview" className="mt-0 animate-in fade-in-50 duration-300">
           <Suspense fallback={<LoadingSection />}><QuickStartGuide /></Suspense>
-          <Suspense fallback={<LoadingSection />}><AnalyzeToEarnHero /></Suspense>
           <Suspense fallback={<LoadingSection />}><EcosystemProof /></Suspense>
           <Suspense fallback={<LoadingSection />}><RealUtility /></Suspense>
           <Suspense fallback={<LoadingSection />}><HowToBuy /></Suspense>

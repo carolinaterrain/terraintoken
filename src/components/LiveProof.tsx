@@ -1,5 +1,5 @@
 import { GlassCard } from "@/components/ui/glass-card";
-import { Activity, Database, Users, Clock, Mail, Wallet, CheckCircle2, Loader2 } from "lucide-react";
+import { Clock, Mail, Wallet, CheckCircle2, Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
@@ -17,44 +17,6 @@ const LiveProof = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [referralCode, setReferralCode] = useState("");
-
-  // Total photos contributed
-  const { data: totalPhotos } = useQuery({
-    queryKey: ['total-photos'],
-    queryFn: async () => {
-      const { count } = await supabase
-        .from('project_media')
-        .select('*', { count: 'exact', head: true });
-      return count || 0;
-    }
-  });
-
-  // Total TRN distributed
-  const { data: totalTRN } = useQuery({
-    queryKey: ['total-trn-distributed'],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from('trn_rewards')
-        .select('trn_amount');
-      return data?.reduce((sum, r) => sum + Number(r.trn_amount), 0) || 0;
-    }
-  });
-
-  // Active contributors
-  const { data: activeContributors } = useQuery({
-    queryKey: ['active-contributors-month'],
-    queryFn: async () => {
-      const thirtyDaysAgo = new Date();
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-      
-      const { data } = await supabase
-        .from('user_stats')
-        .select('user_wallet_address')
-        .gte('last_upload_date', thirtyDaysAgo.toISOString().split('T')[0]);
-      
-      return data?.length || 0;
-    }
-  });
 
   // Recent activity feed
   const { data: recentActivity } = useQuery({
@@ -158,38 +120,11 @@ const LiveProof = () => {
       <div className="container mx-auto max-w-6xl relative">
         <div className="text-center mb-12">
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
-            Don't Take Our Word For It — <span className="text-primary">The Numbers Don't Lie</span>
+            Live Activity & <span className="text-primary">TRN Distribution</span>
           </h2>
           <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto">
             Real-time data from our live ecosystem
           </p>
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <GlassCard hover className="p-6 text-center">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-              <Database className="w-6 h-6 text-primary" />
-            </div>
-            <h3 className="font-display text-sm text-muted-foreground mb-2">Total Photos Contributed</h3>
-            <p className="font-display text-4xl font-bold text-primary">{totalPhotos?.toLocaleString()}</p>
-          </GlassCard>
-
-          <GlassCard hover className="p-6 text-center">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-              <Activity className="w-6 h-6 text-primary" />
-            </div>
-            <h3 className="font-display text-sm text-muted-foreground mb-2">Total TRN Distributed</h3>
-            <p className="font-display text-4xl font-bold text-primary">{totalTRN?.toLocaleString()}</p>
-          </GlassCard>
-
-          <GlassCard hover className="p-6 text-center">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-              <Users className="w-6 h-6 text-primary" />
-            </div>
-            <h3 className="font-display text-sm text-muted-foreground mb-2">Active Contributors (30d)</h3>
-            <p className="font-display text-4xl font-bold text-primary">{activeContributors?.toLocaleString()}</p>
-          </GlassCard>
         </div>
 
         {/* Chart */}

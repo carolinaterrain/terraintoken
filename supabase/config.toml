@@ -65,3 +65,6 @@ verify_jwt = false
 
 [functions.fetch-treasury-balance]
 verify_jwt = false
+
+[functions.get-contribution-stats]
+verify_jwt = false
