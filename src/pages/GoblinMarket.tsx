@@ -18,7 +18,6 @@ import BackToHome from "@/components/BackToHome";
 
 // Above-the-fold components - Load on mount
 import { LiveHolderTracker } from "@/components/market/LiveHolderTracker";
-import { PriceAlerts } from "@/components/market/PriceAlerts";
 
 const IS_DEV = import.meta.env.DEV;
 
@@ -212,15 +211,10 @@ const GoblinMarketContent = () => {
           <DexScreenerChart />
         </DashboardErrorBoundary>
 
-        {/* Holder Tracker & Price Alerts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <DashboardErrorBoundary componentName="Holder Tracker">
-            <LiveHolderTracker />
-          </DashboardErrorBoundary>
-          <DashboardErrorBoundary componentName="Price Alerts">
-            <PriceAlerts currentPrice={parseFloat(marketStats.priceUsd)} />
-          </DashboardErrorBoundary>
-        </div>
+        {/* Holder Tracker */}
+        <DashboardErrorBoundary componentName="Holder Tracker">
+          <LiveHolderTracker />
+        </DashboardErrorBoundary>
 
       </main>
     </div>

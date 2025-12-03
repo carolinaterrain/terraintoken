@@ -27,8 +27,6 @@ verify_jwt = false
 [functions.check-achievements]
 verify_jwt = false
 
-[functions.check-price-alerts]
-verify_jwt = false
 
 [functions.check-whale-purchases]
 verify_jwt = false
