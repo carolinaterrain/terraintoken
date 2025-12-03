@@ -147,7 +147,7 @@ const RiskDisclosure = () => {
                 <p>✅ <strong className="text-foreground">Full Transparency:</strong> Monthly reports on holder count, business revenue, and treasury.</p>
                 <p>✅ <strong className="text-foreground">Real Business Backing:</strong> Carolina Terrain LLC is a legitimate drainage company with verifiable operations.</p>
                 <p>✅ <strong className="text-foreground">Active Development:</strong> We're building AI-powered terrain analysis and drainage assessment tools.</p>
-                <p>✅ <strong className="text-foreground">Engaged Community:</strong> Active Telegram, Discord, and social media presence.</p>
+                <p>✅ <strong className="text-foreground">Engaged Community:</strong> Active Discord and social media presence.</p>
                 <p>✅ <strong className="text-foreground">On-Chain Verification:</strong> All wallet addresses and transactions are publicly visible on Solscan.</p>
               </div>
             </GlassCard>
@@ -185,8 +185,8 @@ const RiskDisclosure = () => {
               <a href="/whitepaper" className="text-primary hover:underline font-medium">
                 📄 Whitepaper
               </a>
-              <a href="https://t.me/+s6385WFOp21lOGZh" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
-                💬 Telegram
+              <a href="https://discord.gg/BmUmr2Kx" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
+                💬 Discord
               </a>
             </div>
           </section>

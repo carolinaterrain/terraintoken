@@ -81,8 +81,7 @@ The `token-metadata.json` includes:
     "website": "...",
     "twitter": "https://x.com/carolinaterrain",
     "x": "https://x.com/carolinaterrain",
-    "telegram": "https://t.me/terraintoken",
-    "discord": "https://discord.gg/terraintoken",
+    "discord": "https://discord.gg/BmUmr2Kx",
     "whitepaper": "...",
     "docs": "...",
     "contact": "..."
@@ -204,7 +203,7 @@ After metadata update:
 For questions about TRN token metadata:
 - Email: info@carolinaterrain.com
 - Twitter: https://x.com/carolinaterrain
-- Telegram: https://t.me/terraintoken
+- Discord: https://discord.gg/BmUmr2Kx
 
 ---
 
