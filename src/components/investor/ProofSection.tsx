@@ -1,24 +1,13 @@
 import { GlassCard } from "@/components/ui/glass-card";
-import { Badge } from "@/components/ui/badge";
-import { Shield, CheckCircle, ExternalLink, FileCheck, Award, TrendingUp } from "lucide-react";
+import { Shield, CheckCircle, ExternalLink, FileCheck, Award } from "lucide-react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-
-import CountUp from "react-countup";
 
 export const ProofSection = () => {
-  const equipmentValue = 172591.78; // Current equipment value from balance sheet
-
-  // Get days since launch (assuming Jan 1, 2024)
-  const launchDate = new Date("2024-01-01");
-  const daysSinceLaunch = Math.floor((Date.now() - launchDate.getTime()) / (1000 * 60 * 60 * 24));
-
   // Get blog post count
   const { data: blogCount } = useQuery({
     queryKey: ['blog-count'],
     queryFn: async () => {
-      // In a real scenario, this would query a blog_posts table
       return 4; // Current number of blog posts
     },
   });
@@ -50,34 +39,6 @@ export const ProofSection = () => {
       title: "Transparent Reporting",
       description: `${blogCount || 4} detailed transparency reports published`,
       link: "/blog",
-      color: "text-chart-4"
-    }
-  ];
-
-  const trustMetrics = [
-    {
-      label: "Days Operating",
-      value: daysSinceLaunch,
-      icon: TrendingUp,
-      color: "text-chart-1"
-    },
-    {
-      label: "Equipment Verified",
-      value: equipmentValue,
-      prefix: "$",
-      icon: Shield,
-      color: "text-chart-2"
-    },
-    {
-      label: "Transparency Reports",
-      value: blogCount || 4,
-      icon: FileCheck,
-      color: "text-chart-3"
-    },
-    {
-      label: "Active Tools",
-      value: 8,
-      icon: Award,
       color: "text-chart-4"
     }
   ];
@@ -141,42 +102,6 @@ export const ProofSection = () => {
             );
           })}
         </div>
-
-        {/* Trust Metrics */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <h3 className="text-2xl font-bold text-center mb-8">Live Trust Metrics</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {trustMetrics.map((metric, index) => {
-              const Icon = metric.icon;
-              return (
-                <motion.div
-                  key={metric.label}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.05 }}
-                >
-                  <GlassCard className="p-6 text-center">
-                    <Icon className={`w-6 h-6 ${metric.color} mx-auto mb-3`} />
-                    <div className={`text-3xl font-bold ${metric.color} mb-2`}>
-                      {metric.prefix}
-                      <CountUp
-                        end={metric.value}
-                        duration={2}
-                        separator=","
-                      />
-                    </div>
-                    <p className="text-xs text-muted-foreground">{metric.label}</p>
-                  </GlassCard>
-                </motion.div>
-              );
-            })}
-          </div>
-        </motion.div>
 
         {/* Trust Statement */}
         <motion.div
