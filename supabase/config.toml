@@ -74,3 +74,6 @@ verify_jwt = false
 
 [functions.nft-metadata]
 verify_jwt = false
+
+[functions.generate-product-image]
+verify_jwt = false
