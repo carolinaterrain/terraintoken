@@ -14,7 +14,6 @@ import { Helmet } from "react-helmet-async";
 import SmartHeader from "@/components/SmartHeader";
 import ScrollProgress from "@/components/ScrollProgress";
 import SkipToContent from "@/components/SkipToContent";
-import { HeyGenAvatar } from "@/components/HeyGenAvatar";
 
 const Investors = () => {
   return (
@@ -108,9 +107,6 @@ const Investors = () => {
           </div>
         </section>
       </main>
-
-      {/* AI Avatar Assistant */}
-      <HeyGenAvatar enabled={true} />
     </>
   );
 };
