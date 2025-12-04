@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Sparkles, Award, Lock, ShoppingCart, Loader2 } from 'lucide-react';
+import { Sparkles, Award, Lock, ShoppingCart, Loader2, Heart } from 'lucide-react';
 import { useCollectorDrop } from '@/hooks/useCollectorDrop';
 import { WalletCollectionModal } from './WalletCollectionModal';
 import { useCartStore } from '@/stores/cartStore';
@@ -23,6 +23,46 @@ export function CollectorDropCard({ shopifyProductId, variantId, itemType = 'shi
   const addItem = useCartStore(state => state.addItem);
 
   const displayPrice = itemPrice || drop?.price_usd || 100;
+  const totalSupply = drop?.total_supply || 50;
+
+  // Dynamic supply state
+  const getSupplyState = () => {
+    if (isSoldOut) return 'soldOut';
+    if (remaining <= 10) return 'critical';
+    if (remaining <= 25) return 'low';
+    return 'available';
+  };
+
+  const supplyState = getSupplyState();
+
+  const supplyStyles = {
+    available: {
+      bg: 'bg-primary/90',
+      text: 'text-primary-foreground',
+      label: `${remaining}/${totalSupply} Remaining`,
+      pulse: false,
+    },
+    low: {
+      bg: 'bg-amber-500/90',
+      text: 'text-black',
+      label: `${remaining}/${totalSupply} — Going Fast`,
+      pulse: false,
+    },
+    critical: {
+      bg: 'bg-destructive',
+      text: 'text-destructive-foreground',
+      label: `Only ${remaining} Left — Selling Fast!`,
+      pulse: true,
+    },
+    soldOut: {
+      bg: 'bg-destructive',
+      text: 'text-destructive-foreground',
+      label: 'SOLD OUT',
+      pulse: false,
+    },
+  };
+
+  const currentStyle = supplyStyles[supplyState];
 
   const handleBuyClick = () => {
     if (isSoldOut) return;
@@ -32,12 +72,10 @@ export function CollectorDropCard({ shopifyProductId, variantId, itemType = 'shi
   const handleWalletSubmit = async (walletAddress: string, certificateId: string, serialNumber: number) => {
     setIsReserving(true);
     try {
-      // Store wallet and certificate info in localStorage for checkout
       localStorage.setItem('collector_wallet', walletAddress);
       localStorage.setItem('collector_certificate_id', certificateId);
       localStorage.setItem('collector_serial', serialNumber.toString());
 
-      // Add to cart with serial info
       addItem({
         product: {
           node: {
@@ -114,46 +152,53 @@ export function CollectorDropCard({ shopifyProductId, variantId, itemType = 'shi
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-card border border-primary/30 rounded-xl overflow-hidden shadow-xl"
+        whileHover={{ y: -4 }}
+        transition={{ duration: 0.3 }}
+        className="bg-card border-2 border-primary/30 rounded-2xl overflow-hidden shadow-xl hover:shadow-[0_0_40px_hsl(142_76%_39%/0.2)] transition-all duration-300"
       >
         {/* Image Section */}
-        <div className="relative aspect-square bg-gradient-to-br from-primary/20 to-accent/20 p-8">
-          <img
+        <div className="relative aspect-square bg-gradient-to-br from-primary/20 via-card to-terrain-purple/10 p-8">
+          <motion.img
             src="/branding/trn-logo-full.png"
             alt="TRN Collector Edition #0"
             className="w-full h-full object-contain"
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
           />
           
-          {/* Badges */}
+          {/* Badges with shimmer */}
           <div className="absolute top-4 left-4 flex flex-col gap-2">
-            <Badge className="bg-primary text-primary-foreground">
+            <Badge className="bg-primary text-primary-foreground animate-glow-pulse">
               <Sparkles className="w-3 h-3 mr-1" />
               Limited Edition
             </Badge>
-            <Badge variant="outline" className="bg-background/80 backdrop-blur">
+            <Badge variant="outline" className="bg-background/80 backdrop-blur border-primary/40">
               <Award className="w-3 h-3 mr-1" />
               NFT Included
             </Badge>
           </div>
 
-          {/* Supply Counter */}
+          {/* Dynamic Supply Counter */}
           <div className="absolute bottom-4 right-4">
-            <div className={`px-4 py-2 rounded-full font-bold text-sm ${
-              isSoldOut 
-                ? 'bg-destructive text-destructive-foreground' 
-                : remaining <= 10 
-                  ? 'bg-amber-500/90 text-black' 
-                  : 'bg-accent/90 text-accent-foreground'
-            }`}>
+            <motion.div 
+              animate={currentStyle.pulse ? { scale: [1, 1.05, 1] } : {}}
+              transition={currentStyle.pulse ? { duration: 1.5, repeat: Infinity } : {}}
+              className={`px-4 py-2 rounded-full font-bold text-sm ${currentStyle.bg} ${currentStyle.text} ${
+                currentStyle.pulse ? 'shadow-[0_0_20px_hsl(0_84%_60%/0.5)]' : ''
+              }`}
+            >
               {isSoldOut ? (
                 <span className="flex items-center gap-1">
                   <Lock className="w-3 h-3" />
                   SOLD OUT
                 </span>
               ) : (
-                `${remaining}/${drop.total_supply} Remaining`
+                <span className="flex items-center gap-1">
+                  {supplyState === 'critical' && <span className="animate-pulse">🔥</span>}
+                  {currentStyle.label}
+                </span>
               )}
-            </div>
+            </motion.div>
           </div>
         </div>
 
@@ -162,13 +207,19 @@ export function CollectorDropCard({ shopifyProductId, variantId, itemType = 'shi
           <div>
             <h3 className="text-2xl font-bold text-foreground">{itemName}</h3>
             <p className="text-muted-foreground text-sm mt-1">
-              Premium item + Unique NFT Certificate
+              Premium Collector Item + 1/1 NFT Certificate
             </p>
           </div>
 
-          <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-bold text-primary">${displayPrice}</span>
-            <span className="text-muted-foreground text-sm">USD</span>
+          {/* Enhanced Price Display */}
+          <div className="bg-primary/5 border border-primary/20 rounded-xl p-4">
+            <div className="flex items-baseline gap-2">
+              <span className="text-4xl font-bold text-primary">${displayPrice}</span>
+              <span className="text-muted-foreground text-sm">USD</span>
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Includes physical item + on-chain NFT certificate
+            </p>
           </div>
 
           <div className="space-y-2 text-sm text-muted-foreground">
@@ -182,10 +233,16 @@ export function CollectorDropCard({ shopifyProductId, variantId, itemType = 'shi
             </div>
           </div>
 
+          {/* Community Support Line */}
+          <div className="flex items-center gap-2 text-xs text-primary/80 bg-primary/5 px-3 py-2 rounded-lg">
+            <Heart className="w-3 h-3" />
+            <span>A portion supports future community events & giveaways</span>
+          </div>
+
           <Button
             onClick={handleBuyClick}
             disabled={isSoldOut || isReserving}
-            className="w-full"
+            className="w-full group"
             size="lg"
           >
             {isReserving ? (
@@ -200,7 +257,7 @@ export function CollectorDropCard({ shopifyProductId, variantId, itemType = 'shi
               </>
             ) : (
               <>
-                <ShoppingCart className="w-4 h-4 mr-2" />
+                <ShoppingCart className="w-4 h-4 mr-2 group-hover:animate-bounce" />
                 Reserve Your Serial
               </>
             )}
