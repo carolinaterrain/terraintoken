@@ -27,7 +27,6 @@ verify_jwt = false
 [functions.check-achievements]
 verify_jwt = false
 
-
 [functions.check-whale-purchases]
 verify_jwt = false
 
@@ -65,4 +64,13 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.get-contribution-stats]
+verify_jwt = false
+
+[functions.mint-collector-nft]
+verify_jwt = true
+
+[functions.process-collector-purchase]
+verify_jwt = false
+
+[functions.nft-metadata]
 verify_jwt = false
