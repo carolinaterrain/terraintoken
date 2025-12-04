@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "./ui/button";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ChevronDown, Heart, FileText, Shield, Newspaper, BookOpen, Gift } from "lucide-react";
+import { ChevronDown, Heart, FileText, Shield, Newspaper, BookOpen, Gift, Shirt } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -47,6 +47,7 @@ const DesktopNav = () => {
     { id: "hero", label: "Home", isRoute: false },
     { id: "market", label: "Market", isRoute: true },
     { id: "earn-trn", label: "Earn", isRoute: true },
+    { id: "drops", label: "Drops", isRoute: true, isNew: true },
     { id: "investors", label: "Invest", isRoute: true },
     { id: "team", label: "About", isRoute: true },
   ];
@@ -113,6 +114,9 @@ const DesktopNav = () => {
                 }`}
               >
                 {item.label}
+                {item.isNew && (
+                  <span className="ml-1 px-1.5 py-0.5 text-[10px] font-bold bg-accent text-accent-foreground rounded">NEW</span>
+                )}
                 {(activeSection === item.id || location.pathname === `/${item.id}`) && (
                   <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
                 )}
