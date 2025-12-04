@@ -5,6 +5,7 @@ const QuickStartGuide = lazy(() => import("@/components/QuickStartGuide").then(m
 const EcosystemProof = lazy(() => import("@/components/ecosystem/EcosystemProof").then(m => ({ default: m.EcosystemProof })));
 const HowToBuy = lazy(() => import("@/components/HowToBuy"));
 const SocialProofWall = lazy(() => import("@/components/SocialProofWall").then(m => ({ default: m.SocialProofWall })));
+const ClientTestimonials = lazy(() => import("@/components/ClientTestimonials").then(m => ({ default: m.ClientTestimonials })));
 const RealUtility = lazy(() => import("@/components/RealUtility"));
 const FAQ = lazy(() => import("@/components/FAQ"));
 const Footer = lazy(() => import("@/components/Footer"));
@@ -24,6 +25,7 @@ export const ResearchModeContent = () => {
       <Suspense fallback={<LoadingSection />}><RealUtility /></Suspense>
       <Suspense fallback={<LoadingSection />}><HowToBuy /></Suspense>
       <Suspense fallback={<LoadingSection />}><SocialProofWall /></Suspense>
+      <Suspense fallback={<LoadingSection />}><ClientTestimonials /></Suspense>
       <Suspense fallback={<LoadingSection />}><FAQ /></Suspense>
       <Suspense fallback={<div className="h-64" />}><Footer /></Suspense>
     </>

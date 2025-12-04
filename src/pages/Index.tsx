@@ -12,6 +12,7 @@ const SmartHeader = lazy(() => import("@/components/SmartHeader"));
 const Hero = lazy(() => import("@/components/Hero"));
 const ResearchModeContent = lazy(() => import("@/components/ResearchModeContent").then(m => ({ default: m.ResearchModeContent })));
 const HeyGenAvatar = lazy(() => import("@/components/HeyGenAvatar").then(m => ({ default: m.HeyGenAvatar })));
+const OnboardingModal = lazy(() => import("@/components/onboarding/OnboardingModal").then(m => ({ default: m.OnboardingModal })));
 
 // Lightweight skeleton for hero section
 const HeroSkeleton = () => (
@@ -107,6 +108,10 @@ const Index = () => {
           <HeyGenAvatar enabled={avatarEnabled} />
         </Suspense>
       )}
+
+      <Suspense fallback={null}>
+        <OnboardingModal />
+      </Suspense>
     </>
   );
 };
