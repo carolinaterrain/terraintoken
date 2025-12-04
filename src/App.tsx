@@ -43,6 +43,7 @@ const UnifiedAdminDashboard = lazy(() => import("./pages/UnifiedAdminDashboard")
 const Investors = lazy(() => import("./pages/Investors"));
 const PhilanthropicFund = lazy(() => import("./pages/PhilanthropicFund"));
 const Drops = lazy(() => import("./pages/Drops"));
+const Shop = lazy(() => import("./pages/Shop"));
 const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 
 // Lazy load components
@@ -106,6 +107,7 @@ const AppContent = () => {
             <Route path="/investors" element={<Investors />} />
             <Route path="/philanthropic-fund" element={<PhilanthropicFund />} />
             <Route path="/drops" element={<Drops />} />
+            <Route path="/shop" element={<Shop />} />
             <Route path="/drops/:handle" element={<ProductDetail />} />
             <Route path="/funnel-analytics" element={<AdminRoute><FunnelAnalytics /></AdminRoute>} />
             <Route path="*" element={<NotFound />} />

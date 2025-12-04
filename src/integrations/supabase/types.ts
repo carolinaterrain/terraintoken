@@ -278,6 +278,7 @@ export type Database = {
           created_at: string
           drop_id: string
           id: string
+          item_type: string | null
           nft_transfer_signature: string | null
           nft_transfer_status: string
           order_status: string
@@ -292,6 +293,7 @@ export type Database = {
           created_at?: string
           drop_id: string
           id?: string
+          item_type?: string | null
           nft_transfer_signature?: string | null
           nft_transfer_status?: string
           order_status?: string
@@ -306,6 +308,7 @@ export type Database = {
           created_at?: string
           drop_id?: string
           id?: string
+          item_type?: string | null
           nft_transfer_signature?: string | null
           nft_transfer_status?: string
           order_status?: string
@@ -382,6 +385,7 @@ export type Database = {
           created_at: string
           drop_id: string
           id: string
+          item_type: string | null
           metadata_uri: string | null
           mint_address: string | null
           reserved_at: string | null
@@ -396,6 +400,7 @@ export type Database = {
           created_at?: string
           drop_id: string
           id?: string
+          item_type?: string | null
           metadata_uri?: string | null
           mint_address?: string | null
           reserved_at?: string | null
@@ -410,6 +415,7 @@ export type Database = {
           created_at?: string
           drop_id?: string
           id?: string
+          item_type?: string | null
           metadata_uri?: string | null
           mint_address?: string | null
           reserved_at?: string | null
@@ -2070,6 +2076,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      supporter_nfts: {
+        Row: {
+          buyer_email: string | null
+          buyer_wallet: string
+          created_at: string
+          id: string
+          metadata_uri: string | null
+          mint_address: string | null
+          shopify_order_id: string | null
+          shopify_variant_id: string | null
+          status: string
+        }
+        Insert: {
+          buyer_email?: string | null
+          buyer_wallet: string
+          created_at?: string
+          id?: string
+          metadata_uri?: string | null
+          mint_address?: string | null
+          shopify_order_id?: string | null
+          shopify_variant_id?: string | null
+          status?: string
+        }
+        Update: {
+          buyer_email?: string | null
+          buyer_wallet?: string
+          created_at?: string
+          id?: string
+          metadata_uri?: string | null
+          mint_address?: string | null
+          shopify_order_id?: string | null
+          shopify_variant_id?: string | null
+          status?: string
+        }
+        Relationships: []
       }
       terrainscape_waitlist: {
         Row: {

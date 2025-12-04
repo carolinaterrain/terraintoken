@@ -11,13 +11,18 @@ import { toast } from 'sonner';
 interface CollectorDropCardProps {
   shopifyProductId: string;
   variantId: string;
+  itemType?: 'shirt' | 'hat' | 'bundle';
+  itemName?: string;
+  itemPrice?: number;
 }
 
-export function CollectorDropCard({ shopifyProductId, variantId }: CollectorDropCardProps) {
+export function CollectorDropCard({ shopifyProductId, variantId, itemType = 'shirt', itemName = 'Collector Shirt', itemPrice = 100 }: CollectorDropCardProps) {
   const { drop, remaining, isLoading, isSoldOut } = useCollectorDrop();
   const [showWalletModal, setShowWalletModal] = useState(false);
   const [isReserving, setIsReserving] = useState(false);
   const addItem = useCartStore(state => state.addItem);
+
+  const displayPrice = itemPrice || drop?.price_usd || 100;
 
   const handleBuyClick = () => {
     if (isSoldOut) return;
@@ -37,12 +42,12 @@ export function CollectorDropCard({ shopifyProductId, variantId }: CollectorDrop
         product: {
           node: {
             id: `gid://shopify/Product/${shopifyProductId}`,
-            title: `TRN Collector Edition #0 – Serial #${serialNumber}/50`,
+            title: `TRN ${itemName} #${serialNumber}/50`,
             description: drop?.description || '',
-            handle: 'trn-collector-edition-0-limited-to-50',
+            handle: 'trn-collector-edition-0',
             priceRange: {
               minVariantPrice: {
-                amount: drop?.price_usd?.toString() || '49.99',
+                amount: displayPrice.toString(),
                 currencyCode: 'USD'
               }
             },
@@ -59,7 +64,7 @@ export function CollectorDropCard({ shopifyProductId, variantId }: CollectorDrop
                 node: {
                   id: variantId,
                   title: 'One Size',
-                  price: { amount: drop?.price_usd?.toString() || '49.99', currencyCode: 'USD' },
+                  price: { amount: displayPrice.toString(), currencyCode: 'USD' },
                   availableForSale: true,
                   selectedOptions: [{ name: 'Size', value: 'One Size' }]
                 }
@@ -70,10 +75,10 @@ export function CollectorDropCard({ shopifyProductId, variantId }: CollectorDrop
         },
         variantId: variantId,
         variantTitle: 'One Size',
-        price: { amount: drop?.price_usd?.toString() || '49.99', currencyCode: 'USD' },
+        price: { amount: displayPrice.toString(), currencyCode: 'USD' },
         quantity: 1,
         selectedOptions: [
-          { name: 'Size', value: 'One Size' },
+          { name: 'Item', value: itemName },
           { name: 'Serial', value: `#${serialNumber}/50` },
           { name: 'NFT Wallet', value: walletAddress.slice(0, 8) + '...' }
         ]
@@ -155,14 +160,14 @@ export function CollectorDropCard({ shopifyProductId, variantId }: CollectorDrop
         {/* Details Section */}
         <div className="p-6 space-y-4">
           <div>
-            <h3 className="text-2xl font-bold text-foreground">{drop.name}</h3>
+            <h3 className="text-2xl font-bold text-foreground">{itemName}</h3>
             <p className="text-muted-foreground text-sm mt-1">
-              Premium shirt + Unique NFT Certificate
+              Premium item + Unique NFT Certificate
             </p>
           </div>
 
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-bold text-primary">${drop.price_usd}</span>
+            <span className="text-3xl font-bold text-primary">${displayPrice}</span>
             <span className="text-muted-foreground text-sm">USD</span>
           </div>
 

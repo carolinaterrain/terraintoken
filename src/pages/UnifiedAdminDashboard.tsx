@@ -5,12 +5,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useTabPersistence } from "@/hooks/useTabPersistence";
 import { useTabAnalytics } from "@/hooks/useTabAnalytics";
 import { supabase } from "@/integrations/supabase/client";
-import { LayoutDashboard, Image, Users, BarChart3, TestTube2, Filter, Activity, DollarSign, UserPlus, Code2 } from "lucide-react";
+import { LayoutDashboard, Image, Users, BarChart3, TestTube2, Filter, Activity, DollarSign, UserPlus, Code2, Package } from "lucide-react";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Card } from "@/components/ui/card";
 import { RedemptionsTab } from "@/components/admin/RedemptionsTab";
 import { ReferralsTab } from "@/components/admin/ReferralsTab";
 import { CodeHealthTab } from "@/components/admin/CodeHealthTab";
+import { CollectorDropsTab } from "@/components/admin/CollectorDropsTab";
 
 const ScrollProgress = lazy(() => import("@/components/ScrollProgress"));
 const SmartHeader = lazy(() => import("@/components/SmartHeader"));
@@ -140,6 +141,10 @@ const UnifiedAdminDashboard = () => {
                   <Code2 className="w-4 h-4" />
                   Code Health
                 </TabsTrigger>
+                <TabsTrigger value="drops" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-6 py-4 gap-2">
+                  <Package className="w-4 h-4" />
+                  Drops
+                </TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
@@ -264,6 +269,13 @@ const UnifiedAdminDashboard = () => {
             <TabsContent value="codehealth">
               <Suspense fallback={<LoadingSection />}>
                 <CodeHealthTab />
+              </Suspense>
+            </TabsContent>
+
+            {/* Drops Tab */}
+            <TabsContent value="drops">
+              <Suspense fallback={<LoadingSection />}>
+                <CollectorDropsTab />
               </Suspense>
             </TabsContent>
           </Tabs>
