@@ -6,6 +6,7 @@ import { Sparkles, Award, Lock, ShoppingCart, Loader2, Heart } from 'lucide-reac
 import { useCollectorDrop } from '@/hooks/useCollectorDrop';
 import { WalletCollectionModal } from './WalletCollectionModal';
 import { useCartStore } from '@/stores/cartStore';
+import { useProductImages } from '@/hooks/useProductImages';
 import { toast } from 'sonner';
 
 interface CollectorDropCardProps {
@@ -18,6 +19,7 @@ interface CollectorDropCardProps {
 
 export function CollectorDropCard({ shopifyProductId, variantId, itemType = 'shirt', itemName = 'Collector Shirt', itemPrice = 100 }: CollectorDropCardProps) {
   const { drop, remaining, isLoading, isSoldOut } = useCollectorDrop();
+  const { primaryImage } = useProductImages(itemType);
   const [showWalletModal, setShowWalletModal] = useState(false);
   const [isReserving, setIsReserving] = useState(false);
   const addItem = useCartStore(state => state.addItem);
@@ -92,7 +94,7 @@ export function CollectorDropCard({ shopifyProductId, variantId, itemType = 'shi
             images: {
               edges: [{
                 node: {
-                  url: '/branding/trn-logo-full.png',
+                  url: primaryImage,
                   altText: 'TRN Collector Edition'
                 }
               }]
@@ -159,7 +161,7 @@ export function CollectorDropCard({ shopifyProductId, variantId, itemType = 'shi
         {/* Image Section */}
         <div className="relative aspect-square bg-gradient-to-br from-primary/20 via-card to-terrain-purple/10 p-8">
           <motion.img
-            src="/branding/trn-logo-full.png"
+            src={primaryImage}
             alt="TRN Collector Edition #0"
             className="w-full h-full object-contain"
             whileHover={{ scale: 1.05 }}

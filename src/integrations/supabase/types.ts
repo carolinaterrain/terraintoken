@@ -1587,6 +1587,45 @@ export type Database = {
         }
         Relationships: []
       }
+      product_images: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          image_source: string
+          is_active: boolean
+          metadata: Json | null
+          product_type: string
+          public_url: string
+          storage_path: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_source?: string
+          is_active?: boolean
+          metadata?: Json | null
+          product_type: string
+          public_url: string
+          storage_path?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_source?: string
+          is_active?: boolean
+          metadata?: Json | null
+          product_type?: string
+          public_url?: string
+          storage_path?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       project_media: {
         Row: {
           ai_validation_score: number | null

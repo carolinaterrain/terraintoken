@@ -5,7 +5,7 @@ import { CartDrawer } from "@/components/shop/CartDrawer";
 import BackToHome from "@/components/BackToHome";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Users, Award, Clock, Shield, Shirt, HardHat, Package, Flame } from "lucide-react";
+import { Sparkles, Users, Award, Clock, Shield, Shirt, HardHat, Package, Flame, Image as ImageIcon } from "lucide-react";
 import { CollectorDropCard } from "@/components/shop/CollectorDropCard";
 import { useCollectorDrop } from "@/hooks/useCollectorDrop";
 import { Link } from "react-router-dom";
@@ -14,6 +14,7 @@ import { SerialPreview } from "@/components/drops/SerialPreview";
 import { SocialProofQuotes } from "@/components/drops/SocialProofQuotes";
 import { CollectorBenefits } from "@/components/drops/CollectorBenefits";
 import { FoundersNote } from "@/components/drops/FoundersNote";
+import { ProductGallery } from "@/components/drops/ProductGallery";
 
 type ItemType = 'shirt' | 'hat' | 'bundle';
 
@@ -172,6 +173,22 @@ const Drops = () => {
                   );
                 })}
               </div>
+            </div>
+
+            {/* Product Gallery */}
+            <div className="mb-12">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="text-center mb-6"
+              >
+                <Badge variant="outline" className="bg-card/50 border-primary/30">
+                  <ImageIcon className="w-3 h-3 mr-1" />
+                  Product Preview
+                </Badge>
+              </motion.div>
+              <ProductGallery itemType={selectedItem} />
             </div>
 
             {/* Product Card */}
