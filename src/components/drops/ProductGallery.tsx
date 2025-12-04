@@ -1,22 +1,57 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useProductImages, ProductImageType } from '@/hooks/useProductImages';
+import { useState, memo } from 'react';
+import { motion } from 'framer-motion';
+import { useProductImages } from '@/hooks/useProductImages';
 import { ImageLightbox } from './ImageLightbox';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { ZoomIn, ChevronLeft, ChevronRight, Image as ImageIcon, Sparkles } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
+import LazyImage from '@/components/LazyImage';
 
 interface ProductGalleryProps {
   itemType: 'shirt' | 'hat' | 'bundle';
 }
 
+const ThumbnailButton = memo(({ 
+  url, 
+  index, 
+  isSelected, 
+  onClick 
+}: { 
+  url: string; 
+  index: number; 
+  isSelected: boolean; 
+  onClick: () => void;
+}) => (
+  <button
+    onClick={onClick}
+    className={`aspect-square rounded-lg overflow-hidden border-2 transition-all hover:scale-105 ${
+      isSelected
+        ? 'border-primary shadow-[0_0_15px_hsl(var(--primary)/0.3)]'
+        : 'border-border/50 hover:border-primary/50'
+    }`}
+  >
+    <LazyImage
+      src={url}
+      alt={`Thumbnail ${index + 1}`}
+      className="w-full h-full object-cover"
+    />
+  </button>
+));
+
+ThumbnailButton.displayName = 'ThumbnailButton';
+
 export function ProductGallery({ itemType }: ProductGalleryProps) {
   const { images, imageUrls, primaryImage, isLoading, hasImages } = useProductImages(itemType);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   const currentImage = imageUrls[selectedIndex] || primaryImage;
+  
+  // Show fewer thumbnails on mobile for performance
+  const maxThumbnails = isMobile ? 4 : 6;
+  const visibleThumbnails = imageUrls.slice(0, maxThumbnails);
 
   const handlePrevious = () => {
     setSelectedIndex(prev => (prev === 0 ? imageUrls.length - 1 : prev - 1));
@@ -32,7 +67,7 @@ export function ProductGallery({ itemType }: ProductGalleryProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Skeleton className="aspect-square rounded-2xl" />
           <div className="grid grid-cols-3 gap-2">
-            {[...Array(6)].map((_, i) => (
+            {[...Array(isMobile ? 4 : 6)].map((_, i) => (
               <Skeleton key={i} className="aspect-square rounded-lg" />
             ))}
           </div>
@@ -41,7 +76,6 @@ export function ProductGallery({ itemType }: ProductGalleryProps) {
     );
   }
 
-  // Show placeholder state if no images
   if (!hasImages) {
     return (
       <div className="max-w-4xl mx-auto">
@@ -68,22 +102,20 @@ export function ProductGallery({ itemType }: ProductGalleryProps) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-50px" }}
           className="grid grid-cols-1 md:grid-cols-5 gap-4"
         >
           {/* Main Image */}
           <div className="md:col-span-3 relative group">
-            <motion.div
-              key={selectedIndex}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
+            <div
               className="relative aspect-square bg-gradient-to-br from-primary/5 to-card rounded-2xl overflow-hidden border border-primary/20"
             >
               <img
                 src={currentImage}
                 alt={`Product view ${selectedIndex + 1}`}
-                className="w-full h-full object-contain p-4 cursor-zoom-in"
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-contain p-4 cursor-zoom-in transition-opacity duration-200"
                 onClick={() => setLightboxOpen(true)}
               />
               
@@ -119,7 +151,7 @@ export function ProductGallery({ itemType }: ProductGalleryProps) {
                   {selectedIndex + 1} / {imageUrls.length}
                 </div>
               )}
-            </motion.div>
+            </div>
 
             {/* Source badge */}
             {images[selectedIndex]?.image_source === 'ai_generated' && (
@@ -134,29 +166,19 @@ export function ProductGallery({ itemType }: ProductGalleryProps) {
           </div>
 
           {/* Thumbnail Grid */}
-          <div className="md:col-span-2 grid grid-cols-3 md:grid-cols-2 gap-2">
-            {imageUrls.map((url, index) => (
-              <motion.button
+          <div className="md:col-span-2 grid grid-cols-3 md:grid-cols-2 gap-2" style={{ contentVisibility: 'auto' }}>
+            {visibleThumbnails.map((url, index) => (
+              <ThumbnailButton
                 key={index}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                url={url}
+                index={index}
+                isSelected={index === selectedIndex}
                 onClick={() => setSelectedIndex(index)}
-                className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
-                  index === selectedIndex
-                    ? 'border-primary shadow-[0_0_15px_hsl(142_76%_39%/0.3)]'
-                    : 'border-border/50 hover:border-primary/50'
-                }`}
-              >
-                <img
-                  src={url}
-                  alt={`Thumbnail ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </motion.button>
+              />
             ))}
 
-            {/* Placeholder thumbnails if less than 6 images */}
-            {imageUrls.length < 6 && [...Array(6 - imageUrls.length)].map((_, i) => (
+            {/* Placeholder thumbnails */}
+            {visibleThumbnails.length < maxThumbnails && [...Array(maxThumbnails - visibleThumbnails.length)].map((_, i) => (
               <div
                 key={`placeholder-${i}`}
                 className="aspect-square rounded-lg border-2 border-dashed border-border/30 flex items-center justify-center bg-muted/20"
