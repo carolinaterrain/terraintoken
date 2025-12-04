@@ -8,6 +8,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+} from '@/components/ui/drawer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,6 +22,7 @@ import { Badge } from '@/components/ui/badge';
 import { Wallet, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface WalletCollectionModalProps {
   open: boolean;
@@ -28,6 +36,7 @@ export function WalletCollectionModal({ open, onOpenChange, onSubmit, dropId }: 
   const [manualWallet, setManualWallet] = useState('');
   const [isReserving, setIsReserving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
   const walletAddress = connected && publicKey ? publicKey.toBase58() : manualWallet;
   const isValidWallet = walletAddress.length >= 32 && walletAddress.length <= 44;
@@ -43,10 +52,8 @@ export function WalletCollectionModal({ open, onOpenChange, onSubmit, dropId }: 
     setError(null);
 
     try {
-      // Generate a session ID for this reservation
       const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-      // Reserve the next available certificate
       const { data, error: rpcError } = await supabase.rpc('reserve_next_certificate', {
         p_drop_id: dropId,
         p_session_id: sessionId
@@ -60,10 +67,8 @@ export function WalletCollectionModal({ open, onOpenChange, onSubmit, dropId }: 
 
       const { certificate_id, serial_number } = data[0];
 
-      // Store the session ID for later checkout matching
       localStorage.setItem('collector_session_id', sessionId);
 
-      // Pass wallet address or null if skipped
       const finalWallet = skipWallet ? null : (isValidWallet ? walletAddress : null);
       onSubmit(finalWallet, certificate_id, serial_number);
     } catch (err) {
@@ -75,9 +80,134 @@ export function WalletCollectionModal({ open, onOpenChange, onSubmit, dropId }: 
     }
   };
 
+  // Shared form content for both mobile and desktop
+  const formContent = (
+    <div className="space-y-5">
+      {/* Option 1: Connect Wallet */}
+      <div className="space-y-3">
+        <Label className="text-sm font-medium">Option 1: Connect Wallet</Label>
+        <div className="flex justify-center">
+          <WalletMultiButton className="!bg-primary hover:!bg-primary/90 !rounded-md !h-10 !px-4 !text-sm" />
+        </div>
+        {connected && publicKey && (
+          <div className="flex items-center gap-2 p-3 bg-accent/10 rounded-lg border border-accent/30">
+            <CheckCircle2 className="w-4 h-4 text-accent" />
+            <span className="text-sm font-mono truncate">{publicKey.toBase58()}</span>
+          </div>
+        )}
+      </div>
+
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t border-border" />
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-background px-2 text-muted-foreground">or</span>
+        </div>
+      </div>
+
+      {/* Option 2: Manual Entry */}
+      <div className="space-y-3">
+        <Label htmlFor="wallet" className="text-sm font-medium">
+          Option 2: Enter Wallet Address
+        </Label>
+        <Input
+          id="wallet"
+          placeholder="Your Solana wallet address..."
+          value={manualWallet}
+          onChange={(e) => {
+            setManualWallet(e.target.value);
+            setError(null);
+          }}
+          disabled={connected}
+          className="font-mono text-sm"
+        />
+      </div>
+
+      {error && (
+        <div className="flex items-center gap-2 p-3 bg-destructive/10 rounded-lg border border-destructive/30 text-destructive text-sm">
+          <AlertCircle className="w-4 h-4 flex-shrink-0" />
+          {error}
+        </div>
+      )}
+
+      {/* Info Box */}
+      <div className="p-3 bg-muted/50 rounded-lg space-y-2">
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className="text-xs">Optional</Badge>
+        </div>
+        <p className="text-xs text-muted-foreground">
+          Providing your wallet lets us send your NFT certificate (#X/50) after order fulfillment. 
+          You can also provide it later via email.
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Button
+          onClick={() => handleReserve(false)}
+          disabled={!isValidWallet || isReserving}
+          className="w-full"
+          size="lg"
+        >
+          {isReserving ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Reserving...
+            </>
+          ) : (
+            <>
+              <CheckCircle2 className="w-4 h-4 mr-2" />
+              Reserve with Wallet
+            </>
+          )}
+        </Button>
+        
+        <Button
+          onClick={() => handleReserve(true)}
+          disabled={isReserving}
+          variant="outline"
+          className="w-full"
+          size="lg"
+        >
+          {isReserving ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Reserving...
+            </>
+          ) : (
+            'Skip & Continue to Checkout'
+          )}
+        </Button>
+      </div>
+    </div>
+  );
+
+  // Mobile: Bottom drawer (works correctly on iOS Safari)
+  if (isMobile) {
+    return (
+      <Drawer open={open} onOpenChange={onOpenChange}>
+        <DrawerContent className="max-h-[85dvh]">
+          <div className="overflow-y-auto px-4 pb-8">
+            <DrawerHeader className="text-left px-0">
+              <DrawerTitle className="flex items-center gap-2">
+                <Wallet className="w-5 h-5 text-primary" />
+                Connect Your Wallet
+              </DrawerTitle>
+              <DrawerDescription>
+                Your NFT certificate will be sent to this Solana wallet address after purchase.
+              </DrawerDescription>
+            </DrawerHeader>
+            {formContent}
+          </div>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
+  // Desktop: Centered dialog
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Wallet className="w-5 h-5 text-primary" />
@@ -87,104 +217,8 @@ export function WalletCollectionModal({ open, onOpenChange, onSubmit, dropId }: 
             Your NFT certificate will be sent to this Solana wallet address after purchase.
           </DialogDescription>
         </DialogHeader>
-
-        <div className="space-y-5 py-3">
-          {/* Option 1: Connect Wallet */}
-          <div className="space-y-3">
-            <Label className="text-sm font-medium">Option 1: Connect Wallet</Label>
-            <div className="flex justify-center">
-              <WalletMultiButton className="!bg-primary hover:!bg-primary/90 !rounded-md !h-10 !px-4 !text-sm" />
-            </div>
-            {connected && publicKey && (
-              <div className="flex items-center gap-2 p-3 bg-accent/10 rounded-lg border border-accent/30">
-                <CheckCircle2 className="w-4 h-4 text-accent" />
-                <span className="text-sm font-mono truncate">{publicKey.toBase58()}</span>
-              </div>
-            )}
-          </div>
-
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-border" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">or</span>
-            </div>
-          </div>
-
-          {/* Option 2: Manual Entry */}
-          <div className="space-y-3">
-            <Label htmlFor="wallet" className="text-sm font-medium">
-              Option 2: Enter Wallet Address
-            </Label>
-            <Input
-              id="wallet"
-              placeholder="Your Solana wallet address..."
-              value={manualWallet}
-              onChange={(e) => {
-                setManualWallet(e.target.value);
-                setError(null);
-              }}
-              disabled={connected}
-              className="font-mono text-sm"
-            />
-          </div>
-
-          {error && (
-            <div className="flex items-center gap-2 p-3 bg-destructive/10 rounded-lg border border-destructive/30 text-destructive text-sm">
-              <AlertCircle className="w-4 h-4" />
-              {error}
-            </div>
-          )}
-
-          {/* Info Box */}
-          <div className="p-3 bg-muted/50 rounded-lg space-y-2">
-            <div className="flex items-center gap-2">
-              <Badge variant="outline" className="text-xs">Optional</Badge>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Providing your wallet lets us send your NFT certificate (#X/50) after order fulfillment. 
-              You can also provide it later via email.
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <Button
-              onClick={() => handleReserve(false)}
-              disabled={!isValidWallet || isReserving}
-              className="w-full"
-              size="lg"
-            >
-              {isReserving ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Reserving...
-                </>
-              ) : (
-                <>
-                  <CheckCircle2 className="w-4 h-4 mr-2" />
-                  Reserve with Wallet
-                </>
-              )}
-            </Button>
-            
-            <Button
-              onClick={() => handleReserve(true)}
-              disabled={isReserving}
-              variant="outline"
-              className="w-full"
-              size="lg"
-            >
-              {isReserving ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Reserving...
-                </>
-              ) : (
-                'Skip & Continue to Checkout'
-              )}
-            </Button>
-          </div>
+        <div className="py-3">
+          {formContent}
         </div>
       </DialogContent>
     </Dialog>
