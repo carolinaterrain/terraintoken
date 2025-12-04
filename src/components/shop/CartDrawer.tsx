@@ -12,6 +12,7 @@ import {
 import { ShoppingCart, Minus, Plus, Trash2, ExternalLink, Loader2 } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { toast } from "sonner";
+import { UpsellSection } from "./UpsellSection";
 
 export const CartDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -134,6 +135,9 @@ export const CartDrawer = () => {
                   ))}
                 </div>
               </div>
+
+              {/* Upsell Section */}
+              <UpsellSection cartItems={items} />
               
               {/* Fixed checkout section */}
               <div className="flex-shrink-0 space-y-4 pt-4 border-t border-primary/20 bg-card">
