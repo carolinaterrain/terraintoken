@@ -1,3 +1,16 @@
+/**
+ * ARCHIVED: This edge function is not currently called from the frontend.
+ * No energy purchase UI exists in the app.
+ * 
+ * Dependencies:
+ * - energy_balances table
+ * - energy_purchases table
+ * - token_burns table
+ * 
+ * To reactivate: Build energy purchase UI in the app.
+ * Last archived: 2025-12-04
+ */
+
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
@@ -18,9 +31,8 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const trnBurned = trnCost / 2; // 50% burn
+    const trnBurned = trnCost / 2;
 
-    // Update energy balance
     const { data: balance } = await supabase
       .from('energy_balances')
       .select('*')
@@ -45,7 +57,6 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Record purchase
     const { data: purchase } = await supabase
       .from('energy_purchases')
       .insert({
@@ -58,7 +69,6 @@ Deno.serve(async (req) => {
       .select()
       .single();
 
-    // Record burn with verification placeholder
     if (!walletAddress) {
       throw new Error('wallet_address is required for burn tracking');
     }

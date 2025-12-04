@@ -1,3 +1,15 @@
+/**
+ * ARCHIVED: This edge function is not currently called from the frontend.
+ * No subscription UI exists in the app.
+ * 
+ * Dependencies:
+ * - user_subscriptions table
+ * - STRIPE_SECRET_KEY for fiat payments
+ * 
+ * To reactivate: Build subscription UI and configure Stripe webhooks.
+ * Last archived: 2025-12-04
+ */
+
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import Stripe from 'https://esm.sh/stripe@14.21.0';
 
@@ -7,7 +19,7 @@ const corsHeaders = {
 };
 
 const TIER_PRICES = {
-  pro: { trn: 1000, fiat: 999 }, // cents
+  pro: { trn: 1000, fiat: 999 },
   business: { trn: 5000, fiat: 4999 },
   enterprise: { trn: 25000, fiat: 19999 },
 };
@@ -36,7 +48,6 @@ Deno.serve(async (req) => {
           apiVersion: '2023-10-16',
         });
 
-        // Create Stripe checkout session
         const session = await stripe.checkout.sessions.create({
           payment_method_types: ['card'],
           line_items: [
@@ -70,9 +81,8 @@ Deno.serve(async (req) => {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
       } else {
-        // TRN subscription
         const trnCost = TIER_PRICES[tier as keyof typeof TIER_PRICES].trn;
-        const trnBurned = trnCost * 0.5; // 50% burn for TRN payments
+        const trnBurned = trnCost * 0.5;
 
         const { data: subscription } = await supabase
           .from('user_subscriptions')
@@ -85,7 +95,6 @@ Deno.serve(async (req) => {
           .select()
           .single();
 
-        // Record burn
         await supabase.from('token_burns').insert({
           burn_source: 'subscription',
           burn_amount: trnBurned,

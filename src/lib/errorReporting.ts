@@ -145,3 +145,37 @@ export function withErrorReporting<T extends (...args: unknown[]) => Promise<unk
     }
   }) as T;
 }
+
+/**
+ * Initialize global error handlers
+ * Call this once at app startup to catch unhandled errors
+ */
+export function initGlobalErrorHandlers(): void {
+  // Catch unhandled errors
+  window.addEventListener('error', (event) => {
+    const error = event.error || new Error(event.message);
+    reportError(error, { 
+      action: 'unhandled_error',
+      metadata: {
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
+      }
+    }, 'error');
+  });
+
+  // Catch unhandled promise rejections
+  window.addEventListener('unhandledrejection', (event) => {
+    const error = event.reason instanceof Error 
+      ? event.reason 
+      : new Error(String(event.reason));
+    reportError(error, { 
+      action: 'unhandled_rejection',
+      metadata: {
+        type: typeof event.reason,
+      }
+    }, 'error');
+  });
+
+  console.log('[ErrorReporting] Global error handlers initialized');
+}

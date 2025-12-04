@@ -1,3 +1,14 @@
+/**
+ * ARCHIVED: This edge function is not currently called from the frontend.
+ * It was built for an achievement system that requires:
+ * - CHECK_ACHIEVEMENTS_API_KEY secret to be configured
+ * - Frontend integration to trigger checks
+ * - Cron job setup for periodic checks
+ * 
+ * To reactivate: Configure the API key and add frontend calls.
+ * Last archived: 2025-12-04
+ */
+
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { checkRateLimit, getClientIP } from "../_shared/rate-limit.ts";
@@ -11,10 +22,6 @@ const corsHeaders = {
 const achievementCheckSchema = z.object({
   wallet_address: z.string().regex(/^[1-9A-HJ-NP-Za-km-z]{32,44}$/, 'Invalid Solana wallet address')
 });
-
-interface AchievementCheckRequest {
-  wallet_address: string;
-}
 
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === 'OPTIONS') {
@@ -37,7 +44,7 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Rate limiting: 60 checks per hour per IP (for manual triggers)
+    // Rate limiting
     const clientIP = getClientIP(req);
     const rateLimitResult = await checkRateLimit(clientIP, {
       endpoint: 'check-achievements',
@@ -59,7 +66,6 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Validate input
     const body = await req.json();
     const validation = achievementCheckSchema.safeParse(body);
     
@@ -69,10 +75,10 @@ const handler = async (req: Request): Promise<Response> => {
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+    
     const supabaseClient = createClient(supabaseUrl, supabaseKey);
     const { wallet_address } = validation.data;
 
-    // Get user stats
     const { data: stats } = await supabaseClient
       .from('user_stats')
       .select('*')
@@ -86,12 +92,10 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Get achievement definitions
     const { data: definitions } = await supabaseClient
       .from('achievement_definitions')
       .select('*');
 
-    // Get already earned achievements
     const { data: earned } = await supabaseClient
       .from('user_achievements')
       .select('achievement_id')
@@ -100,7 +104,6 @@ const handler = async (req: Request): Promise<Response> => {
     const earnedIds = new Set(earned?.map(a => a.achievement_id) || []);
     const newAchievements = [];
 
-    // Check each achievement
     for (const def of definitions || []) {
       if (earnedIds.has(def.id)) continue;
 
@@ -125,7 +128,6 @@ const handler = async (req: Request): Promise<Response> => {
       }
 
       if (qualifies) {
-        // Award achievement
         const { data: newAchievement } = await supabaseClient
           .from('user_achievements')
           .insert({
@@ -136,7 +138,6 @@ const handler = async (req: Request): Promise<Response> => {
           .select()
           .maybeSingle();
 
-        // Create TRN reward
         await supabaseClient.from('trn_rewards').insert({
           user_wallet_address: wallet_address,
           reward_type: 'achievement',
@@ -144,7 +145,6 @@ const handler = async (req: Request): Promise<Response> => {
           reward_metadata: { achievement_id: def.id }
         });
 
-        // Create notification
         await supabaseClient.from('activity_notifications').insert({
           activity_type: 'achievement_earned',
           user_identifier: wallet_address.substring(0, 8),
