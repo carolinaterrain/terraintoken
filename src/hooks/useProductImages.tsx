@@ -104,7 +104,45 @@ const SHOPIFY_HANDLE_TO_CATEGORY: Record<string, string> = {
   'trn-keychain': 'keychain',
   'trn-sticker-pack': 'sticker-pack',
   'trn-collector-bundle': 'bundle',
-  'terrain-token-collector-edition': 'bundle'
+  'terrain-token-collector-edition': 'bundle',
+  // Additional handle variations
+  'collector-tee': 'collector-shirt',
+  'collector-shirt': 'collector-shirt',
+  'premium-hoodie': 'hoodie',
+  'hoodie': 'hoodie',
+  'work-tee': 'work-tee',
+  'collector-hat': 'collector-hat',
+  'hat': 'collector-hat',
+  'beanie': 'beanie',
+  'coffee-mug': 'coffee-mug',
+  'mug': 'coffee-mug',
+  'keychain': 'keychain',
+  'sticker-pack': 'sticker-pack',
+  'stickers': 'sticker-pack',
+  'collector-bundle': 'bundle',
+  'bundle': 'bundle'
+};
+
+// Map product titles to categories (for fuzzy matching)
+export const getProductCategory = (handle: string, title?: string): string | null => {
+  // Direct handle match
+  const directMatch = SHOPIFY_HANDLE_TO_CATEGORY[handle.toLowerCase()];
+  if (directMatch) return directMatch;
+
+  // Fuzzy matching based on handle/title keywords
+  const text = `${handle} ${title || ''}`.toLowerCase();
+  
+  if (text.includes('hoodie')) return 'hoodie';
+  if (text.includes('beanie')) return 'beanie';
+  if (text.includes('hat') || text.includes('cap')) return 'collector-hat';
+  if (text.includes('work') && text.includes('tee')) return 'work-tee';
+  if (text.includes('shirt') || text.includes('tee')) return 'collector-shirt';
+  if (text.includes('mug') || text.includes('coffee')) return 'coffee-mug';
+  if (text.includes('keychain') || text.includes('key')) return 'keychain';
+  if (text.includes('sticker')) return 'sticker-pack';
+  if (text.includes('bundle') || text.includes('collector')) return 'bundle';
+  
+  return null;
 };
 
 // Legacy mapping for backward compatibility
