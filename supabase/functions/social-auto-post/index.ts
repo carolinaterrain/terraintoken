@@ -1,3 +1,11 @@
+/**
+ * ARCHIVED: This edge function is not currently called from the frontend.
+ * It generates social media share URLs but doesn't actually post (no API integrations).
+ * 
+ * To fully implement: Add Twitter API, Facebook Graph API, LinkedIn API keys.
+ * Last archived: 2025-12-04
+ */
+
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
@@ -13,20 +21,12 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-interface SocialPostRequest {
-  platform: 'twitter' | 'facebook' | 'linkedin';
-  message: string;
-  image_url?: string;
-  link?: string;
-}
-
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    // API Key validation
     const apiKey = req.headers.get('x-api-key');
     const validApiKey = Deno.env.get('CRON_API_KEY');
     
@@ -37,7 +37,6 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Validate and sanitize input
     const body = await req.json();
     const validation = socialPostSchema.safeParse(body);
     
@@ -48,13 +47,10 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
     
-    const { platform, message, image_url, link } = validation.data;
+    const { platform, message, link } = validation.data;
 
     console.log(`Auto-posting to ${platform}: ${message}`);
 
-    // This is a placeholder - in production, integrate with Twitter API, Facebook Graph API, etc.
-    // For now, we'll generate a shareable link
-    
     let shareUrl = '';
     const encodedMessage = encodeURIComponent(message);
     const encodedUrl = link ? encodeURIComponent(link) : '';

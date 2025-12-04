@@ -1,3 +1,16 @@
+/**
+ * ARCHIVED: This edge function is not currently called from the frontend.
+ * No marketplace purchase flow UI exists in the app.
+ * 
+ * Dependencies:
+ * - marketplace_items table
+ * - marketplace_transactions table
+ * - token_burns table
+ * 
+ * To reactivate: Build marketplace purchase UI.
+ * Last archived: 2025-12-04
+ */
+
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
@@ -18,7 +31,6 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Get item details
     const { data: item } = await supabase
       .from('marketplace_items')
       .select('*')
@@ -29,12 +41,10 @@ Deno.serve(async (req) => {
       throw new Error('Item not found');
     }
 
-    // Calculate fees (5% total: 2.5% to seller, 2.5% burned)
     const platformFee = priceTrn * 0.05;
     const feeBurned = platformFee / 2;
     const sellerPayout = priceTrn - platformFee;
 
-    // Record transaction
     const { data: transaction } = await supabase
       .from('marketplace_transactions')
       .insert({
@@ -49,7 +59,6 @@ Deno.serve(async (req) => {
       .select()
       .single();
 
-    // Record burn with verification placeholder
     if (!buyerWallet) {
       throw new Error('buyer_wallet is required for burn tracking');
     }
@@ -69,7 +78,6 @@ Deno.serve(async (req) => {
     
     console.log(`[Burn] Marketplace fee burn recorded: ${feeBurned} TRN from ${buyerWallet}`);
 
-    // Update item stats
     await supabase
       .from('marketplace_items')
       .update({

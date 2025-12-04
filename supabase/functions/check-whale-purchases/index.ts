@@ -1,9 +1,20 @@
+/**
+ * ARCHIVED: This edge function is not currently called from the frontend.
+ * It was designed to detect large TRN purchases and create whale alerts.
+ * 
+ * Dependencies:
+ * - trn_purchases table (may not exist)
+ * - whale_alerts table
+ * 
+ * To reactivate: Add frontend trigger or cron job integration.
+ * Last archived: 2025-12-04
+ */
+
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 import { checkRateLimit, getClientIP } from '../_shared/rate-limit.ts';
 
-// Transaction signature validation
 const signatureSchema = z.string().regex(/^[1-9A-HJ-NP-Za-km-z]{87,88}$/, 'Invalid Solana transaction signature');
 
 const corsHeaders = {
@@ -23,10 +34,9 @@ serve(async (req) => {
     const SUPABASE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const clientIP = getClientIP(req);
     
-    // Rate limiting - allow 30 requests per hour (more generous for multiple sessions)
     const rateLimitResult = await checkRateLimit(clientIP, {
       endpoint: 'check-whale-purchases',
-      windowMs: 3600000, // 1 hour
+      windowMs: 3600000,
       maxRequests: 30
     }, SUPABASE_URL, SUPABASE_KEY);
     
@@ -49,7 +59,6 @@ serve(async (req) => {
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Get recent purchases above whale threshold
     const { data: purchases, error } = await supabase
       .from("trn_purchases")
       .select("*")
@@ -59,11 +68,8 @@ serve(async (req) => {
 
     if (error) throw error;
 
-    // Check each purchase and create whale alert if not already exists
     for (const purchase of purchases || []) {
-      // Check if whale alert already exists for this transaction
       if (purchase.transaction_signature) {
-        // Validate transaction signature format
         const sigValidation = signatureSchema.safeParse(purchase.transaction_signature);
         if (!sigValidation.success) {
           console.error('Invalid transaction signature format:', purchase.transaction_signature);
