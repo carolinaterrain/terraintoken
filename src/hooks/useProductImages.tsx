@@ -1,14 +1,41 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
+// All 22 product image types
 export type ProductImageType = 
-  | 'shirt-front' 
-  | 'shirt-model' 
-  | 'hat-front' 
-  | 'hat-model' 
-  | 'flat-lay' 
-  | 'bundle' 
-  | 'certificate';
+  // Collector Shirt
+  | 'collector-shirt-front' 
+  | 'collector-shirt-lifestyle'
+  // Hoodie
+  | 'hoodie-front'
+  | 'hoodie-lifestyle'
+  // Work Tee
+  | 'work-tee-front'
+  | 'work-tee-lifestyle'
+  // Hat
+  | 'collector-hat-front' 
+  | 'collector-hat-lifestyle'
+  // Beanie
+  | 'beanie-front'
+  | 'beanie-lifestyle'
+  // Mug
+  | 'coffee-mug-front'
+  | 'coffee-mug-lifestyle'
+  // Keychain
+  | 'keychain-front'
+  | 'keychain-lifestyle'
+  // Stickers
+  | 'sticker-pack-front'
+  | 'sticker-pack-lifestyle'
+  // Bundle
+  | 'collector-bundle-hero'
+  | 'collector-bundle-contents'
+  // Certificate
+  | 'nft-certificate-display'
+  | 'nft-certificate-mobile'
+  // Marketing
+  | 'brand-hero-all-products'
+  | 'lifestyle-team-shot';
 
 export interface ProductImage {
   id: string;
@@ -25,15 +52,149 @@ export interface ProductImage {
 // Fallback logo for when no images exist
 const FALLBACK_IMAGE = '/branding/trn-logo-full.png';
 
-// Map item types to relevant product image types
-const ITEM_TYPE_IMAGES: Record<string, ProductImageType[]> = {
-  shirt: ['shirt-front', 'shirt-model', 'flat-lay'],
-  hat: ['hat-front', 'hat-model', 'flat-lay'],
-  bundle: ['bundle', 'flat-lay', 'shirt-front', 'hat-front', 'certificate']
+// All 22 image types for generation
+export const ALL_PRODUCT_IMAGE_TYPES: ProductImageType[] = [
+  'collector-shirt-front',
+  'collector-shirt-lifestyle',
+  'hoodie-front',
+  'hoodie-lifestyle',
+  'work-tee-front',
+  'work-tee-lifestyle',
+  'collector-hat-front',
+  'collector-hat-lifestyle',
+  'beanie-front',
+  'beanie-lifestyle',
+  'coffee-mug-front',
+  'coffee-mug-lifestyle',
+  'keychain-front',
+  'keychain-lifestyle',
+  'sticker-pack-front',
+  'sticker-pack-lifestyle',
+  'collector-bundle-hero',
+  'collector-bundle-contents',
+  'nft-certificate-display',
+  'nft-certificate-mobile',
+  'brand-hero-all-products',
+  'lifestyle-team-shot'
+];
+
+// Map product categories to their image types
+const PRODUCT_CATEGORY_IMAGES: Record<string, ProductImageType[]> = {
+  'collector-shirt': ['collector-shirt-front', 'collector-shirt-lifestyle'],
+  'hoodie': ['hoodie-front', 'hoodie-lifestyle'],
+  'work-tee': ['work-tee-front', 'work-tee-lifestyle'],
+  'collector-hat': ['collector-hat-front', 'collector-hat-lifestyle'],
+  'beanie': ['beanie-front', 'beanie-lifestyle'],
+  'coffee-mug': ['coffee-mug-front', 'coffee-mug-lifestyle'],
+  'keychain': ['keychain-front', 'keychain-lifestyle'],
+  'sticker-pack': ['sticker-pack-front', 'sticker-pack-lifestyle'],
+  'bundle': ['collector-bundle-hero', 'collector-bundle-contents', 'nft-certificate-display'],
+  'certificate': ['nft-certificate-display', 'nft-certificate-mobile'],
+  'marketing': ['brand-hero-all-products', 'lifestyle-team-shot']
 };
 
+// Map Shopify product handles to image categories
+const SHOPIFY_HANDLE_TO_CATEGORY: Record<string, string> = {
+  'trn-collector-tee': 'collector-shirt',
+  'trn-premium-hoodie': 'hoodie',
+  'trn-work-tee': 'work-tee',
+  'trn-collector-hat': 'collector-hat',
+  'trn-beanie': 'beanie',
+  'trn-coffee-mug': 'coffee-mug',
+  'trn-keychain': 'keychain',
+  'trn-sticker-pack': 'sticker-pack',
+  'trn-collector-bundle': 'bundle',
+  'terrain-token-collector-edition': 'bundle'
+};
+
+// Legacy mapping for backward compatibility
+const ITEM_TYPE_IMAGES: Record<string, ProductImageType[]> = {
+  shirt: ['collector-shirt-front', 'collector-shirt-lifestyle', 'collector-bundle-contents'],
+  hat: ['collector-hat-front', 'collector-hat-lifestyle', 'collector-bundle-contents'],
+  bundle: ['collector-bundle-hero', 'collector-bundle-contents', 'collector-shirt-front', 'collector-hat-front', 'nft-certificate-display']
+};
+
+// Get images for a specific product by Shopify handle
+export function useProductImagesByHandle(shopifyHandle: string) {
+  const category = SHOPIFY_HANDLE_TO_CATEGORY[shopifyHandle];
+  const relevantTypes = category ? PRODUCT_CATEGORY_IMAGES[category] : [];
+
+  const { data: images, isLoading, error } = useQuery({
+    queryKey: ['product-images', 'handle', shopifyHandle],
+    queryFn: async () => {
+      if (relevantTypes.length === 0) return [];
+      
+      const { data, error } = await supabase
+        .from('product_images')
+        .select('*')
+        .in('product_type', relevantTypes)
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
+
+      if (error) {
+        console.error('Error fetching product images:', error);
+        throw error;
+      }
+
+      return (data || []) as ProductImage[];
+    },
+    staleTime: 1000 * 60 * 5,
+    enabled: relevantTypes.length > 0
+  });
+
+  const primaryImage = images?.[0]?.public_url || FALLBACK_IMAGE;
+  const imageUrls = images?.map(img => img.public_url) || [FALLBACK_IMAGE];
+
+  return {
+    images: images || [],
+    imageUrls,
+    primaryImage,
+    isLoading,
+    error,
+    hasImages: (images?.length || 0) > 0
+  };
+}
+
+// Get images by category
+export function useProductImagesByCategory(category: keyof typeof PRODUCT_CATEGORY_IMAGES) {
+  const relevantTypes = PRODUCT_CATEGORY_IMAGES[category] || [];
+
+  const { data: images, isLoading, error } = useQuery({
+    queryKey: ['product-images', 'category', category],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('product_images')
+        .select('*')
+        .in('product_type', relevantTypes)
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
+
+      if (error) {
+        console.error('Error fetching product images:', error);
+        throw error;
+      }
+
+      return (data || []) as ProductImage[];
+    },
+    staleTime: 1000 * 60 * 5
+  });
+
+  const primaryImage = images?.[0]?.public_url || FALLBACK_IMAGE;
+  const imageUrls = images?.map(img => img.public_url) || [FALLBACK_IMAGE];
+
+  return {
+    images: images || [],
+    imageUrls,
+    primaryImage,
+    isLoading,
+    error,
+    hasImages: (images?.length || 0) > 0
+  };
+}
+
+// Original hook for backward compatibility
 export function useProductImages(itemType: 'shirt' | 'hat' | 'bundle' = 'shirt') {
-  const relevantTypes = ITEM_TYPE_IMAGES[itemType] || ['shirt-front'];
+  const relevantTypes = ITEM_TYPE_IMAGES[itemType] || ['collector-shirt-front'];
 
   const { data: images, isLoading, error } = useQuery({
     queryKey: ['product-images', itemType],
@@ -52,13 +213,10 @@ export function useProductImages(itemType: 'shirt' | 'hat' | 'bundle' = 'shirt')
 
       return (data || []) as ProductImage[];
     },
-    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+    staleTime: 1000 * 60 * 5,
   });
 
-  // Get primary image (first in order)
   const primaryImage = images?.[0]?.public_url || FALLBACK_IMAGE;
-
-  // Get all image URLs
   const imageUrls = images?.map(img => img.public_url) || [FALLBACK_IMAGE];
 
   return {
@@ -93,7 +251,6 @@ export function useGenerateProductImage() {
       return data;
     },
     onSuccess: () => {
-      // Invalidate all product image queries
       queryClient.invalidateQueries({ queryKey: ['product-images'] });
     }
   });
@@ -107,7 +264,7 @@ export function useAllProductImages() {
       const { data, error } = await supabase
         .from('product_images')
         .select('*')
-        .order('product_type')
+        .order('display_order', { ascending: true })
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -116,26 +273,17 @@ export function useAllProductImages() {
   });
 }
 
-// Generate all product images at once
+// Generate all 22 product images at once
 export function useGenerateAllProductImages() {
   const generateImage = useGenerateProductImage();
   const queryClient = useQueryClient();
 
   const generateAll = async (regenerate = false) => {
-    const types: ProductImageType[] = [
-      'shirt-front',
-      'shirt-model', 
-      'hat-front',
-      'hat-model',
-      'flat-lay',
-      'bundle',
-      'certificate'
-    ];
-
     const results = [];
     
-    for (const type of types) {
+    for (const type of ALL_PRODUCT_IMAGE_TYPES) {
       try {
+        console.log(`Generating ${type}...`);
         const result = await generateImage.mutateAsync({ productType: type, regenerate });
         results.push({ type, success: true, data: result });
       } catch (error) {
@@ -144,7 +292,27 @@ export function useGenerateAllProductImages() {
       }
     }
 
-    // Invalidate all queries after generation
+    queryClient.invalidateQueries({ queryKey: ['product-images'] });
+
+    return results;
+  };
+
+  // Generate images by category
+  const generateByCategory = async (category: keyof typeof PRODUCT_CATEGORY_IMAGES, regenerate = false) => {
+    const types = PRODUCT_CATEGORY_IMAGES[category] || [];
+    const results = [];
+    
+    for (const type of types) {
+      try {
+        console.log(`Generating ${type}...`);
+        const result = await generateImage.mutateAsync({ productType: type, regenerate });
+        results.push({ type, success: true, data: result });
+      } catch (error) {
+        console.error(`Failed to generate ${type}:`, error);
+        results.push({ type, success: false, error });
+      }
+    }
+
     queryClient.invalidateQueries({ queryKey: ['product-images'] });
 
     return results;
@@ -152,6 +320,18 @@ export function useGenerateAllProductImages() {
 
   return {
     generateAll,
-    isGenerating: generateImage.isPending
+    generateByCategory,
+    isGenerating: generateImage.isPending,
+    categories: Object.keys(PRODUCT_CATEGORY_IMAGES)
   };
+}
+
+// Get marketing/hero images
+export function useMarketingImages() {
+  return useProductImagesByCategory('marketing');
+}
+
+// Get bundle images
+export function useBundleImages() {
+  return useProductImagesByCategory('bundle');
 }

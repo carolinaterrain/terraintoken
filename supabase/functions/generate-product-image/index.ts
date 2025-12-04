@@ -6,21 +6,62 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// God-tier Printify-style prompts for each product type
+// God-tier Printify-style prompts for ALL 22 product types
 const PRODUCT_PROMPTS: Record<string, string> = {
-  'shirt-front': `Professional e-commerce product photography of a premium black heavyweight t-shirt on a pure white background. The shirt features a striking emerald green mountain logo design on the chest - angular geometric mountains with "TRN" text below. Clean studio lighting, crisp shadows, Printify/Shopify product listing style. The shirt is laid flat or on invisible mannequin showing the front. Ultra high resolution, commercial quality, no wrinkles, perfectly pressed. 4:5 aspect ratio product shot.`,
+  // === COLLECTOR SHIRT ===
+  'collector-shirt-front': `Professional e-commerce product photography of a premium black heavyweight t-shirt on a pure white background. The shirt features a striking emerald green geometric mountain logo design on the chest with angular peaks and "TERRAIN TOKEN" text below in clean sans-serif. Clean studio lighting, crisp shadows, Printify/Shopify product listing style. The shirt is laid flat or on invisible mannequin showing the front. Ultra high resolution, commercial quality, no wrinkles, perfectly pressed. 4:5 aspect ratio product shot.`,
   
-  'shirt-model': `Lifestyle product photography of a confident person wearing a premium black t-shirt with an emerald green geometric mountain logo and "TRN" text on the chest. Outdoor setting with natural lighting, casual urban environment. The model is relaxed and approachable, showing the shirt naturally. Professional lifestyle marketing shot like Printify mockup. Sharp focus on the shirt design, slightly blurred background. Ultra high resolution.`,
+  'collector-shirt-lifestyle': `Lifestyle product photography of a confident entrepreneur in their 30s wearing a premium black t-shirt with an emerald green geometric mountain logo and "TERRAIN TOKEN" text on the chest. Setting: modern industrial coffee shop with exposed brick. Natural window lighting. The person is holding a coffee, looking successful and approachable. Professional lifestyle marketing shot like Printify mockup. Sharp focus on the shirt design, bokeh background. Ultra high resolution.`,
+
+  // === PREMIUM HOODIE ===
+  'hoodie-front': `Professional e-commerce product photography of a premium black heavyweight hoodie on a pure white background. The hoodie features a large emerald green geometric mountain logo on the chest with "TRN" text. High-quality cotton blend fabric visible, kangaroo pocket, drawstring hood. Clean studio lighting, Printify/Shopify product listing style. Laid flat or ghost mannequin. Ultra high resolution, commercial quality. 4:5 aspect ratio.`,
   
-  'hat-front': `Professional e-commerce product photography of a black snapback cap on a pure white background. The hat features an embroidered emerald green geometric mountain logo on the front panel with "TRN" below. Clean studio lighting, showing the structured crown and flat brim. Printify/Shopify product listing style. Ultra high resolution, commercial quality. 1:1 aspect ratio product shot.`,
+  'hoodie-lifestyle': `Lifestyle product photography of a person wearing a premium black hoodie with an emerald green mountain logo outdoors on a cool autumn day. They're on a hiking trail with mountains in the background. Hood down, hands in pocket, confident stance. Golden hour lighting. Professional lifestyle marketing shot. Sharp focus on hoodie design. Ultra high resolution.`,
+
+  // === WORK TEE ===
+  'work-tee-front': `Professional e-commerce product photography of a rugged work-ready black pocket t-shirt on a pure white background. Features a small emerald green mountain logo on the left chest pocket. Heavy-duty construction quality visible, reinforced seams. The shirt is laid flat showing the pocket detail. Printify/Shopify product listing style. Ultra high resolution, commercial quality. 4:5 aspect ratio.`,
   
-  'hat-model': `Lifestyle product photography of a person wearing a black snapback cap with an emerald green embroidered mountain logo and "TRN" text. Natural outdoor lighting, casual setting. The model looks confident and stylish. Professional lifestyle marketing shot like Printify mockup. Sharp focus on the hat design. Ultra high resolution.`,
+  'work-tee-lifestyle': `Lifestyle product photography of a hardworking tradesperson wearing a black pocket t-shirt with a small emerald green mountain logo. Setting: outdoor job site or workshop. They look professional and capable. Natural lighting, some construction/landscaping elements visible. The shirt shows durability. Professional marketing shot. Ultra high resolution.`,
+
+  // === COLLECTOR HAT ===
+  'collector-hat-front': `Professional e-commerce product photography of a black structured snapback cap on a pure white background. The hat features an embroidered emerald green geometric mountain logo on the front panel with "TRN" below. High-quality construction, flat brim, snapback closure. Clean studio lighting, showing the crown shape. Printify/Shopify product listing style. Ultra high resolution. 1:1 aspect ratio.`,
   
-  'flat-lay': `Professional flat lay product photography on a dark textured surface. Arranged items include: a black t-shirt with emerald green mountain logo, a black snapback hat with matching embroidered logo, holographic stickers with "TRN" branding, and a mint/emerald green accent card. Overhead shot, artistic arrangement, soft shadows. Premium brand aesthetic. Ultra high resolution. 4:3 aspect ratio.`,
+  'collector-hat-lifestyle': `Lifestyle product photography of a stylish person wearing a black snapback cap with an emerald green embroidered mountain logo. Urban setting, natural lighting. They look confident and trendy. The hat fits perfectly, slight angle showing the logo. Professional lifestyle marketing shot like Printify mockup. Sharp focus on hat design. Ultra high resolution.`,
+
+  // === BEANIE ===
+  'beanie-front': `Professional e-commerce product photography of a black knit beanie on a pure white background. Features an embroidered or patch emerald green geometric mountain logo on the front cuff. Soft ribbed texture visible. Printify/Shopify product listing style, clean studio lighting. Ultra high resolution, commercial quality. 1:1 aspect ratio.`,
   
-  'bundle': `Professional product photography of a complete collector's bundle on a premium background. Display includes: a folded black t-shirt with emerald green mountain logo visible, a black snapback hat with embroidered logo, several holographic/iridescent stickers, and a special NFT certificate card with holographic effects showing "#XX/50". Premium packaging elements visible. Luxury brand aesthetic, clean studio lighting. Ultra high resolution.`,
+  'beanie-lifestyle': `Lifestyle product photography of a person wearing a black knit beanie with an emerald green mountain logo in a winter setting. Light snow or cold weather atmosphere, cozy scarf. Natural lighting, breath visible in cold air. Professional lifestyle marketing shot. Sharp focus on the beanie. Ultra high resolution.`,
+
+  // === COFFEE MUG ===
+  'coffee-mug-front': `Professional e-commerce product photography of a premium black ceramic coffee mug on a pure white background. Features a wraparound emerald green geometric mountain logo design with "TERRAIN TOKEN" text. Glossy finish, comfortable handle. Clean studio lighting, slight steam effect optional. Printify/Shopify product listing style. Ultra high resolution. 1:1 aspect ratio.`,
   
-  'certificate': `Digital art of an NFT certificate of authenticity. Dark premium background with emerald green accents. Features a stylized geometric mountain logo, "TERRAIN TOKEN" header, "COLLECTOR EDITION #0" text, serial number field showing "#XX/50", holographic/iridescent effects along the borders, blockchain verification badge. Sleek modern design with subtle grid patterns. Certificate style layout. Ultra high resolution digital artwork.`
+  'coffee-mug-lifestyle': `Lifestyle product photography of a person's hands holding a black ceramic mug with an emerald green mountain logo. Setting: modern desk setup with laptop and plants. Morning light streaming in. The mug is being enjoyed during a work session. Professional lifestyle shot, warm and inviting. Ultra high resolution.`,
+
+  // === KEYCHAIN ===
+  'keychain-front': `Professional e-commerce product photography of a premium metal keychain on a pure white background. Emerald green enamel or anodized geometric mountain logo design. High-quality metal ring attachment, substantial weight visible. Clean studio lighting, showing the detail and craftsmanship. Printify/Shopify style. Ultra high resolution. 1:1 aspect ratio.`,
+  
+  'keychain-lifestyle': `Lifestyle product photography of keys on a surface with the emerald green mountain keychain prominently displayed. Setting: car interior dashboard or modern entryway key hook. Natural lighting. The keychain looks premium and catches light. Professional marketing shot. Ultra high resolution.`,
+
+  // === STICKER PACK ===
+  'sticker-pack-front': `Professional e-commerce product photography of a sticker pack on a pure white background. Includes 5-6 holographic/iridescent stickers featuring: geometric mountain logo, "TRN" text, goblin mascot character, "HODL" slogan, and terrain patterns. All in emerald green color scheme with holographic shine. Arranged artfully showing variety. Printify/Shopify style. Ultra high resolution. 4:3 aspect ratio.`,
+  
+  'sticker-pack-lifestyle': `Lifestyle product photography of the sticker pack applied to various surfaces: laptop lid, water bottle, phone case, notebook. Emerald green mountain designs with holographic effects catching light. Modern desk setup. Professional marketing shot showing real-world use. Ultra high resolution.`,
+
+  // === COLLECTOR BUNDLE ===
+  'collector-bundle-hero': `Professional product photography of the complete Terrain Token Collector's Bundle on a premium dark slate surface. Includes: folded black t-shirt with emerald green mountain logo visible, black snapback hat with embroidered logo, sticker pack spread artfully, and a holographic NFT certificate card. Premium packaging elements, gift-ready presentation. Luxury brand aesthetic, dramatic lighting with emerald accent glow. Ultra high resolution. 16:9 aspect ratio hero shot.`,
+  
+  'collector-bundle-contents': `Overhead flat lay product photography of all Collector's Bundle contents spread on a dark textured background. Each item clearly visible: t-shirt unfolded showing logo, hat, individual stickers, NFT certificate, and premium packaging. Numbered labels or callouts optional. Clean professional lighting. Ultra high resolution. 4:3 aspect ratio.`,
+
+  // === NFT CERTIFICATE ===
+  'nft-certificate-display': `Digital art of an NFT Certificate of Authenticity displayed on a premium stand. Dark gradient background with emerald green accent lighting. The certificate features: geometric mountain logo, "TERRAIN TOKEN COLLECTOR" header, edition number "#XX/50", unique serial number, holographic border effects, and blockchain verification QR code. Sleek modern design, glass-like reflections. Ultra high resolution digital artwork. 3:4 aspect ratio.`,
+  
+  'nft-certificate-mobile': `Digital mockup of the NFT certificate displayed on a smartphone screen in a hand. The certificate shows emerald green mountain branding, edition number, holographic effects. The phone is in a modern room setting, soft lighting. Showing how collectors view their digital asset. Professional marketing shot. Ultra high resolution. 9:16 aspect ratio.`,
+
+  // === MARKETING HERO SHOTS ===
+  'brand-hero-all-products': `Epic marketing hero image featuring ALL Terrain Token merchandise arranged in a powerful composition. Black t-shirt, hoodie, hat, beanie, mug, keychain, stickers, and NFT certificate all visible. Dramatic emerald green lighting effects, dark premium background. Mountain landscape subtle in background. Professional campaign-quality shot. Ultra high resolution. 21:9 ultrawide aspect ratio.`,
+  
+  'lifestyle-team-shot': `Professional lifestyle photography of a diverse group of 3-4 people wearing various Terrain Token merchandise: one in t-shirt, one in hoodie, one in hat. They're outdoors in a mountainous setting, golden hour lighting. Everyone looks confident and connected, like a team. Emerald green accents pop against the natural backdrop. Professional marketing campaign shot. Ultra high resolution. 16:9 aspect ratio.`
 };
 
 serve(async (req) => {
@@ -33,7 +74,10 @@ serve(async (req) => {
 
     if (!productType || !PRODUCT_PROMPTS[productType]) {
       return new Response(
-        JSON.stringify({ error: `Invalid product type. Valid types: ${Object.keys(PRODUCT_PROMPTS).join(', ')}` }),
+        JSON.stringify({ 
+          error: `Invalid product type. Valid types: ${Object.keys(PRODUCT_PROMPTS).join(', ')}`,
+          validTypes: Object.keys(PRODUCT_PROMPTS)
+        }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -204,13 +248,39 @@ serve(async (req) => {
 
 function getDisplayOrder(productType: string): number {
   const order: Record<string, number> = {
-    'shirt-front': 1,
-    'shirt-model': 2,
-    'hat-front': 3,
-    'hat-model': 4,
-    'flat-lay': 5,
-    'bundle': 6,
-    'certificate': 7
+    // Collector Shirt
+    'collector-shirt-front': 1,
+    'collector-shirt-lifestyle': 2,
+    // Hoodie
+    'hoodie-front': 3,
+    'hoodie-lifestyle': 4,
+    // Work Tee
+    'work-tee-front': 5,
+    'work-tee-lifestyle': 6,
+    // Hat
+    'collector-hat-front': 7,
+    'collector-hat-lifestyle': 8,
+    // Beanie
+    'beanie-front': 9,
+    'beanie-lifestyle': 10,
+    // Mug
+    'coffee-mug-front': 11,
+    'coffee-mug-lifestyle': 12,
+    // Keychain
+    'keychain-front': 13,
+    'keychain-lifestyle': 14,
+    // Stickers
+    'sticker-pack-front': 15,
+    'sticker-pack-lifestyle': 16,
+    // Bundle
+    'collector-bundle-hero': 17,
+    'collector-bundle-contents': 18,
+    // Certificate
+    'nft-certificate-display': 19,
+    'nft-certificate-mobile': 20,
+    // Marketing
+    'brand-hero-all-products': 21,
+    'lifestyle-team-shot': 22
   };
   return order[productType] || 99;
 }
