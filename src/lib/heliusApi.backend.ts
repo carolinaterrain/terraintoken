@@ -1,5 +1,6 @@
 // Helius API integration for Supabase Edge Functions
 // This file is meant to be imported only in edge functions where Deno is available
+// NOTE: This is a legacy file - prefer using the fetch-holder-data edge function directly
 
 const TRN_MINT_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 
@@ -69,7 +70,7 @@ export async function fetchHolderData(apiKey: string): Promise<HolderDistributio
     // Calculate top 10 holders percentage
     const sortedHolders = [...holders].sort((a: any, b: any) => b.amount - a.amount);
     const top10Sum = sortedHolders.slice(0, 10).reduce((sum: number, h: any) => sum + h.amount, 0);
-    const top10Percentage = (top10Sum / totalSupply) * 100;
+    const top10Percentage = totalSupply > 0 ? (top10Sum / totalSupply) * 100 : 0;
 
     return {
       totalHolders: holders.length,
@@ -78,19 +79,19 @@ export async function fetchHolderData(apiKey: string): Promise<HolderDistributio
     };
   } catch (error) {
     console.error('Error fetching holder data from Helius:', error);
-    // Return mock data as fallback
+    // Return zero state - no fake data
     return {
-      totalHolders: 1137,
+      totalHolders: 0,
       tiers: {
-        shrimp: 450,
-        crab: 320,
-        fish: 200,
-        dolphin: 100,
-        shark: 45,
-        whale: 18,
-        humpback: 4,
+        shrimp: 0,
+        crab: 0,
+        fish: 0,
+        dolphin: 0,
+        shark: 0,
+        whale: 0,
+        humpback: 0,
       },
-      top10Percentage: 32.5,
+      top10Percentage: 0,
     };
   }
 }

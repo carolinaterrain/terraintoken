@@ -7,6 +7,9 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Cache duration in milliseconds (5 minutes for consistency)
+const CACHE_DURATION_MS = 300000;
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -19,24 +22,28 @@ serve(async (req) => {
     
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Check cache first - refresh every 10 minutes
+    // Check unified cache first
     const { data: cached } = await supabase
       .from('holder_count_cache')
       .select('*')
-      .eq('id', 'holder_distribution')
+      .eq('id', 'unified')
       .single();
 
     const cacheAge = cached?.last_updated 
       ? Date.now() - new Date(cached.last_updated).getTime()
       : Infinity;
     
-    // Return cached data if less than 10 minutes old
-    if (cached && cacheAge < 600000) {
-      console.log('Returning cached holder distribution data');
+    // Return cached data if less than 5 minutes old
+    if (cached && cacheAge < CACHE_DURATION_MS) {
+      console.log('Returning cached unified holder data');
       const cachedData = cached.source ? JSON.parse(cached.source) : null;
       if (cachedData) {
         return new Response(
-          JSON.stringify(cachedData),
+          JSON.stringify({
+            ...cachedData,
+            source: 'cache',
+            lastUpdated: cached.last_updated,
+          }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
@@ -44,11 +51,27 @@ serve(async (req) => {
 
     if (!HELIUS_API_KEY) {
       console.warn('HELIUS_API_KEY not configured');
+      // Try to return stale cache if available
+      if (cached?.source) {
+        const staleData = JSON.parse(cached.source);
+        return new Response(
+          JSON.stringify({
+            ...staleData,
+            source: 'stale-cache',
+            lastUpdated: cached.last_updated,
+            warning: 'API key not configured, using stale cache',
+          }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
       return new Response(
         JSON.stringify({
+          holderCount: 0,
           totalHolders: 0,
           tiers: { shrimp: 0, crab: 0, fish: 0, dolphin: 0, shark: 0, whale: 0, humpback: 0 },
           top10Percentage: 0,
+          holders: [],
+          source: 'error',
           error: 'API key not configured',
         }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -89,6 +112,20 @@ serve(async (req) => {
       if (!response.ok) {
         const errorText = await response.text();
         console.error(`Helius DAS API error: ${response.status}`, errorText);
+        
+        // On rate limit, return cached data if available
+        if (response.status === 429 && cached?.source) {
+          console.log('Rate limited, returning cached data');
+          const staleData = JSON.parse(cached.source);
+          return new Response(
+            JSON.stringify({
+              ...staleData,
+              source: 'cache',
+              lastUpdated: cached.last_updated,
+            }),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
         throw new Error(`Helius DAS API error: ${response.status}`);
       }
 
@@ -160,32 +197,57 @@ serve(async (req) => {
       percentage: totalSupply > 0 ? parseFloat(((h.balance / totalSupply) * 100).toFixed(2)) : 0,
     }));
 
+    const now = new Date().toISOString();
+    
     const responseData = {
+      holderCount: holders.length, // For backwards compatibility with useLiveHolderCount
       totalHolders: holders.length,
       tiers,
       top10Percentage,
       holders: holdersWithPercentage, // Return top 50 with percentages
     };
 
-    // Cache the result
+    // Cache the result in unified cache entry
     await supabase
       .from('holder_count_cache')
       .upsert({
-        id: 'holder_distribution',
+        id: 'unified',
         holder_count: holders.length,
-        last_updated: new Date().toISOString(),
+        last_updated: now,
         source: JSON.stringify(responseData),
       });
 
-    console.log('Holder distribution cached successfully');
+    // Also update legacy cache entries for backwards compatibility
+    await supabase
+      .from('holder_count_cache')
+      .upsert([
+        {
+          id: 'current',
+          holder_count: holders.length,
+          last_updated: now,
+          source: 'helius-das-unified',
+        },
+        {
+          id: 'holder_distribution',
+          holder_count: holders.length,
+          last_updated: now,
+          source: JSON.stringify(responseData),
+        },
+      ]);
+
+    console.log('Unified holder data cached successfully');
 
     return new Response(
-      JSON.stringify(responseData),
+      JSON.stringify({
+        ...responseData,
+        source: 'helius-das',
+        lastUpdated: now,
+      }),
       {
         headers: { 
           ...corsHeaders, 
           'Content-Type': 'application/json',
-          'Cache-Control': 'public, max-age=600, s-maxage=600',
+          'Cache-Control': 'public, max-age=300, s-maxage=300',
         },
       }
     );
@@ -202,13 +264,18 @@ serve(async (req) => {
       const { data: cached } = await supabase
         .from('holder_count_cache')
         .select('*')
-        .eq('id', 'holder_distribution')
+        .eq('id', 'unified')
         .single();
 
       if (cached?.source) {
         const cachedData = JSON.parse(cached.source);
         return new Response(
-          JSON.stringify({ ...cachedData, error: errorMessage, fromCache: true }),
+          JSON.stringify({ 
+            ...cachedData, 
+            source: 'cache',
+            lastUpdated: cached.last_updated,
+            error: errorMessage, 
+          }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
@@ -216,12 +283,15 @@ serve(async (req) => {
       console.error('Cache fetch also failed:', cacheError);
     }
     
-    // Return zero state as last resort
+    // Return zero state as last resort (no fake data)
     return new Response(
       JSON.stringify({
+        holderCount: 0,
         totalHolders: 0,
         tiers: { shrimp: 0, crab: 0, fish: 0, dolphin: 0, shark: 0, whale: 0, humpback: 0 },
         top10Percentage: 0,
+        holders: [],
+        source: 'error',
         error: errorMessage,
       }),
       {

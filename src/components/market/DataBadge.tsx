@@ -1,8 +1,8 @@
 import { Badge } from "@/components/ui/badge";
-import { Check, Clock, AlertCircle } from "lucide-react";
+import { Check, Clock, AlertCircle, Database } from "lucide-react";
 
 interface DataBadgeProps {
-  type: "live" | "fallback" | "coming-soon";
+  type: "live" | "fallback" | "coming-soon" | "cached";
   className?: string;
 }
 
@@ -13,6 +13,12 @@ export const DataBadge = ({ type, className = "" }: DataBadgeProps) => {
       text: "LIVE DATA",
       variant: "default" as const,
       className: "bg-goblin-green text-black hover:bg-goblin-green/90",
+    },
+    cached: {
+      icon: Database,
+      text: "CACHED",
+      variant: "outline" as const,
+      className: "border-blue-500 text-blue-500",
     },
     fallback: {
       icon: AlertCircle,
