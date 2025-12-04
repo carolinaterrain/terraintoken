@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut, Download } from 'lucide-react';
+import LazyImage from '@/components/LazyImage';
 
 interface ImageLightboxProps {
   images: string[];
@@ -10,6 +11,49 @@ interface ImageLightboxProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
+
+const ThumbnailStrip = memo(({ 
+  images, 
+  currentIndex, 
+  onSelect 
+}: { 
+  images: string[]; 
+  currentIndex: number; 
+  onSelect: (index: number) => void;
+}) => {
+  // Only render thumbnails near the current index for performance
+  const visibleRange = 4;
+  const start = Math.max(0, currentIndex - visibleRange);
+  const end = Math.min(images.length, currentIndex + visibleRange + 1);
+  
+  return (
+    <div className="flex justify-center gap-2 overflow-x-auto py-2">
+      {images.slice(start, end).map((url, i) => {
+        const actualIndex = start + i;
+        return (
+          <button
+            key={actualIndex}
+            onClick={() => onSelect(actualIndex)}
+            className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-all shrink-0 ${
+              actualIndex === currentIndex
+                ? 'border-primary'
+                : 'border-white/20 hover:border-white/50'
+            }`}
+          >
+            <LazyImage
+              src={url}
+              alt={`Thumbnail ${actualIndex + 1}`}
+              className="w-full h-full object-cover"
+              priority={Math.abs(actualIndex - currentIndex) <= 1}
+            />
+          </button>
+        );
+      })}
+    </div>
+  );
+});
+
+ThumbnailStrip.displayName = 'ThumbnailStrip';
 
 export function ImageLightbox({ 
   images, 
@@ -26,6 +70,21 @@ export function ImageLightbox({
       setZoom(1);
     }
   }, [open, initialIndex]);
+
+  const handlePrevious = useCallback(() => {
+    setCurrentIndex(prev => (prev === 0 ? images.length - 1 : prev - 1));
+    setZoom(1);
+  }, [images.length]);
+
+  const handleNext = useCallback(() => {
+    setCurrentIndex(prev => (prev === images.length - 1 ? 0 : prev + 1));
+    setZoom(1);
+  }, [images.length]);
+
+  const handleSelect = useCallback((index: number) => {
+    setCurrentIndex(index);
+    setZoom(1);
+  }, []);
 
   // Keyboard navigation
   useEffect(() => {
@@ -54,17 +113,7 @@ export function ImageLightbox({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [open, images.length]);
-
-  const handlePrevious = () => {
-    setCurrentIndex(prev => (prev === 0 ? images.length - 1 : prev - 1));
-    setZoom(1);
-  };
-
-  const handleNext = () => {
-    setCurrentIndex(prev => (prev === images.length - 1 ? 0 : prev + 1));
-    setZoom(1);
-  };
+  }, [open, handlePrevious, handleNext, onOpenChange]);
 
   const handleDownload = async () => {
     const imageUrl = images[currentIndex];
@@ -141,10 +190,10 @@ export function ImageLightbox({
               key={currentIndex}
               src={images[currentIndex]}
               alt={`Product image ${currentIndex + 1}`}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
               style={{ transform: `scale(${zoom})` }}
               className="max-w-full max-h-[80vh] object-contain transition-transform duration-200"
               draggable={false}
@@ -170,31 +219,14 @@ export function ImageLightbox({
           </>
         )}
 
-        {/* Thumbnail strip */}
+        {/* Thumbnail strip - lazy loaded */}
         {images.length > 1 && (
           <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/50 to-transparent">
-            <div className="flex justify-center gap-2 overflow-x-auto py-2">
-              {images.map((url, index) => (
-                <button
-                  key={index}
-                  onClick={() => {
-                    setCurrentIndex(index);
-                    setZoom(1);
-                  }}
-                  className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-all shrink-0 ${
-                    index === currentIndex
-                      ? 'border-primary'
-                      : 'border-white/20 hover:border-white/50'
-                  }`}
-                >
-                  <img
-                    src={url}
-                    alt={`Thumbnail ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </button>
-              ))}
-            </div>
+            <ThumbnailStrip 
+              images={images} 
+              currentIndex={currentIndex} 
+              onSelect={handleSelect} 
+            />
           </div>
         )}
       </DialogContent>
