@@ -430,6 +430,15 @@ html {
   animation: float 3s ease-in-out infinite;
 }
 
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s ease-in-out infinite;
+}
+
 .animate-fade-in-up {
   animation: fade-in-up 0.6s ease-out;
 }

@@ -1,8 +1,9 @@
-import { MessageCircle, Users, Twitter, Shield, TrendingUp, ExternalLink, Sparkles } from "lucide-react";
+import { Users, Twitter, Shield, TrendingUp, ExternalLink, Sparkles, RotateCcw } from "lucide-react";
 import { Link } from "react-router-dom";
 import { GlassCard } from "@/components/ui/glass-card";
 import { useTokenSupply, formatSupply } from "@/hooks/useTokenSupply";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 import trnCoin from "@/assets/trn-coin.png";
 
 const Footer = () => {
@@ -190,6 +191,21 @@ const Footer = () => {
             >
               View on Solscan
             </a>
+          </div>
+          {/* Restart Tour Button - Hidden on mobile (available in MobileNav) */}
+          <div className="hidden md:flex justify-center mt-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-xs text-muted-foreground hover:text-foreground"
+              onClick={() => {
+                localStorage.removeItem('trn-onboarding-completed');
+                window.location.reload();
+              }}
+            >
+              <RotateCcw className="w-3 h-3 mr-1" />
+              Restart Tour
+            </Button>
           </div>
         </div>
       </div>

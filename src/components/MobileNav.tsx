@@ -1,4 +1,4 @@
-import { Home, Briefcase, Gift, TrendingUp, MoreHorizontal, Heart, FileText, Shield, Newspaper, BookOpen, Users, Coins } from "lucide-react";
+import { Home, Briefcase, Gift, TrendingUp, MoreHorizontal, Heart, FileText, Shield, Newspaper, BookOpen, Users, Coins, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
@@ -9,6 +9,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { ThemeToggle } from "./ThemeToggle";
 
 const MobileNav = () => {
   const navigate = useNavigate();
@@ -99,7 +100,7 @@ const MobileNav = () => {
             <SheetHeader className="pb-4">
               <SheetTitle className="font-display">More Pages</SheetTitle>
             </SheetHeader>
-            <div className="grid grid-cols-2 gap-3 pb-6">
+            <div className="grid grid-cols-2 gap-3 pb-4">
               {moreItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
@@ -118,6 +119,25 @@ const MobileNav = () => {
                   </Button>
                 );
               })}
+            </div>
+            {/* Settings row */}
+            <div className="flex items-center justify-between border-t border-border pt-4 pb-2">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">Theme</span>
+                <ThemeToggle />
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-xs text-muted-foreground"
+                onClick={() => {
+                  localStorage.removeItem('trn-onboarding-completed');
+                  window.location.reload();
+                }}
+              >
+                <RotateCcw className="w-3 h-3 mr-1" />
+                Restart Tour
+              </Button>
             </div>
           </SheetContent>
         </Sheet>
