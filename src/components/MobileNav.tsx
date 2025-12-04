@@ -1,4 +1,4 @@
-import { Home, Briefcase, Gift, TrendingUp, MoreHorizontal, Heart, FileText, Shield, Newspaper, BookOpen, Users, Coins, RotateCcw } from "lucide-react";
+import { Home, Briefcase, Gift, TrendingUp, MoreHorizontal, Heart, FileText, Shield, Newspaper, BookOpen, Users, Coins, RotateCcw, Shirt } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
@@ -34,11 +34,12 @@ const MobileNav = () => {
   const navItems = [
     { path: "/", label: "Home", icon: Home, onClick: handleHomeClick },
     { path: "/earn-trn", label: "Earn", icon: Gift },
+    { path: "/drops", label: "Drops", icon: Shirt },
     { path: "/market", label: "Market", icon: TrendingUp },
-    { path: "/investors", label: "Invest", icon: Briefcase },
   ];
 
   const moreItems = [
+    { path: "/investors", label: "Invest", icon: Briefcase },
     { path: "/team", label: "About", icon: Users },
     { path: "/philanthropic-fund", label: "Philanthropic Fund", icon: Heart },
     { path: "/whitepaper", label: "Whitepaper", icon: FileText },
