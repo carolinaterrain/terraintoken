@@ -270,6 +270,164 @@ export type Database = {
         }
         Relationships: []
       }
+      collector_drop_purchases: {
+        Row: {
+          buyer_email: string | null
+          buyer_wallet: string
+          certificate_id: string
+          created_at: string
+          drop_id: string
+          id: string
+          nft_transfer_signature: string | null
+          nft_transfer_status: string
+          order_status: string
+          shipping_address: Json | null
+          shopify_order_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          buyer_email?: string | null
+          buyer_wallet: string
+          certificate_id: string
+          created_at?: string
+          drop_id: string
+          id?: string
+          nft_transfer_signature?: string | null
+          nft_transfer_status?: string
+          order_status?: string
+          shipping_address?: Json | null
+          shopify_order_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          buyer_email?: string | null
+          buyer_wallet?: string
+          certificate_id?: string
+          created_at?: string
+          drop_id?: string
+          id?: string
+          nft_transfer_signature?: string | null
+          nft_transfer_status?: string
+          order_status?: string
+          shipping_address?: Json | null
+          shopify_order_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collector_drop_purchases_certificate_id_fkey"
+            columns: ["certificate_id"]
+            isOneToOne: false
+            referencedRelation: "collector_nft_certificates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "collector_drop_purchases_drop_id_fkey"
+            columns: ["drop_id"]
+            isOneToOne: false
+            referencedRelation: "collector_drops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      collector_drops: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          name: string
+          nft_image_url: string | null
+          price_usd: number
+          shopify_product_id: string | null
+          status: string
+          symbol: string
+          total_supply: number
+          treasury_wallet: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          name: string
+          nft_image_url?: string | null
+          price_usd: number
+          shopify_product_id?: string | null
+          status?: string
+          symbol: string
+          total_supply: number
+          treasury_wallet?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          name?: string
+          nft_image_url?: string | null
+          price_usd?: number
+          shopify_product_id?: string | null
+          status?: string
+          symbol?: string
+          total_supply?: number
+          treasury_wallet?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      collector_nft_certificates: {
+        Row: {
+          claimed_at: string | null
+          claimed_by_wallet: string | null
+          created_at: string
+          drop_id: string
+          id: string
+          metadata_uri: string | null
+          mint_address: string | null
+          reserved_at: string | null
+          reserved_by_session: string | null
+          serial_number: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          claimed_at?: string | null
+          claimed_by_wallet?: string | null
+          created_at?: string
+          drop_id: string
+          id?: string
+          metadata_uri?: string | null
+          mint_address?: string | null
+          reserved_at?: string | null
+          reserved_by_session?: string | null
+          serial_number: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          claimed_at?: string | null
+          claimed_by_wallet?: string | null
+          created_at?: string
+          drop_id?: string
+          id?: string
+          metadata_uri?: string | null
+          mint_address?: string | null
+          reserved_at?: string | null
+          reserved_by_session?: string | null
+          serial_number?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collector_nft_certificates_drop_id_fkey"
+            columns: ["drop_id"]
+            isOneToOne: false
+            referencedRelation: "collector_drops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contest_entries: {
         Row: {
           contest_category: string
@@ -2704,6 +2862,10 @@ export type Database = {
     Functions: {
       cleanup_rate_limits: { Args: never; Returns: undefined }
       cleanup_stale_viewers: { Args: never; Returns: undefined }
+      get_drop_remaining_supply: {
+        Args: { p_drop_id: string }
+        Returns: number
+      }
       get_public_leaderboard: {
         Args: { limit_count?: number }
         Returns: {
@@ -2729,6 +2891,13 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      reserve_next_certificate: {
+        Args: { p_drop_id: string; p_session_id: string }
+        Returns: {
+          certificate_id: string
+          serial_number: number
+        }[]
       }
     }
     Enums: {
