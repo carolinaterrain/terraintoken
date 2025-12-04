@@ -19,7 +19,7 @@ import { toast } from 'sonner';
 interface WalletCollectionModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (walletAddress: string, certificateId: string, serialNumber: number) => void;
+  onSubmit: (walletAddress: string | null, certificateId: string, serialNumber: number) => void;
   dropId: string;
 }
 
@@ -31,9 +31,10 @@ export function WalletCollectionModal({ open, onOpenChange, onSubmit, dropId }: 
 
   const walletAddress = connected && publicKey ? publicKey.toBase58() : manualWallet;
   const isValidWallet = walletAddress.length >= 32 && walletAddress.length <= 44;
+  const hasWalletInput = walletAddress.length > 0;
 
-  const handleReserve = async () => {
-    if (!isValidWallet) {
+  const handleReserve = async (skipWallet: boolean = false) => {
+    if (!skipWallet && hasWalletInput && !isValidWallet) {
       setError('Please enter a valid Solana wallet address');
       return;
     }
@@ -62,7 +63,9 @@ export function WalletCollectionModal({ open, onOpenChange, onSubmit, dropId }: 
       // Store the session ID for later checkout matching
       localStorage.setItem('collector_session_id', sessionId);
 
-      onSubmit(walletAddress, certificate_id, serial_number);
+      // Pass wallet address or null if skipped
+      const finalWallet = skipWallet ? null : (isValidWallet ? walletAddress : null);
+      onSubmit(finalWallet, certificate_id, serial_number);
     } catch (err) {
       console.error('Error reserving certificate:', err);
       setError(err instanceof Error ? err.message : 'Failed to reserve certificate');
@@ -135,34 +138,53 @@ export function WalletCollectionModal({ open, onOpenChange, onSubmit, dropId }: 
           )}
 
           {/* Info Box */}
-          <div className="p-4 bg-muted/50 rounded-lg space-y-2">
+          <div className="p-3 bg-muted/50 rounded-lg space-y-2">
             <div className="flex items-center gap-2">
-              <Badge variant="outline" className="text-xs">Important</Badge>
+              <Badge variant="outline" className="text-xs">Optional</Badge>
             </div>
             <p className="text-xs text-muted-foreground">
-              Your NFT certificate (#X/50) will be transferred to this wallet after your order is fulfilled. 
-              Make sure this is a wallet you control and can receive Solana NFTs.
+              Providing your wallet lets us send your NFT certificate (#X/50) after order fulfillment. 
+              You can also provide it later via email.
             </p>
           </div>
 
-          <Button
-            onClick={handleReserve}
-            disabled={!isValidWallet || isReserving}
-            className="w-full"
-            size="lg"
-          >
-            {isReserving ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Reserving Serial Number...
-              </>
-            ) : (
-              <>
-                <CheckCircle2 className="w-4 h-4 mr-2" />
-                Reserve & Add to Cart
-              </>
-            )}
-          </Button>
+          <div className="flex flex-col gap-2">
+            <Button
+              onClick={() => handleReserve(false)}
+              disabled={!isValidWallet || isReserving}
+              className="w-full"
+              size="lg"
+            >
+              {isReserving ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Reserving...
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 className="w-4 h-4 mr-2" />
+                  Reserve with Wallet
+                </>
+              )}
+            </Button>
+            
+            <Button
+              onClick={() => handleReserve(true)}
+              disabled={isReserving}
+              variant="outline"
+              className="w-full"
+              size="lg"
+            >
+              {isReserving ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Reserving...
+                </>
+              ) : (
+                'Skip & Continue to Checkout'
+              )}
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
