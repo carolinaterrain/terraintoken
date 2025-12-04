@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, Check } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import { useProductImagesByHandle } from "@/hooks/useProductImages";
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -19,6 +20,10 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   const firstVariant = node.variants.edges[0]?.node;
   const firstImage = node.images.edges[0]?.node;
   const price = node.priceRange.minVariantPrice;
+  
+  // Get AI-generated image as fallback
+  const { primaryImage: aiImage } = useProductImagesByHandle(node.handle);
+  const imageUrl = firstImage?.url || aiImage;
   
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -55,10 +60,10 @@ export const ProductCard = ({ product }: ProductCardProps) => {
       <div className="bg-card/60 backdrop-blur-sm border border-primary/20 rounded-lg overflow-hidden transition-all duration-300 hover:border-primary/40 hover:shadow-[0_8px_32px_hsl(var(--primary)/0.2)] hover:-translate-y-1">
         {/* Image */}
         <div className="aspect-square relative overflow-hidden bg-muted">
-          {firstImage ? (
+          {imageUrl ? (
             <img
-              src={firstImage.url}
-              alt={firstImage.altText || node.title}
+              src={imageUrl}
+              alt={firstImage?.altText || node.title}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (

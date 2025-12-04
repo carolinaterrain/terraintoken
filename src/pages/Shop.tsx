@@ -11,14 +11,61 @@ import { ShoppingCart, Sparkles, Loader2 } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { getProductCategory } from "@/hooks/useProductImages";
 
 type Category = "all" | "limited" | "apparel" | "accessories" | "digital";
+
+// Category to image types mapping
+const CATEGORY_IMAGE_TYPES: Record<string, string[]> = {
+  'collector-shirt': ['collector-shirt-front', 'collector-shirt-lifestyle'],
+  'hoodie': ['hoodie-front', 'hoodie-lifestyle'],
+  'work-tee': ['work-tee-front', 'work-tee-lifestyle'],
+  'collector-hat': ['collector-hat-front', 'collector-hat-lifestyle'],
+  'beanie': ['beanie-front', 'beanie-lifestyle'],
+  'coffee-mug': ['coffee-mug-front', 'coffee-mug-lifestyle'],
+  'keychain': ['keychain-front', 'keychain-lifestyle'],
+  'sticker-pack': ['sticker-pack-front', 'sticker-pack-lifestyle'],
+  'bundle': ['collector-bundle-hero', 'collector-bundle-contents'],
+};
 
 const Shop = () => {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<Category>("all");
   const addItem = useCartStore(state => state.addItem);
+
+  // Fetch all AI-generated product images
+  const { data: aiImages } = useQuery({
+    queryKey: ['product-images', 'all-active'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('product_images')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
+      
+      if (error) throw error;
+      return data || [];
+    },
+    staleTime: 1000 * 60 * 5
+  });
+
+  // Helper to get AI image for a product
+  const getAIImageUrl = (product: ShopifyProduct): string | null => {
+    if (!aiImages || aiImages.length === 0) return null;
+    
+    const category = getProductCategory(product.node.handle, product.node.title);
+    if (!category) return null;
+    
+    const imageTypes = CATEGORY_IMAGE_TYPES[category];
+    if (!imageTypes) return null;
+    
+    // Find matching AI image
+    const matchingImage = aiImages.find(img => imageTypes.includes(img.product_type));
+    return matchingImage?.public_url || null;
+  };
 
   useEffect(() => {
     loadProducts();
@@ -176,21 +223,27 @@ const Shop = () => {
                   >
                     {/* Image */}
                     <div className="relative aspect-square bg-muted/30">
-                      {product.node.images.edges[0]?.node ? (
-                        <img
-                          src={product.node.images.edges[0].node.url}
-                          alt={product.node.images.edges[0].node.altText || product.node.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
+                      {(() => {
+                        const shopifyImage = product.node.images.edges[0]?.node?.url;
+                        const aiImage = getAIImageUrl(product);
+                        const imageUrl = shopifyImage || aiImage;
+                        
+                        return imageUrl ? (
                           <img
-                            src="/branding/trn-logo-full.png"
-                            alt={product.node.title}
-                            className="w-1/2 h-1/2 object-contain opacity-50"
+                            src={imageUrl}
+                            alt={product.node.images.edges[0]?.node?.altText || product.node.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
-                        </div>
-                      )}
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <img
+                              src="/branding/trn-logo-full.png"
+                              alt={product.node.title}
+                              className="w-1/2 h-1/2 object-contain opacity-50"
+                            />
+                          </div>
+                        );
+                      })()}
                       
                       {/* Limited Edition Badge */}
                       {isCollectorItem(product) && (
