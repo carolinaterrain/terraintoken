@@ -74,7 +74,7 @@ export function WalletCollectionModal({ open, onOpenChange, onSubmit, dropId }: 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Wallet className="w-5 h-5 text-primary" />
@@ -85,7 +85,7 @@ export function WalletCollectionModal({ open, onOpenChange, onSubmit, dropId }: 
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-6 py-4">
+        <div className="space-y-5 py-3">
           {/* Option 1: Connect Wallet */}
           <div className="space-y-3">
             <Label className="text-sm font-medium">Option 1: Connect Wallet</Label>
