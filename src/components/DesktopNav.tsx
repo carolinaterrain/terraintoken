@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ThemeToggle } from "./ThemeToggle";
 
 // Use public folder path directly for performance - matches index.html preload
 const trnCoin = "/trn-coin.png";
@@ -154,7 +155,8 @@ const DesktopNav = () => {
           </div>
 
           {/* Right CTAs */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
             <Button
               variant="default"
               size="sm"

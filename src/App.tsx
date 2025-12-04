@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { HelmetProvider } from "react-helmet-async";
+import { ThemeProvider } from "next-themes";
 import { lazy, Suspense } from "react";
 import { LoadingSpinner } from "./components/ui/loading-spinner";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -118,18 +119,20 @@ const App = () => {
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
-        <TokenDataProvider>
-          <HelmetProvider>
-            <TooltipProvider>
-              <Suspense fallback={null}>
-                <PerformanceMonitor />
-                <Toaster />
-                <Sonner />
-              </Suspense>
-              <AppContent />
-            </TooltipProvider>
-          </HelmetProvider>
-        </TokenDataProvider>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <TokenDataProvider>
+            <HelmetProvider>
+              <TooltipProvider>
+                <Suspense fallback={null}>
+                  <PerformanceMonitor />
+                  <Toaster />
+                  <Sonner />
+                </Suspense>
+                <AppContent />
+              </TooltipProvider>
+            </HelmetProvider>
+          </TokenDataProvider>
+        </ThemeProvider>
       </QueryClientProvider>
     </ErrorBoundary>
   );
