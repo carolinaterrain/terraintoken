@@ -1,17 +1,15 @@
 import { Helmet } from "react-helmet-async";
-import { useEffect, useState, lazy, Suspense } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import SkipToContent from "@/components/SkipToContent";
 import ScrollProgress from "@/components/ScrollProgress";
 import { useAnalytics } from "@/hooks/useAnalytics";
-import { requestIdleCallback } from "@/lib/performanceUtils";
 import { Skeleton } from "@/components/ui/skeleton";
 
 // Lazy load heavy components
 const SmartHeader = lazy(() => import("@/components/SmartHeader"));
 const Hero = lazy(() => import("@/components/Hero"));
 const ResearchModeContent = lazy(() => import("@/components/ResearchModeContent").then(m => ({ default: m.ResearchModeContent })));
-const HeyGenAvatar = lazy(() => import("@/components/HeyGenAvatar").then(m => ({ default: m.HeyGenAvatar })));
 const OnboardingModal = lazy(() => import("@/components/onboarding/OnboardingModal").then(m => ({ default: m.OnboardingModal })));
 
 // Lightweight skeleton for hero section
@@ -40,23 +38,10 @@ const Index = () => {
   const { trackPageView } = useAnalytics();
   const location = useLocation();
   const navigate = useNavigate();
-  const [avatarEnabled, setAvatarEnabled] = useState(false);
 
   useEffect(() => {
     trackPageView(location.pathname);
   }, [location.pathname, trackPageView]);
-
-  // Defer HeyGen avatar loading until page is interactive
-  useEffect(() => {
-    const id = requestIdleCallback(() => {
-      setAvatarEnabled(true);
-    });
-    return () => {
-      if (typeof window !== 'undefined' && 'cancelIdleCallback' in window) {
-        window.cancelIdleCallback(id as number);
-      }
-    };
-  }, []);
 
   // Handle navigation with tab/scroll state
   useEffect(() => {
@@ -102,12 +87,6 @@ const Index = () => {
           <ResearchModeContent />
         </Suspense>
       </main>
-
-      {avatarEnabled && (
-        <Suspense fallback={null}>
-          <HeyGenAvatar enabled={avatarEnabled} />
-        </Suspense>
-      )}
 
       <Suspense fallback={null}>
         <OnboardingModal />
