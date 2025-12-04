@@ -12,7 +12,7 @@ export interface ShopifyProduct {
     title: string;
     description: string;
     handle: string;
-    tags?: string;
+    tags?: string[];  // Shopify returns tags as array of strings
     productType?: string;
     vendor?: string;
     priceRange: {

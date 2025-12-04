@@ -87,18 +87,21 @@ const Shop = () => {
     if (activeCategory === "all") return products;
     
     return products.filter(product => {
-      const tags = product.node.tags?.toLowerCase() || "";
+      // Handle tags as array (Shopify returns string[])
+      const tagsArray = Array.isArray(product.node.tags) 
+        ? product.node.tags.map(t => t.toLowerCase())
+        : [];
       const productType = product.node.productType?.toLowerCase() || "";
       
       switch (activeCategory) {
         case "limited":
-          return tags.includes("limited-edition") || tags.includes("collector");
+          return tagsArray.some(t => t.includes("limited-edition") || t.includes("collector"));
         case "apparel":
-          return productType === "apparel" || tags.includes("apparel");
+          return productType === "apparel" || tagsArray.some(t => t.includes("apparel"));
         case "accessories":
-          return productType === "accessories" || tags.includes("accessories");
+          return productType === "accessories" || tagsArray.some(t => t.includes("accessories"));
         case "digital":
-          return productType === "digital" || tags.includes("digital") || tags.includes("nft");
+          return productType === "digital" || tagsArray.some(t => t.includes("digital") || t.includes("nft"));
         default:
           return true;
       }
@@ -110,7 +113,8 @@ const Shop = () => {
     if (!variant) return;
 
     // Don't allow collector items to be added directly - redirect to /drops
-    if (product.node.tags?.includes("collector")) {
+    const tags = Array.isArray(product.node.tags) ? product.node.tags : [];
+    if (tags.some(t => t.toLowerCase().includes("collector"))) {
       toast.info("Collector items require wallet verification", {
         description: "Please purchase collector items from the Drops page.",
         action: {
@@ -136,7 +140,10 @@ const Shop = () => {
   };
 
   const isCollectorItem = (product: ShopifyProduct) => {
-    return product.node.tags?.includes("collector") || product.node.tags?.includes("limited-edition");
+    const tags = Array.isArray(product.node.tags) ? product.node.tags : [];
+    return tags.some(t => 
+      t.toLowerCase().includes("collector") || t.toLowerCase().includes("limited-edition")
+    );
   };
 
   const filteredProducts = filterProducts(products);

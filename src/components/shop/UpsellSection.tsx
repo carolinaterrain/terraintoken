@@ -40,9 +40,11 @@ export function UpsellSection({ cartItems }: UpsellSectionProps) {
 
   const generateUpsells = (products: ShopifyProduct[], cart: CartItem[]): UpsellItem[] => {
     const cartVariantIds = cart.map(item => item.variantId);
-    const cartTags = cart.flatMap(item => 
-      item.product.node.tags?.split(',').map(t => t.trim().toLowerCase()) || []
-    );
+    // Handle tags as array (Shopify returns string[])
+    const cartTags = cart.flatMap(item => {
+      const tags = item.product.node.tags;
+      return Array.isArray(tags) ? tags.map(t => t.toLowerCase()) : [];
+    });
 
     const suggestions: UpsellItem[] = [];
 
@@ -69,14 +71,17 @@ export function UpsellSection({ cartItems }: UpsellSectionProps) {
       // Skip if already in cart
       if (cartVariantIds.includes(variant.id)) continue;
 
+      // Handle tags as array
+      const productTags = Array.isArray(product.node.tags) ? product.node.tags : [];
+      
       // Skip collector items (they need special flow)
-      if (product.node.tags?.includes('collector')) continue;
+      if (productTags.some(t => t.toLowerCase().includes('collector'))) continue;
 
       const title = product.node.title.toLowerCase();
-      const tags = product.node.tags?.toLowerCase() || '';
+      const tagsLower = productTags.map(t => t.toLowerCase());
 
       // Suggest Supporter NFT if not in cart
-      if (!hasDigitalNFT && tags.includes('digital') && title.includes('supporter')) {
+      if (!hasDigitalNFT && tagsLower.some(t => t.includes('digital')) && title.includes('supporter')) {
         suggestions.push({
           product,
           reason: 'Show your support with a digital NFT',
@@ -96,7 +101,7 @@ export function UpsellSection({ cartItems }: UpsellSectionProps) {
       }
 
       // Suggest matching apparel
-      if (cartTags.some(t => t.includes('apparel')) && tags.includes('apparel')) {
+      if (cartTags.some(t => t.includes('apparel')) && tagsLower.some(t => t.includes('apparel'))) {
         if (!cart.some(item => item.product.node.title === product.node.title)) {
           suggestions.push({
             product,
@@ -107,7 +112,7 @@ export function UpsellSection({ cartItems }: UpsellSectionProps) {
       }
 
       // Suggest accessories
-      if (tags.includes('accessories') && !cartTags.includes('accessories')) {
+      if (tagsLower.some(t => t.includes('accessories')) && !cartTags.some(t => t.includes('accessories'))) {
         suggestions.push({
           product,
           reason: 'Popular add-on',
