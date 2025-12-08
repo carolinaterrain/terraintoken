@@ -1,7 +1,8 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
-import { useHolderDistribution } from "@/hooks/useHolderDistribution";
+import { useTokenData } from "@/providers/TokenDataProvider";
+import { DataFreshnessBadge } from "@/components/ui/data-freshness-badge";
 import { Loader2 } from "lucide-react";
 
 const TIER_COLORS = {
@@ -25,7 +26,7 @@ const TIER_EMOJIS = {
 };
 
 export function WhaleDistributionChart() {
-  const { data, isLoading } = useHolderDistribution();
+  const { holderCount, isLoading, dataSource, lastUpdated } = useTokenData();
 
   if (isLoading) {
     return (
@@ -37,22 +38,30 @@ export function WhaleDistributionChart() {
     );
   }
 
-  if (!data) {
-    return null;
+  if (!holderCount || holderCount.holderCount === 0) {
+    return (
+      <Card className="p-6 border-goblin-gold/30">
+        <div className="flex items-center justify-center h-64 text-muted-foreground">
+          No holder distribution data available
+        </div>
+      </Card>
+    );
   }
+
+  const totalHolders = holderCount.holderCount;
+  const tiers = holderCount.tiers;
+  const top10Percentage = holderCount.top10Percentage;
 
   // Transform data for chart
   const distribution = [
-    { tier: "shrimp", count: data.tiers.shrimp, percentage: (data.tiers.shrimp / data.totalHolders) * 100, range: "<10K" },
-    { tier: "crab", count: data.tiers.crab, percentage: (data.tiers.crab / data.totalHolders) * 100, range: "10K-100K" },
-    { tier: "fish", count: data.tiers.fish, percentage: (data.tiers.fish / data.totalHolders) * 100, range: "100K-500K" },
-    { tier: "dolphin", count: data.tiers.dolphin, percentage: (data.tiers.dolphin / data.totalHolders) * 100, range: "500K-1M" },
-    { tier: "shark", count: data.tiers.shark, percentage: (data.tiers.shark / data.totalHolders) * 100, range: "1M-5M" },
-    { tier: "whale", count: data.tiers.whale, percentage: (data.tiers.whale / data.totalHolders) * 100, range: "5M-10M" },
-    { tier: "humpback", count: data.tiers.humpback, percentage: (data.tiers.humpback / data.totalHolders) * 100, range: ">10M" },
+    { tier: "shrimp", count: tiers.shrimp, percentage: (tiers.shrimp / totalHolders) * 100, range: "<10K" },
+    { tier: "crab", count: tiers.crab, percentage: (tiers.crab / totalHolders) * 100, range: "10K-100K" },
+    { tier: "fish", count: tiers.fish, percentage: (tiers.fish / totalHolders) * 100, range: "100K-500K" },
+    { tier: "dolphin", count: tiers.dolphin, percentage: (tiers.dolphin / totalHolders) * 100, range: "500K-1M" },
+    { tier: "shark", count: tiers.shark, percentage: (tiers.shark / totalHolders) * 100, range: "1M-5M" },
+    { tier: "whale", count: tiers.whale, percentage: (tiers.whale / totalHolders) * 100, range: "5M-10M" },
+    { tier: "humpback", count: tiers.humpback, percentage: (tiers.humpback / totalHolders) * 100, range: ">10M" },
   ];
-
-  const top10Percentage = data.top10Percentage;
 
   const isHealthy = top10Percentage < 30;
 
@@ -68,9 +77,12 @@ export function WhaleDistributionChart() {
               </Badge>
             )}
           </h3>
-          <p className="text-sm text-muted-foreground mt-1">
-            Live on-chain data • Updates hourly
-          </p>
+          <div className="flex items-center gap-2 mt-1">
+            <p className="text-sm text-muted-foreground">
+              {totalHolders.toLocaleString()} holders
+            </p>
+            <DataFreshnessBadge source={dataSource} lastUpdated={lastUpdated || undefined} />
+          </div>
         </div>
         <div className="text-right">
           <div className="text-2xl font-bold text-goblin-gold">{top10Percentage.toFixed(1)}%</div>
@@ -95,12 +107,12 @@ export function WhaleDistributionChart() {
               borderRadius: "8px",
             }}
             formatter={(value: any, name: string, props: any) => [
-              `${props.payload.count} holders (${value}%)`,
+              `${props.payload.count} holders (${value.toFixed(1)}%)`,
               `Range: ${props.payload.range}`,
             ]}
           />
           <Bar dataKey="percentage" radius={[0, 8, 8, 0]}>
-            {distribution?.map((entry, index) => (
+            {distribution.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={TIER_COLORS[entry.tier as keyof typeof TIER_COLORS]} />
             ))}
           </Bar>

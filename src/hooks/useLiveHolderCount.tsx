@@ -1,8 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { useSmartPolling } from "@/hooks/useSmartPolling";
+import { useTokenData } from '@/providers/TokenDataProvider';
 
-interface UnifiedHolderData {
+// Re-export from TokenDataProvider for backwards compatibility
+export interface UnifiedHolderData {
   holderCount: number;
   totalHolders: number;
   tiers: {
@@ -21,34 +20,33 @@ interface UnifiedHolderData {
   error?: string;
 }
 
-// Single source of truth for all holder data
+/**
+ * Single source of truth for all holder data.
+ * Now uses the unified TokenDataProvider to ensure consistency across the app.
+ */
 export function useLiveHolderCount() {
-  const pollingInterval = useSmartPolling(120000);
+  const { data, holderCount, isLoading, dataSource, lastUpdated, refetch } = useTokenData();
   
-  return useQuery({
-    queryKey: ["unified-holder-data"],
-    queryFn: async (): Promise<UnifiedHolderData> => {
-      const { data, error } = await supabase.functions.invoke("fetch-holder-data");
-      
-      if (error) {
-        console.error("Error fetching unified holder data:", error);
-        return { 
-          holderCount: 0, 
-          totalHolders: 0,
-          tiers: { shrimp: 0, crab: 0, fish: 0, dolphin: 0, shark: 0, whale: 0, humpback: 0 },
-          top10Percentage: 0,
-          holders: [],
-          lastUpdated: new Date().toISOString(), 
-          source: 'error' 
-        };
-      }
-
-      return data;
-    },
-    refetchInterval: pollingInterval,
-    staleTime: 100000,
-  });
+  // Transform to UnifiedHolderData format for backwards compatibility
+  const transformedData: UnifiedHolderData | undefined = data ? {
+    holderCount: data.holderCount,
+    totalHolders: data.holderCount,
+    tiers: data.holderTiers,
+    top10Percentage: data.top10Percentage,
+    holders: [], // Top holders fetched separately by TopHoldersLeaderboard
+    source: dataSource,
+    lastUpdated: lastUpdated || new Date().toISOString(),
+  } : undefined;
+  
+  return {
+    data: transformedData,
+    isLoading,
+    error: null,
+    refetch,
+    dataSource,
+    lastUpdated,
+  };
 }
 
 // Export type for consumers
-export type { UnifiedHolderData };
+export type { UnifiedHolderData as HolderData };

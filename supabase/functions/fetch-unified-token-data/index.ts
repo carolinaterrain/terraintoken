@@ -13,12 +13,9 @@ const corsHeaders = {
 const CACHE_DURATION_MS = 120000;
 
 interface UnifiedTokenData {
-  // Supply data
   totalSupply: number;
   circulatingSupply: number;
   decimals: number;
-  
-  // Holder data
   holderCount: number;
   holderTiers: {
     shrimp: number;
@@ -30,19 +27,49 @@ interface UnifiedTokenData {
     humpback: number;
   };
   top10Percentage: number;
-  
-  // Market data
   priceUsd: string;
   priceSol: string;
   priceChange24h: number;
   marketCap: number;
   volume24h: number;
   liquidity: number;
-  
-  // Meta
   lastUpdated: string;
   source: 'live' | 'cache' | 'fallback';
   cacheAge?: number;
+}
+
+// Helper: delay for retry
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+// Helper: fetch with retry and rate limit handling
+async function fetchWithRetry(
+  url: string, 
+  options: RequestInit, 
+  maxRetries: number = 3
+): Promise<Response> {
+  let lastError: Error | null = null;
+  
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      const response = await fetch(url, options);
+      
+      // Handle rate limiting (429)
+      if (response.status === 429) {
+        const retryAfter = parseInt(response.headers.get('Retry-After') || '2', 10);
+        console.warn(`Rate limited, waiting ${retryAfter}s before retry ${attempt + 1}/${maxRetries}`);
+        await delay(retryAfter * 1000);
+        continue;
+      }
+      
+      return response;
+    } catch (error) {
+      lastError = error as Error;
+      console.warn(`Fetch attempt ${attempt + 1} failed:`, error);
+      await delay(1000 * (attempt + 1)); // Exponential backoff
+    }
+  }
+  
+  throw lastError || new Error('Max retries exceeded');
 }
 
 serve(async (req) => {
@@ -50,41 +77,55 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
+  const SUPABASE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // Helper to get cached data
+  async function getCachedData(): Promise<UnifiedTokenData | null> {
+    try {
+      const { data: cached } = await supabase
+        .from('holder_count_cache')
+        .select('*')
+        .eq('id', 'unified-token-data')
+        .single();
+
+      if (cached?.source) {
+        const parsedData = JSON.parse(cached.source);
+        // Only return cache if it has valid holder count (not 0)
+        if (parsedData.holderCount > 0) {
+          return {
+            ...parsedData,
+            lastUpdated: cached.last_updated,
+          };
+        }
+      }
+    } catch (e) {
+      console.error('Error reading cache:', e);
+    }
+    return null;
+  }
+
   try {
     const HELIUS_API_KEY = Deno.env.get('HELIUS_API_KEY');
-    const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
-    const SUPABASE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    
-    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
     // Check cache first
-    const { data: cached } = await supabase
-      .from('holder_count_cache')
-      .select('*')
-      .eq('id', 'unified-token-data')
-      .single();
-
-    const cacheAge = cached?.last_updated 
-      ? Date.now() - new Date(cached.last_updated).getTime()
+    const cached = await getCachedData();
+    const cacheAge = cached?.lastUpdated 
+      ? Date.now() - new Date(cached.lastUpdated).getTime()
       : Infinity;
     
     // Return cached data if less than 2 minutes old
     if (cached && cacheAge < CACHE_DURATION_MS) {
       console.log('Returning cached unified token data');
-      try {
-        const cachedData = JSON.parse(cached.source || '{}');
-        return new Response(
-          JSON.stringify({
-            ...cachedData,
-            source: 'cache',
-            cacheAge: Math.floor(cacheAge / 1000),
-            lastUpdated: cached.last_updated,
-          }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      } catch (e) {
-        console.error('Error parsing cached data:', e);
-      }
+      return new Response(
+        JSON.stringify({
+          ...cached,
+          source: 'cache',
+          cacheAge: Math.floor(cacheAge / 1000),
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     console.log('Fetching fresh unified token data...');
@@ -92,51 +133,44 @@ serve(async (req) => {
     // Fetch all data in parallel
     const [supplyData, holderData, marketData] = await Promise.all([
       fetchTokenSupply(HELIUS_API_KEY),
-      fetchHolderData(HELIUS_API_KEY),
+      fetchHolderData(HELIUS_API_KEY, cached),
       fetchMarketData(),
     ]);
 
     const now = new Date().toISOString();
     
     const responseData: UnifiedTokenData = {
-      // Supply - use blockchain truth (6 decimals)
       totalSupply: supplyData.totalSupply,
       circulatingSupply: supplyData.circulatingSupply,
       decimals: supplyData.decimals,
-      
-      // Holders
       holderCount: holderData.holderCount,
       holderTiers: holderData.tiers,
       top10Percentage: holderData.top10Percentage,
-      
-      // Market
       priceUsd: marketData.priceUsd,
       priceSol: marketData.priceSol,
       priceChange24h: marketData.priceChange24h,
       marketCap: marketData.marketCap,
       volume24h: marketData.volume24h,
       liquidity: marketData.liquidity,
-      
-      // Meta
       lastUpdated: now,
       source: 'live',
     };
 
-    // Cache the result
-    await supabase
-      .from('holder_count_cache')
-      .upsert({
-        id: 'unified-token-data',
-        holder_count: holderData.holderCount,
-        last_updated: now,
-        source: JSON.stringify(responseData),
-      });
+    // ONLY cache if we have valid holder count (not 0)
+    if (responseData.holderCount > 0) {
+      await supabase
+        .from('holder_count_cache')
+        .upsert({
+          id: 'unified-token-data',
+          holder_count: holderData.holderCount,
+          last_updated: now,
+          source: JSON.stringify(responseData),
+        });
 
-    // Also update legacy caches for backwards compatibility
-    await supabase
-      .from('holder_count_cache')
-      .upsert([
-        {
+      // Also update legacy cache for backwards compatibility
+      await supabase
+        .from('holder_count_cache')
+        .upsert({
           id: 'unified',
           holder_count: holderData.holderCount,
           last_updated: now,
@@ -146,10 +180,12 @@ serve(async (req) => {
             tiers: holderData.tiers,
             top10Percentage: holderData.top10Percentage,
           }),
-        },
-      ]);
+        });
 
-    console.log('Unified token data fetched and cached successfully');
+      console.log('Unified token data fetched and cached successfully');
+    } else {
+      console.warn('Skipping cache update - holder count is 0');
+    }
 
     return new Response(
       JSON.stringify(responseData),
@@ -165,31 +201,17 @@ serve(async (req) => {
     console.error('Error fetching unified token data:', error);
     
     // Try to return stale cache on error
-    try {
-      const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
-      const SUPABASE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-      const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-      
-      const { data: cached } = await supabase
-        .from('holder_count_cache')
-        .select('*')
-        .eq('id', 'unified-token-data')
-        .single();
-
-      if (cached?.source) {
-        const cachedData = JSON.parse(cached.source);
-        return new Response(
-          JSON.stringify({ 
-            ...cachedData, 
-            source: 'cache',
-            lastUpdated: cached.last_updated,
-            error: error instanceof Error ? error.message : 'Unknown error', 
-          }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-    } catch (cacheError) {
-      console.error('Cache fetch also failed:', cacheError);
+    const cached = await getCachedData();
+    if (cached) {
+      console.log('Returning stale cached data due to error');
+      return new Response(
+        JSON.stringify({ 
+          ...cached, 
+          source: 'cache',
+          error: error instanceof Error ? error.message : 'Unknown error', 
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
     
     // Return fallback data as last resort
@@ -212,7 +234,7 @@ async function fetchTokenSupply(apiKey: string | undefined) {
 
   try {
     const [supplyResponse, holdersResponse] = await Promise.all([
-      fetch(`https://mainnet.helius-rpc.com/?api-key=${apiKey}`, {
+      fetchWithRetry(`https://mainnet.helius-rpc.com/?api-key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -222,7 +244,7 @@ async function fetchTokenSupply(apiKey: string | undefined) {
           params: [TRN_MINT_ADDRESS]
         })
       }),
-      fetch(`https://mainnet.helius-rpc.com/?api-key=${apiKey}`, {
+      fetchWithRetry(`https://mainnet.helius-rpc.com/?api-key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -247,14 +269,12 @@ async function fetchTokenSupply(apiKey: string | undefined) {
     const totalSupply = parseInt(supply.amount);
     const decimals = supply.decimals;
     
-    // Calculate circulating supply
     let circulatingSupply = totalSupply;
     if (accounts.length > 0) {
       const largestAccount = accounts[0];
       const largestHolderAmount = parseInt(largestAccount.amount);
       const largestPercentage = (largestHolderAmount / totalSupply) * 100;
       
-      // If largest holder has >40%, assume it's bonding curve/liquidity
       if (largestPercentage > 40) {
         circulatingSupply = totalSupply - largestHolderAmount;
       }
@@ -269,13 +289,20 @@ async function fetchTokenSupply(apiKey: string | undefined) {
   }
 }
 
-// Fetch holder data from Helius DAS
-async function fetchHolderData(apiKey: string | undefined) {
+// Fetch holder data from Helius DAS with rate limit handling
+async function fetchHolderData(apiKey: string | undefined, cachedData: UnifiedTokenData | null) {
   const defaultTiers = { shrimp: 0, crab: 0, fish: 0, dolphin: 0, shark: 0, whale: 0, humpback: 0 };
   
+  // Use cached data as fallback if available
+  const fallbackData = cachedData ? {
+    holderCount: cachedData.holderCount,
+    tiers: cachedData.holderTiers,
+    top10Percentage: cachedData.top10Percentage,
+  } : { holderCount: 0, tiers: defaultTiers, top10Percentage: 0 };
+  
   if (!apiKey) {
-    console.warn('HELIUS_API_KEY not configured, using fallback holder data');
-    return { holderCount: 0, tiers: defaultTiers, top10Percentage: 0 };
+    console.warn('HELIUS_API_KEY not configured, using cached/fallback holder data');
+    return fallbackData;
   }
 
   try {
@@ -286,7 +313,7 @@ async function fetchHolderData(apiKey: string | undefined) {
     const PAGE_SIZE = 1000;
 
     do {
-      const response = await fetch(
+      const response = await fetchWithRetry(
         `https://mainnet.helius-rpc.com/?api-key=${apiKey}`,
         {
           method: 'POST',
@@ -302,17 +329,21 @@ async function fetchHolderData(apiKey: string | undefined) {
               options: { showZeroBalance: false },
             },
           }),
-        }
+        },
+        2 // Only 2 retries for holder data to avoid long waits
       );
 
       if (!response.ok) {
-        throw new Error(`Helius DAS API error: ${response.status}`);
+        // On rate limit or error, return cached data instead of 0
+        console.warn(`Helius API returned ${response.status}, using cached data`);
+        return fallbackData;
       }
 
       const data = await response.json();
       
       if (data.error) {
-        throw new Error(`Helius RPC error: ${data.error.message || JSON.stringify(data.error)}`);
+        console.error('Helius RPC error:', data.error);
+        return fallbackData;
       }
 
       const result = data.result;
@@ -330,6 +361,12 @@ async function fetchHolderData(apiKey: string | undefined) {
 
       if (tokenAccounts.length < PAGE_SIZE) break;
     } while (cursor && pageCount < MAX_PAGES);
+
+    // If we got 0 holders but have cached data, use cached
+    if (holders.length === 0 && fallbackData.holderCount > 0) {
+      console.warn('Got 0 holders from API, using cached data');
+      return fallbackData;
+    }
 
     console.log(`Fetched ${holders.length} holders across ${pageCount} pages`);
 
@@ -354,15 +391,15 @@ async function fetchHolderData(apiKey: string | undefined) {
 
     return { holderCount: holders.length, tiers, top10Percentage };
   } catch (error) {
-    console.error('Error fetching holder data:', error);
-    return { holderCount: 0, tiers: defaultTiers, top10Percentage: 0 };
+    console.error('Error fetching holder data, using cached:', error);
+    return fallbackData;
   }
 }
 
 // Fetch market data from DexScreener
 async function fetchMarketData() {
   try {
-    const response = await fetch(`${DEXSCREENER_API}/${TRN_MINT_ADDRESS}`);
+    const response = await fetchWithRetry(`${DEXSCREENER_API}/${TRN_MINT_ADDRESS}`, {});
     
     if (!response.ok) {
       throw new Error(`DexScreener API error: ${response.status}`);
