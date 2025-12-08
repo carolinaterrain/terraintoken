@@ -81,22 +81,43 @@ serve(async (req) => {
   const SUPABASE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  // Helper to get cached data
+  // Helper to get cached data - checks multiple cache sources for valid holder count
   async function getCachedData(): Promise<UnifiedTokenData | null> {
     try {
-      const { data: cached } = await supabase
+      // Check all possible cache entries, prioritize by recency and validity
+      const { data: allCaches } = await supabase
         .from('holder_count_cache')
         .select('*')
-        .eq('id', 'unified-token-data')
-        .single();
+        .in('id', ['unified-token-data', 'holder_distribution', 'current', 'unified'])
+        .order('last_updated', { ascending: false });
 
-      if (cached?.source) {
-        const parsedData = JSON.parse(cached.source);
-        // Only return cache if it has valid holder count (not 0)
-        if (parsedData.holderCount > 0) {
+      if (!allCaches || allCaches.length === 0) return null;
+
+      // Find best cache: valid holder count > 0, most recent
+      for (const cached of allCaches) {
+        if (cached.holder_count > 0) {
+          // If it has full source data, use it
+          if (cached.source) {
+            try {
+              const parsedData = JSON.parse(cached.source);
+              if (parsedData.holderCount > 0) {
+                console.log(`Using cache from ${cached.id} with ${parsedData.holderCount} holders`);
+                return {
+                  ...parsedData,
+                  lastUpdated: cached.last_updated,
+                };
+              }
+            } catch (e) {
+              // Source parse failed, but holder_count is valid
+            }
+          }
+          // Return minimal cached data with valid holder count
+          console.log(`Using holder_count ${cached.holder_count} from ${cached.id}`);
           return {
-            ...parsedData,
+            ...getFallbackData(),
+            holderCount: cached.holder_count,
             lastUpdated: cached.last_updated,
+            source: 'cache',
           };
         }
       }
