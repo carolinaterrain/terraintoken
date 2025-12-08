@@ -9,8 +9,8 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Cache duration: 2 minutes for fresh data
-const CACHE_DURATION_MS = 120000;
+// Cache duration: 5 minutes for fresh data (reduces Helius rate limiting)
+const CACHE_DURATION_MS = 5 * 60 * 1000;
 
 interface UnifiedTokenData {
   totalSupply: number;
@@ -38,8 +38,15 @@ interface UnifiedTokenData {
   cacheAge?: number;
 }
 
-// Helper: delay for retry
+// Helper: delay for retry with jitter
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+// Calculate exponential backoff with jitter
+const getBackoffDelay = (attempt: number): number => {
+  const baseDelay = Math.min(1000 * Math.pow(2, attempt), 10000);
+  const jitter = Math.random() * 1000;
+  return baseDelay + jitter;
+};
 
 // Helper: fetch with retry and rate limit handling
 async function fetchWithRetry(
@@ -55,17 +62,18 @@ async function fetchWithRetry(
       
       // Handle rate limiting (429)
       if (response.status === 429) {
-        const retryAfter = parseInt(response.headers.get('Retry-After') || '2', 10);
-        console.warn(`Rate limited, waiting ${retryAfter}s before retry ${attempt + 1}/${maxRetries}`);
-        await delay(retryAfter * 1000);
+        const backoffDelay = getBackoffDelay(attempt);
+        console.warn(`Rate limited (429), waiting ${Math.round(backoffDelay)}ms before retry ${attempt + 1}/${maxRetries}`);
+        await delay(backoffDelay);
         continue;
       }
       
       return response;
     } catch (error) {
       lastError = error as Error;
-      console.warn(`Fetch attempt ${attempt + 1} failed:`, error);
-      await delay(1000 * (attempt + 1)); // Exponential backoff
+      const backoffDelay = getBackoffDelay(attempt);
+      console.warn(`Fetch attempt ${attempt + 1} failed, retrying in ${Math.round(backoffDelay)}ms:`, error);
+      await delay(backoffDelay);
     }
   }
   
@@ -93,6 +101,21 @@ serve(async (req) => {
 
       if (!allCaches || allCaches.length === 0) return null;
 
+      // Try to get tier data from holder_distribution (most reliable source)
+      let tierData = null;
+      const holderDistCache = allCaches.find(c => c.id === 'holder_distribution');
+      if (holderDistCache?.source) {
+        try {
+          const parsed = JSON.parse(holderDistCache.source);
+          if (parsed.tiers && Object.values(parsed.tiers).some((v: any) => v > 0)) {
+            tierData = parsed.tiers;
+            console.log('Found valid tier data in holder_distribution cache');
+          }
+        } catch (e) {
+          console.warn('Failed to parse holder_distribution cache');
+        }
+      }
+
       // Find best cache: valid holder count > 0, most recent
       for (const cached of allCaches) {
         if (cached.holder_count > 0) {
@@ -102,8 +125,17 @@ serve(async (req) => {
               const parsedData = JSON.parse(cached.source);
               if (parsedData.holderCount > 0) {
                 console.log(`Using cache from ${cached.id} with ${parsedData.holderCount} holders`);
+                
+                // Merge tier data if the current cache has all zeros
+                let finalTiers = parsedData.holderTiers;
+                if (tierData && Object.values(parsedData.holderTiers || {}).every((v: any) => v === 0)) {
+                  console.log('Merging tier data from holder_distribution into cached response');
+                  finalTiers = tierData;
+                }
+                
                 return {
                   ...parsedData,
+                  holderTiers: finalTiers,
                   lastUpdated: cached.last_updated,
                 };
               }
@@ -116,6 +148,7 @@ serve(async (req) => {
           return {
             ...getFallbackData(),
             holderCount: cached.holder_count,
+            holderTiers: tierData || getFallbackData().holderTiers,
             lastUpdated: cached.last_updated,
             source: 'cache',
           };
@@ -160,12 +193,34 @@ serve(async (req) => {
 
     const now = new Date().toISOString();
     
+    // Merge holder tier data from holder_distribution cache if tiers are all zeros
+    let finalTiers = holderData.tiers;
+    if (Object.values(holderData.tiers).every(v => v === 0) && holderData.holderCount > 0) {
+      try {
+        const { data: tierCache } = await supabase
+          .from('holder_count_cache')
+          .select('source')
+          .eq('id', 'holder_distribution')
+          .single();
+        
+        if (tierCache?.source) {
+          const parsed = JSON.parse(tierCache.source);
+          if (parsed.tiers && Object.values(parsed.tiers).some((v: any) => v > 0)) {
+            console.log('Merging tier data from holder_distribution cache');
+            finalTiers = parsed.tiers;
+          }
+        }
+      } catch (e) {
+        console.warn('Could not merge tier data from cache:', e);
+      }
+    }
+    
     const responseData: UnifiedTokenData = {
       totalSupply: supplyData.totalSupply,
       circulatingSupply: supplyData.circulatingSupply,
       decimals: supplyData.decimals,
       holderCount: holderData.holderCount,
-      holderTiers: holderData.tiers,
+      holderTiers: finalTiers,
       top10Percentage: holderData.top10Percentage,
       priceUsd: marketData.priceUsd,
       priceSol: marketData.priceSol,

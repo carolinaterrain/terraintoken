@@ -1,16 +1,30 @@
 import { DataBadge } from "./DataBadge";
-import { memo, useState } from "react";
+import { memo, useState, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { RefreshCw, AlertCircle } from "lucide-react";
+import { RefreshCw, AlertCircle, ExternalLink } from "lucide-react";
 
 export const DexScreenerChart = memo(() => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [loadTimeout, setLoadTimeout] = useState(false);
+
+  // Timeout for slow/failed loads
+  useEffect(() => {
+    if (!isLoaded && !hasError) {
+      const timeout = setTimeout(() => {
+        if (!isLoaded) {
+          setLoadTimeout(true);
+        }
+      }, 15000); // 15 second timeout
+      return () => clearTimeout(timeout);
+    }
+  }, [isLoaded, hasError]);
 
   const handleRetry = () => {
     setHasError(false);
     setIsLoaded(false);
+    setLoadTimeout(false);
     // Force iframe reload by remounting
     const iframe = document.querySelector('iframe[title="TRN Trading Chart"]') as HTMLIFrameElement;
     if (iframe) {
@@ -59,20 +73,39 @@ export const DexScreenerChart = memo(() => {
         )}
 
         {/* Error State */}
-        {hasError && (
+        {(hasError || loadTimeout) && (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-terrain-dark rounded-lg">
-            <div className="text-center space-y-4">
-              <AlertCircle className="w-12 h-12 text-destructive mx-auto" />
-              <p className="text-sm text-muted-foreground">Chart failed to load</p>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={handleRetry}
-                className="gap-2"
-              >
-                <RefreshCw className="w-4 h-4" />
-                Retry
-              </Button>
+            <div className="text-center space-y-4 p-6">
+              <AlertCircle className="w-12 h-12 text-goblin-gold mx-auto" />
+              <p className="text-sm text-muted-foreground">
+                {loadTimeout ? "Chart is taking longer than expected" : "Chart failed to load"}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={handleRetry}
+                  className="gap-2"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  Retry
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  asChild
+                  className="gap-2"
+                >
+                  <a 
+                    href="https://dexscreener.com/solana/7xgav46chz3n5hhmkygr9gqny3yerkheaoy54yxy6hng" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    Open on DexScreener
+                  </a>
+                </Button>
+              </div>
             </div>
           </div>
         )}

@@ -23,6 +23,17 @@ const DataBadge = ({ type }: { type: 'live' | 'verified' | 'coming-soon' }) => {
   return <div className={`text-xs mt-2 ${badge.className}`}>{badge.text}</div>;
 };
 
+// Format SOL price with appropriate precision
+const formatSolPrice = (price: string | undefined): string => {
+  if (!price || price === '0') return '0';
+  const numPrice = parseFloat(price);
+  if (isNaN(numPrice)) return '0';
+  if (numPrice >= 1) return numPrice.toFixed(4);
+  if (numPrice >= 0.001) return numPrice.toFixed(6);
+  // For very small values, show up to 10 decimals and remove trailing zeros
+  return numPrice.toFixed(10).replace(/\.?0+$/, '');
+};
+
 const TransparencyHub = () => {
   const { data: holderData, isLoading: holderLoading } = useLiveHolderCount();
   const { data: tokenStats, isLoading: statsLoading } = useTokenStats();
@@ -183,7 +194,9 @@ const TransparencyHub = () => {
                   {statsLoading ? (
                     <Skeleton className="h-8 w-28" />
                   ) : (
-                    <div className="text-2xl font-bold text-foreground">{tokenStats?.priceSol || '0'} SOL</div>
+                    <div className="text-2xl font-bold text-foreground">
+                      {formatSolPrice(tokenStats?.priceSol)} SOL
+                    </div>
                   )}
                 </div>
               </div>

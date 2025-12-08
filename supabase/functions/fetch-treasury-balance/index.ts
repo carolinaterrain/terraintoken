@@ -10,7 +10,7 @@ const corsHeaders = {
 const TRN_MINT_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 const TRN_TREASURY_WALLET = "H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu";
 const CACHE_KEY = 'treasury-balance';
-const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes (longer for treasury to reduce rate limits)
 
 interface TreasuryBalanceResponse {
   balance: number;
