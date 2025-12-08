@@ -2,17 +2,18 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import TokenomicsDashboard from "@/components/TokenomicsDashboard";
 import { Coins, Shield, Rocket, RefreshCw, Gift } from "lucide-react";
-import { useTokenSupply, formatSupply } from "@/hooks/useTokenSupply";
+import { useTokenData } from "@/providers/TokenDataProvider";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DataFreshnessBadge } from "@/components/ui/data-freshness-badge";
 
 const Tokenomics = () => {
-  const { data: supplyData, isLoading } = useTokenSupply();
+  const { supply, isLoading, dataSource } = useTokenData();
   
   const stats = [
   {
     icon: Coins,
     label: "Total Supply (Live)",
-    value: isLoading ? "..." : supplyData ? `${formatSupply(supplyData.totalSupply, supplyData.decimals)} TRN` : "—",
+    value: isLoading ? "..." : supply ? `${supply.formatted.total} TRN` : "—",
     description: "No additional minting possible"
   },
   {
@@ -86,7 +87,10 @@ const Tokenomics = () => {
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   <Icon className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="font-display text-sm font-semibold text-muted-foreground mb-2">{stat.label}</h3>
+                <div className="flex items-center justify-center gap-1 mb-2">
+                  <h3 className="font-display text-sm font-semibold text-muted-foreground">{stat.label}</h3>
+                  {index === 0 && <DataFreshnessBadge source={dataSource} className="scale-75" />}
+                </div>
                 {isLoading && index === 0 ? (
                   <Skeleton className="h-8 w-32 mx-auto mb-2" />
                 ) : (

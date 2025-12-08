@@ -1,23 +1,20 @@
 import { GlassCard } from "@/components/ui/glass-card";
-import { useTokenStats } from "@/hooks/useTokenStats";
-import { useLiveHolderCount } from "@/hooks/useLiveHolderCount";
+import { useTokenData } from "@/providers/TokenDataProvider";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import CountUp from "react-countup";
-import { TrendingUp, DollarSign, Users, Zap, Database, Activity } from "lucide-react";
+import { TrendingUp, DollarSign, Activity } from "lucide-react";
 import { calculateMetrics } from "@/lib/financialData";
 import { motion } from "framer-motion";
 import { DataSourceIndicator } from "./DataSourceIndicator";
 import { DataVerificationBadge } from "./DataVerificationBadge";
 
 export const EcosystemMetrics = () => {
-  const { data: tokenStats, isLoading: tokenLoading } = useTokenStats();
-  const { data: holderData, isLoading: holderLoading } = useLiveHolderCount();
+  const { stats, holderCount, isLoading: tokenLoading, dataSource } = useTokenData();
   
   const businessMetrics = calculateMetrics();
-  const equipmentValue = 172591.78; // Current equipment value from balance sheet
+  const equipmentValue = 172591.78;
 
-  // Get community members count (project contributors)
   const { data: communityCount } = useQuery({
     queryKey: ['community-count'],
     queryFn: async () => {
@@ -28,7 +25,6 @@ export const EcosystemMetrics = () => {
     },
   });
 
-  // Get analysis count - actual database count, no fallbacks
   const { data: analysisCount } = useQuery({
     queryKey: ['analysis-count'],
     queryFn: async () => {
@@ -44,10 +40,10 @@ export const EcosystemMetrics = () => {
       title: "On-Chain Metrics",
       icon: TrendingUp,
       metrics: [
-        { label: "Current Price", value: parseFloat(tokenStats?.priceUsd || "0"), prefix: "$", decimals: 6, color: "text-chart-1" },
-        { label: "Market Cap", value: tokenStats?.marketCap || 0, prefix: "$", decimals: 0, color: "text-chart-2" },
-        { label: "Holder Count", value: holderData?.holderCount || 0, color: "text-chart-3" },
-        { label: "24h Volume", value: tokenStats?.volume24h || 0, prefix: "$", decimals: 0, color: "text-chart-4" },
+        { label: "Current Price", value: parseFloat(stats?.priceUsd || "0"), prefix: "$", decimals: 6, color: "text-chart-1" },
+        { label: "Market Cap", value: typeof stats?.marketCap === 'string' ? parseFloat(stats.marketCap.replace(/[$,KMB]/g, '')) : 0, prefix: "$", decimals: 0, color: "text-chart-2" },
+        { label: "Holder Count", value: holderCount?.holderCount || 0, color: "text-chart-3" },
+        { label: "24h Volume", value: typeof stats?.volume24h === 'string' ? parseFloat(stats.volume24h.replace(/[$,KMB]/g, '')) : 0, prefix: "$", decimals: 0, color: "text-chart-4" },
       ]
     },
     {
@@ -121,7 +117,7 @@ export const EcosystemMetrics = () => {
                             <p className="text-sm text-muted-foreground">{metric.label}</p>
                             {section.title === "On-Chain Metrics" && (
                               <DataSourceIndicator 
-                                source="live" 
+                                source={dataSource === 'live' ? 'live' : 'projected'} 
                                 lastUpdated={new Date()}
                               />
                             )}
@@ -158,7 +154,6 @@ export const EcosystemMetrics = () => {
           })}
         </div>
 
-        {/* Live indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

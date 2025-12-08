@@ -11,6 +11,12 @@ const TokenStats = memo(() => {
   const { toast } = useToast();
   const { stats, isLoading, holderCount, dataSource } = useTokenData();
   const { data: memeStats } = useMemeStats();
+  
+  // Determine data source for individual stats
+  const getSourceType = (): 'live' | 'cached' => {
+    return dataSource === 'live' ? 'live' : 'cached';
+  };
+  const sourceType = getSourceType();
 
   const handleCopy = useCallback((value: string, label: string, index: number) => {
     navigator.clipboard.writeText(value);
@@ -35,10 +41,10 @@ const TokenStats = memo(() => {
   }
 
   const statsArray = [
-    { label: "Market Cap", value: stats.marketCap, change: stats.change24h, source: dataSource.stats },
-    { label: "Price", value: `$${stats.priceUsd}`, change: stats.change24h, source: dataSource.stats },
-    { label: "24h Vol", value: stats.volume24h, change: 0, source: dataSource.stats },
-    { label: "Holders", value: holderCount?.holderCount?.toLocaleString() || "N/A", change: 0, source: dataSource.holders },
+    { label: "Market Cap", value: stats.marketCap, change: stats.change24h, source: sourceType },
+    { label: "Price", value: `$${stats.priceUsd}`, change: stats.change24h, source: sourceType },
+    { label: "24h Vol", value: stats.volume24h, change: 0, source: sourceType },
+    { label: "Holders", value: holderCount?.holderCount?.toLocaleString() || "N/A", change: 0, source: sourceType },
   ];
 
   const goblinMood = stats.change24h > 0 ? "🎉" : stats.change24h < -5 ? "😱" : "🏄‍♂️";
