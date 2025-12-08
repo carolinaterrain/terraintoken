@@ -32,10 +32,12 @@ export async function fetchTRNStats(): Promise<TokenStats | null> {
     
     if (!pair) return null;
     
+    const priceSol = parseFloat(pair.priceNative || 0);
+    
     return {
       marketCap: formatNumber(pair.fdv || pair.marketCap || 0),
       priceUsd: parseFloat(pair.priceUsd || 0).toFixed(8),
-      priceSol: parseFloat(pair.priceNative || 0).toFixed(6),
+      priceSol: formatPriceSol(priceSol),
       change24h: parseFloat(pair.priceChange?.h24 || 0),
       volume24h: formatNumber(pair.volume?.h24 || 0),
       holders: pair.info?.holders || "N/A"
@@ -115,4 +117,13 @@ function formatNumber(num: number): string {
   if (num >= 1e6) return `$${(num / 1e6).toFixed(2)}M`;
   if (num >= 1e3) return `$${(num / 1e3).toFixed(2)}K`;
   return `$${num.toFixed(2)}`;
+}
+
+// Format SOL price with appropriate precision (handles very small values)
+function formatPriceSol(price: number): string {
+  if (price === 0) return "0";
+  if (price >= 1) return price.toFixed(4);
+  if (price >= 0.001) return price.toFixed(6);
+  if (price >= 0.0000001) return price.toFixed(10).replace(/\.?0+$/, '');
+  return price.toExponential(4);
 }

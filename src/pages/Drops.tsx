@@ -45,8 +45,9 @@ const COLLECTOR_ITEMS = {
   }
 };
 
-// Set drop end date to 7 days from now (adjust as needed)
-const DROP_END_DATE = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+// Drop end date - set to a fixed date in the future for consistency
+// Update this date when launching new drops
+const DROP_END_DATE = new Date('2025-01-15T23:59:59Z');
 
 const Drops = () => {
   const { drop, remaining, isLoading } = useCollectorDrop();
