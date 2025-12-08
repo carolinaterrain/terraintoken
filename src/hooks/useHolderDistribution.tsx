@@ -1,4 +1,4 @@
-import { useLiveHolderCount, UnifiedHolderData } from "@/hooks/useLiveHolderCount";
+import { useTokenData } from '@/providers/TokenDataProvider';
 
 export interface HolderTiers {
   shrimp: number;
@@ -16,29 +16,25 @@ export interface HolderDistribution {
   top10Percentage: number;
 }
 
-// Uses the unified holder data source for consistency
+/**
+ * Uses the unified TokenDataProvider for holder distribution data.
+ * Ensures consistency across all holder-related components.
+ */
 export function useHolderDistribution() {
-  const { data, isLoading, error, refetch } = useLiveHolderCount();
+  const { data, holderCount, isLoading, dataSource, lastUpdated, refetch } = useTokenData();
   
-  // Transform unified data to HolderDistribution format
-  const distribution: HolderDistribution | undefined = data ? {
-    totalHolders: data.totalHolders || data.holderCount || 0,
-    tiers: data.tiers || {
-      shrimp: 0,
-      crab: 0,
-      fish: 0,
-      dolphin: 0,
-      shark: 0,
-      whale: 0,
-      humpback: 0,
-    },
-    top10Percentage: data.top10Percentage || 0,
+  const distribution: HolderDistribution | undefined = holderCount ? {
+    totalHolders: holderCount.holderCount,
+    tiers: holderCount.tiers,
+    top10Percentage: holderCount.top10Percentage,
   } : undefined;
 
   return {
     data: distribution,
     isLoading,
-    error,
+    error: null,
     refetch,
+    dataSource,
+    lastUpdated,
   };
 }

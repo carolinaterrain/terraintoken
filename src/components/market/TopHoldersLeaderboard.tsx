@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
-import { DataBadge } from "./DataBadge";
+import { DataFreshnessBadge, DataSource } from "@/components/ui/data-freshness-badge";
 
 interface Holder {
   address: string;
@@ -14,39 +14,32 @@ interface Holder {
 
 export const TopHoldersLeaderboard = () => {
   const { data: holders, isLoading } = useQuery({
-    queryKey: ["top-holders"],
+    queryKey: ["top-holders-leaderboard"],
     queryFn: async () => {
-      // Fetch real holder data from Helius
+      // Fetch real holder data from Helius via edge function
       const { data, error } = await supabase.functions.invoke("fetch-holder-data");
       
-      if (error || !data) {
+      if (error || !data || !data.holders || data.holders.length === 0) {
         console.error("Error fetching holder data:", error);
-        // Fallback data
-        const mockHolders: Holder[] = [
-          { address: "7xKXtg...9mBq", balance: 12500000, percentage: 12.5, rank: 1 },
-          { address: "9pLMnT...3vCd", balance: 8900000, percentage: 8.9, rank: 2 },
-          { address: "4kRtYu...7wXz", balance: 6200000, percentage: 6.2, rank: 3 },
-          { address: "2nFdPs...5mNx", balance: 4800000, percentage: 4.8, rank: 4 },
-          { address: "8vQwZx...1kPt", balance: 3500000, percentage: 3.5, rank: 5 },
-          { address: "5jHgTr...9bLm", balance: 2900000, percentage: 2.9, rank: 6 },
-          { address: "3xCvBn...4wQs", balance: 2300000, percentage: 2.3, rank: 7 },
-          { address: "6mKpLz...8rDf", balance: 1800000, percentage: 1.8, rank: 8 },
-          { address: "1wRtYx...2nVc", balance: 1500000, percentage: 1.5, rank: 9 },
-          { address: "9bNmQs...6pKj", balance: 1200000, percentage: 1.2, rank: 10 },
-        ];
-        return mockHolders;
+        return { holders: [], source: 'fallback' as DataSource, lastUpdated: new Date().toISOString() };
       }
 
       // Process real holder data
-      const holders = data.holders || [];
-      return holders.slice(0, 10).map((h: any, idx: number) => ({
+      const processedHolders: Holder[] = data.holders.slice(0, 10).map((h: any, idx: number) => ({
         address: `${h.address.slice(0, 6)}...${h.address.slice(-4)}`,
         balance: h.balance,
         percentage: h.percentage,
         rank: idx + 1,
       }));
+
+      return {
+        holders: processedHolders,
+        source: (data.source || 'live') as DataSource,
+        lastUpdated: data.lastUpdated || new Date().toISOString(),
+      };
     },
     refetchInterval: 300000, // Refresh every 5 minutes
+    staleTime: 240000,
   });
 
   const getRankIcon = (rank: number) => {
@@ -64,6 +57,27 @@ export const TopHoldersLeaderboard = () => {
     );
   }
 
+  const holdersList = holders?.holders || [];
+  const dataSource = holders?.source || 'fallback';
+  const lastUpdated = holders?.lastUpdated;
+
+  if (holdersList.length === 0) {
+    return (
+      <Card className="p-6 bg-gradient-to-br from-terrain-dark via-terrain-shadow to-terrain-deep border-2 border-goblin-gold/60">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-bold flex items-center gap-2">
+            <Trophy className="w-5 h-5 text-goblin-gold" />
+            Top Holders Leaderboard
+          </h3>
+          <DataFreshnessBadge source="fallback" />
+        </div>
+        <div className="flex items-center justify-center h-48 text-muted-foreground">
+          Loading holder data...
+        </div>
+      </Card>
+    );
+  }
+
   return (
     <Card className="p-6 bg-gradient-to-br from-terrain-dark via-terrain-shadow to-terrain-deep border-2 border-goblin-gold/60">
       <div className="flex items-center justify-between mb-4">
@@ -71,11 +85,11 @@ export const TopHoldersLeaderboard = () => {
           <Trophy className="w-5 h-5 text-goblin-gold" />
           Top Holders Leaderboard
         </h3>
-        <DataBadge type="live" />
+        <DataFreshnessBadge source={dataSource} lastUpdated={lastUpdated} />
       </div>
 
       <div className="space-y-2">
-        {holders?.map((holder) => (
+        {holdersList.map((holder) => (
           <div
             key={holder.address}
             className={`flex items-center justify-between p-3 rounded-lg transition-all ${
@@ -97,7 +111,7 @@ export const TopHoldersLeaderboard = () => {
             </div>
             <div className="text-right">
               <p className="text-sm font-bold text-goblin-green">
-                {holder.percentage}%
+                {holder.percentage.toFixed(1)}%
               </p>
               <p className="text-xs text-muted-foreground">of supply</p>
             </div>
@@ -107,7 +121,7 @@ export const TopHoldersLeaderboard = () => {
 
       <div className="mt-4 pt-4 border-t border-border text-center">
         <p className="text-xs text-muted-foreground">
-          Data updates every 5 minutes • Top 10 holders shown
+          Top 10 holders shown • Updates every 5 minutes
         </p>
       </div>
     </Card>
