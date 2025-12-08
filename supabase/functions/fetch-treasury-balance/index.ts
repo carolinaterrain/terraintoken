@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -8,21 +9,45 @@ const corsHeaders = {
 // TRN token constants
 const TRN_MINT_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 const TRN_TREASURY_WALLET = "H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu";
-const TRN_DECIMALS = 6;
+const CACHE_KEY = 'treasury-balance';
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
 interface TreasuryBalanceResponse {
   balance: number;
   balanceFormatted: string;
   walletAddress: string;
   lastUpdated: string;
-  source: 'helius' | 'fallback';
+  source: 'helius' | 'fallback' | 'cache';
+}
+
+// Phase 3.1: Retry with exponential backoff and jitter
+async function fetchWithRetry(url: string, options: RequestInit, maxRetries = 3): Promise<Response> {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      const response = await fetch(url, options);
+      
+      // Handle rate limiting
+      if (response.status === 429) {
+        const delay = Math.min(1000 * Math.pow(2, attempt) + Math.random() * 1000, 10000);
+        console.log(`Rate limited, waiting ${delay}ms before retry ${attempt + 1}/${maxRetries}`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        continue;
+      }
+      
+      return response;
+    } catch (error) {
+      if (attempt === maxRetries - 1) throw error;
+      const delay = Math.min(1000 * Math.pow(2, attempt) + Math.random() * 500, 8000);
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+  }
+  throw new Error('Max retries exceeded');
 }
 
 async function fetchTreasuryBalance(heliusApiKey: string): Promise<number> {
   const heliusUrl = `https://mainnet.helius-rpc.com/?api-key=${heliusApiKey}`;
   
-  // Use getTokenAccountsByOwner to find TRN token accounts for treasury wallet
-  const response = await fetch(heliusUrl, {
+  const response = await fetchWithRetry(heliusUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -47,7 +72,6 @@ async function fetchTreasuryBalance(heliusApiKey: string): Promise<number> {
     throw new Error(`RPC error: ${data.error.message}`);
   }
 
-  // Extract balance from token accounts
   const accounts = data.result?.value || [];
   
   if (accounts.length === 0) {
@@ -55,7 +79,6 @@ async function fetchTreasuryBalance(heliusApiKey: string): Promise<number> {
     return 0;
   }
 
-  // Sum up all TRN balances (usually just one account)
   let totalBalance = 0;
   for (const account of accounts) {
     const tokenAmount = account.account?.data?.parsed?.info?.tokenAmount;
@@ -81,20 +104,62 @@ function formatBalance(balance: number): string {
 }
 
 serve(async (req) => {
-  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
+  const SUPABASE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
   try {
+    // Phase 3.2: Check cache first
+    const { data: cached } = await supabase
+      .from('holder_count_cache')
+      .select('*')
+      .eq('id', CACHE_KEY)
+      .single();
+
+    if (cached?.source) {
+      const cacheAge = Date.now() - new Date(cached.last_updated).getTime();
+      if (cacheAge < CACHE_TTL_MS) {
+        try {
+          const cachedData = JSON.parse(cached.source);
+          console.log('Returning cached treasury balance:', cachedData.balance);
+          return new Response(JSON.stringify({
+            ...cachedData,
+            source: 'cache'
+          }), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            status: 200
+          });
+        } catch (e) {
+          console.warn('Failed to parse cached treasury data');
+        }
+      }
+    }
+
     const heliusApiKey = Deno.env.get('HELIUS_API_KEY');
     
     if (!heliusApiKey) {
       console.error('HELIUS_API_KEY not configured');
-      // Return fallback response
+      // Return cached data if available, even if stale
+      if (cached?.source) {
+        try {
+          const cachedData = JSON.parse(cached.source);
+          return new Response(JSON.stringify({
+            ...cachedData,
+            source: 'cache'
+          }), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            status: 200
+          });
+        } catch (e) {}
+      }
+      
       const fallbackResponse: TreasuryBalanceResponse = {
         balance: 0,
-        balanceFormatted: 'Unavailable',
+        balanceFormatted: '—',
         walletAddress: TRN_TREASURY_WALLET,
         lastUpdated: new Date().toISOString(),
         source: 'fallback'
@@ -120,6 +185,14 @@ serve(async (req) => {
       source: 'helius'
     };
 
+    // Cache the result
+    await supabase.from('holder_count_cache').upsert({
+      id: CACHE_KEY,
+      holder_count: balance,
+      source: JSON.stringify(response),
+      last_updated: new Date().toISOString()
+    });
+
     return new Response(JSON.stringify(response), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200
@@ -128,10 +201,30 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error fetching treasury balance:', error);
     
-    // Return fallback on error
+    // Return cached data on error
+    const { data: cached } = await supabase
+      .from('holder_count_cache')
+      .select('*')
+      .eq('id', CACHE_KEY)
+      .single();
+
+    if (cached?.source) {
+      try {
+        const cachedData = JSON.parse(cached.source);
+        console.log('Returning stale cache due to error');
+        return new Response(JSON.stringify({
+          ...cachedData,
+          source: 'cache'
+        }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 200
+        });
+      } catch (e) {}
+    }
+    
     const fallbackResponse: TreasuryBalanceResponse = {
       balance: 0,
-      balanceFormatted: 'Error',
+      balanceFormatted: '—',
       walletAddress: TRN_TREASURY_WALLET,
       lastUpdated: new Date().toISOString(),
       source: 'fallback'
