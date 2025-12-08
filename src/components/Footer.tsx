@@ -1,15 +1,25 @@
-import { Users, Twitter, Shield, TrendingUp, ExternalLink, Sparkles, RotateCcw } from "lucide-react";
+import { Users, Twitter, Shield, TrendingUp, ExternalLink, Sparkles, RotateCcw, Check, Copy } from "lucide-react";
 import { Link } from "react-router-dom";
 import { GlassCard } from "@/components/ui/glass-card";
 import { useTokenData } from "@/providers/TokenDataProvider";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { DataFreshnessBadge } from "@/components/ui/data-freshness-badge";
+import { toast } from "sonner";
+import { useState } from "react";
 import trnCoin from "@/assets/trn-coin.png";
 
 const Footer = () => {
   const contractAddress = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
   const { supply, isLoading, dataSource, lastUpdated } = useTokenData();
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyContract = () => {
+    navigator.clipboard.writeText(contractAddress);
+    setCopied(true);
+    toast.success("Contract address copied!");
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <footer className="border-t border-border/50 bg-terrain-dark">
@@ -88,16 +98,19 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Center: Contract Address */}
+          {/* Center: Contract Address with Copy Feedback */}
           <div className="text-center">
             <p className="text-xs text-muted-foreground mb-1">Contract Address</p>
             <button
-              onClick={() => {
-                navigator.clipboard.writeText(contractAddress);
-              }}
-              className="font-mono text-xs text-foreground/70 hover:text-primary transition-colors"
+              onClick={handleCopyContract}
+              className="font-mono text-xs text-foreground/70 hover:text-primary transition-colors flex items-center gap-2 mx-auto"
             >
               {contractAddress.slice(0, 8)}...{contractAddress.slice(-8)}
+              {copied ? (
+                <Check className="w-3 h-3 text-green-500" />
+              ) : (
+                <Copy className="w-3 h-3 opacity-50" />
+              )}
             </button>
           </div>
 

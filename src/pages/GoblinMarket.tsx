@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { useState } from "react";
-import { Loader2, Bug, Flame, PieChart } from "lucide-react";
+import { Loader2, Bug, Flame, BarChart3 } from "lucide-react";
 import { useGoblinMarketData } from "@/hooks/useGoblinMarketData";
 import { SolanaWalletProvider } from "@/providers/WalletProvider";
 import { DashboardErrorBoundary } from "@/components/charts/DashboardErrorBoundary";
@@ -16,11 +16,16 @@ import { DexScreenerChart } from "@/components/market/DexScreenerChart";
 import { WalletConnect } from "@/components/market/WalletConnect";
 import { LiveViewersCounter } from "@/components/market/LiveViewersCounter";
 import BackToHome from "@/components/BackToHome";
+import Footer from "@/components/Footer";
 
 // Above-the-fold components - Load on mount
 import { LiveHolderTracker } from "@/components/market/LiveHolderTracker";
 
-const IS_DEV = import.meta.env.DEV;
+// Phase 1.1: Bulletproof dev detection - hostname check required
+const IS_DEV = import.meta.env.DEV && 
+  (typeof window !== 'undefined' && 
+   (window.location.hostname === 'localhost' || 
+    window.location.hostname === '127.0.0.1'));
 
 // Dev Debug Panel Component
 const DevDebugPanel = () => {
@@ -179,25 +184,25 @@ const GoblinMarketContent = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <div className="container mx-auto px-4 py-6">
         <div className="flex items-center justify-between">
           <BackToHome />
           <div className="flex items-center gap-4">
             <LiveViewersCounter />
+            {/* Phase 2.2: Improved Wallet Badge */}
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <div className="relative">
-                    <div className="absolute -top-1 -right-1 text-[10px] bg-muted text-muted-foreground px-1.5 py-0.5 rounded-full font-medium">
-                      Portfolio
-                    </div>
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border/50 bg-muted/30 hover:bg-muted/50 transition-colors cursor-pointer">
+                    <BarChart3 className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground hidden sm:inline">Portfolio</span>
                     <WalletConnect />
                   </div>
                 </TooltipTrigger>
-                <TooltipContent side="bottom" className="max-w-[200px] text-center">
-                  <p className="text-xs">Track your TRN holdings & tier. For trading, use the wallet inside the chart.</p>
+                <TooltipContent side="bottom" className="max-w-[220px] text-center">
+                  <p className="text-xs">Track your TRN holdings & tier. For trading, use the wallet inside the DexScreener chart.</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -206,7 +211,7 @@ const GoblinMarketContent = () => {
       </div>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 pb-20 space-y-6">
+      <main className="container mx-auto px-4 pb-20 space-y-6 flex-1">
         {/* Title Section */}
         <div className="text-center space-y-2">
           <h1 className="text-4xl lg:text-6xl font-bold font-display bg-gradient-to-r from-goblin-green via-goblin-gold to-terrain-purple bg-clip-text text-transparent">
@@ -232,6 +237,9 @@ const GoblinMarketContent = () => {
         </DashboardErrorBoundary>
 
       </main>
+
+      {/* Phase 2.1: Add Footer */}
+      <Footer />
     </div>
   );
 };

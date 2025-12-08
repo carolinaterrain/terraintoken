@@ -7,7 +7,7 @@ import BackToHome from "@/components/BackToHome";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ShoppingCart, Sparkles, Loader2 } from "lucide-react";
+import { ShoppingCart, Sparkles, Loader2, ShoppingBag, Bell, Package } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
@@ -29,6 +29,33 @@ const CATEGORY_IMAGE_TYPES: Record<string, string[]> = {
   'sticker-pack': ['sticker-pack-front', 'sticker-pack-lifestyle'],
   'bundle': ['collector-bundle-hero', 'collector-bundle-contents'],
 };
+
+// Phase 6.2: Enhanced Empty State Component
+const ShopEmptyState = ({ onViewAll }: { onViewAll: () => void }) => (
+  <div className="text-center py-20">
+    <div className="mb-6">
+      <div className="w-20 h-20 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
+        <Package className="w-10 h-10 text-primary" />
+      </div>
+      <h3 className="text-xl font-semibold text-foreground mb-2">Shop Opening Soon</h3>
+      <p className="text-muted-foreground max-w-md mx-auto">
+        Exclusive TRN collector items and merchandise are on the way. 
+        Check out our limited drops in the meantime!
+      </p>
+    </div>
+    <div className="flex gap-4 justify-center">
+      <Button variant="outline" onClick={onViewAll}>
+        View All Products
+      </Button>
+      <Link to="/drops">
+        <Button className="gap-2">
+          <Sparkles className="w-4 h-4" />
+          View Drops
+        </Button>
+      </Link>
+    </div>
+  </div>
+);
 
 const Shop = () => {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
@@ -213,12 +240,7 @@ const Shop = () => {
                 <Loader2 className="w-8 h-8 animate-spin text-primary" />
               </div>
             ) : filteredProducts.length === 0 ? (
-              <div className="text-center py-20">
-                <p className="text-muted-foreground mb-4">No products found in this category.</p>
-                <Button variant="outline" onClick={() => setActiveCategory("all")}>
-                  View All Products
-                </Button>
-              </div>
+              <ShopEmptyState onViewAll={() => setActiveCategory("all")} />
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {filteredProducts.map((product) => (

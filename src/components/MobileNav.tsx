@@ -31,15 +31,16 @@ const MobileNav = () => {
     action();
   };
 
+  // Phase 4.3: Added Invest to main nav, kept core 4 items + More
   const navItems = [
     { path: "/", label: "Home", icon: Home, onClick: handleHomeClick },
     { path: "/earn-trn", label: "Earn", icon: Gift },
-    { path: "/drops", label: "Drops", icon: Shirt },
     { path: "/market", label: "Market", icon: TrendingUp },
+    { path: "/investors", label: "Invest", icon: Briefcase },
   ];
 
   const moreItems = [
-    { path: "/investors", label: "Invest", icon: Briefcase },
+    { path: "/drops", label: "Drops", icon: Shirt },
     { path: "/team", label: "About", icon: Users },
     { path: "/philanthropic-fund", label: "Philanthropic Fund", icon: Heart },
     { path: "/whitepaper", label: "Whitepaper", icon: FileText },
@@ -68,7 +69,7 @@ const MobileNav = () => {
               size="sm"
               onClick={() => handleNavClick(item.onClick || (() => navigate(item.path)))}
               aria-label={`Navigate to ${item.label}`}
-              className={`flex flex-col items-center gap-1 h-auto py-3 px-3 min-h-[48px] min-w-[48px] transition-all ${
+              className={`flex flex-col items-center gap-1 h-auto py-3 px-3 min-h-[52px] min-w-[52px] transition-all touch-manipulation ${
                 isActive 
                   ? 'text-primary bg-primary/10' 
                   : 'text-muted-foreground hover:text-foreground'
@@ -87,7 +88,7 @@ const MobileNav = () => {
               variant="ghost"
               size="sm"
               aria-label="More options"
-              className={`flex flex-col items-center gap-1 h-auto py-3 px-3 min-h-[48px] min-w-[48px] transition-all ${
+              className={`flex flex-col items-center gap-1 h-auto py-3 px-3 min-h-[52px] min-w-[52px] transition-all touch-manipulation ${
                 isMoreActive 
                   ? 'text-primary bg-primary/10' 
                   : 'text-muted-foreground hover:text-foreground'
@@ -109,7 +110,7 @@ const MobileNav = () => {
                   <Button
                     key={item.path}
                     variant={isActive ? "default" : "outline"}
-                    className="h-auto py-4 flex flex-col items-center gap-2"
+                    className="h-auto py-4 flex flex-col items-center gap-2 min-h-[64px] touch-manipulation"
                     onClick={() => {
                       handleNavClick(() => navigate(item.path));
                       setOpen(false);
@@ -130,7 +131,7 @@ const MobileNav = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-xs text-muted-foreground"
+                className="text-xs text-muted-foreground min-h-[44px] touch-manipulation"
                 onClick={() => {
                   localStorage.removeItem('trn-onboarding-completed');
                   window.location.reload();
