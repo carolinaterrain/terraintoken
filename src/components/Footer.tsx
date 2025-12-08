@@ -1,14 +1,15 @@
 import { Users, Twitter, Shield, TrendingUp, ExternalLink, Sparkles, RotateCcw } from "lucide-react";
 import { Link } from "react-router-dom";
 import { GlassCard } from "@/components/ui/glass-card";
-import { useTokenSupply, formatSupply } from "@/hooks/useTokenSupply";
+import { useTokenData } from "@/providers/TokenDataProvider";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import { DataFreshnessBadge } from "@/components/ui/data-freshness-badge";
 import trnCoin from "@/assets/trn-coin.png";
 
 const Footer = () => {
   const contractAddress = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
-  const { data: supplyData, isLoading } = useTokenSupply();
+  const { supply, isLoading, dataSource, lastUpdated } = useTokenData();
 
   return (
     <footer className="border-t border-border/50 bg-terrain-dark">
@@ -22,9 +23,12 @@ const Footer = () => {
               <Skeleton className="h-5 w-20 mx-auto" />
             ) : (
               <>
-                <p className="font-display text-sm font-bold text-primary">
-                  {supplyData ? formatSupply(supplyData.totalSupply, supplyData.decimals) : '—'} TRN
-                </p>
+                <div className="flex items-center justify-center gap-1 mb-1">
+                  <p className="font-display text-sm font-bold text-primary">
+                    {supply?.formatted.total || '—'} TRN
+                  </p>
+                  <DataFreshnessBadge source={dataSource} className="scale-75" />
+                </div>
                 <a
                   href={`https://solscan.io/token/${contractAddress}`}
                   target="_blank"
@@ -43,9 +47,12 @@ const Footer = () => {
               <Skeleton className="h-5 w-20 mx-auto" />
             ) : (
               <>
-                <p className="font-display text-sm font-bold text-primary">
-                  {supplyData ? formatSupply(supplyData.circulatingSupply, supplyData.decimals) : '—'} TRN
-                </p>
+                <div className="flex items-center justify-center gap-1 mb-1">
+                  <p className="font-display text-sm font-bold text-primary">
+                    {supply?.formatted.circulating || '—'} TRN
+                  </p>
+                  <DataFreshnessBadge source={dataSource} className="scale-75" />
+                </div>
                 <a
                   href={`https://solscan.io/token/${contractAddress}#holders`}
                   target="_blank"

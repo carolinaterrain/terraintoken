@@ -1,45 +1,104 @@
-import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
+import { createContext, useContext, ReactNode, useState, useEffect, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { fetchTRNStats } from '@/lib/api';
 import { supabase } from '@/integrations/supabase/client';
 import { useSmartPolling } from '@/hooks/useSmartPolling';
 import { requestIdleCallback } from '@/lib/performanceUtils';
+import type { DataSource } from '@/components/ui/data-freshness-badge';
 
-interface TokenData {
-  stats: any;
-  supply: any;
-  holderCount: any;
-  isLoading: boolean;
-  dataSource: {
-    stats: 'live' | 'fallback';
-    supply: 'live' | 'fallback';
-    holders: 'live' | 'fallback';
+// Unified token data interface - single source of truth
+interface UnifiedTokenData {
+  // Supply data
+  totalSupply: number;
+  circulatingSupply: number;
+  decimals: number;
+  
+  // Holder data
+  holderCount: number;
+  holderTiers: {
+    shrimp: number;
+    crab: number;
+    fish: number;
+    dolphin: number;
+    shark: number;
+    whale: number;
+    humpback: number;
   };
+  top10Percentage: number;
+  
+  // Market data
+  priceUsd: string;
+  priceSol: string;
+  priceChange24h: number;
+  marketCap: number;
+  volume24h: number;
+  liquidity: number;
+  
+  // Meta
+  lastUpdated: string;
+  source: DataSource;
+  cacheAge?: number;
+}
+
+// Context value interface
+interface TokenDataContextValue {
+  // Raw unified data
+  data: UnifiedTokenData | null;
+  isLoading: boolean;
+  error: Error | null;
+  
+  // Formatted convenience getters
+  stats: {
+    marketCap: string;
+    priceUsd: string;
+    priceSol: string;
+    change24h: number;
+    volume24h: string;
+    liquidity: string;
+  } | null;
+  
+  supply: {
+    totalSupply: number;
+    circulatingSupply: number;
+    decimals: number;
+    formatted: {
+      total: string;
+      circulating: string;
+    };
+  } | null;
+  
+  holderCount: {
+    holderCount: number;
+    tiers: UnifiedTokenData['holderTiers'];
+    top10Percentage: number;
+  } | null;
+  
+  // Data source indicators
+  dataSource: DataSource;
+  lastUpdated: string | null;
+  
+  // Refresh function
+  refetch: () => void;
 }
 
 // Fallback data for immediate render
-const FALLBACK_STATS = {
-  price: "$--",
-  priceChange24h: "--",
-  volume24h: "$--",
-  marketCap: "$--",
-};
-
-const FALLBACK_SUPPLY = {
-  totalSupply: 1006699550,
-  circulatingSupply: 550000000,
-  decimals: 2,
-  lastUpdated: new Date().toISOString(),
-  isStale: true,
-};
-
-const FALLBACK_HOLDER_COUNT = {
+const FALLBACK_DATA: UnifiedTokenData = {
+  totalSupply: 1000000000000000,
+  circulatingSupply: 550000000000000,
+  decimals: 6,
   holderCount: 0,
+  holderTiers: { shrimp: 0, crab: 0, fish: 0, dolphin: 0, shark: 0, whale: 0, humpback: 0 },
+  top10Percentage: 0,
+  priceUsd: "0",
+  priceSol: "0",
+  priceChange24h: 0,
+  marketCap: 0,
+  volume24h: 0,
+  liquidity: 0,
   lastUpdated: new Date().toISOString(),
-  source: 'fallback'
+  source: 'fallback',
 };
 
-const TokenDataContext = createContext<TokenData | null>(null);
+const TokenDataContext = createContext<TokenDataContextValue | null>(null);
 
 export const useTokenData = () => {
   const context = useContext(TokenDataContext);
@@ -48,6 +107,29 @@ export const useTokenData = () => {
   }
   return context;
 };
+
+// Format number with appropriate suffix
+function formatNumber(num: number): string {
+  if (num >= 1e9) return `$${(num / 1e9).toFixed(2)}B`;
+  if (num >= 1e6) return `$${(num / 1e6).toFixed(2)}M`;
+  if (num >= 1e3) return `$${(num / 1e3).toFixed(2)}K`;
+  return `$${num.toFixed(2)}`;
+}
+
+// Format supply with decimals
+function formatSupplyValue(supply: number, decimals: number): string {
+  const value = supply / Math.pow(10, decimals);
+  
+  if (value >= 1_000_000_000) {
+    return `${(value / 1_000_000_000).toFixed(2)}B`;
+  } else if (value >= 1_000_000) {
+    return `${(value / 1_000_000).toFixed(2)}M`;
+  } else if (value >= 1_000) {
+    return `${(value / 1_000).toFixed(2)}K`;
+  }
+  
+  return value.toLocaleString();
+}
 
 export const TokenDataProvider = ({ children }: { children: ReactNode }) => {
   // Defer data fetching until page is interactive
@@ -64,67 +146,77 @@ export const TokenDataProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
-  const statsPolling = useSmartPolling(60000);
-  const supplyPolling = useSmartPolling(300000);
-  const holderPolling = useSmartPolling(120000);
+  // Smart polling - 60 seconds for market data
+  const pollingInterval = useSmartPolling(60000);
 
-  // Fetch token stats - deferred
-  const { data: stats, isLoading: statsLoading } = useQuery({
-    queryKey: ['token-stats'],
-    queryFn: fetchTRNStats,
+  // Single unified query for all token data
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ['unified-token-data'],
+    queryFn: async (): Promise<UnifiedTokenData> => {
+      const { data, error } = await supabase.functions.invoke('fetch-unified-token-data');
+      
+      if (error) {
+        console.error('Error fetching unified token data:', error);
+        throw error;
+      }
+      
+      return data as UnifiedTokenData;
+    },
     enabled,
-    refetchInterval: enabled ? statsPolling : false,
+    refetchInterval: enabled ? pollingInterval : false,
     staleTime: 55000,
     gcTime: 600000,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     retry: 2,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
 
-  // Fetch token supply - deferred
-  const { data: supply, isLoading: supplyLoading } = useQuery({
-    queryKey: ['token-supply'],
-    queryFn: async () => {
-      const { data, error } = await supabase.functions.invoke('fetch-token-supply');
-      if (error) {
-        console.error('Error fetching token supply:', error);
-        return FALLBACK_SUPPLY;
-      }
-      return data;
-    },
-    enabled,
-    refetchInterval: enabled ? supplyPolling : false,
-    staleTime: 240000,
-  });
+  // Use fetched data or fallback
+  const tokenData = data || FALLBACK_DATA;
 
-  // Fetch holder count - deferred
-  const { data: holderCount, isLoading: holderLoading } = useQuery({
-    queryKey: ['live-holder-count'],
-    queryFn: async () => {
-      const { data, error } = await supabase.functions.invoke('fetch-trn-holders');
-      if (error) {
-        console.error('Error fetching holder count:', error);
-        return FALLBACK_HOLDER_COUNT;
-      }
-      return data;
+  // Memoized formatted values
+  const value = useMemo<TokenDataContextValue>(() => ({
+    // Raw data
+    data: tokenData,
+    isLoading: enabled && isLoading,
+    error: error as Error | null,
+    
+    // Formatted stats
+    stats: {
+      marketCap: formatNumber(tokenData.marketCap),
+      priceUsd: tokenData.priceUsd,
+      priceSol: tokenData.priceSol,
+      change24h: tokenData.priceChange24h,
+      volume24h: formatNumber(tokenData.volume24h),
+      liquidity: formatNumber(tokenData.liquidity),
     },
-    enabled,
-    refetchInterval: enabled ? holderPolling : false,
-    staleTime: 100000,
-  });
-
-  // Provide fallback data immediately, then swap to live data when available
-  const value: TokenData = {
-    stats: stats || FALLBACK_STATS,
-    supply: supply || FALLBACK_SUPPLY,
-    holderCount: holderCount || FALLBACK_HOLDER_COUNT,
-    isLoading: enabled && (statsLoading || supplyLoading || holderLoading),
-    dataSource: {
-      stats: stats?.marketCap !== "$--" ? 'live' : 'fallback',
-      supply: supply?.isStale ? 'fallback' : 'live',
-      holders: holderCount?.source === 'helius' ? 'live' : 'fallback',
+    
+    // Formatted supply
+    supply: {
+      totalSupply: tokenData.totalSupply,
+      circulatingSupply: tokenData.circulatingSupply,
+      decimals: tokenData.decimals,
+      formatted: {
+        total: formatSupplyValue(tokenData.totalSupply, tokenData.decimals),
+        circulating: formatSupplyValue(tokenData.circulatingSupply, tokenData.decimals),
+      },
     },
-  };
+    
+    // Holder data
+    holderCount: {
+      holderCount: tokenData.holderCount,
+      tiers: tokenData.holderTiers,
+      top10Percentage: tokenData.top10Percentage,
+    },
+    
+    // Data source
+    dataSource: tokenData.source,
+    lastUpdated: tokenData.lastUpdated,
+    
+    // Refresh function
+    refetch,
+  }), [tokenData, enabled, isLoading, error, refetch]);
 
   return (
     <TokenDataContext.Provider value={value}>
@@ -132,3 +224,6 @@ export const TokenDataProvider = ({ children }: { children: ReactNode }) => {
     </TokenDataContext.Provider>
   );
 };
+
+// Re-export the formatSupplyValue for components that need it
+export { formatSupplyValue as formatSupply };

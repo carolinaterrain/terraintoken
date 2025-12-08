@@ -1,21 +1,20 @@
 import { Users, TrendingUp, Clock } from "lucide-react";
-import { useLiveHolderCount } from "@/hooks/useLiveHolderCount";
+import { useTokenData } from "@/providers/TokenDataProvider";
 import { Skeleton } from "@/components/ui/skeleton";
-import { DataBadge } from "./DataBadge";
+import { DataFreshnessBadge } from "@/components/ui/data-freshness-badge";
 import { formatDistanceToNow } from "date-fns";
 
 export const LiveHolderTracker = () => {
-  const { data, isLoading } = useLiveHolderCount();
+  const { holderCount, isLoading, dataSource, lastUpdated } = useTokenData();
 
   if (isLoading) {
     return <Skeleton className="h-24 rounded-xl" />;
   }
 
-  const holderCount = data?.holderCount || data?.totalHolders || 0;
+  const count = holderCount?.holderCount || 0;
   const target = 5000;
-  const progress = (holderCount / target) * 100;
-  const source = data?.source || 'unknown';
-  const lastUpdated = data?.lastUpdated ? new Date(data.lastUpdated) : null;
+  const progress = (count / target) * 100;
+  const formattedTime = lastUpdated ? new Date(lastUpdated) : null;
 
   return (
     <div className="bg-gradient-to-br from-terrain-dark via-terrain-shadow to-terrain-deep border-2 border-goblin-green/60 rounded-xl p-6 shadow-[0_0_20px_rgba(34,197,94,0.2)]">
@@ -27,9 +26,9 @@ export const LiveHolderTracker = () => {
           <div>
             <div className="flex items-center gap-2">
               <h3 className="text-sm text-muted-foreground">Live Holder Count</h3>
-              <DataBadge type={source === 'cache' ? 'cached' : 'live'} className="scale-75" />
+              <DataFreshnessBadge source={dataSource} className="scale-75" />
             </div>
-            <p className="text-3xl font-bold text-goblin-green">{holderCount.toLocaleString()}</p>
+            <p className="text-3xl font-bold text-goblin-green">{count.toLocaleString()}</p>
           </div>
         </div>
         <div className="flex items-center gap-1 text-goblin-green animate-pulse">
@@ -55,8 +54,8 @@ export const LiveHolderTracker = () => {
       <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground mt-3">
         <Clock className="w-3 h-3" />
         <span>
-          {lastUpdated 
-            ? `Updated ${formatDistanceToNow(lastUpdated, { addSuffix: true })}` 
+          {formattedTime 
+            ? `Updated ${formatDistanceToNow(formattedTime, { addSuffix: true })}` 
             : 'Updated via Helius API'}
         </span>
       </div>

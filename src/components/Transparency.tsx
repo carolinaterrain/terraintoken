@@ -3,12 +3,13 @@ import { Shield, CheckCircle, Lock, TrendingUp, Copy, ExternalLink, AlertCircle,
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { useTokenSupply, formatSupply } from "@/hooks/useTokenSupply";
+import { useTokenData } from "@/providers/TokenDataProvider";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DataFreshnessBadge } from "@/components/ui/data-freshness-badge";
 
 const Transparency = () => {
   const { toast } = useToast();
-  const { data: supplyData, isLoading } = useTokenSupply();
+  const { supply, isLoading, dataSource, lastUpdated } = useTokenData();
   const contractAddress = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 
   const copyToClipboard = async (text: string, label: string) => {
@@ -36,7 +37,6 @@ const Transparency = () => {
       link: `https://solscan.io/token/${contractAddress}`,
       copyable: true,
     },
-    // Total supply now comes from live data - removed from static array
     {
       icon: CheckCircle,
       label: "Dev Holdings",
@@ -52,8 +52,6 @@ const Transparency = () => {
       copyable: false,
     },
   ];
-
-  // Removed static holder distribution - use live data from holder snapshots instead
 
   return (
     <section id="transparency" className="py-16 px-4 relative overflow-hidden">
@@ -89,18 +87,21 @@ const Transparency = () => {
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <TrendingUp className="w-6 h-6 text-primary" />
               </div>
-              <h3 className="font-display text-sm font-semibold text-muted-foreground mb-2">
-                Total Supply (Live)
-              </h3>
+              <div className="flex items-center gap-1 mb-2">
+                <h3 className="font-display text-sm font-semibold text-muted-foreground">
+                  Total Supply
+                </h3>
+                <DataFreshnessBadge source={dataSource} />
+              </div>
               {isLoading ? (
                 <Skeleton className="h-7 w-32 mb-2" />
               ) : (
                 <>
                   <div className="flex items-center gap-2 mb-2">
                     <p className="font-display text-lg font-bold text-primary">
-                      {supplyData ? formatSupply(supplyData.totalSupply, supplyData.decimals) : '—'} TRN
+                      {supply?.formatted.total || '—'} TRN
                     </p>
-                    {supplyData?.isStale && (
+                    {dataSource === 'fallback' && (
                       <AlertCircle className="w-4 h-4 text-yellow-500" />
                     )}
                   </div>
@@ -118,9 +119,9 @@ const Transparency = () => {
                       <ExternalLink className="w-3 h-3" />
                     </a>
                   </Button>
-                  {supplyData && (
+                  {lastUpdated && (
                     <p className="text-[10px] text-muted-foreground mt-2">
-                      Updated: {new Date(supplyData.lastUpdated).toLocaleTimeString()}
+                      Updated: {new Date(lastUpdated).toLocaleTimeString()}
                     </p>
                   )}
                 </>

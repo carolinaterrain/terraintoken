@@ -1,10 +1,11 @@
 import { GlassCard } from "@/components/ui/glass-card";
 import { Progress } from "@/components/ui/progress";
-import { Lock, Users, Gift, Coins, TrendingUp, PieChart, CheckCircle } from "lucide-react";
+import { Lock, Users, CheckCircle } from "lucide-react";
 import { useState, memo } from "react";
 import { calculatePieSlice } from "@/lib/chartUtils";
-import { useTokenSupply, formatSupply } from "@/hooks/useTokenSupply";
+import { useTokenData } from "@/providers/TokenDataProvider";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DataFreshnessBadge } from "@/components/ui/data-freshness-badge";
 
 interface TokenAllocation {
   name: string;
@@ -47,9 +48,9 @@ const allocationTemplates: TokenAllocation[] = [
 
 const TokenomicsDashboard = memo(() => {
   const [hoveredSlice, setHoveredSlice] = useState<number | null>(null);
-  const { data: supplyData, isLoading } = useTokenSupply();
+  const { supply, isLoading, dataSource } = useTokenData();
   
-  const totalSupply = supplyData ? supplyData.totalSupply / Math.pow(10, supplyData.decimals) : 0;
+  const totalSupply = supply ? supply.totalSupply / Math.pow(10, supply.decimals) : 0;
   const allocations = allocationTemplates.map(alloc => ({
     ...alloc,
     amount: totalSupply > 0 ? Math.floor((totalSupply * alloc.percentage) / 100).toLocaleString() : "—"
@@ -76,9 +77,12 @@ const TokenomicsDashboard = memo(() => {
     <div className="space-y-8">
       {/* Interactive Pie Chart */}
       <GlassCard className="p-8">
-        <h3 className="font-display text-2xl font-bold mb-6 text-center">
-          Token Distribution
-        </h3>
+        <div className="flex items-center justify-center gap-2 mb-6">
+          <h3 className="font-display text-2xl font-bold text-center">
+            Token Distribution
+          </h3>
+          <DataFreshnessBadge source={dataSource} />
+        </div>
         
         <div className="flex flex-col md:flex-row items-center justify-center gap-12">
           {/* Pie Chart */}
@@ -94,10 +98,10 @@ const TokenomicsDashboard = memo(() => {
               <title>Token Distribution</title>
               <desc>
                 Pie chart displaying TRN token allocation across four categories:
-                50% allocated to DEX Liquidity (5.2M tokens),
-                25% to Treasury (2.6M tokens),
-                15% to Community Rewards (1.5M tokens),
-                and 10% to Team with vesting (1M tokens).
+                50% allocated to DEX Liquidity,
+                25% to Treasury,
+                15% to Community Rewards,
+                and 10% to Team with vesting.
               </desc>
               <circle
                 cx="140"
@@ -138,7 +142,7 @@ const TokenomicsDashboard = memo(() => {
               <p className="font-display text-3xl font-bold text-primary">
                 {hoveredSlice !== null 
                   ? `${allocations[hoveredSlice].percentage}%` 
-                  : supplyData ? formatSupply(supplyData.totalSupply, supplyData.decimals) : "—"}
+                  : supply?.formatted.total || "—"}
               </p>
               <p className="text-sm text-muted-foreground">
                 {hoveredSlice !== null ? allocations[hoveredSlice].name : "Total Supply"}
@@ -253,17 +257,19 @@ const TokenomicsDashboard = memo(() => {
       {/* Supply Stats */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         <GlassCard className="p-6 text-center">
-          <Coins className="w-8 h-8 text-primary mx-auto mb-3" />
-          <p className="text-2xl font-bold text-primary mb-1">
-            {supplyData ? formatSupply(supplyData.totalSupply, supplyData.decimals) : "—"}
-          </p>
+          <div className="flex items-center justify-center gap-1 mb-3">
+            <p className="text-2xl font-bold text-primary">
+              {supply?.formatted.total || "—"}
+            </p>
+          </div>
           <p className="text-xs text-muted-foreground">Total Supply</p>
         </GlassCard>
         <GlassCard className="p-6 text-center">
-          <TrendingUp className="w-8 h-8 text-primary mx-auto mb-3" />
-          <p className="text-2xl font-bold text-primary mb-1">
-            {supplyData ? formatSupply(supplyData.circulatingSupply, supplyData.decimals) : "—"}
-          </p>
+          <div className="flex items-center justify-center gap-1 mb-3">
+            <p className="text-2xl font-bold text-primary">
+              {supply?.formatted.circulating || "—"}
+            </p>
+          </div>
           <p className="text-xs text-muted-foreground">Circulating Supply</p>
         </GlassCard>
         <GlassCard className="p-6 text-center">
