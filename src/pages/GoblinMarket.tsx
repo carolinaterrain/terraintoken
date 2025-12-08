@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { useState } from "react";
-import { Loader2, Bug, Flame } from "lucide-react";
+import { Loader2, Bug, Flame, PieChart } from "lucide-react";
 import { useGoblinMarketData } from "@/hooks/useGoblinMarketData";
 import { SolanaWalletProvider } from "@/providers/WalletProvider";
 import { DashboardErrorBoundary } from "@/components/charts/DashboardErrorBoundary";
@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { burnTRN, getTotalBurned } from "@/lib/carolinaTerrainSync";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 // Critical components - Load immediately
 import { DexScreenerChart } from "@/components/market/DexScreenerChart";
@@ -185,7 +186,21 @@ const GoblinMarketContent = () => {
           <BackToHome />
           <div className="flex items-center gap-4">
             <LiveViewersCounter />
-            <WalletConnect />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="relative">
+                    <div className="absolute -top-1 -right-1 text-[10px] bg-muted text-muted-foreground px-1.5 py-0.5 rounded-full font-medium">
+                      Portfolio
+                    </div>
+                    <WalletConnect />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="max-w-[200px] text-center">
+                  <p className="text-xs">Track your TRN holdings & tier. For trading, use the wallet inside the chart.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
       </div>
