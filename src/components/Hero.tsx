@@ -7,6 +7,7 @@ import ContractVerificationBadge from "./ContractVerificationBadge";
 import { useTokenData } from "@/providers/TokenDataProvider";
 import { WaitlistModal } from "./WaitlistModal";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SocialProofBadge } from "./SocialProofBadge";
 
 // Use public folder paths directly for LCP optimization - these match index.html preloads
 const terrainMascot = "/terrain-mascot.png";
@@ -238,15 +239,18 @@ const Hero = memo(() => {
                 Start Earning TRN
               </Link>
             </Button>
-            <Button
-              variant="secondary"
-              size="lg"
-              className="font-display font-semibold w-full md:w-64"
-              onClick={() => setWaitlistOpen(true)}
-            >
-              <Sparkles className="mr-2 h-5 w-5" />
-              Join Waitlist
-            </Button>
+            <div className="flex flex-col gap-1.5">
+              <Button
+                variant="secondary"
+                size="lg"
+                className="font-display font-semibold w-full md:w-64"
+                onClick={() => setWaitlistOpen(true)}
+              >
+                <Sparkles className="mr-2 h-5 w-5" />
+                Join Waitlist
+              </Button>
+              <SocialProofBadge variant="inline" className="text-center" />
+            </div>
             <Button
               variant="outline"
               size="lg"
