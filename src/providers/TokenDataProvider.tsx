@@ -108,8 +108,11 @@ export const useTokenData = () => {
   return context;
 };
 
-// Format number with appropriate suffix
-function formatNumber(num: number): string {
+// Format number with appropriate suffix - with null safety
+function formatNumber(num: number | undefined | null): string {
+  if (num === undefined || num === null || isNaN(num)) {
+    return '$0.00';
+  }
   if (num >= 1e9) return `$${(num / 1e9).toFixed(2)}B`;
   if (num >= 1e6) return `$${(num / 1e6).toFixed(2)}M`;
   if (num >= 1e3) return `$${(num / 1e3).toFixed(2)}K`;
@@ -182,14 +185,14 @@ export const TokenDataProvider = ({ children }: { children: ReactNode }) => {
     isLoading: enabled && isLoading,
     error: error as Error | null,
     
-    // Formatted stats
+    // Formatted stats with null safety
     stats: {
-      marketCap: formatNumber(tokenData.marketCap),
-      priceUsd: tokenData.priceUsd,
-      priceSol: tokenData.priceSol,
-      change24h: tokenData.priceChange24h,
-      volume24h: formatNumber(tokenData.volume24h),
-      liquidity: formatNumber(tokenData.liquidity),
+      marketCap: formatNumber(tokenData?.marketCap),
+      priceUsd: tokenData?.priceUsd ?? "0",
+      priceSol: tokenData?.priceSol ?? "0",
+      change24h: tokenData?.priceChange24h ?? 0,
+      volume24h: formatNumber(tokenData?.volume24h),
+      liquidity: formatNumber(tokenData?.liquidity),
     },
     
     // Formatted supply
