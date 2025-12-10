@@ -16,6 +16,7 @@ import SmartHeader from "@/components/SmartHeader";
 import ScrollProgress from "@/components/ScrollProgress";
 import SkipToContent from "@/components/SkipToContent";
 import Footer from "@/components/Footer";
+import { SocialShareButtons } from "@/components/SocialShareButtons";
 
 const Investors = () => {
   return (
@@ -95,6 +96,19 @@ const Investors = () => {
 
         {/* 10. Investor Interest Form */}
         <InvestorInterestForm />
+
+        {/* Social Share Section */}
+        <section className="py-8 px-4">
+          <div className="container mx-auto max-w-4xl text-center">
+            <p className="text-muted-foreground mb-4">Know someone who should see this?</p>
+            <div className="flex justify-center">
+              <SocialShareButtons 
+                title="TRN - The Data-Compute-Energy Nexus of Web3"
+                description="First ground-truth oracle for the physical world. Real terrain data powering AI, compute, and climate infrastructure."
+              />
+            </div>
+          </div>
+        </section>
 
         {/* Compliance Footer */}
         <section className="py-12 px-4 bg-muted/30">
