@@ -3,11 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Gift } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { WaitlistModal } from './WaitlistModal';
+import { useFeatureAnalytics } from '@/hooks/useFeatureAnalytics';
 
 export const ExitIntentModal = () => {
   const [showExitIntent, setShowExitIntent] = useState(false);
   const [showWaitlist, setShowWaitlist] = useState(false);
   const [hasTriggered, setHasTriggered] = useState(false);
+  const { trackButtonClick } = useFeatureAnalytics();
 
   const handleMouseLeave = useCallback((e: MouseEvent) => {
     // Only trigger when mouse leaves from top of viewport (exit intent)
@@ -18,8 +20,9 @@ export const ExitIntentModal = () => {
       setShowExitIntent(true);
       setHasTriggered(true);
       sessionStorage.setItem('exit-intent-shown', 'true');
+      trackButtonClick('exit_intent_shown', 'exit_intent');
     }
-  }, [hasTriggered]);
+  }, [hasTriggered, trackButtonClick]);
 
   useEffect(() => {
     // Only enable on desktop
@@ -44,9 +47,11 @@ export const ExitIntentModal = () => {
 
   const handleClose = () => {
     setShowExitIntent(false);
+    trackButtonClick('exit_intent_dismiss', 'exit_intent');
   };
 
   const handleJoinWaitlist = () => {
+    trackButtonClick('exit_intent_claim', 'exit_intent');
     setShowExitIntent(false);
     setShowWaitlist(true);
   };
