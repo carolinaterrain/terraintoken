@@ -2956,6 +2956,17 @@ export type Database = {
           total_trn_earned: number
         }[]
       }
+      get_purchase_summary: {
+        Args: { p_wallet: string }
+        Returns: {
+          certificate_id: string
+          created_at: string
+          drop_id: string
+          id: string
+          nft_transfer_status: string
+          order_status: string
+        }[]
+      }
       get_referral_stats: {
         Args: never
         Returns: {

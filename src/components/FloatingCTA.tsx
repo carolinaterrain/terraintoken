@@ -3,11 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { WaitlistModal } from './WaitlistModal';
+import { useFeatureAnalytics } from '@/hooks/useFeatureAnalytics';
 
 export const FloatingCTA = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
   const [showWaitlist, setShowWaitlist] = useState(false);
+  const { trackButtonClick } = useFeatureAnalytics();
 
   useEffect(() => {
     // Check if already dismissed this session
@@ -28,6 +30,12 @@ export const FloatingCTA = () => {
   const handleDismiss = () => {
     setIsDismissed(true);
     sessionStorage.setItem('floating-cta-dismissed', 'true');
+    trackButtonClick('floating_cta_dismiss', 'floating_cta');
+  };
+
+  const handleJoinClick = () => {
+    trackButtonClick('floating_cta_join', 'floating_cta');
+    setShowWaitlist(true);
   };
 
   if (isDismissed) return null;
@@ -68,7 +76,7 @@ export const FloatingCTA = () => {
                 </div>
                 <Button
                   size="sm"
-                  onClick={() => setShowWaitlist(true)}
+                  onClick={handleJoinClick}
                   className="flex-shrink-0 bg-gradient-to-r from-goblin-green to-goblin-gold hover:opacity-90 text-black font-semibold"
                 >
                   Join Now
