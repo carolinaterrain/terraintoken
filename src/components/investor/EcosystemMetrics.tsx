@@ -15,25 +15,22 @@ export const EcosystemMetrics = () => {
   const businessMetrics = calculateMetrics();
   const equipmentValue = 172591.78;
 
-  const { data: communityCount } = useQuery({
-    queryKey: ['community-count'],
+  // Fetch contribution stats from edge function (has service role access)
+  const { data: contributionStats } = useQuery({
+    queryKey: ['contribution-stats'],
     queryFn: async () => {
-      const { count } = await supabase
-        .from('project_media')
-        .select('user_wallet_address', { count: 'exact', head: true });
-      return count || 0;
+      const { data, error } = await supabase.functions.invoke('get-contribution-stats');
+      if (error) {
+        console.error('Error fetching contribution stats:', error);
+        return { contributors: 0, photos: 0 };
+      }
+      return data as { contributors: number; photos: number; trn_distributed: number };
     },
+    staleTime: 60000, // Cache for 1 minute
   });
 
-  const { data: analysisCount } = useQuery({
-    queryKey: ['analysis-count'],
-    queryFn: async () => {
-      const { count } = await supabase
-        .from('tool_usage_proofs')
-        .select('*', { count: 'exact', head: true });
-      return count || 0;
-    },
-  });
+  const communityCount = contributionStats?.contributors || 0;
+  const analysisCount = contributionStats?.photos || 0;
 
   const metricSections = [
     {
