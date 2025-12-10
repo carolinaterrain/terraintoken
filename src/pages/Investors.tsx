@@ -4,6 +4,7 @@ import { ValueGeneration } from "@/components/investor/ValueGeneration";
 import { InvestmentTiers } from "@/components/investor/InvestmentTiers";
 import { ProofSection } from "@/components/investor/ProofSection";
 import { InvestorCTA } from "@/components/investor/InvestorCTA";
+import { InvestorInterestForm } from "@/components/investor/InvestorInterestForm";
 import { StickyNavigation } from "@/components/investor/StickyNavigation";
 import { EarlyStageDisclaimer } from "@/components/investor/EarlyStageDisclaimer";
 import { ProtocolComparison } from "@/components/investor/ProtocolComparison";
@@ -14,6 +15,7 @@ import { Helmet } from "react-helmet-async";
 import SmartHeader from "@/components/SmartHeader";
 import ScrollProgress from "@/components/ScrollProgress";
 import SkipToContent from "@/components/SkipToContent";
+import Footer from "@/components/Footer";
 
 const Investors = () => {
   return (
@@ -91,6 +93,9 @@ const Investors = () => {
           <InvestorCTA />
         </section>
 
+        {/* 10. Investor Interest Form */}
+        <InvestorInterestForm />
+
         {/* Compliance Footer */}
         <section className="py-12 px-4 bg-muted/30">
           <div className="container mx-auto max-w-4xl">
@@ -107,6 +112,8 @@ const Investors = () => {
           </div>
         </section>
       </main>
+
+      <Footer />
     </>
   );
 };

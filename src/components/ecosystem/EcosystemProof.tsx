@@ -89,7 +89,7 @@ export const EcosystemProof = () => {
         <div className="text-center">
           <Button 
             size="lg" 
-            onClick={() => navigate('/upload')}
+            onClick={() => navigate('/upload-project')}
             className="group"
           >
             Join Them & Earn TRN

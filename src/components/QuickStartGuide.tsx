@@ -158,8 +158,8 @@ export const QuickStartGuide = () => {
             variant="outline"
             className="gap-2 min-w-[200px]"
             onClick={() => {
-              const aboutSection = document.getElementById('main-content');
-              aboutSection?.scrollIntoView({ behavior: 'smooth' });
+              const realUtility = document.getElementById('real-utility');
+              realUtility?.scrollIntoView({ behavior: 'smooth' });
             }}
           >
             Learn More

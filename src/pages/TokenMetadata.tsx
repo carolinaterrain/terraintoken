@@ -55,7 +55,7 @@ const TokenMetadata = () => {
   const socialLinks = [
     { label: "Website", url: "https://terrainvision-ai.com/" },
     { label: "Twitter/X", url: "https://x.com/carolinaterrain" },
-    { label: "Discord", url: "https://discord.gg/BmUmr2Kx" },
+    { label: "Discord", url: "https://discord.gg/rM8b6V5Ce" },
     { label: "Whitepaper", url: "https://terrainvision-ai.com/whitepaper" }
   ];
 

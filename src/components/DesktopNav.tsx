@@ -178,7 +178,7 @@ const DesktopNav = () => {
             </Button>
             <Button variant="outline" size="icon" asChild>
               <a
-                href="https://discord.gg/BmUmr2Kx"
+                href="https://discord.gg/rM8b6V5Ce"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Join Terrain Token Discord community"

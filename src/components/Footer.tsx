@@ -117,7 +117,7 @@ const Footer = () => {
           {/* Right: Social Icons */}
           <div className="flex items-center gap-4">
             <a
-              href="https://discord.gg/BmUmr2Kx"
+              href="https://discord.gg/rM8b6V5Ce"
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
