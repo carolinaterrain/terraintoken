@@ -1,8 +1,12 @@
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronRight, Sparkles, Shield, Coins, BarChart3 } from 'lucide-react';
+import { X, ChevronRight, Sparkles, Shield, Coins, BarChart3, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import { Input } from '@/components/ui/input';
 import { useOnboarding } from '@/hooks/useOnboarding';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 import confetti from 'canvas-confetti';
 
 const steps = [
@@ -49,13 +53,64 @@ export const OnboardingModal = () => {
     skipOnboarding,
     totalSteps,
   } = useOnboarding();
+  
+  const { toast } = useToast();
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isLastStep = currentStep >= totalSteps - 1;
   const step = steps[Math.min(currentStep, steps.length - 1)];
   const StepIcon = step.icon;
 
-  const handleNext = () => {
+  const handleEmailCapture = async () => {
+    if (!email.trim()) {
+      // Allow skipping email
+      return true;
+    }
+    
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast({
+        title: 'Invalid email',
+        description: 'Please enter a valid email address',
+        variant: 'destructive',
+      });
+      return false;
+    }
+    
+    setIsSubmitting(true);
+    try {
+      // Generate a unique referral code
+      const referralCode = `TRN-${Date.now().toString(36).toUpperCase()}`;
+      
+      const { error } = await supabase
+        .from('terrainscape_waitlist')
+        .upsert(
+          { 
+            email: email.toLowerCase().trim(), 
+            signup_source: 'onboarding',
+            referral_code: referralCode,
+          },
+          { onConflict: 'email', ignoreDuplicates: true }
+        );
+      
+      if (error) throw error;
+      return true;
+    } catch (error) {
+      console.error('Error saving email:', error);
+      // Don't block completion on error
+      return true;
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleNext = async () => {
     if (isLastStep) {
+      const success = await handleEmailCapture();
+      if (!success) return;
+      
       confetti({
         particleCount: 100,
         spread: 70,
@@ -133,6 +188,26 @@ export const OnboardingModal = () => {
                   ✨ {step.highlight}
                 </span>
               </div>
+
+              {/* Email capture on last step */}
+              {isLastStep && (
+                <div className="mt-6">
+                  <label className="block text-sm font-medium text-muted-foreground mb-2">
+                    Get notified about TRN updates (optional)
+                  </label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      type="email"
+                      placeholder="your@email.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="pl-10"
+                      disabled={isSubmitting}
+                    />
+                  </div>
+                </div>
+              )}
             </motion.div>
           </AnimatePresence>
 
@@ -147,9 +222,10 @@ export const OnboardingModal = () => {
 
             <Button
               onClick={handleNext}
+              disabled={isSubmitting}
               className="bg-gradient-to-r from-goblin-green to-goblin-gold hover:opacity-90 text-black font-semibold"
             >
-              {isLastStep ? "Let's Go!" : 'Next'}
+              {isSubmitting ? 'Saving...' : isLastStep ? "Let's Go!" : 'Next'}
               {!isLastStep && <ChevronRight className="w-4 h-4 ml-1" />}
             </Button>
           </div>

@@ -11,6 +11,8 @@ const SmartHeader = lazy(() => import("@/components/SmartHeader"));
 const Hero = lazy(() => import("@/components/Hero"));
 const ResearchModeContent = lazy(() => import("@/components/ResearchModeContent").then(m => ({ default: m.ResearchModeContent })));
 const OnboardingModal = lazy(() => import("@/components/onboarding/OnboardingModal").then(m => ({ default: m.OnboardingModal })));
+const FloatingCTA = lazy(() => import("@/components/FloatingCTA").then(m => ({ default: m.FloatingCTA })));
+const ExitIntentModal = lazy(() => import("@/components/ExitIntentModal").then(m => ({ default: m.ExitIntentModal })));
 
 // Lightweight skeleton for hero section
 const HeroSkeleton = () => (
@@ -90,6 +92,14 @@ const Index = () => {
 
       <Suspense fallback={null}>
         <OnboardingModal />
+      </Suspense>
+      
+      <Suspense fallback={null}>
+        <FloatingCTA />
+      </Suspense>
+      
+      <Suspense fallback={null}>
+        <ExitIntentModal />
       </Suspense>
     </>
   );
