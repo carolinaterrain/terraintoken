@@ -12,7 +12,7 @@ export const NewsletterSignup = () => {
       </p>
       <div className="flex justify-center">
         <Button size="lg" asChild>
-          <a href="https://discord.gg/BmUmr2Kx" target="_blank" rel="noopener noreferrer">
+          <a href="https://discord.gg/rM8b6V5Ce" target="_blank" rel="noopener noreferrer">
             Join Discord 💬
           </a>
         </Button>

@@ -265,7 +265,7 @@ const Hero = memo(() => {
             </p>
             <div className="flex gap-3">
               <a 
-                href="https://discord.gg/BmUmr2Kx" 
+                href="https://discord.gg/rM8b6V5Ce" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-xs text-primary hover:underline"

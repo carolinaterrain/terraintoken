@@ -185,7 +185,7 @@ const RiskDisclosure = () => {
               <a href="/whitepaper" className="text-primary hover:underline font-medium">
                 📄 Whitepaper
               </a>
-              <a href="https://discord.gg/BmUmr2Kx" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
+              <a href="https://discord.gg/rM8b6V5Ce" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
                 💬 Discord
               </a>
             </div>
