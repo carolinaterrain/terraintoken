@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Copy, FileText, TrendingUp, TrendingDown } from "lucide-react";
+import { ArrowRight, Copy, FileText, TrendingUp, TrendingDown, Sparkles } from "lucide-react";
 import { useState, useEffect, memo } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import ContractVerificationBadge from "./ContractVerificationBadge";
 import { useTokenData } from "@/providers/TokenDataProvider";
+import { WaitlistModal } from "./WaitlistModal";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // Use public folder paths directly for LCP optimization - these match index.html preloads
 const terrainMascot = "/terrain-mascot.png";
@@ -16,8 +18,9 @@ const Hero = memo(() => {
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
   const [goblinPhrase, setGoblinPhrase] = useState("");
   const [priceUpdated, setPriceUpdated] = useState(false);
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
   const contractAddress = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
-  const { stats: tokenStats } = useTokenData();
+  const { stats: tokenStats, isLoading } = useTokenData();
   
   const price = tokenStats?.priceUsd ?? "$0.00";
   const change24h = tokenStats?.change24h ?? 0;
@@ -101,36 +104,42 @@ const Hero = memo(() => {
       </div>
 
       {/* Live Price Ticker */}
-      {tokenStats && (
-        <div className="absolute top-20 left-0 right-0 bg-gradient-to-r from-chart-1/20 via-chart-3/20 to-chart-1/20 border-y border-primary/20 backdrop-blur-sm z-30">
-          <div className="container mx-auto px-4 py-3">
-            <div className="flex items-center justify-center gap-4 md:gap-8 text-xs md:text-sm flex-wrap">
-              <div className="flex items-center gap-2">
-                <span className="text-muted-foreground font-semibold">LIVE PRICE</span>
+      <div className="absolute top-20 left-0 right-0 bg-gradient-to-r from-chart-1/20 via-chart-3/20 to-chart-1/20 border-y border-primary/20 backdrop-blur-sm z-30">
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex items-center justify-center gap-4 md:gap-8 text-xs md:text-sm flex-wrap">
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground font-semibold">LIVE PRICE</span>
+              {isLoading ? (
+                <Skeleton className="h-7 w-24" />
+              ) : (
                 <span className={`font-bold text-xl md:text-2xl text-chart-3 transition-transform ${priceUpdated ? 'scale-110' : 'scale-100'}`}>
                   {price}
                 </span>
+              )}
+              {isLoading ? (
+                <Skeleton className="h-5 w-16" />
+              ) : (
                 <span className={`flex items-center gap-1 font-semibold ${change24h >= 0 ? "text-green-500" : "text-red-500"}`}>
                   {change24h >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
                   {change24h >= 0 ? "+" : ""}{change24h.toFixed(2)}%
                 </span>
-              </div>
-              <div className="hidden md:flex items-center gap-2">
-                <span className="text-muted-foreground">VOL 24H:</span>
-                <span className="font-semibold">{volume24h}</span>
-              </div>
-              <div className="hidden md:flex items-center gap-2">
-                <span className="text-muted-foreground">MCAP:</span>
-                <span className="font-semibold">{marketCap}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                <span className="text-xs text-muted-foreground font-semibold">LIVE</span>
-              </div>
+              )}
+            </div>
+            <div className="hidden md:flex items-center gap-2">
+              <span className="text-muted-foreground">VOL 24H:</span>
+              {isLoading ? <Skeleton className="h-5 w-20" /> : <span className="font-semibold">{volume24h}</span>}
+            </div>
+            <div className="hidden md:flex items-center gap-2">
+              <span className="text-muted-foreground">MCAP:</span>
+              {isLoading ? <Skeleton className="h-5 w-20" /> : <span className="font-semibold">{marketCap}</span>}
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-xs text-muted-foreground font-semibold">LIVE</span>
             </div>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Content - 50/50 Split Layout */}
       <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10">
@@ -230,6 +239,15 @@ const Hero = memo(() => {
               </Link>
             </Button>
             <Button
+              variant="secondary"
+              size="lg"
+              className="font-display font-semibold w-full md:w-64"
+              onClick={() => setWaitlistOpen(true)}
+            >
+              <Sparkles className="mr-2 h-5 w-5" />
+              Join Waitlist
+            </Button>
+            <Button
               variant="outline"
               size="lg"
               className="font-display font-semibold w-full md:w-64"
@@ -276,6 +294,9 @@ const Hero = memo(() => {
           </div>
         </div>
       </div>
+
+      {/* Waitlist Modal */}
+      <WaitlistModal open={waitlistOpen} onOpenChange={setWaitlistOpen} />
     </section>
   );
 });
