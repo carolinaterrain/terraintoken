@@ -4,12 +4,16 @@ import { X, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { WaitlistModal } from './WaitlistModal';
 import { useFeatureAnalytics } from '@/hooks/useFeatureAnalytics';
+import { useLiveHolderCount } from '@/hooks/useLiveHolderCount';
 
 export const FloatingCTA = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
   const [showWaitlist, setShowWaitlist] = useState(false);
   const { trackButtonClick } = useFeatureAnalytics();
+  const { data: holderData } = useLiveHolderCount();
+  
+  const displayCount = holderData?.holderCount || 180;
 
   useEffect(() => {
     // Check if already dismissed this session
@@ -71,7 +75,7 @@ export const FloatingCTA = () => {
                     Don't miss out!
                   </p>
                   <p className="text-xs text-muted-foreground truncate">
-                    Join 500+ holders on the waitlist
+                    Join {displayCount.toLocaleString()}+ TRN holders
                   </p>
                 </div>
                 <Button

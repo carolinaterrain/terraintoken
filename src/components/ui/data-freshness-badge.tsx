@@ -1,5 +1,5 @@
-import { memo } from 'react';
-import { Clock, Wifi, WifiOff, AlertTriangle } from 'lucide-react';
+import { memo, forwardRef } from 'react';
+import { Clock, Wifi, WifiOff } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { formatDistanceToNow } from 'date-fns';
@@ -13,12 +13,13 @@ interface DataFreshnessBadgeProps {
   showTimestamp?: boolean;
 }
 
-export const DataFreshnessBadge = memo(({ 
+// Forward ref properly to avoid React warnings
+const DataFreshnessBadgeInner = forwardRef<HTMLDivElement, DataFreshnessBadgeProps>(({ 
   source, 
   lastUpdated, 
   className = '',
   showTimestamp = false 
-}: DataFreshnessBadgeProps) => {
+}, ref) => {
   const config = {
     live: {
       icon: Wifi,
@@ -50,13 +51,15 @@ export const DataFreshnessBadge = memo(({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Badge 
-            variant="outline" 
-            className={`${color} ${className} text-[10px] px-1.5 py-0 h-4 cursor-help`}
-          >
-            <Icon className="w-2.5 h-2.5 mr-0.5" />
-            {label}
-          </Badge>
+          <div ref={ref} className="inline-flex">
+            <Badge 
+              variant="outline" 
+              className={`${color} ${className} text-[10px] px-1.5 py-0 h-4 cursor-help`}
+            >
+              <Icon className="w-2.5 h-2.5 mr-0.5" />
+              {label}
+            </Badge>
+          </div>
         </TooltipTrigger>
         <TooltipContent>
           <div className="text-xs">
@@ -71,7 +74,9 @@ export const DataFreshnessBadge = memo(({
   );
 });
 
-DataFreshnessBadge.displayName = 'DataFreshnessBadge';
+DataFreshnessBadgeInner.displayName = 'DataFreshnessBadgeInner';
+
+export const DataFreshnessBadge = memo(DataFreshnessBadgeInner);
 
 // Compact version for inline use
 export const DataSourceDot = memo(({ source }: { source: DataSource }) => {
