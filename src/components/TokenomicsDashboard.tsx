@@ -273,9 +273,9 @@ const TokenomicsDashboard = memo(() => {
           <p className="text-xs text-muted-foreground">Circulating Supply</p>
         </GlassCard>
         <GlassCard className="p-6 text-center">
-          <Lock className="w-8 h-8 text-primary mx-auto mb-3" />
-          <p className="text-2xl font-bold text-primary mb-1">0</p>
-          <p className="text-xs text-muted-foreground">Can Be Minted</p>
+          <Lock className="w-8 h-8 text-green-500 mx-auto mb-3" />
+          <p className="text-lg font-bold text-green-500 mb-1">Revoked</p>
+          <p className="text-xs text-muted-foreground">Mint Authority</p>
         </GlassCard>
       </div>
     </div>
