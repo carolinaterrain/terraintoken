@@ -193,6 +193,7 @@ export type Database = {
           page_url: string | null
           referrer: string | null
           session_id: string
+          trace_id: string | null
           user_agent: string | null
           user_id: string | null
           utm_campaign: string | null
@@ -208,6 +209,7 @@ export type Database = {
           page_url?: string | null
           referrer?: string | null
           session_id: string
+          trace_id?: string | null
           user_agent?: string | null
           user_id?: string | null
           utm_campaign?: string | null
@@ -223,6 +225,7 @@ export type Database = {
           page_url?: string | null
           referrer?: string | null
           session_id?: string
+          trace_id?: string | null
           user_agent?: string | null
           user_id?: string | null
           utm_campaign?: string | null

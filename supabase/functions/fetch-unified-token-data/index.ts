@@ -178,7 +178,12 @@ serve(async (req) => {
           source: 'cache',
           cacheAge: Math.floor(cacheAge / 1000),
         }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json',
+          'x-cache': 'hit',
+          'x-cache-age': Math.floor(cacheAge / 1000).toString(),
+        } }
       );
     }
 
@@ -270,6 +275,7 @@ serve(async (req) => {
           ...corsHeaders, 
           'Content-Type': 'application/json',
           'Cache-Control': 'public, max-age=60, s-maxage=120',
+          'x-cache': 'miss',
         },
       }
     );
@@ -286,7 +292,11 @@ serve(async (req) => {
           source: 'cache',
           error: error instanceof Error ? error.message : 'Unknown error', 
         }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json',
+          'x-cache': 'stale',
+        } }
       );
     }
     
@@ -295,7 +305,11 @@ serve(async (req) => {
       JSON.stringify(getFallbackData()),
       {
         status: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json',
+          'x-cache': 'fallback',
+        },
       }
     );
   }

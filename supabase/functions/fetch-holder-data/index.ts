@@ -86,7 +86,12 @@ serve(async (req) => {
             source: 'cache',
             lastUpdated: cached.last_updated,
           }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          { headers: { 
+            ...corsHeaders, 
+            'Content-Type': 'application/json',
+            'x-cache': 'hit',
+            'x-cache-age': Math.floor(cacheAge / 1000).toString(),
+          } }
         );
       }
     }
@@ -103,7 +108,11 @@ serve(async (req) => {
             lastUpdated: cached.last_updated,
             warning: 'API key not configured, using stale cache',
           }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          { headers: { 
+            ...corsHeaders, 
+            'Content-Type': 'application/json',
+            'x-cache': 'stale',
+          } }
         );
       }
       return new Response(
@@ -116,7 +125,11 @@ serve(async (req) => {
           source: 'error',
           error: 'API key not configured',
         }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json',
+          'x-cache': 'error',
+        } }
       );
     }
 
@@ -290,6 +303,7 @@ serve(async (req) => {
           ...corsHeaders, 
           'Content-Type': 'application/json',
           'Cache-Control': 'public, max-age=300, s-maxage=300',
+          'x-cache': 'miss',
         },
       }
     );
@@ -318,7 +332,11 @@ serve(async (req) => {
             lastUpdated: cached.last_updated,
             error: errorMessage, 
           }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          { headers: { 
+            ...corsHeaders, 
+            'Content-Type': 'application/json',
+            'x-cache': 'stale',
+          } }
         );
       }
     } catch (cacheError) {
@@ -338,7 +356,11 @@ serve(async (req) => {
       }),
       {
         status: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json',
+          'x-cache': 'error',
+        },
       }
     );
   }
