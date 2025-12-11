@@ -15,16 +15,28 @@ export const getSessionId = (): string => {
 };
 
 /**
+ * Generate a unique trace ID for end-to-end request correlation.
+ * Format: trn-{timestamp}-{random}
+ */
+export const generateTraceId = (): string => {
+  const timestamp = Date.now().toString(36);
+  const random = Math.random().toString(36).substring(2, 8);
+  return `trn-${timestamp}-${random}`;
+};
+
+/**
  * Track an analytics event to the analytics_events table.
- * Automatically includes session_id and page_url.
+ * Automatically includes session_id, page_url, and trace_id.
  * 
  * @param eventName - Name of the event (e.g., 'waitlist_modal_opened')
  * @param properties - Optional key-value properties (no PII allowed!)
+ * @returns The trace_id for correlation with backend logs
  */
 export const trackEvent = async (
   eventName: string,
   properties?: Record<string, string | number | boolean>
-): Promise<void> => {
+): Promise<string> => {
+  const traceId = generateTraceId();
   try {
     await supabase.from("analytics_events").insert([
       {
@@ -32,12 +44,14 @@ export const trackEvent = async (
         session_id: getSessionId(),
         event_properties: properties || {},
         page_url: window.location.href,
+        trace_id: traceId,
       },
     ]);
   } catch (e) {
     // Silent fail - don't break UX for tracking errors
     console.error("Tracking error:", e);
   }
+  return traceId;
 };
 
 /**
