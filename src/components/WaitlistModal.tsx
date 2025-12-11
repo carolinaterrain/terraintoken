@@ -22,6 +22,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import confetti from "canvas-confetti";
+import { trackEvent } from "@/lib/trackingUtils";
 
 const waitlistSchema = z.object({
   email: z.string().email("Please enter a valid email").max(255),
@@ -35,30 +36,6 @@ interface WaitlistModalProps {
   onOpenChange: (open: boolean) => void;
   source?: string;
 }
-
-// Helper to get/create session ID
-const getSessionId = () => {
-  let id = sessionStorage.getItem("trn-session-id");
-  if (!id) {
-    id = crypto.randomUUID();
-    sessionStorage.setItem("trn-session-id", id);
-  }
-  return id;
-};
-
-// Track analytics event
-const trackEvent = async (eventName: string, properties?: Record<string, string | number | boolean>) => {
-  try {
-    await supabase.from("analytics_events").insert([{
-      event_name: eventName,
-      session_id: getSessionId(),
-      event_properties: properties as Record<string, string | number | boolean> || {},
-      page_url: window.location.href,
-    }]);
-  } catch (e) {
-    console.error("Tracking error:", e);
-  }
-};
 
 export function WaitlistModal({ open, onOpenChange, source = "direct" }: WaitlistModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
