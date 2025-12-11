@@ -1,25 +1,33 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+import { checkRateLimit, getClientIP } from "../_shared/rate-limit.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-interface PurchaseRequest {
-  certificate_id: string;
-  buyer_wallet: string;
-  buyer_email?: string;
-  shopify_order_id?: string;
-  shipping_address?: {
-    name?: string;
-    address1?: string;
-    address2?: string;
-    city?: string;
-    state?: string;
-    zip?: string;
-    country?: string;
-  };
-}
+// Input validation schema
+const PurchaseRequestSchema = z.object({
+  certificate_id: z.string().uuid("Invalid certificate ID format"),
+  buyer_wallet: z.string()
+    .min(32, "Wallet address too short")
+    .max(64, "Wallet address too long")
+    .regex(/^[A-Za-z0-9]+$/, "Invalid wallet address format"),
+  buyer_email: z.string().email("Invalid email format").optional(),
+  shopify_order_id: z.string().max(100).optional(),
+  shipping_address: z.object({
+    name: z.string().max(100).optional(),
+    address1: z.string().max(200).optional(),
+    address2: z.string().max(200).optional(),
+    city: z.string().max(100).optional(),
+    state: z.string().max(50).optional(),
+    zip: z.string().max(20).optional(),
+    country: z.string().max(100).optional(),
+  }).optional(),
+});
+
+type PurchaseRequest = z.infer<typeof PurchaseRequestSchema>;
 
 Deno.serve(async (req) => {
   // Handle CORS
@@ -27,11 +35,51 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+
   try {
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    // Rate limiting: 10 requests per 15 minutes per IP
+    const clientIP = getClientIP(req);
+    const rateLimitResult = await checkRateLimit(
+      clientIP,
+      {
+        endpoint: 'process-collector-purchase',
+        windowMs: 15 * 60 * 1000, // 15 minutes
+        maxRequests: 10,
+      },
+      supabaseUrl,
+      supabaseServiceKey
+    );
+
+    if (!rateLimitResult.allowed) {
+      console.warn(`Rate limit exceeded for IP: ${clientIP}`);
+      return new Response(
+        JSON.stringify({ error: 'Too many requests. Please try again later.' }),
+        { 
+          status: 429, 
+          headers: { 
+            ...corsHeaders, 
+            'Content-Type': 'application/json',
+            'Retry-After': String(rateLimitResult.retryAfter || 900)
+          } 
+        }
+      );
+    }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // Parse and validate input
+    const rawBody = await req.json();
+    const parseResult = PurchaseRequestSchema.safeParse(rawBody);
+    
+    if (!parseResult.success) {
+      console.error('Validation error:', parseResult.error.flatten());
+      return new Response(
+        JSON.stringify({ error: 'Invalid request data', details: parseResult.error.flatten().fieldErrors }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
     const { 
       certificate_id, 
@@ -39,14 +87,7 @@ Deno.serve(async (req) => {
       buyer_email,
       shopify_order_id,
       shipping_address 
-    }: PurchaseRequest = await req.json();
-
-    if (!certificate_id || !buyer_wallet) {
-      return new Response(
-        JSON.stringify({ error: 'Missing certificate_id or buyer_wallet' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
+    }: PurchaseRequest = parseResult.data;
 
     console.log(`Processing purchase for certificate ${certificate_id} by wallet ${buyer_wallet}`);
 
@@ -72,6 +113,14 @@ Deno.serve(async (req) => {
     if (certificate.status === 'claimed') {
       return new Response(
         JSON.stringify({ error: 'Certificate already claimed' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Verify certificate is reserved by checking reserved_by_session exists
+    if (certificate.status !== 'reserved') {
+      return new Response(
+        JSON.stringify({ error: 'Certificate must be reserved before purchase' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -128,7 +177,6 @@ Deno.serve(async (req) => {
       return new Response(
         JSON.stringify({ 
           error: 'NFT minting failed', 
-          details: mintResult,
           purchase_id: purchase.id 
         }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -179,7 +227,7 @@ Deno.serve(async (req) => {
     console.error('Purchase processing error:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return new Response(
-      JSON.stringify({ error: errorMessage }),
+      JSON.stringify({ error: 'An error occurred processing your request' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
