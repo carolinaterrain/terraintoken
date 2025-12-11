@@ -4,31 +4,7 @@ import { X, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { WaitlistModal } from './WaitlistModal';
 import { useLiveHolderCount } from '@/hooks/useLiveHolderCount';
-import { supabase } from '@/integrations/supabase/client';
-
-// Helper to get/create session ID
-const getSessionId = () => {
-  let id = sessionStorage.getItem("trn-session-id");
-  if (!id) {
-    id = crypto.randomUUID();
-    sessionStorage.setItem("trn-session-id", id);
-  }
-  return id;
-};
-
-// Track analytics event
-const trackEvent = async (eventName: string, properties?: Record<string, string | number | boolean>) => {
-  try {
-    await supabase.from("analytics_events").insert([{
-      event_name: eventName,
-      session_id: getSessionId(),
-      event_properties: properties as Record<string, string | number | boolean> || {},
-      page_url: window.location.href,
-    }]);
-  } catch (e) {
-    console.error("Tracking error:", e);
-  }
-};
+import { trackEvent } from '@/lib/trackingUtils';
 
 export const FloatingCTA = () => {
   const [isVisible, setIsVisible] = useState(false);

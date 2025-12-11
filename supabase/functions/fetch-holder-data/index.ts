@@ -130,7 +130,7 @@ serve(async (req) => {
     const PAGE_SIZE = 1000;
 
     do {
-      const response = await fetch(
+      const response = await fetchWithRetry(
         `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`,
         {
           method: 'POST',
