@@ -7,12 +7,54 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Cache duration in milliseconds (5 minutes for consistency)
-const CACHE_DURATION_MS = 300000;
+// Cache duration in milliseconds - increased to 3 minutes to reduce Helius API calls
+const CACHE_DURATION_MS = 180000;
+
+// Request deduplication - track in-flight requests
+let currentRequest: Promise<Response> | null = null;
+let lastRequestTime = 0;
+const MIN_REQUEST_INTERVAL = 10000; // 10 seconds minimum between fresh requests
+
+// Exponential backoff helper
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+async function fetchWithRetry(url: string, options: RequestInit, maxRetries = 3): Promise<Response> {
+  let lastError: Error | null = null;
+  
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      const response = await fetch(url, options);
+      
+      // If rate limited, wait with exponential backoff + jitter
+      if (response.status === 429) {
+        const waitTime = Math.min(1000 * Math.pow(2, attempt) + Math.random() * 1000, 30000);
+        console.log(`Rate limited, waiting ${waitTime}ms before retry ${attempt + 1}/${maxRetries}`);
+        await sleep(waitTime);
+        continue;
+      }
+      
+      return response;
+    } catch (error) {
+      lastError = error as Error;
+      const waitTime = Math.min(1000 * Math.pow(2, attempt), 10000);
+      console.log(`Request failed, waiting ${waitTime}ms before retry ${attempt + 1}/${maxRetries}`);
+      await sleep(waitTime);
+    }
+  }
+  
+  throw lastError || new Error('Max retries exceeded');
+}
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
+  }
+  
+  // Request deduplication - if a request is in flight and we're within interval, wait for it
+  const now = Date.now();
+  if (currentRequest && (now - lastRequestTime) < MIN_REQUEST_INTERVAL) {
+    console.log('Returning deduplicated in-flight request');
+    return currentRequest;
   }
 
   try {

@@ -1,16 +1,40 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { WaitlistModal } from './WaitlistModal';
-import { useFeatureAnalytics } from '@/hooks/useFeatureAnalytics';
 import { useLiveHolderCount } from '@/hooks/useLiveHolderCount';
+import { supabase } from '@/integrations/supabase/client';
+
+// Helper to get/create session ID
+const getSessionId = () => {
+  let id = sessionStorage.getItem("trn-session-id");
+  if (!id) {
+    id = crypto.randomUUID();
+    sessionStorage.setItem("trn-session-id", id);
+  }
+  return id;
+};
+
+// Track analytics event
+const trackEvent = async (eventName: string, properties?: Record<string, string | number | boolean>) => {
+  try {
+    await supabase.from("analytics_events").insert([{
+      event_name: eventName,
+      session_id: getSessionId(),
+      event_properties: properties as Record<string, string | number | boolean> || {},
+      page_url: window.location.href,
+    }]);
+  } catch (e) {
+    console.error("Tracking error:", e);
+  }
+};
 
 export const FloatingCTA = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
   const [showWaitlist, setShowWaitlist] = useState(false);
-  const { trackButtonClick } = useFeatureAnalytics();
+  const hasTrackedShown = useRef(false);
   const { data: holderData } = useLiveHolderCount();
   
   const displayCount = holderData?.holderCount || 180;
@@ -24,7 +48,15 @@ export const FloatingCTA = () => {
 
     const handleScroll = () => {
       const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-      setIsVisible(scrollPercent > 50);
+      const shouldShow = scrollPercent > 50;
+      
+      // Track when CTA first becomes visible
+      if (shouldShow && !hasTrackedShown.current) {
+        hasTrackedShown.current = true;
+        trackEvent('floating_cta_shown', { scroll_percent: scrollPercent });
+      }
+      
+      setIsVisible(shouldShow);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -34,11 +66,11 @@ export const FloatingCTA = () => {
   const handleDismiss = () => {
     setIsDismissed(true);
     sessionStorage.setItem('floating-cta-dismissed', 'true');
-    trackButtonClick('floating_cta_dismiss', 'floating_cta');
+    trackEvent('floating_cta_dismiss', { action: 'close' });
   };
 
   const handleJoinClick = () => {
-    trackButtonClick('floating_cta_join', 'floating_cta');
+    trackEvent('floating_cta_click', { action: 'join_now' });
     setShowWaitlist(true);
   };
 
@@ -91,7 +123,7 @@ export const FloatingCTA = () => {
         )}
       </AnimatePresence>
 
-      <WaitlistModal open={showWaitlist} onOpenChange={setShowWaitlist} />
+      <WaitlistModal open={showWaitlist} onOpenChange={setShowWaitlist} source="floating_cta" />
     </>
   );
 };

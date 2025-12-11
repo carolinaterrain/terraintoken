@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { X, Mail, Wallet, Sparkles, Loader2, CheckCircle } from "lucide-react";
+import { Mail, Wallet, Sparkles, Loader2, CheckCircle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -33,11 +33,38 @@ type WaitlistFormData = z.infer<typeof waitlistSchema>;
 interface WaitlistModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  source?: string;
 }
 
-export function WaitlistModal({ open, onOpenChange }: WaitlistModalProps) {
+// Helper to get/create session ID
+const getSessionId = () => {
+  let id = sessionStorage.getItem("trn-session-id");
+  if (!id) {
+    id = crypto.randomUUID();
+    sessionStorage.setItem("trn-session-id", id);
+  }
+  return id;
+};
+
+// Track analytics event
+const trackEvent = async (eventName: string, properties?: Record<string, string | number | boolean>) => {
+  try {
+    await supabase.from("analytics_events").insert([{
+      event_name: eventName,
+      session_id: getSessionId(),
+      event_properties: properties as Record<string, string | number | boolean> || {},
+      page_url: window.location.href,
+    }]);
+  } catch (e) {
+    console.error("Tracking error:", e);
+  }
+};
+
+export function WaitlistModal({ open, onOpenChange, source = "direct" }: WaitlistModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const hasTrackedOpen = useRef(false);
+  const hasTrackedFocus = useRef(false);
 
   const form = useForm<WaitlistFormData>({
     resolver: zodResolver(waitlistSchema),
@@ -46,6 +73,26 @@ export function WaitlistModal({ open, onOpenChange }: WaitlistModalProps) {
       wallet_address: "",
     },
   });
+
+  // Track modal opened
+  useEffect(() => {
+    if (open && !hasTrackedOpen.current) {
+      hasTrackedOpen.current = true;
+      trackEvent("waitlist_modal_opened", { source, timestamp: Date.now() });
+    }
+    if (!open) {
+      hasTrackedOpen.current = false;
+      hasTrackedFocus.current = false;
+    }
+  }, [open, source]);
+
+  // Track first form focus
+  const handleFirstFocus = () => {
+    if (!hasTrackedFocus.current) {
+      hasTrackedFocus.current = true;
+      trackEvent("waitlist_form_focused", { source });
+    }
+  };
 
   // Get UTM parameters from URL
   const getUTMParams = () => {
@@ -63,13 +110,17 @@ export function WaitlistModal({ open, onOpenChange }: WaitlistModalProps) {
 
   const onSubmit = async (data: WaitlistFormData) => {
     setIsSubmitting(true);
+    
+    // Track form submission attempt
+    await trackEvent("waitlist_form_submitted", { source, has_wallet: !!data.wallet_address });
+    
     try {
       const utmParams = getUTMParams();
       
       const { error } = await supabase.from("terrainscape_waitlist").insert({
         email: data.email,
         wallet_address: data.wallet_address || null,
-        signup_source: "waitlist_modal",
+        signup_source: source,
         referral_code: generateReferralCode(),
         utm_source: utmParams.utm_source,
         utm_campaign: utmParams.utm_campaign,
@@ -79,7 +130,9 @@ export function WaitlistModal({ open, onOpenChange }: WaitlistModalProps) {
         if (error.code === "23505") {
           toast.info("You're already on the waitlist!");
           setIsSuccess(true);
+          await trackEvent("waitlist_signup_duplicate", { source });
         } else {
+          await trackEvent("waitlist_signup_error", { source, error: error.message });
           throw error;
         }
       } else {
@@ -92,15 +145,10 @@ export function WaitlistModal({ open, onOpenChange }: WaitlistModalProps) {
         });
         toast.success("You're on the list! 🎉");
 
-        // Track analytics event
-        await supabase.from("analytics_events").insert({
-          event_name: "waitlist_signup",
-          session_id: sessionStorage.getItem("trn-session-id") || crypto.randomUUID(),
-          event_properties: {
-            source: "waitlist_modal",
-            has_wallet: !!data.wallet_address,
-          },
-          page_url: window.location.href,
+        // Track successful signup
+        await trackEvent("waitlist_signup_success", {
+          source,
+          has_wallet: !!data.wallet_address,
         });
       }
     } catch (error: any) {
@@ -164,6 +212,7 @@ export function WaitlistModal({ open, onOpenChange }: WaitlistModalProps) {
                         <Input
                           type="email"
                           placeholder="you@example.com"
+                          onFocus={handleFirstFocus}
                           {...field}
                         />
                       </FormControl>
