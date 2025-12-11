@@ -3,13 +3,36 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Gift } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { WaitlistModal } from './WaitlistModal';
-import { useFeatureAnalytics } from '@/hooks/useFeatureAnalytics';
+import { supabase } from '@/integrations/supabase/client';
+
+// Helper to get/create session ID
+const getSessionId = () => {
+  let id = sessionStorage.getItem("trn-session-id");
+  if (!id) {
+    id = crypto.randomUUID();
+    sessionStorage.setItem("trn-session-id", id);
+  }
+  return id;
+};
+
+// Track analytics event
+const trackEvent = async (eventName: string, properties?: Record<string, string | number | boolean>) => {
+  try {
+    await supabase.from("analytics_events").insert([{
+      event_name: eventName,
+      session_id: getSessionId(),
+      event_properties: properties as Record<string, string | number | boolean> || {},
+      page_url: window.location.href,
+    }]);
+  } catch (e) {
+    console.error("Tracking error:", e);
+  }
+};
 
 export const ExitIntentModal = () => {
   const [showExitIntent, setShowExitIntent] = useState(false);
   const [showWaitlist, setShowWaitlist] = useState(false);
   const [hasTriggered, setHasTriggered] = useState(false);
-  const { trackButtonClick } = useFeatureAnalytics();
 
   const handleMouseLeave = useCallback((e: MouseEvent) => {
     // Only trigger when mouse leaves from top of viewport (exit intent)
@@ -20,9 +43,9 @@ export const ExitIntentModal = () => {
       setShowExitIntent(true);
       setHasTriggered(true);
       sessionStorage.setItem('exit-intent-shown', 'true');
-      trackButtonClick('exit_intent_shown', 'exit_intent');
+      trackEvent('exit_intent_shown', { trigger: 'mouse_leave_top', timestamp: Date.now() });
     }
-  }, [hasTriggered, trackButtonClick]);
+  }, [hasTriggered]);
 
   useEffect(() => {
     // Only enable on desktop
@@ -47,11 +70,11 @@ export const ExitIntentModal = () => {
 
   const handleClose = () => {
     setShowExitIntent(false);
-    trackButtonClick('exit_intent_dismiss', 'exit_intent');
+    trackEvent('exit_intent_dismiss', { action: 'close' });
   };
 
   const handleJoinWaitlist = () => {
-    trackButtonClick('exit_intent_claim', 'exit_intent');
+    trackEvent('exit_intent_claim', { action: 'claim_bonus' });
     setShowExitIntent(false);
     setShowWaitlist(true);
   };
@@ -137,7 +160,7 @@ export const ExitIntentModal = () => {
         )}
       </AnimatePresence>
 
-      <WaitlistModal open={showWaitlist} onOpenChange={setShowWaitlist} />
+      <WaitlistModal open={showWaitlist} onOpenChange={setShowWaitlist} source="exit_intent" />
     </>
   );
 };
