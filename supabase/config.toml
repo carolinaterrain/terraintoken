@@ -95,3 +95,21 @@ verify_jwt = false
 
 [functions.get-glossary]
 verify_jwt = false
+
+[functions.ecosystem-events]
+verify_jwt = false
+
+[functions.execute-buyback-burn]
+verify_jwt = true
+
+[functions.wallet-challenge]
+verify_jwt = false
+
+[functions.wallet-verify]
+verify_jwt = false
+
+[functions.get-ecosystem-health]
+verify_jwt = false
+
+[functions.get-webhook-inbox]
+verify_jwt = false

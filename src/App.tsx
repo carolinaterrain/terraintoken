@@ -40,6 +40,7 @@ const AIPoweredDrainageAnalysisFuture = lazy(() => import("./pages/blog/ai-power
 const TransparencyReportNovember2025 = lazy(() => import("./pages/blog/transparency-report-november-2025"));
 const RiskDisclosure = lazy(() => import("./pages/RiskDisclosure"));
 const UnifiedAdminDashboard = lazy(() => import("./pages/UnifiedAdminDashboard"));
+const EcosystemAdmin = lazy(() => import("./pages/EcosystemAdmin"));
 const Investors = lazy(() => import("./pages/Investors"));
 const PhilanthropicFund = lazy(() => import("./pages/PhilanthropicFund"));
 const Drops = lazy(() => import("./pages/Drops"));
@@ -93,6 +94,7 @@ const AppContent = () => {
             <Route path="/admin/unified" element={<AdminRoute><UnifiedAdminDashboard /></AdminRoute>} />
             <Route path="/admin/analytics" element={<AdminRoute><AnalyticsDashboard /></AdminRoute>} />
             <Route path="/admin/ab-tests" element={<AdminRoute><ABTestsDashboard /></AdminRoute>} />
+            <Route path="/admin/ecosystem" element={<AdminRoute><EcosystemAdmin /></AdminRoute>} />
             <Route path="/whitepaper" element={<Whitepaper />} />
             <Route path="/updates" element={<Updates />} />
             <Route path="/team" element={<Team />} />
