@@ -83,3 +83,15 @@ verify_jwt = false
 
 [functions.fetch-token-supply]
 verify_jwt = false
+
+[functions.close-monthly-report]
+verify_jwt = false
+
+[functions.determine-burn-band]
+verify_jwt = false
+
+[functions.publish-monthly-report]
+verify_jwt = false
+
+[functions.get-glossary]
+verify_jwt = false

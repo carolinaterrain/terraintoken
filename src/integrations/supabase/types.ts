@@ -273,6 +273,45 @@ export type Database = {
         }
         Relationships: []
       }
+      burn_bands: {
+        Row: {
+          burn_rate: number
+          created_at: string
+          created_by: string | null
+          effective_from: string
+          effective_until: string | null
+          id: string
+          max_revenue: number | null
+          min_revenue: number
+          usage_bonus_rate: number | null
+          usage_bonus_threshold: number | null
+        }
+        Insert: {
+          burn_rate: number
+          created_at?: string
+          created_by?: string | null
+          effective_from?: string
+          effective_until?: string | null
+          id?: string
+          max_revenue?: number | null
+          min_revenue?: number
+          usage_bonus_rate?: number | null
+          usage_bonus_threshold?: number | null
+        }
+        Update: {
+          burn_rate?: number
+          created_at?: string
+          created_by?: string | null
+          effective_from?: string
+          effective_until?: string | null
+          id?: string
+          max_revenue?: number | null
+          min_revenue?: number
+          usage_bonus_rate?: number | null
+          usage_bonus_threshold?: number | null
+        }
+        Relationships: []
+      }
       collector_drop_purchases: {
         Row: {
           buyer_email: string | null
@@ -547,6 +586,42 @@ export type Database = {
         }
         Relationships: []
       }
+      ecosystem_events: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          event_type: string
+          id: string
+          payload: Json
+          processed: boolean
+          processed_at: string | null
+          report_month: string | null
+          source_app: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          event_type: string
+          id?: string
+          payload?: Json
+          processed?: boolean
+          processed_at?: string | null
+          report_month?: string | null
+          source_app: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          event_type?: string
+          id?: string
+          payload?: Json
+          processed?: boolean
+          processed_at?: string | null
+          report_month?: string | null
+          source_app?: string
+        }
+        Relationships: []
+      }
       email_preferences: {
         Row: {
           created_at: string | null
@@ -769,6 +844,39 @@ export type Database = {
         }
         Relationships: []
       }
+      glossary_terms: {
+        Row: {
+          created_at: string
+          definition: string
+          example: string | null
+          id: string
+          related_terms: string[] | null
+          term_key: string
+          term_name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          definition: string
+          example?: string | null
+          id?: string
+          related_terms?: string[] | null
+          term_key: string
+          term_name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          definition?: string
+          example?: string | null
+          id?: string
+          related_terms?: string[] | null
+          term_key?: string
+          term_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       governance_proposals: {
         Row: {
           category: string
@@ -851,6 +959,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      guardrails: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          effective_from: string
+          effective_until: string | null
+          guardrail_type: string
+          id: string
+          value: number
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          effective_from?: string
+          effective_until?: string | null
+          guardrail_type: string
+          id?: string
+          value: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          effective_from?: string
+          effective_until?: string | null
+          guardrail_type?: string
+          id?: string
+          value?: number
+        }
+        Relationships: []
       }
       heat_map_events: {
         Row: {
@@ -1267,6 +1408,83 @@ export type Database = {
           x_post_url?: string | null
         }
         Relationships: []
+      }
+      monthly_ecosystem_reports: {
+        Row: {
+          active_users: number
+          base_burn_rate: number | null
+          burn_tx_hash: string | null
+          buyback_tx_hash: string | null
+          created_at: string
+          data_source: string | null
+          determined_band_id: string | null
+          final_burn_rate: number | null
+          finalized_at: string | null
+          gross_ai_revenue: number
+          id: string
+          is_finalized: boolean
+          net_ai_revenue: number | null
+          report_month: string
+          trn_burned: number | null
+          updated_at: string
+          usage_bonus_applied: boolean | null
+          usd_for_buyback: number | null
+          variable_ai_costs: number
+          verified_analyses: number
+        }
+        Insert: {
+          active_users?: number
+          base_burn_rate?: number | null
+          burn_tx_hash?: string | null
+          buyback_tx_hash?: string | null
+          created_at?: string
+          data_source?: string | null
+          determined_band_id?: string | null
+          final_burn_rate?: number | null
+          finalized_at?: string | null
+          gross_ai_revenue?: number
+          id?: string
+          is_finalized?: boolean
+          net_ai_revenue?: number | null
+          report_month: string
+          trn_burned?: number | null
+          updated_at?: string
+          usage_bonus_applied?: boolean | null
+          usd_for_buyback?: number | null
+          variable_ai_costs?: number
+          verified_analyses?: number
+        }
+        Update: {
+          active_users?: number
+          base_burn_rate?: number | null
+          burn_tx_hash?: string | null
+          buyback_tx_hash?: string | null
+          created_at?: string
+          data_source?: string | null
+          determined_band_id?: string | null
+          final_burn_rate?: number | null
+          finalized_at?: string | null
+          gross_ai_revenue?: number
+          id?: string
+          is_finalized?: boolean
+          net_ai_revenue?: number | null
+          report_month?: string
+          trn_burned?: number | null
+          updated_at?: string
+          usage_bonus_applied?: boolean | null
+          usd_for_buyback?: number | null
+          variable_ai_costs?: number
+          verified_analyses?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "monthly_ecosystem_reports_determined_band_id_fkey"
+            columns: ["determined_band_id"]
+            isOneToOne: false
+            referencedRelation: "burn_bands"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       mystery_box_opens: {
         Row: {
