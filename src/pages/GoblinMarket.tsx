@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { burnTRN, getTotalBurned } from "@/lib/carolinaTerrainSync";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Link } from "react-router-dom";
 
 // Critical components - Load immediately
 import { DexScreenerChart } from "@/components/market/DexScreenerChart";
@@ -20,6 +21,10 @@ import Footer from "@/components/Footer";
 
 // Above-the-fold components - Load on mount
 import { LiveHolderTracker } from "@/components/market/LiveHolderTracker";
+
+// Ecosystem components
+import { BurnBandIndicator } from "@/components/ecosystem/BurnBandIndicator";
+import { PoweredByTerrainVision } from "@/components/ecosystem/PoweredByTerrainVision";
 
 // Phase 1.1: Bulletproof dev detection - hostname check required
 const IS_DEV = import.meta.env.DEV && 
@@ -221,6 +226,10 @@ const GoblinMarketContent = () => {
             Watch Terro the Terrain Goblin guard the TRN market. Live price data, 
             trading charts, and holder progress—all in one enchanted panel.
           </p>
+          {/* Powered by TerrainVision badge */}
+          <div className="flex justify-center pt-2">
+            <PoweredByTerrainVision showAnalysisCount />
+          </div>
         </div>
 
         {/* Dev Debug Panel - Only in development */}
@@ -231,11 +240,31 @@ const GoblinMarketContent = () => {
           <DexScreenerChart />
         </DashboardErrorBoundary>
 
+        {/* Burn Band Indicator */}
+        <DashboardErrorBoundary componentName="Burn Band">
+          <Card className="p-6 bg-card/50 backdrop-blur border-border/50">
+            <BurnBandIndicator showProgress />
+          </Card>
+        </DashboardErrorBoundary>
+
         {/* Holder Tracker */}
         <DashboardErrorBoundary componentName="Holder Tracker">
           <LiveHolderTracker />
         </DashboardErrorBoundary>
 
+        {/* Cross-App Navigation */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+          <Button size="lg" asChild>
+            <Link to="/transparency">
+              View Transparency Hub →
+            </Link>
+          </Button>
+          <Button size="lg" variant="outline" asChild>
+            <Link to="/#tokenomics">
+              Explore Tokenomics
+            </Link>
+          </Button>
+        </div>
       </main>
 
       {/* Phase 2.1: Add Footer */}

@@ -7,10 +7,13 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "react-router-dom";
-import { TrendingUp, TrendingDown, Users, DollarSign, Calendar, Download, ExternalLink, Activity, Wallet, BarChart3 } from "lucide-react";
+import { TrendingUp, TrendingDown, Users, DollarSign, Calendar, ExternalLink, Activity, Wallet, BarChart3 } from "lucide-react";
 import { useLiveHolderCount } from "@/hooks/useLiveHolderCount";
 import { useTokenStats } from "@/hooks/useTokenStats";
 import { useTreasuryBalance } from "@/hooks/useTreasuryBalance";
+import { EcosystemImpactCard } from "@/components/ecosystem/EcosystemImpactCard";
+import { MonthlyReportViewer } from "@/components/ecosystem/MonthlyReportViewer";
+import { PoweredByTerrainVision } from "@/components/ecosystem/PoweredByTerrainVision";
 
 // Data source badge component
 const DataBadge = ({ type }: { type: 'live' | 'verified' | 'coming-soon' }) => {
@@ -30,7 +33,6 @@ const formatSolPrice = (price: string | undefined): string => {
   if (isNaN(numPrice)) return '0';
   if (numPrice >= 1) return numPrice.toFixed(4);
   if (numPrice >= 0.001) return numPrice.toFixed(6);
-  // For very small values, show up to 10 decimals and remove trailing zeros
   return numPrice.toFixed(10).replace(/\.?0+$/, '');
 };
 
@@ -40,18 +42,6 @@ const TransparencyHub = () => {
   const { treasuryBalance, loading: treasuryLoading, isLive: treasuryIsLive } = useTreasuryBalance();
   
   const currentHolders = holderData?.holderCount || 0;
-
-  const reports = [
-    {
-      month: "November 2025",
-      slug: "transparency-report-november-2025",
-      revenue: 180000,
-      treasury: 620000,
-      date: "2025-11-01"
-    }
-  ];
-
-  const latestReport = reports[0];
 
   return (
     <>
@@ -79,6 +69,9 @@ const TransparencyHub = () => {
         <div className="container mx-auto px-4 max-w-7xl">
           {/* Hero */}
           <div className="text-center mb-16">
+            <div className="flex justify-center mb-4">
+              <PoweredByTerrainVision showAnalysisCount />
+            </div>
             <h1 className="font-display text-5xl md:text-7xl font-bold mb-4">
               Transparency <span className="text-primary">Hub</span>
             </h1>
@@ -86,6 +79,11 @@ const TransparencyHub = () => {
               Complete archive of TRN's monthly transparency reports. Track our growth, revenue, and community metrics over time. No secrets, just facts.
             </p>
           </div>
+
+          {/* Ecosystem Impact Card */}
+          <section className="mb-16">
+            <EcosystemImpactCard variant="full" className="max-w-2xl mx-auto" />
+          </section>
 
           {/* Live Stats Dashboard */}
           <section className="mb-16">
@@ -214,73 +212,13 @@ const TransparencyHub = () => {
             </GlassCard>
           </section>
 
-          {/* Monthly Reports Archive */}
+          {/* Monthly Reports Archive - Using MonthlyReportViewer */}
           <section className="mb-16">
             <h2 className="font-display text-3xl font-bold mb-8 text-center">
-              Monthly <span className="text-primary">Reports</span>
+              Monthly <span className="text-primary">Ecosystem Reports</span>
             </h2>
+            <MonthlyReportViewer />
             
-            <div className="space-y-6">
-              {reports.map((report) => (
-                <GlassCard key={report.month} hover className="p-8">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-3">
-                        <Calendar className="w-5 h-5 text-primary" />
-                        <h3 className="font-display text-2xl font-bold">{report.month}</h3>
-                        <span className="px-3 py-1 bg-green-500/20 rounded-full text-xs font-bold text-green-400">
-                          LATEST
-                        </span>
-                      </div>
-                      
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-                        <div>
-                          <div className="text-sm text-muted-foreground flex items-center gap-1">
-                            Holders <span className="text-green-400 text-[10px]">🟢 Live</span>
-                          </div>
-                          {holderLoading ? (
-                            <Skeleton className="h-7 w-20" />
-                          ) : (
-                            <div className="text-xl font-bold text-primary">{currentHolders.toLocaleString()}</div>
-                          )}
-                        </div>
-                        <div>
-                          <div className="text-sm text-muted-foreground flex items-center gap-1">
-                            Revenue <span className="text-blue-400 text-[10px]">🔵 Verified</span>
-                          </div>
-                          <div className="text-xl font-bold text-primary">${(report.revenue / 1000).toFixed(0)}K</div>
-                        </div>
-                        <div>
-                          <div className="text-sm text-muted-foreground flex items-center gap-1">
-                            Treasury <span className="text-blue-400 text-[10px]">🔵 Verified</span>
-                          </div>
-                          <div className="text-xl font-bold text-primary">${(report.treasury / 1000).toFixed(0)}K</div>
-                        </div>
-                      </div>
-
-                      <p className="text-sm text-muted-foreground">
-                        Full breakdown of wallet holdings, treasury activity, community growth, and development updates. Includes all wallet addresses for on-chain verification.
-                      </p>
-                    </div>
-
-                    <div className="flex flex-col gap-3 md:min-w-[200px]">
-                      <Button asChild>
-                        <Link to={`/blog/${report.slug}`}>
-                          Read Full Report
-                          <ExternalLink className="ml-2 h-4 w-4" />
-                        </Link>
-                      </Button>
-                      <Button variant="outline" className="border-primary" disabled>
-                        <Download className="mr-2 h-4 w-4" />
-                        Download CSV
-                        <span className="ml-2 text-xs">(Soon)</span>
-                      </Button>
-                    </div>
-                  </div>
-                </GlassCard>
-              ))}
-            </div>
-
             {/* Coming Soon */}
             <GlassCard className="p-8 mt-8 text-center bg-card/20">
               <Calendar className="w-12 h-12 text-primary mx-auto mb-4 opacity-50" />
@@ -310,6 +248,22 @@ const TransparencyHub = () => {
                 </div>
               </div>
             </GlassCard>
+          </section>
+
+          {/* Cross-App Navigation */}
+          <section className="mb-16">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" asChild>
+                <Link to="/market">
+                  View Live Market →
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <Link to="/#tokenomics">
+                  Explore Tokenomics
+                </Link>
+              </Button>
+            </div>
           </section>
 
           {/* Verification Section */}
