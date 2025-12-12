@@ -588,37 +588,55 @@ export type Database = {
       }
       ecosystem_events: {
         Row: {
+          correlation_id: string | null
           created_at: string
           error_message: string | null
           event_type: string
           id: string
+          idempotency_key: string | null
           payload: Json
           processed: boolean
           processed_at: string | null
+          producer: string | null
           report_month: string | null
+          session_id: string | null
           source_app: string
+          user_id: string | null
+          wallet_address: string | null
         }
         Insert: {
+          correlation_id?: string | null
           created_at?: string
           error_message?: string | null
           event_type: string
           id?: string
+          idempotency_key?: string | null
           payload?: Json
           processed?: boolean
           processed_at?: string | null
+          producer?: string | null
           report_month?: string | null
+          session_id?: string | null
           source_app: string
+          user_id?: string | null
+          wallet_address?: string | null
         }
         Update: {
+          correlation_id?: string | null
           created_at?: string
           error_message?: string | null
           event_type?: string
           id?: string
+          idempotency_key?: string | null
           payload?: Json
           processed?: boolean
           processed_at?: string | null
+          producer?: string | null
           report_month?: string | null
+          session_id?: string | null
           source_app?: string
+          user_id?: string | null
+          wallet_address?: string | null
         }
         Relationships: []
       }
@@ -2373,6 +2391,36 @@ export type Database = {
         }
         Relationships: []
       }
+      sync_state: {
+        Row: {
+          consumer_name: string
+          cursor_position: number | null
+          id: string
+          last_processed_at: string | null
+          last_processed_event_id: string | null
+          metadata: Json | null
+          updated_at: string
+        }
+        Insert: {
+          consumer_name: string
+          cursor_position?: number | null
+          id?: string
+          last_processed_at?: string | null
+          last_processed_event_id?: string | null
+          metadata?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          consumer_name?: string
+          cursor_position?: number | null
+          id?: string
+          last_processed_at?: string | null
+          last_processed_event_id?: string | null
+          metadata?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       terrainscape_waitlist: {
         Row: {
           beta_application: string | null
@@ -3073,6 +3121,90 @@ export type Database = {
         }
         Relationships: []
       }
+      wallet_link_challenges: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          message: string
+          nonce: string
+          session_id: string | null
+          user_id: string | null
+          verification_signature: string | null
+          verified_at: string | null
+          wallet_address: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at: string
+          id?: string
+          message: string
+          nonce: string
+          session_id?: string | null
+          user_id?: string | null
+          verification_signature?: string | null
+          verified_at?: string | null
+          wallet_address: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          message?: string
+          nonce?: string
+          session_id?: string | null
+          user_id?: string | null
+          verification_signature?: string | null
+          verified_at?: string | null
+          wallet_address?: string
+        }
+        Relationships: []
+      }
+      webhook_inbox: {
+        Row: {
+          claimed_at: string | null
+          claimed_by: string | null
+          error_message: string | null
+          event_type: string
+          id: string
+          idempotency_key: string
+          next_retry_at: string | null
+          payload: Json
+          processed_at: string | null
+          producer: string
+          received_at: string
+          retry_count: number | null
+        }
+        Insert: {
+          claimed_at?: string | null
+          claimed_by?: string | null
+          error_message?: string | null
+          event_type: string
+          id?: string
+          idempotency_key: string
+          next_retry_at?: string | null
+          payload?: Json
+          processed_at?: string | null
+          producer: string
+          received_at?: string
+          retry_count?: number | null
+        }
+        Update: {
+          claimed_at?: string | null
+          claimed_by?: string | null
+          error_message?: string | null
+          event_type?: string
+          id?: string
+          idempotency_key?: string
+          next_retry_at?: string | null
+          payload?: Json
+          processed_at?: string | null
+          producer?: string
+          received_at?: string
+          retry_count?: number | null
+        }
+        Relationships: []
+      }
       whale_alerts: {
         Row: {
           alert_type: string
@@ -3105,6 +3237,21 @@ export type Database = {
       }
     }
     Views: {
+      ecosystem_health_kpis: {
+        Row: {
+          events_last_hour: number | null
+          last_event_created: string | null
+          last_webhook_received: string | null
+          reports_finalized: number | null
+          reports_pending: number | null
+          snapshot_at: string | null
+          total_trn_burned: number | null
+          wallets_verified: number | null
+          webhooks_failed: number | null
+          webhooks_in_flight: number | null
+        }
+        Relationships: []
+      }
       prediction_leaderboard: {
         Row: {
           accuracy_percentage: number | null
