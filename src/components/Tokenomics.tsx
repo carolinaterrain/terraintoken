@@ -5,6 +5,9 @@ import { Coins, Shield, Rocket, RefreshCw, Gift } from "lucide-react";
 import { useTokenData } from "@/providers/TokenDataProvider";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DataFreshnessBadge } from "@/components/ui/data-freshness-badge";
+import { GlossaryTooltip } from "@/components/ecosystem/GlossaryTooltip";
+import { EcosystemImpactCard } from "@/components/ecosystem/EcosystemImpactCard";
+import { Link } from "react-router-dom";
 
 const Tokenomics = () => {
   const { supply, isLoading, dataSource } = useTokenData();
@@ -14,31 +17,36 @@ const Tokenomics = () => {
     icon: Coins,
     label: "Total Supply (Live)",
     value: isLoading ? "..." : supply ? `${supply.formatted.total} TRN` : "—",
-    description: "No additional minting possible"
+    description: "No additional minting possible",
+    glossaryKey: null
   },
   {
     icon: Shield,
     label: "No Taxes",
     value: "0% Fees",
-    description: "Pure transfer freedom"
+    description: "Pure transfer freedom",
+    glossaryKey: null
   },
   {
     icon: Rocket,
     label: "Fair Launch",
     value: "100% Community",
-    description: "No pre-mine or insider allocation"
+    description: "No pre-mine or insider allocation",
+    glossaryKey: null
   },
   {
     icon: Gift,
     label: "Earn By Contributing",
     value: "Upload & Earn",
-    description: "Earn 10-75+ TRN per photo upload on TerrainVision AI. Live NOW. No wallet required to start."
+    description: "Earn 10-75+ TRN per photo upload on TerrainVision AI. Live NOW. No wallet required to start.",
+    glossaryKey: null
   },
   {
     icon: RefreshCw,
     label: "Upgradeable",
     value: "Future Utility",
-    description: "Evolves with ecosystem needs"
+    description: "Evolves with ecosystem needs",
+    glossaryKey: null
   }
 ];
 
@@ -58,7 +66,7 @@ const Tokenomics = () => {
             Fixed supply, no inflation, real utility backing
           </p>
           <p className="font-body text-sm text-muted-foreground italic max-w-2xl mx-auto mb-3">
-            TRN is designed for platform sustainability—micro-burn on usage, rewards from real contribution, not minting. 
+            TRN is designed for platform sustainability—<GlossaryTooltip termKey="buyback_burn" showIcon={false}>micro-burn on usage</GlossaryTooltip>, rewards from real contribution, not minting. 
             No yield promises. No emissions from dev wallet. 💚
           </p>
           <div className="flex justify-center mt-4">
@@ -100,6 +108,25 @@ const Tokenomics = () => {
               </GlassCard>
             );
           })}
+        </div>
+
+        {/* Ecosystem Impact Card - Compact view */}
+        <div className="mt-12 flex justify-center">
+          <EcosystemImpactCard variant="compact" className="max-w-md" />
+        </div>
+
+        {/* Cross-App Navigation */}
+        <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+          <Button asChild>
+            <Link to="/transparency">
+              View Transparency Hub →
+            </Link>
+          </Button>
+          <Button variant="outline" asChild>
+            <Link to="/market">
+              Live Market Data
+            </Link>
+          </Button>
         </div>
 
         {/* Interactive Dashboard */}

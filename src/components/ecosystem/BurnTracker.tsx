@@ -4,6 +4,8 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Flame, ExternalLink, TrendingDown } from 'lucide-react';
 import { BurnData, formatTRN, getSolscanTxUrl, MAX_SUPPLY } from '@/lib/carolinaTerrainSync';
+import { GlossaryTooltip } from '@/components/ecosystem/GlossaryTooltip';
+import { PoweredByTerrainVision } from '@/components/ecosystem/PoweredByTerrainVision';
 
 interface BurnTrackerProps {
   burns: BurnData | null;
@@ -40,20 +42,29 @@ export const BurnTracker = memo(({ burns, loading, isFallback }: BurnTrackerProp
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="flex items-center gap-2">
           <Flame className="h-5 w-5 text-destructive" />
-          Burn Tracker
+          <GlossaryTooltip termKey="buyback_burn" showIcon>
+            Burn Tracker
+          </GlossaryTooltip>
         </CardTitle>
-        {isFallback && (
-          <Badge variant="outline" className="text-yellow-500 border-yellow-500/50">
-            Cached
-          </Badge>
-        )}
+        <div className="flex items-center gap-2">
+          {isFallback && (
+            <Badge variant="outline" className="text-yellow-500 border-yellow-500/50">
+              Cached
+            </Badge>
+          )}
+          <PoweredByTerrainVision showAnalysisCount={false} />
+        </div>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Burn Summary */}
         <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
-              <p className="text-sm text-muted-foreground">Total Burned</p>
+              <p className="text-sm text-muted-foreground">
+                <GlossaryTooltip termKey="buyback_burn" showIcon={false}>
+                  Total Burned
+                </GlossaryTooltip>
+              </p>
               <p className="text-2xl font-bold text-destructive">
                 {formatTRN(burns?.total_burned || 0)}
               </p>
