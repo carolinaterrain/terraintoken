@@ -156,6 +156,18 @@ const Footer = () => {
           </p>
           <div className="flex items-center justify-center flex-wrap gap-x-6 gap-y-3 mt-3">
             <Link 
+              to="/privacy-policy" 
+              className="text-xs text-muted-foreground hover:text-foreground font-medium"
+            >
+              Privacy Policy
+            </Link>
+            <Link 
+              to="/terms" 
+              className="text-xs text-muted-foreground hover:text-foreground font-medium"
+            >
+              Terms of Service
+            </Link>
+            <Link 
               to="/risk-disclosure" 
               className="text-xs text-yellow-400 hover:underline font-medium"
             >

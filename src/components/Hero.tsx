@@ -226,7 +226,7 @@ const Hero = memo(() => {
             <ContractVerificationBadge />
           </div>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons - Reduced to 2 primary actions */}
           <div className="flex flex-col w-full md:w-auto gap-3 mt-2">
             <Button
               variant="default"
@@ -241,43 +241,46 @@ const Hero = memo(() => {
             </Button>
             <div className="flex flex-col gap-1.5">
               <Button
-                variant="secondary"
+                variant="outline"
                 size="lg"
                 className="font-display font-semibold w-full md:w-64"
-                onClick={() => setWaitlistOpen(true)}
+                asChild
               >
-                <Sparkles className="mr-2 h-5 w-5" />
-                Join Waitlist
+                <a
+                  href="https://raydium.io/swap/?inputMint=sol&outputMint=2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Buy TRN
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </a>
               </Button>
               <SocialProofBadge variant="inline" className="text-center" />
             </div>
-            <Button
-              variant="outline"
-              size="lg"
-              className="font-display font-semibold w-full md:w-64"
-              asChild
-            >
-              <a
-                href="https://raydium.io/swap/?inputMint=sol&outputMint=2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
-                target="_blank"
-                rel="noopener noreferrer"
+            
+            {/* Secondary actions in a row */}
+            <div className="flex gap-2 w-full md:w-64">
+              <Button
+                variant="secondary"
+                size="sm"
+                className="font-display font-semibold flex-1"
+                onClick={() => setWaitlistOpen(true)}
               >
-                Buy TRN
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
-            </Button>
-
-            <Button
-              variant="ghost"
-              size="lg"
-              className="font-display font-semibold w-full md:w-64"
-              asChild
-            >
-              <Link to="/whitepaper">
-                <FileText className="mr-2 h-5 w-5" />
-                Whitepaper
-              </Link>
-            </Button>
+                <Sparkles className="mr-1 h-4 w-4" />
+                Waitlist
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="font-display font-semibold flex-1"
+                asChild
+              >
+                <Link to="/whitepaper">
+                  <FileText className="mr-1 h-4 w-4" />
+                  Whitepaper
+                </Link>
+              </Button>
+            </div>
           </div>
 
           {/* Community CTA */}
