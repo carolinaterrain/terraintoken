@@ -3309,6 +3309,7 @@ export type Database = {
       }
     }
     Functions: {
+      cleanup_old_analytics: { Args: never; Returns: undefined }
       cleanup_rate_limits: { Args: never; Returns: undefined }
       cleanup_stale_viewers: { Args: never; Returns: undefined }
       get_drop_remaining_supply: {
