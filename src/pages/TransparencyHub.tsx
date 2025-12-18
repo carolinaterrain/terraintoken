@@ -14,6 +14,7 @@ import { useTreasuryBalance } from "@/hooks/useTreasuryBalance";
 import { EcosystemImpactCard } from "@/components/ecosystem/EcosystemImpactCard";
 import { MonthlyReportViewer } from "@/components/ecosystem/MonthlyReportViewer";
 import { PoweredByTerrainVision } from "@/components/ecosystem/PoweredByTerrainVision";
+import { ConstraintProof } from "@/components/ecosystem/ConstraintProof";
 
 // Data source badge component
 const DataBadge = ({ type }: { type: 'live' | 'verified' | 'coming-soon' }) => {
@@ -140,6 +141,9 @@ const TransparencyHub = () => {
               </GlassCard>
             </div>
           </section>
+
+          {/* Constraint Proof Dashboard */}
+          <ConstraintProof />
 
           {/* 24h Market Metrics - LIVE */}
           <section className="mb-16">
