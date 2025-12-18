@@ -8,9 +8,11 @@ import ScrollProgress from "@/components/ScrollProgress";
 import BackToHome from "@/components/BackToHome";
 import { useTokenSupply, formatSupply } from "@/hooks/useTokenSupply";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useFeatureAnalytics } from "@/hooks/useFeatureAnalytics";
 
 const Whitepaper = () => {
   const { data: supplyData, isLoading } = useTokenSupply();
+  const { trackWhitepaperDownload } = useFeatureAnalytics();
   const contractAddress = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
   
   const sections = [
@@ -95,13 +97,22 @@ const Whitepaper = () => {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <Button size="lg" className="font-display font-semibold" asChild>
-                <a href="/Terrain_Token_TRN_Whitepaper.pdf" download>
+                <a 
+                  href="/Terrain_Token_TRN_Whitepaper.pdf" 
+                  download
+                  onClick={() => trackWhitepaperDownload('download', 'whitepaper_hero')}
+                >
                   <Download className="mr-2 h-5 w-5" />
                   Download PDF Whitepaper
                 </a>
               </Button>
               <Button size="lg" variant="outline" className="font-display font-semibold border-primary" asChild>
-                <a href="/Terrain_Token_TRN_Whitepaper.pdf" target="_blank" rel="noopener noreferrer">
+                <a 
+                  href="/Terrain_Token_TRN_Whitepaper.pdf" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  onClick={() => trackWhitepaperDownload('view', 'whitepaper_hero')}
+                >
                   <FileText className="mr-2 h-5 w-5" />
                   View in Browser
                 </a>

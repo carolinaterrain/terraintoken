@@ -23,7 +23,7 @@ export const useFeatureAnalytics = () => {
     });
   };
 
-  const trackTRNAction = (action: 'earn' | 'redeem' | 'claim', metadata?: any) => {
+  const trackTRNAction = (action: 'earn' | 'redeem' | 'claim', metadata?: Record<string, unknown>) => {
     trackEvent('trn_action', {
       action,
       ...metadata,
@@ -55,12 +55,69 @@ export const useFeatureAnalytics = () => {
     });
   };
 
+  // NEW: Whitepaper download tracking
+  const trackWhitepaperDownload = (action: 'download' | 'view', source?: string) => {
+    trackEvent('whitepaper_download', {
+      action,
+      source: source || 'whitepaper_page',
+      timestamp: Date.now()
+    });
+  };
+
+  // NEW: Buy button click tracking
+  const trackBuyButtonClick = (exchange: string, source: string) => {
+    trackEvent('buy_button_click', {
+      exchange,
+      source,
+      timestamp: Date.now()
+    });
+  };
+
+  // NEW: Wallet connection tracking
+  const trackWalletConnect = (
+    status: 'attempt' | 'success' | 'failure', 
+    walletType?: string,
+    errorMessage?: string
+  ) => {
+    trackEvent('wallet_connect', {
+      status,
+      wallet_type: walletType || 'unknown',
+      error: errorMessage,
+      timestamp: Date.now()
+    });
+  };
+
+  // NEW: Investor interest tracking
+  const trackInvestorInterest = (action: 'page_view' | 'form_start' | 'form_submit' | 'cta_click', metadata?: Record<string, unknown>) => {
+    trackEvent('investor_interest', {
+      action,
+      ...metadata,
+      timestamp: Date.now()
+    });
+  };
+
+  // NEW: Shop/cart tracking
+  const trackShopAction = (action: 'add_to_cart' | 'remove_from_cart' | 'checkout_start' | 'checkout_complete', productId?: string, value?: number) => {
+    trackEvent('shop_action', {
+      action,
+      product_id: productId,
+      value,
+      timestamp: Date.now()
+    });
+  };
+
   return {
     trackButtonClick,
     trackWaitlistJoin,
     trackTRNAction,
     trackSocialShare,
     trackVideoWatch,
-    trackNavigation
+    trackNavigation,
+    // New conversion events
+    trackWhitepaperDownload,
+    trackBuyButtonClick,
+    trackWalletConnect,
+    trackInvestorInterest,
+    trackShopAction,
   };
 };

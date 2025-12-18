@@ -1,49 +1,21 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { TRN_MINT_ADDRESS } from "../_shared/constants.ts";
+import { fetchWithRetry, isCircuitOpen, getCircuitStatus, CONFIG } from "../_shared/heliusGateway.ts";
+import { logError } from "../_shared/errorHandler.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Cache duration in milliseconds - increased to 3 minutes to reduce Helius API calls
-const CACHE_DURATION_MS = 180000;
+// Cache duration: 10 minutes (was 3 minutes)
+const CACHE_DURATION_MS = 600000;
 
 // Request deduplication - track in-flight requests
 let currentRequest: Promise<Response> | null = null;
 let lastRequestTime = 0;
-const MIN_REQUEST_INTERVAL = 10000; // 10 seconds minimum between fresh requests
-
-// Exponential backoff helper
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-async function fetchWithRetry(url: string, options: RequestInit, maxRetries = 3): Promise<Response> {
-  let lastError: Error | null = null;
-  
-  for (let attempt = 0; attempt < maxRetries; attempt++) {
-    try {
-      const response = await fetch(url, options);
-      
-      // If rate limited, wait with exponential backoff + jitter
-      if (response.status === 429) {
-        const waitTime = Math.min(1000 * Math.pow(2, attempt) + Math.random() * 1000, 30000);
-        console.log(`Rate limited, waiting ${waitTime}ms before retry ${attempt + 1}/${maxRetries}`);
-        await sleep(waitTime);
-        continue;
-      }
-      
-      return response;
-    } catch (error) {
-      lastError = error as Error;
-      const waitTime = Math.min(1000 * Math.pow(2, attempt), 10000);
-      console.log(`Request failed, waiting ${waitTime}ms before retry ${attempt + 1}/${maxRetries}`);
-      await sleep(waitTime);
-    }
-  }
-  
-  throw lastError || new Error('Max retries exceeded');
-}
+const MIN_REQUEST_INTERVAL = 30000; // 30 seconds minimum between fresh requests
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
