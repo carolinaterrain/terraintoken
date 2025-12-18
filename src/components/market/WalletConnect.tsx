@@ -253,9 +253,16 @@ export const WalletConnect = () => {
     return { tier: "🦐 Shrimp", color: "text-gray-400" };
   };
 
+  // Track wallet connect attempt when button is clicked
+  const handleWalletButtonClick = () => {
+    if (!connected) {
+      trackWalletConnect('attempt');
+    }
+  };
+
   if (!connected || !publicKey) {
     return (
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2" onClick={handleWalletButtonClick}>
         <WalletMultiButton className="!bg-primary hover:!bg-primary/90 !text-primary-foreground !rounded-lg !py-2 !px-4 !text-sm !font-medium !border-0 !shadow-md" />
         {IS_DEV && (
           <Button 
