@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient, SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { 
   fetchWithRetry, 
   isCircuitOpen, 
@@ -135,7 +135,7 @@ serve(async (req) => {
       ? Date.now() - new Date(cached.lastUpdated).getTime()
       : Infinity;
     
-    // Return cached data if less than 2 minutes old
+    // Return cached data if less than 15 minutes old
     if (cached && cacheAge < CACHE_DURATION_MS) {
       console.log('Returning cached unified token data');
       return new Response(
@@ -153,12 +153,28 @@ serve(async (req) => {
       );
     }
 
+    // Check circuit breaker before making Helius calls
+    if (await isCircuitOpen(supabase)) {
+      const status = await getCircuitStatus(supabase);
+      console.log('[fetch-unified-token-data] Circuit breaker open, returning cached data');
+      if (cached) {
+        return new Response(
+          JSON.stringify({
+            ...cached,
+            source: 'cache',
+            circuitStatus: status,
+          }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json', 'x-cache': 'stale' } }
+        );
+      }
+    }
+
     console.log('Fetching fresh unified token data...');
 
     // Fetch all data in parallel
     const [supplyData, holderData, marketData] = await Promise.all([
-      fetchTokenSupply(HELIUS_API_KEY),
-      fetchHolderData(HELIUS_API_KEY, cached),
+      fetchTokenSupply(HELIUS_API_KEY, supabase),
+      fetchHolderData(HELIUS_API_KEY, cached, supabase),
       fetchMarketData(),
     ]);
 
@@ -282,7 +298,7 @@ serve(async (req) => {
 });
 
 // Fetch token supply from Helius
-async function fetchTokenSupply(apiKey: string | undefined) {
+async function fetchTokenSupply(apiKey: string | undefined, supabase: SupabaseClient) {
   if (!apiKey) {
     console.warn('HELIUS_API_KEY not configured, using fallback supply');
     return { totalSupply: 1000000000000000, circulatingSupply: 550000000000000, decimals: 6 };
@@ -299,7 +315,7 @@ async function fetchTokenSupply(apiKey: string | undefined) {
           method: 'getTokenSupply',
           params: [TRN_MINT_ADDRESS]
         })
-      }),
+      }, supabase),
       fetchWithRetry(`https://mainnet.helius-rpc.com/?api-key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -309,7 +325,7 @@ async function fetchTokenSupply(apiKey: string | undefined) {
           method: 'getTokenLargestAccounts',
           params: [TRN_MINT_ADDRESS]
         })
-      })
+      }, supabase)
     ]);
 
     const supplyData = await supplyResponse.json();
@@ -346,7 +362,7 @@ async function fetchTokenSupply(apiKey: string | undefined) {
 }
 
 // Fetch holder data from Helius DAS with rate limit handling
-async function fetchHolderData(apiKey: string | undefined, cachedData: UnifiedTokenData | null) {
+async function fetchHolderData(apiKey: string | undefined, cachedData: UnifiedTokenData | null, supabase: SupabaseClient) {
   const defaultTiers = { shrimp: 0, crab: 0, fish: 0, dolphin: 0, shark: 0, whale: 0, humpback: 0 };
   
   // Use cached data as fallback if available
@@ -386,6 +402,7 @@ async function fetchHolderData(apiKey: string | undefined, cachedData: UnifiedTo
             },
           }),
         },
+        supabase,
         2 // Only 2 retries for holder data to avoid long waits
       );
 
@@ -452,10 +469,10 @@ async function fetchHolderData(apiKey: string | undefined, cachedData: UnifiedTo
   }
 }
 
-// Fetch market data from DexScreener
+// Fetch market data from DexScreener (no rate limiting concerns)
 async function fetchMarketData() {
   try {
-    const response = await fetchWithRetry(`${DEXSCREENER_API}/${TRN_MINT_ADDRESS}`, {});
+    const response = await fetch(`${DEXSCREENER_API}/${TRN_MINT_ADDRESS}`);
     
     if (!response.ok) {
       throw new Error(`DexScreener API error: ${response.status}`);

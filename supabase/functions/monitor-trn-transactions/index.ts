@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { TRN_MINT_ADDRESS, getWhaleTier, WHALE_TIERS } from "../_shared/constants.ts";
 import { fetchWithRetry, isCircuitOpen, getCircuitStatus, CONFIG } from "../_shared/heliusGateway.ts";
 import { logError } from "../_shared/errorHandler.ts";
@@ -37,20 +37,23 @@ serve(async (req) => {
 
   const functionName = 'monitor-trn-transactions';
 
+  const HELIUS_API_KEY = Deno.env.get('HELIUS_API_KEY');
+  const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
+  const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+
+  if (!HELIUS_API_KEY || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+    return new Response(
+      JSON.stringify({ error: 'Missing required environment variables' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+
   try {
-    const HELIUS_API_KEY = Deno.env.get('HELIUS_API_KEY');
-    const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
-    const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
-
-    if (!HELIUS_API_KEY || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-      throw new Error('Missing required environment variables');
-    }
-
-    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-
-    // Check circuit breaker first
-    if (isCircuitOpen()) {
-      const status = getCircuitStatus();
+    // Check circuit breaker first (now async and requires supabase)
+    if (await isCircuitOpen(supabase)) {
+      const status = await getCircuitStatus(supabase);
       console.log('[monitor-trn-transactions] Circuit breaker is OPEN, skipping API call');
       return new Response(
         JSON.stringify({
@@ -99,7 +102,8 @@ serve(async (req) => {
       {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-      }
+      },
+      supabase
     );
 
     if (!response.ok) {
@@ -211,6 +215,7 @@ serve(async (req) => {
         source: 'monitor-trn-transactions',
       });
 
+    const circuitStatus = await getCircuitStatus(supabase);
     console.log(`[monitor-trn-transactions] Processed ${processedCount} new purchases, created ${whaleAlertsCreated} whale alerts`);
 
     return new Response(
@@ -219,7 +224,7 @@ serve(async (req) => {
         processed: processedCount,
         whaleAlerts: whaleAlertsCreated,
         lastChecked: new Date().toISOString(),
-        circuitStatus: getCircuitStatus(),
+        circuitStatus,
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -236,12 +241,13 @@ serve(async (req) => {
       'error'
     );
 
+    const circuitStatus = await getCircuitStatus(supabase);
     return new Response(
       JSON.stringify({
         error: errorMessage,
         processed: 0,
         whaleAlerts: 0,
-        circuitStatus: getCircuitStatus(),
+        circuitStatus,
       }),
       {
         status: 200,

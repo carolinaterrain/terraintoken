@@ -1,30 +1,17 @@
 /**
  * Helius API Gateway - Centralized rate limiting, caching, and circuit breaker
- * This module handles all Helius API calls with proper error handling
+ * Uses database-backed circuit breaker state for persistence across function invocations
  */
 
-// Circuit breaker state
-interface CircuitState {
-  isOpen: boolean;
-  failureCount: number;
-  lastFailure: number;
-  nextRetryTime: number;
-}
+import { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const circuitBreaker: CircuitState = {
-  isOpen: false,
-  failureCount: 0,
-  lastFailure: 0,
-  nextRetryTime: 0,
-};
-
-// Configuration
+// Circuit breaker configuration
 const CONFIG = {
   maxFailures: 3,
   resetTimeout: 60000, // 1 minute
   cacheDuration: {
     transactions: 600000,  // 10 minutes
-    holders: 600000,       // 10 minutes
+    holders: 900000,       // 15 minutes
     unified: 900000,       // 15 minutes
   },
   retryConfig: {
@@ -33,6 +20,16 @@ const CONFIG = {
     maxDelay: 30000,
   },
 };
+
+// Circuit breaker state interface (stored in database)
+interface CircuitState {
+  isOpen: boolean;
+  failureCount: number;
+  lastFailure: number;
+  nextRetryTime: number;
+}
+
+const CIRCUIT_BREAKER_KEY = 'helius-circuit-breaker';
 
 /**
  * Sleep helper with optional jitter
@@ -52,62 +49,138 @@ export const getBackoffDelay = (attempt: number, baseDelay = 1000, maxDelay = 30
 };
 
 /**
+ * Get circuit breaker state from database
+ */
+export async function getCircuitState(supabase: SupabaseClient): Promise<CircuitState> {
+  try {
+    const { data, error } = await supabase
+      .from('holder_count_cache')
+      .select('*')
+      .eq('id', CIRCUIT_BREAKER_KEY)
+      .single();
+
+    if (error || !data) {
+      // Return default closed state if not found
+      return {
+        isOpen: false,
+        failureCount: 0,
+        lastFailure: 0,
+        nextRetryTime: 0,
+      };
+    }
+
+    // Parse state from the source field (JSON string)
+    const state = JSON.parse(data.source || '{}');
+    return {
+      isOpen: state.isOpen || false,
+      failureCount: state.failureCount || 0,
+      lastFailure: state.lastFailure || 0,
+      nextRetryTime: state.nextRetryTime || 0,
+    };
+  } catch (e) {
+    console.error('[HeliusGateway] Error reading circuit state:', e);
+    return {
+      isOpen: false,
+      failureCount: 0,
+      lastFailure: 0,
+      nextRetryTime: 0,
+    };
+  }
+}
+
+/**
+ * Save circuit breaker state to database
+ */
+async function saveCircuitState(supabase: SupabaseClient, state: CircuitState): Promise<void> {
+  try {
+    await supabase
+      .from('holder_count_cache')
+      .upsert({
+        id: CIRCUIT_BREAKER_KEY,
+        holder_count: state.failureCount, // Store failure count in holder_count field
+        last_updated: new Date().toISOString(),
+        source: JSON.stringify(state), // Store full state as JSON
+      });
+  } catch (e) {
+    console.error('[HeliusGateway] Error saving circuit state:', e);
+  }
+}
+
+/**
  * Check if circuit breaker should allow request
  */
-export const isCircuitOpen = (): boolean => {
-  if (!circuitBreaker.isOpen) return false;
+export async function isCircuitOpen(supabase: SupabaseClient): Promise<boolean> {
+  const state = await getCircuitState(supabase);
   
-  // Check if we should try again
-  if (Date.now() >= circuitBreaker.nextRetryTime) {
+  if (!state.isOpen) return false;
+  
+  // Check if we should try again (half-open state)
+  if (Date.now() >= state.nextRetryTime) {
     console.log('[HeliusGateway] Circuit breaker half-open, allowing test request');
     return false;
   }
   
+  console.log(`[HeliusGateway] Circuit breaker OPEN until ${new Date(state.nextRetryTime).toISOString()}`);
   return true;
-};
+}
 
 /**
- * Record a successful request
+ * Record a successful request - reset circuit breaker
  */
-export const recordSuccess = (): void => {
-  circuitBreaker.failureCount = 0;
-  circuitBreaker.isOpen = false;
+export async function recordSuccess(supabase: SupabaseClient): Promise<void> {
+  const newState: CircuitState = {
+    isOpen: false,
+    failureCount: 0,
+    lastFailure: 0,
+    nextRetryTime: 0,
+  };
+  await saveCircuitState(supabase, newState);
   console.log('[HeliusGateway] Request successful, circuit breaker reset');
-};
+}
 
 /**
- * Record a failed request
+ * Record a failed request - increment failure count or open circuit
  */
-export const recordFailure = (): void => {
-  circuitBreaker.failureCount++;
-  circuitBreaker.lastFailure = Date.now();
+export async function recordFailure(supabase: SupabaseClient): Promise<void> {
+  const state = await getCircuitState(supabase);
   
-  if (circuitBreaker.failureCount >= CONFIG.maxFailures) {
-    circuitBreaker.isOpen = true;
-    circuitBreaker.nextRetryTime = Date.now() + CONFIG.resetTimeout;
-    console.log(`[HeliusGateway] Circuit breaker OPEN after ${circuitBreaker.failureCount} failures. Next retry at ${new Date(circuitBreaker.nextRetryTime).toISOString()}`);
+  state.failureCount++;
+  state.lastFailure = Date.now();
+  
+  if (state.failureCount >= CONFIG.maxFailures) {
+    state.isOpen = true;
+    state.nextRetryTime = Date.now() + CONFIG.resetTimeout;
+    console.log(`[HeliusGateway] Circuit breaker OPEN after ${state.failureCount} failures. Next retry at ${new Date(state.nextRetryTime).toISOString()}`);
+  } else {
+    console.log(`[HeliusGateway] Failure ${state.failureCount}/${CONFIG.maxFailures}`);
   }
-};
+  
+  await saveCircuitState(supabase, state);
+}
 
 /**
- * Get current circuit breaker status
+ * Get current circuit breaker status (for diagnostics)
  */
-export const getCircuitStatus = (): { isOpen: boolean; failureCount: number; nextRetryTime: number } => ({
-  isOpen: circuitBreaker.isOpen,
-  failureCount: circuitBreaker.failureCount,
-  nextRetryTime: circuitBreaker.nextRetryTime,
-});
+export async function getCircuitStatus(supabase: SupabaseClient): Promise<{ isOpen: boolean; failureCount: number; nextRetryTime: number }> {
+  const state = await getCircuitState(supabase);
+  return {
+    isOpen: state.isOpen,
+    failureCount: state.failureCount,
+    nextRetryTime: state.nextRetryTime,
+  };
+}
 
 /**
- * Fetch with retry and exponential backoff
+ * Fetch with retry and exponential backoff - uses database-backed circuit breaker
  */
 export async function fetchWithRetry(
   url: string, 
   options: RequestInit, 
+  supabase: SupabaseClient,
   maxRetries = CONFIG.retryConfig.maxRetries
 ): Promise<Response> {
   // Check circuit breaker
-  if (isCircuitOpen()) {
+  if (await isCircuitOpen(supabase)) {
     throw new Error('Circuit breaker is open - too many recent failures');
   }
 
@@ -121,7 +194,7 @@ export async function fetchWithRetry(
       if (response.status === 429) {
         const waitTime = getBackoffDelay(attempt, CONFIG.retryConfig.baseDelay, CONFIG.retryConfig.maxDelay);
         console.log(`[HeliusGateway] Rate limited (429), waiting ${waitTime}ms before retry ${attempt + 1}/${maxRetries}`);
-        recordFailure();
+        await recordFailure(supabase);
         await sleep(waitTime);
         continue;
       }
@@ -130,17 +203,17 @@ export async function fetchWithRetry(
       if (response.status >= 500) {
         const waitTime = getBackoffDelay(attempt);
         console.log(`[HeliusGateway] Server error (${response.status}), waiting ${waitTime}ms before retry ${attempt + 1}/${maxRetries}`);
-        recordFailure();
+        await recordFailure(supabase);
         await sleep(waitTime);
         continue;
       }
       
       // Success
-      recordSuccess();
+      await recordSuccess(supabase);
       return response;
     } catch (error) {
       lastError = error as Error;
-      recordFailure();
+      await recordFailure(supabase);
       
       const waitTime = getBackoffDelay(attempt);
       console.log(`[HeliusGateway] Request failed: ${lastError.message}, waiting ${waitTime}ms before retry ${attempt + 1}/${maxRetries}`);
