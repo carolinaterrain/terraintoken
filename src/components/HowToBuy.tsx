@@ -2,10 +2,16 @@ import { Button } from "@/components/ui/button";
 import { Wallet, Coins, Rocket, TrendingUp, ExternalLink, QrCode } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
+import { useFeatureAnalytics } from "@/hooks/useFeatureAnalytics";
 
 const HowToBuy = () => {
   const [showQR, setShowQR] = useState(false);
+  const { trackBuyButtonClick } = useFeatureAnalytics();
   const raydiumUrl = "https://raydium.io/swap/?inputMint=sol&outputMint=2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+  
+  const handleBuyClick = () => {
+    trackBuyButtonClick('raydium', 'how_to_buy_section');
+  };
   
   const steps = [
     {
@@ -89,7 +95,12 @@ const HowToBuy = () => {
                     className="w-full group-hover:scale-105 transition-transform"
                     asChild
                   >
-                    <a href={raydiumUrl} target="_blank" rel="noopener noreferrer">
+                    <a 
+                      href={raydiumUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      onClick={handleBuyClick}
+                    >
                       Buy TRN Now <ExternalLink className="ml-2 w-4 h-4" />
                     </a>
                   </Button>

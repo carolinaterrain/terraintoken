@@ -1,11 +1,17 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
 import { TRN_MINT_ADDRESS, getWhaleTier, WHALE_TIERS } from "../_shared/constants.ts";
+import { fetchWithRetry, isCircuitOpen, getCircuitStatus, CONFIG } from "../_shared/heliusGateway.ts";
+import { logError } from "../_shared/errorHandler.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+// Cache duration: 10 minutes (was ~2 minutes via cron)
+const CACHE_DURATION_MS = 600000;
+const CACHE_KEY = 'monitor-trn-transactions-last-run';
 
 interface Transaction {
   signature: string;
@@ -29,6 +35,8 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const functionName = 'monitor-trn-transactions';
+
   try {
     const HELIUS_API_KEY = Deno.env.get('HELIUS_API_KEY');
     const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
@@ -40,10 +48,53 @@ serve(async (req) => {
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-    console.log('Monitoring TRN transactions...');
+    // Check circuit breaker first
+    if (isCircuitOpen()) {
+      const status = getCircuitStatus();
+      console.log('[monitor-trn-transactions] Circuit breaker is OPEN, skipping API call');
+      return new Response(
+        JSON.stringify({
+          success: false,
+          skipped: true,
+          reason: 'circuit_breaker_open',
+          nextRetryTime: new Date(status.nextRetryTime).toISOString(),
+          processed: 0,
+          whaleAlerts: 0,
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
-    // Fetch recent transactions from Helius
-    const response = await fetch(
+    // Check cache to avoid redundant API calls
+    const { data: cacheData } = await supabase
+      .from('holder_count_cache')
+      .select('last_updated')
+      .eq('id', CACHE_KEY)
+      .single();
+
+    if (cacheData?.last_updated) {
+      const cacheAge = Date.now() - new Date(cacheData.last_updated).getTime();
+      if (cacheAge < CACHE_DURATION_MS) {
+        console.log(`[monitor-trn-transactions] Cache still valid (${Math.floor(cacheAge / 1000)}s old), skipping`);
+        return new Response(
+          JSON.stringify({
+            success: true,
+            skipped: true,
+            reason: 'cache_valid',
+            cacheAge: Math.floor(cacheAge / 1000),
+            processed: 0,
+            whaleAlerts: 0,
+            lastChecked: cacheData.last_updated,
+          }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+    }
+
+    console.log('[monitor-trn-transactions] Fetching TRN transactions with circuit breaker protection...');
+
+    // Fetch recent transactions from Helius with retry and circuit breaker
+    const response = await fetchWithRetry(
       `https://api.helius.xyz/v0/addresses/${TRN_MINT_ADDRESS}/transactions?api-key=${HELIUS_API_KEY}&limit=50`,
       {
         method: 'GET',
@@ -52,11 +103,12 @@ serve(async (req) => {
     );
 
     if (!response.ok) {
-      throw new Error(`Helius API error: ${response.status}`);
+      const errorText = await response.text();
+      throw new Error(`Helius API error: ${response.status} - ${errorText}`);
     }
 
     const transactions: Transaction[] = await response.json();
-    console.log(`Fetched ${transactions.length} transactions`);
+    console.log(`[monitor-trn-transactions] Fetched ${transactions.length} transactions`);
 
     let processedCount = 0;
     let whaleAlertsCreated = 0;
@@ -69,7 +121,7 @@ serve(async (req) => {
         .eq('transaction_signature', tx.signature)
         .maybeSingle();
 
-      if (existingTx) continue; // Skip already processed
+      if (existingTx) continue;
 
       // Find TRN transfer in token transfers
       const trnTransfer = tx.tokenTransfers?.find(
@@ -83,7 +135,7 @@ serve(async (req) => {
 
       // Determine if this is a buy (native balance decreased = user spent SOL)
       const isBuy = (tx.nativeBalanceChange || 0) < 0;
-      if (!isBuy) continue; // Only track purchases
+      if (!isBuy) continue;
 
       // Determine purchase tier
       let purchaseTier = 'shrimp';
@@ -98,7 +150,7 @@ serve(async (req) => {
         .insert({
           wallet_address: walletAddress,
           amount_trn: amount,
-          amount_sol: Math.abs(tx.nativeBalanceChange || 0) / 1e9, // Convert lamports to SOL
+          amount_sol: Math.abs(tx.nativeBalanceChange || 0) / 1e9,
           purchase_tier: purchaseTier,
           transaction_signature: tx.signature,
           metadata: {
@@ -108,7 +160,7 @@ serve(async (req) => {
         });
 
       if (purchaseError) {
-        console.error('Error inserting purchase:', purchaseError);
+        console.error('[monitor-trn-transactions] Error inserting purchase:', purchaseError);
         continue;
       }
 
@@ -119,7 +171,6 @@ serve(async (req) => {
       if (whaleTier) {
         const tierInfo = WHALE_TIERS[whaleTier];
         
-        // Check if alert already exists
         const { data: existingAlert } = await supabase
           .from('whale_alerts')
           .select('id')
@@ -144,13 +195,23 @@ serve(async (req) => {
 
           if (!alertError) {
             whaleAlertsCreated++;
-            console.log(`🐋 Whale alert: ${tierInfo.emoji} ${tierInfo.name} - ${amount.toLocaleString()} TRN`);
+            console.log(`[monitor-trn-transactions] 🐋 Whale alert: ${tierInfo.emoji} ${tierInfo.name} - ${amount.toLocaleString()} TRN`);
           }
         }
       }
     }
 
-    console.log(`Processed ${processedCount} new purchases, created ${whaleAlertsCreated} whale alerts`);
+    // Update cache timestamp
+    await supabase
+      .from('holder_count_cache')
+      .upsert({
+        id: CACHE_KEY,
+        holder_count: processedCount,
+        last_updated: new Date().toISOString(),
+        source: 'monitor-trn-transactions',
+      });
+
+    console.log(`[monitor-trn-transactions] Processed ${processedCount} new purchases, created ${whaleAlertsCreated} whale alerts`);
 
     return new Response(
       JSON.stringify({
@@ -158,22 +219,32 @@ serve(async (req) => {
         processed: processedCount,
         whaleAlerts: whaleAlertsCreated,
         lastChecked: new Date().toISOString(),
+        circuitStatus: getCircuitStatus(),
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       }
     );
   } catch (error) {
-    console.error('Error monitoring transactions:', error);
+    console.error('[monitor-trn-transactions] Error:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    
+    // Log error to database
+    await logError(
+      { functionName, action: 'monitor_transactions' },
+      error instanceof Error ? error : new Error(errorMessage),
+      'error'
+    );
+
     return new Response(
       JSON.stringify({
         error: errorMessage,
         processed: 0,
         whaleAlerts: 0,
+        circuitStatus: getCircuitStatus(),
       }),
       {
-        status: 200, // Return 200 with error details for monitoring
+        status: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       }
     );

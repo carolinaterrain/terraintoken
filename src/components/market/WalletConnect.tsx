@@ -8,24 +8,30 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { getSolanaRpcEndpoint } from "@/lib/solanaRpc";
+import { useFeatureAnalytics } from "@/hooks/useFeatureAnalytics";
 
 const TRN_MINT = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 const IS_DEV = import.meta.env.DEV;
 
 export const WalletConnect = () => {
-  const { publicKey, connected, disconnect } = useWallet();
+  const { publicKey, connected, disconnect, wallet } = useWallet();
   const [trnBalance, setTrnBalance] = useState<number>(0);
   const [solBalance, setSOLBalance] = useState<number>(0);
   const [showDebug, setShowDebug] = useState(false);
   const { toast } = useToast();
+  const { trackWalletConnect } = useFeatureAnalytics();
 
   useEffect(() => {
     const handleConnection = async () => {
       if (connected && publicKey) {
         const address = publicKey.toBase58();
+        const walletName = wallet?.adapter?.name || 'unknown';
         console.log('[WalletConnect] Connected:', address);
         
-        // Track connection first
+        // Track wallet connect success
+        trackWalletConnect('success', walletName);
+        
+        // Track connection to database
         const trackingSuccess = await trackWalletConnection(address);
         
         // Then fetch balances
@@ -49,7 +55,7 @@ export const WalletConnect = () => {
     };
     
     handleConnection();
-  }, [connected, publicKey]);
+  }, [connected, publicKey, wallet, trackWalletConnect]);
 
   const trackWalletConnection = async (address: string): Promise<boolean> => {
     console.log('[WalletConnect] === START TRACKING ===');
