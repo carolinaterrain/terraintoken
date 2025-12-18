@@ -1,32 +1,78 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { TRN_MINT_ADDRESS } from "../_shared/constants.ts";
+import { 
+  fetchWithRetry, 
+  isCircuitOpen, 
+  getCircuitStatus,
+  isCacheValid,
+  CONFIG 
+} from "../_shared/heliusGateway.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Cache duration: 15 minutes between snapshots
+const SNAPSHOT_CACHE_MS = 15 * 60 * 1000;
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const supabase = createClient(
+    Deno.env.get('SUPABASE_URL') ?? '',
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+  );
+
   try {
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
+    // Check if we have a recent snapshot (avoid redundant API calls)
+    const today = new Date().toISOString().split('T')[0];
+    const { data: existingSnapshot } = await supabase
+      .from('holder_snapshots')
+      .select('created_at, total_holders')
+      .eq('snapshot_date', today)
+      .single();
+
+    if (existingSnapshot && isCacheValid(existingSnapshot.created_at, SNAPSHOT_CACHE_MS)) {
+      console.log(`[collect-holder-snapshot] Recent snapshot exists (${existingSnapshot.total_holders} holders), skipping Helius call`);
+      return new Response(
+        JSON.stringify({
+          success: true,
+          date: today,
+          holders: existingSnapshot.total_holders,
+          source: 'cache',
+          message: 'Using recent snapshot',
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Check circuit breaker before making Helius calls
+    if (await isCircuitOpen(supabase)) {
+      const status = await getCircuitStatus(supabase);
+      console.log(`[collect-holder-snapshot] Circuit breaker open, returning cached data`);
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: 'Circuit breaker open',
+          circuitStatus: status,
+          holders: existingSnapshot?.total_holders || 0,
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
     const HELIUS_API_KEY = Deno.env.get('HELIUS_API_KEY');
-
     if (!HELIUS_API_KEY) {
       throw new Error('HELIUS_API_KEY is not configured');
     }
 
-    console.log('Fetching TRN holder data using paginated getTokenAccounts...');
+    console.log('[collect-holder-snapshot] Fetching TRN holder data using paginated getTokenAccounts...');
 
-    // Paginate through ALL token accounts
+    // Paginate through ALL token accounts with rate limiting protection
     const holders: Array<{ address: string; balance: number }> = [];
     let cursor: string | undefined;
     let pageCount = 0;
@@ -34,7 +80,7 @@ serve(async (req) => {
     const PAGE_SIZE = 1000;
 
     do {
-      const response = await fetch(
+      const response = await fetchWithRetry(
         `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`,
         {
           method: 'POST',
@@ -52,7 +98,8 @@ serve(async (req) => {
               },
             },
           }),
-        }
+        },
+        supabase
       );
 
       if (!response.ok) {
@@ -110,8 +157,6 @@ serve(async (req) => {
       return acc;
     }, {} as Record<string, number>);
 
-    const today = new Date().toISOString().split('T')[0];
-
     console.log(`Saving snapshot for ${today} with ${holders.length} holders`);
 
     // Upsert snapshot (update if exists, insert if not)
@@ -148,6 +193,7 @@ serve(async (req) => {
         success: true,
         date: today,
         holders: holders.length,
+        source: 'live',
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -156,10 +202,23 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in collect-holder-snapshot:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    
+    // Try to return cached data on error
+    const { data: cachedSnapshot } = await supabase
+      .from('holder_snapshots')
+      .select('total_holders, snapshot_date')
+      .order('snapshot_date', { ascending: false })
+      .limit(1)
+      .single();
+
     return new Response(
-      JSON.stringify({ error: errorMessage }),
+      JSON.stringify({ 
+        error: errorMessage,
+        holders: cachedSnapshot?.total_holders || 0,
+        source: 'fallback',
+      }),
       {
-        status: 500,
+        status: 200, // Return 200 with error info so frontend can handle gracefully
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       }
     );

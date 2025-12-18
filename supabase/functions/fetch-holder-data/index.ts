@@ -29,12 +29,12 @@ serve(async (req) => {
     return currentRequest;
   }
 
+  const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
+  const SUPABASE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
   try {
     const HELIUS_API_KEY = Deno.env.get('HELIUS_API_KEY');
-    const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
-    const SUPABASE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    
-    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
     // Check unified cache first
     const { data: cached } = await supabase
@@ -47,7 +47,7 @@ serve(async (req) => {
       ? Date.now() - new Date(cached.last_updated).getTime()
       : Infinity;
     
-    // Return cached data if less than 5 minutes old
+    // Return cached data if less than 10 minutes old
     if (cached && cacheAge < CACHE_DURATION_MS) {
       console.log('Returning cached unified holder data');
       const cachedData = cached.source ? JSON.parse(cached.source) : null;
@@ -64,6 +64,24 @@ serve(async (req) => {
             'x-cache': 'hit',
             'x-cache-age': Math.floor(cacheAge / 1000).toString(),
           } }
+        );
+      }
+    }
+
+    // Check circuit breaker before making Helius calls
+    if (await isCircuitOpen(supabase)) {
+      const status = await getCircuitStatus(supabase);
+      console.log('[fetch-holder-data] Circuit breaker open, returning cached data');
+      if (cached?.source) {
+        const staleData = JSON.parse(cached.source);
+        return new Response(
+          JSON.stringify({
+            ...staleData,
+            source: 'cache',
+            lastUpdated: cached.last_updated,
+            circuitStatus: status,
+          }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json', 'x-cache': 'stale' } }
         );
       }
     }
@@ -133,7 +151,8 @@ serve(async (req) => {
               },
             },
           }),
-        }
+        },
+        supabase
       );
 
       if (!response.ok) {
@@ -224,7 +243,7 @@ serve(async (req) => {
       percentage: totalSupply > 0 ? parseFloat(((h.balance / totalSupply) * 100).toFixed(2)) : 0,
     }));
 
-    const now = new Date().toISOString();
+    const nowStr = new Date().toISOString();
     
     const responseData = {
       holderCount: holders.length, // For backwards compatibility with useLiveHolderCount
@@ -240,7 +259,7 @@ serve(async (req) => {
       .upsert({
         id: 'unified',
         holder_count: holders.length,
-        last_updated: now,
+        last_updated: nowStr,
         source: JSON.stringify(responseData),
       });
 
@@ -251,13 +270,13 @@ serve(async (req) => {
         {
           id: 'current',
           holder_count: holders.length,
-          last_updated: now,
+          last_updated: nowStr,
           source: 'helius-das-unified',
         },
         {
           id: 'holder_distribution',
           holder_count: holders.length,
-          last_updated: now,
+          last_updated: nowStr,
           source: JSON.stringify(responseData),
         },
       ]);
@@ -268,7 +287,7 @@ serve(async (req) => {
       JSON.stringify({
         ...responseData,
         source: 'helius-das',
-        lastUpdated: now,
+        lastUpdated: nowStr,
       }),
       {
         headers: { 
@@ -285,10 +304,6 @@ serve(async (req) => {
     
     // Try to return cached data on error
     try {
-      const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
-      const SUPABASE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-      const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-      
       const { data: cached } = await supabase
         .from('holder_count_cache')
         .select('*')
