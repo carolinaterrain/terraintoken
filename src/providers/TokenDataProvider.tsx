@@ -149,8 +149,8 @@ export const TokenDataProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
-  // Smart polling - 60 seconds for market data
-  const pollingInterval = useSmartPolling(60000);
+  // Smart polling - 120 seconds (backend caches for 15 min, no need to poll faster)
+  const pollingInterval = useSmartPolling(120000);
 
   // Single unified query for all token data
   const { data, isLoading, error, refetch } = useQuery({
