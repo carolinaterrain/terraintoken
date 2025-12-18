@@ -16,7 +16,7 @@ export const ProofSection = () => {
     {
       icon: Shield,
       title: "Smart Contract Verified",
-      description: "Audited and verified on Solscan",
+      description: "Verified on Solscan (third-party audit pending)",
       link: "https://solscan.io/token/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump",
       color: "text-chart-1"
     },
@@ -117,7 +117,7 @@ export const ProofSection = () => {
             </div>
             <p className="text-muted-foreground">
               Every claim we make is backed by verifiable data. Our equipment is cataloged, our licenses are public, 
-              our smart contracts are audited, and our financials are published monthly. TRN isn't built on promises—
+              our smart contracts are verified on-chain, and our financials are published monthly. TRN isn't built on promises—
               it's built on proof.
             </p>
           </GlassCard>

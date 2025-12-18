@@ -2,6 +2,7 @@ import { Suspense, lazy } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const QuickStartGuide = lazy(() => import("@/components/QuickStartGuide").then(m => ({ default: m.QuickStartGuide })));
+const LiveUsageStats = lazy(() => import("@/components/LiveUsageStats").then(m => ({ default: m.LiveUsageStats })));
 const EcosystemProof = lazy(() => import("@/components/ecosystem/EcosystemProof").then(m => ({ default: m.EcosystemProof })));
 const HowToBuy = lazy(() => import("@/components/HowToBuy"));
 const SocialProofWall = lazy(() => import("@/components/SocialProofWall").then(m => ({ default: m.SocialProofWall })));
@@ -21,6 +22,7 @@ export const ResearchModeContent = () => {
   return (
     <>
       <Suspense fallback={<LoadingSection />}><QuickStartGuide /></Suspense>
+      <Suspense fallback={<LoadingSection />}><LiveUsageStats /></Suspense>
       <Suspense fallback={<LoadingSection />}><EcosystemProof /></Suspense>
       <Suspense fallback={<LoadingSection />}><RealUtility /></Suspense>
       <Suspense fallback={<LoadingSection />}><HowToBuy /></Suspense>

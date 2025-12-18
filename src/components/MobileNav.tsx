@@ -40,10 +40,10 @@ const MobileNav = () => {
   ];
 
   const moreItems = [
-    { path: "/drops", label: "Drops", icon: Shirt },
-    { path: "/team", label: "About", icon: Users },
-    { path: "/philanthropic-fund", label: "Philanthropic Fund", icon: Heart },
     { path: "/whitepaper", label: "Whitepaper", icon: FileText },
+    { path: "/drops", label: "Drops", icon: Shirt },
+    { path: "/team", label: "About Us", icon: Users },
+    { path: "/philanthropic-fund", label: "Philanthropic Fund", icon: Heart },
     { path: "/transparency", label: "Transparency Hub", icon: Shield },
     { path: "/press", label: "Press Kit", icon: Newspaper },
     { path: "/updates", label: "Blog", icon: BookOpen },
