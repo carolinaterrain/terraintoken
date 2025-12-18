@@ -1,5 +1,13 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { 
+  fetchWithRetry, 
+  isCircuitOpen, 
+  getCircuitStatus,
+  isCacheValid,
+  getCacheAgeSeconds,
+  CONFIG 
+} from "../_shared/heliusGateway.ts";
 
 const TRN_MINT_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 const DEXSCREENER_API = "https://api.dexscreener.com/latest/dex/tokens";
@@ -9,8 +17,8 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Cache duration: 5 minutes for fresh data (reduces Helius rate limiting)
-const CACHE_DURATION_MS = 5 * 60 * 1000;
+// Cache duration: 15 minutes for fresh data (reduces Helius rate limiting significantly)
+const CACHE_DURATION_MS = 15 * 60 * 1000;
 
 interface UnifiedTokenData {
   totalSupply: number;
@@ -36,48 +44,6 @@ interface UnifiedTokenData {
   lastUpdated: string;
   source: 'live' | 'cache' | 'fallback';
   cacheAge?: number;
-}
-
-// Helper: delay for retry with jitter
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-// Calculate exponential backoff with jitter
-const getBackoffDelay = (attempt: number): number => {
-  const baseDelay = Math.min(1000 * Math.pow(2, attempt), 10000);
-  const jitter = Math.random() * 1000;
-  return baseDelay + jitter;
-};
-
-// Helper: fetch with retry and rate limit handling
-async function fetchWithRetry(
-  url: string, 
-  options: RequestInit, 
-  maxRetries: number = 3
-): Promise<Response> {
-  let lastError: Error | null = null;
-  
-  for (let attempt = 0; attempt < maxRetries; attempt++) {
-    try {
-      const response = await fetch(url, options);
-      
-      // Handle rate limiting (429)
-      if (response.status === 429) {
-        const backoffDelay = getBackoffDelay(attempt);
-        console.warn(`Rate limited (429), waiting ${Math.round(backoffDelay)}ms before retry ${attempt + 1}/${maxRetries}`);
-        await delay(backoffDelay);
-        continue;
-      }
-      
-      return response;
-    } catch (error) {
-      lastError = error as Error;
-      const backoffDelay = getBackoffDelay(attempt);
-      console.warn(`Fetch attempt ${attempt + 1} failed, retrying in ${Math.round(backoffDelay)}ms:`, error);
-      await delay(backoffDelay);
-    }
-  }
-  
-  throw lastError || new Error('Max retries exceeded');
 }
 
 serve(async (req) => {
