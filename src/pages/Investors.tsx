@@ -1,4 +1,5 @@
 import { InvestorHero } from "@/components/investor/InvestorHero";
+import { BusinessCredentials } from "@/components/investor/BusinessCredentials";
 import { EcosystemMetrics } from "@/components/investor/EcosystemMetrics";
 import { ValueGeneration } from "@/components/investor/ValueGeneration";
 import { InvestmentTiers } from "@/components/investor/InvestmentTiers";
@@ -7,7 +8,6 @@ import { InvestorCTA } from "@/components/investor/InvestorCTA";
 import { InvestorInterestForm } from "@/components/investor/InvestorInterestForm";
 import { StickyNavigation } from "@/components/investor/StickyNavigation";
 import { EarlyStageDisclaimer } from "@/components/investor/EarlyStageDisclaimer";
-import { ProtocolComparison } from "@/components/investor/ProtocolComparison";
 import { GlassCard } from "@/components/ui/glass-card";
 import Roadmap from "@/components/Roadmap";
 import { motion } from "framer-motion";
@@ -22,14 +22,14 @@ const Investors = () => {
   return (
     <>
       <Helmet>
-        <title>TRN Investors - Ground-Truth Oracle for the Physical World</title>
+        <title>TRN Investors - Utility Token Backed by Real Operations</title>
         <meta
           name="description"
-          content="TRN powers the Data-Compute-Energy Nexus of Web3. The first ground-truth oracle for terrain intelligence, connecting DePIN, ReFi, and DeSci ecosystems."
+          content="TRN is powered by Carolina Terrain LLC — a licensed NC drainage contractor with $2M+ annual revenue. Real business backing, not just promises."
         />
-        <meta name="keywords" content="TRN investment, terrain token, DePIN, ReFi, DeSci, Web3 infrastructure, ground-truth oracle" />
-        <meta property="og:title" content="TRN - The Data-Compute-Energy Nexus of Web3" />
-        <meta property="og:description" content="First ground-truth oracle for the physical world. Real terrain data powering AI, compute, and climate infrastructure." />
+        <meta name="keywords" content="TRN investment, terrain token, real utility, licensed contractor, Carolina Terrain" />
+        <meta property="og:title" content="TRN - Real Contractors. Real Revenue. Real Token." />
+        <meta property="og:description" content="Utility token backed by Carolina Terrain LLC — licensed NC contractor with $2M+ revenue, real equipment, and verifiable credentials." />
       </Helmet>
 
       <SkipToContent />
@@ -41,30 +41,30 @@ const Investors = () => {
       <EarlyStageDisclaimer />
 
       <main id="main-content" className="min-h-screen">
-        {/* 1. Hero */}
+        {/* 1. Hero - Now business-focused */}
         <section id="hero">
           <InvestorHero />
         </section>
 
-        {/* 2. Protocol Comparison */}
-        <ProtocolComparison />
+        {/* 2. Business Credentials - NEW - Lead with real credentials */}
+        <BusinessCredentials />
 
         {/* 3. Live Metrics */}
         <section id="ecosystem-metrics">
           <EcosystemMetrics />
         </section>
 
-        {/* 5. Value Engine */}
+        {/* 4. Value Engine */}
         <section id="value-generation">
           <ValueGeneration />
         </section>
 
-        {/* 6. Investment Tiers */}
+        {/* 5. Investment Tiers */}
         <section id="investment-tiers">
           <InvestmentTiers />
         </section>
 
-        {/* 7. Roadmap */}
+        {/* 6. Roadmap */}
         <section id="roadmap" className="py-20">
           <div className="container mx-auto">
             <motion.div
@@ -84,17 +84,17 @@ const Investors = () => {
           </div>
         </section>
 
-        {/* 8. Trust & Proof */}
+        {/* 7. Trust & Proof */}
         <section id="proof-section">
           <ProofSection />
         </section>
 
-        {/* 9. Take Action (CTA) */}
+        {/* 8. Take Action (CTA) */}
         <section id="investor-cta">
           <InvestorCTA />
         </section>
 
-        {/* 10. Investor Interest Form */}
+        {/* 9. Investor Interest Form */}
         <InvestorInterestForm />
 
         {/* Social Share Section */}
@@ -103,8 +103,8 @@ const Investors = () => {
             <p className="text-muted-foreground mb-4">Know someone who should see this?</p>
             <div className="flex justify-center">
               <SocialShareButtons 
-                title="TRN - The Data-Compute-Energy Nexus of Web3"
-                description="First ground-truth oracle for the physical world. Real terrain data powering AI, compute, and climate infrastructure."
+                title="TRN - Real Contractors. Real Revenue. Real Token."
+                description="Utility token backed by Carolina Terrain LLC — licensed NC contractor with $2M+ revenue, real equipment, and verifiable credentials."
               />
             </div>
           </div>

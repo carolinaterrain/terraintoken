@@ -12,7 +12,7 @@ export const TrustDashboard = () => {
   const checks = [
     { label: "Real Business Revenue", passed: true, score: 20 },
     { label: "Team Doxxed & Verified", passed: true, score: 20 },
-    { label: "Contract Audited", passed: true, score: 15 },
+    { label: "Contract Verified (Solscan)", passed: true, score: 15, note: "Third-party audit pending" },
     { label: "Liquidity Locked", passed: true, score: 15 },
     { label: "No Hidden Mints", passed: true, score: 15 },
     { label: "Active Development", passed: true, score: 15 },
@@ -111,7 +111,12 @@ export const TrustDashboard = () => {
                 key={index}
                 className="flex items-center justify-between py-2 border-b border-primary/10 last:border-0"
               >
-                <span className="text-xs text-muted-foreground">{check.label}</span>
+                <div className="flex flex-col">
+                  <span className="text-xs text-muted-foreground">{check.label}</span>
+                  {check.note && (
+                    <span className="text-[10px] text-yellow-500/80">{check.note}</span>
+                  )}
+                </div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-medium text-foreground">{check.score}%</span>
                   {check.passed && <CheckCircle2 className="w-4 h-4 text-green-500" />}

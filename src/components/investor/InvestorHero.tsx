@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Database, Cpu, Leaf } from "lucide-react";
+import { Shield, Award, TrendingUp, Truck } from "lucide-react";
 import { motion } from "framer-motion";
 
 export const InvestorHero = () => {
@@ -27,39 +27,41 @@ export const InvestorHero = () => {
             transition={{ delay: 0.2 }}
           >
             <Badge variant="secondary" className="mb-4 text-sm px-4 py-2">
-              <Database className="w-4 h-4 mr-2" />
-              First Ground-Truth Oracle for the Physical World
+              <Shield className="w-4 h-4 mr-2" />
+              Utility Token Backed by Real Operations
             </Badge>
           </motion.div>
 
-          {/* Headline */}
-          <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-primary via-chart-2 to-chart-3 bg-clip-text text-transparent leading-tight">
-            The Data–Compute–Energy Nexus of Web3
+          {/* Headline - More concrete */}
+          <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+            <span className="bg-gradient-to-r from-primary via-chart-2 to-chart-3 bg-clip-text text-transparent">Real Contractors.</span>
+            <br />
+            <span className="text-foreground">Real Revenue. Real Token.</span>
           </h1>
 
-          {/* Subline */}
+          {/* Subline - Business-focused */}
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            TRN powers terrain intelligence at the convergence of <span className="text-primary font-semibold">real-world data</span>, <span className="text-chart-2 font-semibold">distributed compute</span>, and <span className="text-chart-3 font-semibold">clean energy infrastructure</span> — the physical stack that makes AI useful.
+            TRN is powered by <span className="text-primary font-semibold">Carolina Terrain LLC</span> — a licensed North Carolina drainage contractor with <span className="text-chart-2 font-semibold">$2M+ annual revenue</span>, real equipment, and years of operational history.
           </p>
 
-          {/* Category Badges */}
+          {/* Key Stats Badges */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="flex flex-wrap gap-3 justify-center"
+            className="flex flex-wrap gap-4 justify-center"
           >
-            <Badge variant="outline" className="text-sm px-3 py-1 border-chart-1/50 text-chart-1">
-              <Database className="w-3 h-3 mr-1" />
-              DePIN
+            <Badge variant="outline" className="text-sm px-4 py-2 border-chart-2/50">
+              <Award className="w-4 h-4 mr-2 text-chart-2" />
+              NC License #CL.1872
             </Badge>
-            <Badge variant="outline" className="text-sm px-3 py-1 border-chart-3/50 text-chart-3">
-              <Leaf className="w-3 h-3 mr-1" />
-              ReFi
+            <Badge variant="outline" className="text-sm px-4 py-2 border-chart-3/50">
+              <TrendingUp className="w-4 h-4 mr-2 text-chart-3" />
+              $2M+ Annual Revenue
             </Badge>
-            <Badge variant="outline" className="text-sm px-3 py-1 border-chart-2/50 text-chart-2">
-              <Cpu className="w-3 h-3 mr-1" />
-              DeSci
+            <Badge variant="outline" className="text-sm px-4 py-2 border-chart-4/50">
+              <Truck className="w-4 h-4 mr-2 text-chart-4" />
+              $500K+ Equipment
             </Badge>
           </motion.div>
 
@@ -68,17 +70,17 @@ export const InvestorHero = () => {
             <Button 
               size="lg" 
               className="text-lg px-8"
-              onClick={() => scrollToSection('protocol-comparison')}
+              onClick={() => scrollToSection('business-credentials')}
             >
-              See Protocol Positioning
+              Verify Our Credentials
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
               className="text-lg px-8"
-              onClick={() => scrollToSection('value-generation')}
+              onClick={() => scrollToSection('ecosystem-metrics')}
             >
-              View Value Engine
+              View Live Metrics
             </Button>
             <Button 
               size="lg" 

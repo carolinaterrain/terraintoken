@@ -47,14 +47,14 @@ const DesktopNav = () => {
     { id: "hero", label: "Home", isRoute: false },
     { id: "market", label: "Market", isRoute: true },
     { id: "earn-trn", label: "Earn", isRoute: true },
+    { id: "whitepaper", label: "Whitepaper", isRoute: true },
     { id: "drops", label: "Drops", isRoute: true, isNew: true },
     { id: "investors", label: "Invest", isRoute: true },
-    { id: "team", label: "About", isRoute: true },
   ];
 
   const moreItems = [
+    { path: "/team", label: "About Us", icon: Heart },
     { path: "/philanthropic-fund", label: "Philanthropic Fund", icon: Heart },
-    { path: "/whitepaper", label: "Whitepaper", icon: FileText },
     { path: "/transparency", label: "Transparency Hub", icon: Shield },
     { path: "/press", label: "Press Kit", icon: Newspaper },
     { path: "/updates", label: "Blog", icon: BookOpen },

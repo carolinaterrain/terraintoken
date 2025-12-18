@@ -32,7 +32,7 @@ const Whitepaper = () => {
     {
       icon: Zap,
       title: "Ecosystem Products",
-      description: "TerrainVision AI (planned), Discord Bot (live), community engagement tools, and future AI-powered terrain analysis services."
+      description: "TerrainVision AI (LIVE), Discord Bot (live), community engagement tools, and AI-powered terrain analysis services."
     },
     {
       icon: Target,
