@@ -1,4 +1,4 @@
-import { Home, Briefcase, Gift, TrendingUp, MoreHorizontal, Heart, FileText, Shield, Newspaper, BookOpen, Users, Coins, RotateCcw, Shirt } from "lucide-react";
+import { Home, Briefcase, Layers, TrendingUp, MoreHorizontal, Heart, FileText, Shield, Newspaper, BookOpen, Users, RotateCcw, Shirt } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
@@ -31,10 +31,10 @@ const MobileNav = () => {
     action();
   };
 
-  // Phase 4.3: Added Invest to main nav, kept core 4 items + More
+  // Updated: Replaced Earn with Ecosystem for compliance-safe navigation
   const navItems = [
     { path: "/", label: "Home", icon: Home, onClick: handleHomeClick },
-    { path: "/earn-trn", label: "Earn", icon: Gift },
+    { path: "/ecosystem", label: "Ecosystem", icon: Layers },
     { path: "/market", label: "Market", icon: TrendingUp },
     { path: "/investors", label: "Invest", icon: Briefcase },
   ];
@@ -47,7 +47,6 @@ const MobileNav = () => {
     { path: "/transparency", label: "Transparency Hub", icon: Shield },
     { path: "/press", label: "Press Kit", icon: Newspaper },
     { path: "/updates", label: "Blog", icon: BookOpen },
-    { path: "/redeem-trn", label: "Redeem TRN", icon: Coins },
   ];
 
   const isMoreActive = moreItems.some(item => location.pathname === item.path);

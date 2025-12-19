@@ -1,0 +1,270 @@
+import { Helmet } from "react-helmet-async";
+import ScrollProgress from "@/components/ScrollProgress";
+import BackToHome from "@/components/BackToHome";
+import DesktopNav from "@/components/DesktopNav";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { GlassCard } from "@/components/ui/glass-card";
+import { 
+  ExternalLink, 
+  Cpu, 
+  Shield, 
+  HardHat, 
+  ArrowRight,
+  CheckCircle2,
+  XCircle,
+  Info
+} from "lucide-react";
+
+const Ecosystem = () => {
+  return (
+    <>
+      <Helmet>
+        <title>TRN Ecosystem — How It Powers Terrain Services | Terrain Token</title>
+        <meta 
+          name="description" 
+          content="Understand how TRN integrates with TerrainVision AI, TerrainGuard, and Carolina Terrain. Optional utility access, no wallet required for homeowners." 
+        />
+      </Helmet>
+
+      <ScrollProgress />
+      <DesktopNav />
+      
+      <main id="main-content" className="min-h-screen bg-gradient-to-b from-background to-background/50 pt-16">
+        <BackToHome />
+        
+        {/* Hero Section */}
+        <section className="py-20 px-4 relative overflow-hidden">
+          <div 
+            className="absolute inset-0"
+            style={{ 
+              background: "radial-gradient(circle at center, hsl(var(--primary) / 0.1), transparent)",
+            }}
+          />
+          
+          <div className="container mx-auto max-w-4xl relative z-10">
+            <div className="text-center">
+              <h1 className="font-display text-4xl md:text-5xl font-bold mb-6">
+                How TRN Powers the <span className="text-primary">Terrain Ecosystem</span>
+              </h1>
+              <p className="font-body text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+                TRN is an optional utility layer that powers access and incentives across three integrated platforms. 
+                Homeowners never need wallets — credits are managed administratively.
+              </p>
+              
+              {/* Explicit Disclaimer */}
+              <div className="inline-flex items-center gap-2 bg-muted/30 border border-border/50 rounded-lg px-4 py-2">
+                <Info className="w-4 h-4 text-muted-foreground" />
+                <p className="font-body text-sm text-muted-foreground">
+                  TRN is a utility access mechanism, not an investment product.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Visual Ecosystem Diagram - Text Description */}
+        <section className="py-16 px-4">
+          <div className="container mx-auto max-w-5xl">
+            <h2 className="font-display text-2xl font-bold text-center mb-12">
+              Ecosystem Architecture
+            </h2>
+            
+            {/* Three-Tier Visual */}
+            <div className="relative">
+              {/* Connection Lines - Hidden on mobile */}
+              <div className="hidden md:block absolute top-1/2 left-1/4 right-1/4 h-0.5 bg-border" />
+              
+              <div className="grid md:grid-cols-3 gap-6">
+                {/* TerrainVision AI */}
+                <GlassCard className="p-6 text-center relative">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
+                    <Cpu className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="font-display text-xl font-bold mb-2">TerrainVision AI</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    AI-powered drainage analysis. Users who contribute terrain data may receive TRN credits for quality submissions.
+                  </p>
+                  <Button variant="outline" size="sm" asChild>
+                    <a href="https://terrainvision-ai.com" target="_blank" rel="noopener noreferrer">
+                      Visit Platform <ExternalLink className="ml-2 w-3 h-3" />
+                    </a>
+                  </Button>
+                </GlassCard>
+
+                {/* TerrainGuard - Center */}
+                <GlassCard className="p-6 text-center relative border-primary/30">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
+                    <Shield className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="font-display text-xl font-bold mb-2">TerrainGuard</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Property protection service. TRN holders may access discounted monitoring. Powered by AI insights.
+                  </p>
+                  <span className="inline-block px-3 py-1 text-xs bg-muted text-muted-foreground rounded-full">
+                    Coming Soon
+                  </span>
+                </GlassCard>
+
+                {/* Carolina Terrain */}
+                <GlassCard className="p-6 text-center relative">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
+                    <HardHat className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="font-display text-xl font-bold mb-2">Carolina Terrain</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Licensed contractor executing real-world terrain work. Services may be paid with TRN or traditional currency.
+                  </p>
+                  <Button variant="outline" size="sm" asChild>
+                    <a href="https://carolinaterrain.com" target="_blank" rel="noopener noreferrer">
+                      Visit Site <ExternalLink className="ml-2 w-3 h-3" />
+                    </a>
+                  </Button>
+                </GlassCard>
+              </div>
+
+              {/* TRN Layer - The Lubricant */}
+              <div className="mt-8 pt-8 border-t border-border">
+                <GlassCard className="p-6 bg-primary/5 border-primary/20 max-w-2xl mx-auto">
+                  <div className="flex items-center justify-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                      <img src="/trn-coin.png" alt="TRN" className="w-6 h-6" />
+                    </div>
+                    <h3 className="font-display text-lg font-bold">TRN Utility Layer</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground text-center">
+                    TRN sits between users and premium services as an <strong>optional access mechanism</strong>. 
+                    It facilitates incentives and discounts but is not required to use any platform.
+                  </p>
+                </GlassCard>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* User Protections */}
+        <section className="py-16 px-4 bg-muted/20">
+          <div className="container mx-auto max-w-4xl">
+            <h2 className="font-display text-2xl font-bold text-center mb-8">
+              User Protections
+            </h2>
+            
+            <div className="grid md:grid-cols-2 gap-6">
+              <GlassCard className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <CheckCircle2 className="w-6 h-6 text-green-500" />
+                  <h3 className="font-display font-bold">TRN is Optional</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  All core platform functionality works without TRN. Users can choose whether to participate in the token ecosystem.
+                </p>
+              </GlassCard>
+
+              <GlassCard className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <CheckCircle2 className="w-6 h-6 text-green-500" />
+                  <h3 className="font-display font-bold">Walletless for Homeowners</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Homeowners never need to create crypto wallets. Credits are granted and managed administratively within each platform.
+                </p>
+              </GlassCard>
+
+              <GlassCard className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <CheckCircle2 className="w-6 h-6 text-green-500" />
+                  <h3 className="font-display font-bold">Tamper-Evident Logging</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  All token transactions are logged on-chain. Users can verify any claimed transaction via public blockchain explorers.
+                </p>
+              </GlassCard>
+
+              <GlassCard className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <CheckCircle2 className="w-6 h-6 text-green-500" />
+                  <h3 className="font-display font-bold">Platform Controls Usage</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Terrain AI LLC manages internal token allocation. Users receive credits based on contribution quality, not speculation.
+                </p>
+              </GlassCard>
+            </div>
+          </div>
+        </section>
+
+        {/* What TRN Is NOT */}
+        <section className="py-16 px-4">
+          <div className="container mx-auto max-w-3xl">
+            <h2 className="font-display text-2xl font-bold text-center mb-8">
+              What TRN Is <span className="text-destructive">NOT</span>
+            </h2>
+            
+            <GlassCard className="p-8 bg-destructive/5 border-destructive/20">
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <XCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-muted-foreground">
+                    <strong className="text-foreground">Not an investment product.</strong> TRN does not promise returns, appreciation, or yield.
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <XCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-muted-foreground">
+                    <strong className="text-foreground">Not required to use services.</strong> All platforms work without TRN. It's purely optional.
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <XCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-muted-foreground">
+                    <strong className="text-foreground">Not redeemable for cash.</strong> TRN credits have no guaranteed monetary value.
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <XCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-muted-foreground">
+                    <strong className="text-foreground">Not equity or ownership.</strong> TRN does not represent any stake in Terrain AI LLC or its subsidiaries.
+                  </p>
+                </div>
+              </div>
+            </GlassCard>
+          </div>
+        </section>
+
+        {/* Call to Action - Links Out */}
+        <section className="py-16 px-4">
+          <div className="container mx-auto max-w-4xl text-center">
+            <h2 className="font-display text-2xl font-bold mb-4">
+              Ready to Explore?
+            </h2>
+            <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
+              TRN powers optional access across the Terrain ecosystem. Choose where you'd like to go:
+            </p>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Button size="lg" variant="outline" asChild>
+                <a href="https://terrainvision-ai.com" target="_blank" rel="noopener noreferrer">
+                  TerrainVision AI <ArrowRight className="ml-2 w-4 h-4" />
+                </a>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <a href="https://carolinaterrain.com" target="_blank" rel="noopener noreferrer">
+                  Carolina Terrain <ArrowRight className="ml-2 w-4 h-4" />
+                </a>
+              </Button>
+              <Button size="lg" asChild>
+                <a href="/whitepaper">
+                  Read Whitepaper <ArrowRight className="ml-2 w-4 h-4" />
+                </a>
+              </Button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <Footer />
+    </>
+  );
+};
+
+export default Ecosystem;
