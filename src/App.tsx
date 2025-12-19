@@ -15,7 +15,7 @@ const Toaster = lazy(() => import("@/components/ui/toaster").then(m => ({ defaul
 const Sonner = lazy(() => import("@/components/ui/sonner").then(m => ({ default: m.Toaster })));
 // Lazy load all pages for optimal code splitting
 const Index = lazy(() => import("./pages/Index"));
-const EarnTRN = lazy(() => import("./pages/EarnTRN"));
+const Ecosystem = lazy(() => import("./pages/Ecosystem"));
 const RedeemTRN = lazy(() => import("./pages/RedeemTRN"));
 
 const GoblinCave = lazy(() => import("./pages/GoblinCave"));
@@ -88,7 +88,7 @@ const AppContent = () => {
             <Route path="/goblin-cave" element={<GoblinCave />} />
             <Route path="/upload-project" element={<UploadProject />} />
             
-            <Route path="/earn-trn" element={<EarnTRN />} />
+            <Route path="/ecosystem" element={<Ecosystem />} />
             <Route path="/redeem-trn" element={<RedeemTRN />} />
             
             <Route path="/market" element={<GoblinMarket />} />

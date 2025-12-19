@@ -80,10 +80,10 @@ export const FloatingCTA = () => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-foreground">
-                    Don't miss out!
+                    Learn how TRN works
                   </p>
                   <p className="text-xs text-muted-foreground truncate">
-                    Join {displayCount.toLocaleString()}+ TRN holders
+                    Utility access for the Terrain ecosystem
                   </p>
                 </div>
                 <Button
@@ -91,7 +91,7 @@ export const FloatingCTA = () => {
                   onClick={handleJoinClick}
                   className="flex-shrink-0 bg-gradient-to-r from-goblin-green to-goblin-gold hover:opacity-90 text-black font-semibold"
                 >
-                  Join Now
+                  Explore
                 </Button>
               </div>
             </div>
