@@ -15,37 +15,37 @@ const Tokenomics = () => {
   const stats = [
   {
     icon: Coins,
-    label: "Total Supply (Live)",
+    label: "Fixed Supply",
     value: isLoading ? "..." : supply ? `${supply.formatted.total} TRN` : "—",
-    description: "No additional minting possible",
+    description: "No additional minting. What exists is all there will ever be.",
     glossaryKey: null
   },
   {
     icon: Shield,
-    label: "No Taxes",
+    label: "No Transaction Taxes",
     value: "0% Fees",
-    description: "Pure transfer freedom",
+    description: "Transfers have no built-in fees or taxes",
     glossaryKey: null
   },
   {
     icon: Rocket,
     label: "Fair Launch",
-    value: "100% Community",
-    description: "No pre-mine or insider allocation",
+    value: "Community Distribution",
+    description: "No pre-mine, no insider allocation, no VC deals",
     glossaryKey: null
   },
   {
     icon: Gift,
-    label: "Earn By Contributing",
-    value: "Upload & Earn",
-    description: "Earn 10-75+ TRN per photo upload on TerrainVision AI. Live NOW. No wallet required to start.",
+    label: "Contribution Credits",
+    value: "Earn by Contributing",
+    description: "Upload terrain data to earn credits. No purchase required.",
     glossaryKey: null
   },
   {
     icon: RefreshCw,
-    label: "Upgradeable",
-    value: "Future Utility",
-    description: "Evolves with ecosystem needs",
+    label: "Utility Focus",
+    value: "Service Access",
+    description: "Designed for platform utility, not speculation",
     glossaryKey: null
   }
 ];
@@ -60,14 +60,14 @@ const Tokenomics = () => {
       <div className="container mx-auto relative">
         <div className="text-center mb-12">
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
-            <span className="text-primary">Sustainable Tokenomics</span>
+            <span className="text-primary">Token Structure</span>
           </h2>
           <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto mb-2">
-            Fixed supply, no inflation, real utility backing
+            Fixed supply. Utility access. Transparent ledger.
           </p>
-          <p className="font-body text-sm text-muted-foreground italic max-w-2xl mx-auto mb-3">
-            TRN is designed for platform sustainability—<GlossaryTooltip termKey="buyback_burn" showIcon={false}>micro-burn on usage</GlossaryTooltip>, rewards from real contribution, not minting. 
-            No yield promises. No emissions from dev wallet. 💚
+          <p className="font-body text-sm text-muted-foreground max-w-2xl mx-auto mb-3">
+            TRN is designed for <span className="font-semibold">platform utility</span>—service access, data contribution credits, and optional discounts. 
+            Value comes from real services, not speculation. <span className="text-destructive font-semibold">TRN is not an investment.</span>
           </p>
           <div className="flex justify-center mt-4">
             <Button

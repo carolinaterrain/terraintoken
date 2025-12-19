@@ -5,60 +5,40 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, ShieldCheck } from "lucide-react";
 
 const faqs = [
   {
-    question: "How do I earn TRN tokens?",
-    answer: "Upload photos on TerrainVision AI (terrainvision-ai.com/analyze), provide your Solana wallet, and consent to AI training. You'll earn 10-75+ TRN per upload based on data quality, consent, and category. It's live NOW."
-  },
-  {
-    question: "Do I need to buy TRN to earn TRN?",
-    answer: "Nope! You can start earning TRN for FREE by uploading terrain photos. No investment required. Just upload, analyze, and earn. This is the future of meme coins — contribution over speculation."
-  },
-  {
-    question: "What makes TRN different from other meme coins?",
-    answer: "Other meme coins rely on hype and speculation. TRN has a LIVE earning system where you contribute real-world data and get rewarded. We're backed by a real drainage company (Carolina Terrain) and integrated with AI technology (TerrainVision AI). From memes to meaningful utility."
-  },
-  {
-    question: "Can I analyze my yard for free?",
-    answer: "Yes! TerrainVision AI provides instant AI-powered drainage, erosion, and grading analysis for free. If you provide your wallet and consent to AI training, you ALSO earn TRN tokens. Win-win."
-  },
-  {
-    question: "How do I participate in the meme contest?",
-    answer: "Post your terrain-themed meme on Twitter/X with #TRNMemes and tag @carolinaterrain. Check the Contest Rules section for full details, prizes, and submission guidelines."
-  },
-  {
-    question: "Can Carolina Terrain help me if I'm not in North Carolina?",
-    answer: "YES! We offer remote 2D/3D design services, virtual consultations, and can connect you with certified local contractors in your area. The goblin revolution is NATIONWIDE! 🌍 Fill out the consultation form on our site or visit carolinaterrain.com."
-  },
-  {
-    question: "What makes TRN different from DOGE, SHIB, and other meme coins?",
-    answer: "Unlike pure meme coins, TRN is backed by a real licensed landscape company (CL.1872) with established revenue streams, physical equipment, 8 industry certifications, and a 6-phase roadmap to AI-powered utility. TRN powers platform access and sustainability—not speculation."
-  },
-  {
-    question: "How does the Jobber consultation work?",
-    answer: "Fill out the form on our site, schedule a video call, and get expert advice from licensed contractors. We can design your entire project remotely using 2D/3D tools and Terrain Vision AI. If you're local to NC, we'll install it. If not, we'll connect you with quality contractors in your area!"
-  },
-  {
-    question: "What's Terrain Vision AI and how does it relate to TRN?",
-    answer: "Terrain Vision AI is our data-driven landscape intelligence platform (Phase 3-5 of roadmap). It uses AI to analyze yard photos, generate instant quotes, and provide smart drainage solutions. In the future, TRN holders will earn tokens for contributing terrain data and unlock premium AI features."
-  },
-  {
     question: "Is TRN an investment?",
-    answer: "No. TRN is not an investment and carries no expectation of profit. It's a community token designed for entertainment and future ecosystem utilities."
+    answer: "No. TRN is a utility access token, not a security or investment product. It grants optional access to platform services. There is no promise of returns, no expectation of profit, and TRN may lose value or become worthless. Do not purchase TRN expecting financial gain."
   },
   {
-    question: "What can I do with TRN?",
-    answer: "Currently, TRN serves as a community meme token. In the future, it will be used to earn rewards for terrain data contributions, unlock AI-powered analysis tools, and access premium features in our ecosystem."
+    question: "Do I need crypto to use the platform?",
+    answer: "No. Homeowners can use TerrainVision AI, request quotes from Carolina Terrain, and access TerrainGuard services without ever touching a wallet. TRN operates behind the scenes. Credits can be granted administratively through our service agreements."
   },
   {
-    question: "How will TRN evolve in the future?",
-    answer: "TRN will progressively add utility through our 6-phase roadmap: from community building to data contribution rewards, AI credit unlocks, a terrain data marketplace, and eventually robotics integration."
+    question: "How is TRN different from points or credits?",
+    answer: "TRN is a blockchain-based token with a fixed supply and transparent ledger. Unlike points, TRN can be transferred between users and has on-chain verifiability. However, like points, it is designed for utility access—not speculation."
   },
   {
-    question: "How do I buy TRN?",
-    answer: "TRN graduated from pump.fun and is now available on Raydium and Jupiter aggregator. Simply connect your Solana wallet, swap SOL for TRN, and you're in! Check our official social channels for the latest trading information and contract address."
+    question: "Who controls TRN usage inside the platform?",
+    answer: "The Terrain ecosystem team sets service pricing, contribution rewards, and platform rules. All transactions are logged in a tamper-evident ledger. Users can participate in governance discussions but operational control remains with the licensed business entity."
+  },
+  {
+    question: "Can TRN lose value?",
+    answer: "Yes. TRN can lose value, become illiquid, or become worthless. Like any token, its market value depends on supply, demand, and ecosystem adoption. Never purchase more than you can afford to lose. This is not investment advice."
+  },
+  {
+    question: "What can I actually do with TRN?",
+    answer: "Access premium AI analysis tiers on TerrainVision, earn credits by contributing terrain data, receive service discounts from Carolina Terrain, and participate in community governance. All utility is optional—you can use basic services without TRN."
+  },
+  {
+    question: "How do I earn TRN without buying?",
+    answer: "Upload terrain photos on TerrainVision AI and consent to AI training. You'll receive TRN credits based on data quality and category. No purchase required. This is contribution-based, not speculation-based."
+  },
+  {
+    question: "Is TRN required to get drainage work done?",
+    answer: "Absolutely not. Carolina Terrain accepts normal payment methods (credit card, check, financing). TRN is an optional layer that provides discounts and credits—it is never required for services."
   }
 ];
 
@@ -75,6 +55,9 @@ const FAQ = () => {
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
             Frequently Asked <span className="text-primary">Questions</span>
           </h2>
+          <p className="font-body text-muted-foreground">
+            Conservative, factual answers about TRN utility
+          </p>
         </div>
         
         <Accordion type="single" collapsible className="mb-12">
@@ -89,14 +72,29 @@ const FAQ = () => {
             </AccordionItem>
           ))}
         </Accordion>
+
+        {/* What TRN Is NOT - Explicit Section */}
+        <div className="mb-8 p-6 rounded-xl bg-muted/30 border border-border">
+          <div className="flex items-center gap-2 mb-4">
+            <ShieldCheck className="h-5 w-5 text-primary" />
+            <h3 className="font-display text-lg font-semibold">What TRN Is NOT</h3>
+          </div>
+          <ul className="space-y-2 font-body text-sm text-muted-foreground">
+            <li>• <span className="text-foreground font-medium">Not an investment product</span> — no expectation of profit</li>
+            <li>• <span className="text-foreground font-medium">Not a promise of returns</span> — value may decrease to zero</li>
+            <li>• <span className="text-foreground font-medium">Not required</span> — all core services work without TRN</li>
+            <li>• <span className="text-foreground font-medium">Not a substitute for real revenue</span> — the business operates on USD</li>
+          </ul>
+        </div>
         
-        <Alert className="border-primary/50 bg-card">
-          <AlertTriangle className="h-4 w-4 text-primary" />
+        <Alert className="border-destructive/50 bg-destructive/5">
+          <AlertTriangle className="h-4 w-4 text-destructive" />
           <AlertDescription className="text-sm leading-relaxed">
-            <strong className="text-foreground">Legal Disclaimer:</strong> Terrain Token (TRN) is not an investment, 
-            has no expectation of profit, and is not redeemable for cash. TRN is a closed-loop community and 
-            reward token used for entertainment and future ecosystem utilities. Nothing on this site constitutes 
-            financial advice. Always do your own research and never invest more than you can afford to lose.
+            <strong className="text-foreground">Legal Disclaimer:</strong> Terrain Token (TRN) is a utility access token, 
+            not an investment, security, or financial instrument. TRN has no expectation of profit, may lose all value, 
+            and is not redeemable for cash. Do not purchase TRN expecting financial returns. All token purchases are 
+            final and non-refundable. Nothing on this site constitutes financial, legal, or investment advice. 
+            Always do your own research and never risk more than you can afford to lose completely.
           </AlertDescription>
         </Alert>
       </div>

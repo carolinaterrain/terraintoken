@@ -196,20 +196,30 @@ const Hero = memo(() => {
             {/* Title */}
             <div>
               <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
-                TERRAIN <span className="text-primary">TOKEN</span>
+                UTILITY <span className="text-primary">CREDITS</span>
               </h1>
+              <p className="font-display text-lg md:text-xl text-muted-foreground mt-1">
+                for Property Resilience
+              </p>
             </div>
           </div>
 
           {/* Subheading */}
           <p className="font-display text-lg md:text-xl lg:text-2xl text-muted-foreground -mt-3">
-            Powering Real-World Terrain Intelligence
+            Optional access to terrain intelligence services. No wallet required.
           </p>
 
           {/* Subtitle Tagline */}
           <p className="font-body text-base md:text-lg text-muted-foreground max-w-lg">
-            TRN powers platform access and sustainability. <span className="text-primary font-semibold">Contribute terrain data</span>, access AI analysis, and participate in governance. <span className="text-primary font-semibold">TerrainVision AI is LIVE.</span>
+            TRN is an <span className="text-primary font-semibold">optional utility layer</span> for accessing premium terrain analysis, contributing data, and receiving service credits. Homeowners use the platform—TRN operates behind the scenes.
           </p>
+          
+          {/* What TRN Is NOT - Explicit Disclaimer */}
+          <div className="bg-muted/30 border border-border/50 rounded-lg p-3 max-w-lg">
+            <p className="font-body text-xs text-muted-foreground">
+              <span className="font-semibold text-foreground">TRN is NOT:</span> an investment, a promise of returns, or required to use Terrain services. It carries no expectation of profit.
+            </p>
+          </div>
 
           {/* Contract Address with Copy + Verification */}
           <div className="flex flex-col gap-2 w-full md:w-auto">
