@@ -8,8 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "react-router-dom";
 import { TrendingUp, TrendingDown, Users, DollarSign, Calendar, ExternalLink, Activity, Wallet, BarChart3 } from "lucide-react";
-import { useLiveHolderCount } from "@/hooks/useLiveHolderCount";
-import { useTokenStats } from "@/hooks/useTokenStats";
+import { useTokenData } from "@/providers/TokenDataProvider";
 import { useTreasuryBalance } from "@/hooks/useTreasuryBalance";
 import { EcosystemImpactCard } from "@/components/ecosystem/EcosystemImpactCard";
 import { MonthlyReportViewer } from "@/components/ecosystem/MonthlyReportViewer";
@@ -38,11 +37,19 @@ const formatSolPrice = (price: string | undefined): string => {
 };
 
 const TransparencyHub = () => {
-  const { data: holderData, isLoading: holderLoading } = useLiveHolderCount();
-  const { data: tokenStats, isLoading: statsLoading } = useTokenStats();
-  const { treasuryBalance, loading: treasuryLoading, isLive: treasuryIsLive } = useTreasuryBalance();
+  // Use unified TokenDataProvider for all token data
+  const { 
+    stats,
+    holderCount: holderData,
+    dataSource,
+    isLoading: tokenLoading,
+  } = useTokenData();
   
+  // Treasury balance uses its own hook (separate API call)
+  const { treasuryBalance, loading: treasuryLoading, isLive: treasuryIsLive } = useTreasuryBalance();
+
   const currentHolders = holderData?.holderCount || 0;
+  const isLive = dataSource === 'live';
 
   return (
     <>
@@ -95,34 +102,34 @@ const TransparencyHub = () => {
               {/* Total Holders - LIVE */}
               <GlassCard className="p-6 text-center">
                 <Users className="w-10 h-10 text-primary mx-auto mb-3" />
-                {holderLoading ? (
+                {tokenLoading ? (
                   <Skeleton className="h-9 w-24 mx-auto mb-2" />
                 ) : (
                   <div className="text-3xl font-bold text-primary mb-1">{currentHolders.toLocaleString()}</div>
                 )}
                 <div className="text-sm text-muted-foreground">Total Holders</div>
-                <DataBadge type="live" />
+                <DataBadge type={isLive ? "live" : "verified"} />
               </GlassCard>
 
               {/* Market Cap - LIVE from DexScreener */}
               <GlassCard className="p-6 text-center">
                 <BarChart3 className="w-10 h-10 text-primary mx-auto mb-3" />
-                {statsLoading ? (
+                {tokenLoading ? (
                   <Skeleton className="h-9 w-24 mx-auto mb-2" />
                 ) : (
-                  <div className="text-3xl font-bold text-primary mb-1">{tokenStats?.marketCap || '$--'}</div>
+                  <div className="text-3xl font-bold text-primary mb-1">{stats?.marketCap || '$--'}</div>
                 )}
                 <div className="text-sm text-muted-foreground">Market Cap</div>
                 <DataBadge type="live" />
               </GlassCard>
 
-              {/* Liquidity - LIVE from DexScreener */}
+              {/* Volume - LIVE from DexScreener */}
               <GlassCard className="p-6 text-center">
                 <DollarSign className="w-10 h-10 text-primary mx-auto mb-3" />
-                {statsLoading ? (
+                {tokenLoading ? (
                   <Skeleton className="h-9 w-24 mx-auto mb-2" />
                 ) : (
-                  <div className="text-3xl font-bold text-primary mb-1">{tokenStats?.volume24h || '$--'}</div>
+                  <div className="text-3xl font-bold text-primary mb-1">{stats?.volume24h || '$--'}</div>
                 )}
                 <div className="text-sm text-muted-foreground">24h Volume</div>
                 <DataBadge type="live" />
@@ -158,11 +165,11 @@ const TransparencyHub = () => {
                 {/* Price */}
                 <div className="p-4 bg-card/40 rounded-lg border border-primary/10">
                   <div className="text-sm text-muted-foreground mb-1">Current Price</div>
-                  {statsLoading ? (
+                  {tokenLoading ? (
                     <Skeleton className="h-8 w-28" />
                   ) : (
                     <div className="text-2xl font-bold text-foreground">
-                      ${tokenStats?.priceUsd || '0.00'}
+                      ${stats?.priceUsd || '0.00'}
                     </div>
                   )}
                 </div>
@@ -170,12 +177,12 @@ const TransparencyHub = () => {
                 {/* 24h Change */}
                 <div className="p-4 bg-card/40 rounded-lg border border-primary/10">
                   <div className="text-sm text-muted-foreground mb-1">24h Change</div>
-                  {statsLoading ? (
+                  {tokenLoading ? (
                     <Skeleton className="h-8 w-20" />
                   ) : (
-                    <div className={`text-2xl font-bold flex items-center gap-1 ${(tokenStats?.change24h || 0) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                      {(tokenStats?.change24h || 0) >= 0 ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
-                      {(tokenStats?.change24h || 0) >= 0 ? '+' : ''}{(tokenStats?.change24h || 0).toFixed(2)}%
+                    <div className={`text-2xl font-bold flex items-center gap-1 ${(stats?.change24h || 0) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                      {(stats?.change24h || 0) >= 0 ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
+                      {(stats?.change24h || 0) >= 0 ? '+' : ''}{(stats?.change24h || 0).toFixed(2)}%
                     </div>
                   )}
                 </div>
@@ -183,21 +190,21 @@ const TransparencyHub = () => {
                 {/* 24h Volume */}
                 <div className="p-4 bg-card/40 rounded-lg border border-primary/10">
                   <div className="text-sm text-muted-foreground mb-1">24h Volume</div>
-                  {statsLoading ? (
+                  {tokenLoading ? (
                     <Skeleton className="h-8 w-24" />
                   ) : (
-                    <div className="text-2xl font-bold text-foreground">{tokenStats?.volume24h || '$--'}</div>
+                    <div className="text-2xl font-bold text-foreground">{stats?.volume24h || '$--'}</div>
                   )}
                 </div>
 
                 {/* Price in SOL */}
                 <div className="p-4 bg-card/40 rounded-lg border border-primary/10">
                   <div className="text-sm text-muted-foreground mb-1">Price (SOL)</div>
-                  {statsLoading ? (
+                  {tokenLoading ? (
                     <Skeleton className="h-8 w-28" />
                   ) : (
                     <div className="text-2xl font-bold text-foreground">
-                      {formatSolPrice(tokenStats?.priceSol)} SOL
+                      {formatSolPrice(stats?.priceSol)} SOL
                     </div>
                   )}
                 </div>
