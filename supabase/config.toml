@@ -116,3 +116,9 @@ verify_jwt = false
 
 [functions.monitor-trn-transactions]
 verify_jwt = false
+
+[functions.verify-token-constraints]
+verify_jwt = false
+
+[functions.distribute-rewards]
+verify_jwt = true

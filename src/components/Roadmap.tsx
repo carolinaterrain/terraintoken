@@ -11,77 +11,79 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { useState, useEffect } from "react";
+import { Badge } from "@/components/ui/badge";
 
+// Status-based phases - NO future promises, only current state
 const phases = [
   {
     phase: "Phase 0",
     title: "Meme",
     icon: Sparkles,
-    description: "Launch as a community-driven meme token with viral potential",
+    description: "Launched as a community-driven meme token on Pump.fun",
     status: "complete",
     progress: 100,
-    timeline: "Q2 2025",
-    milestones: ["Fair launch on Pump.fun", "Liquidity locked", "Community channels established"]
+    statusLabel: "Complete",
+    milestones: ["Fair launch on Pump.fun", "Liquidity established", "Community channels active"]
   },
   {
     phase: "Phase 1",
     title: "Community",
     icon: Users,
-    description: "Build an engaged community through social channels and events",
+    description: "Building engaged community through social channels and events",
     status: "current",
     progress: 75,
-    timeline: "Q3-Q4 2025",
-    milestones: ["1000+ Discord members", "Whitepaper released", "Meme contests", "First partnerships"]
+    statusLabel: "In Progress",
+    milestones: ["Discord active", "Whitepaper published", "Meme contests running"]
   },
   {
     phase: "Phase 2",
-    title: "Data Contribution Rewards",
+    title: "Data Contribution",
     icon: Gift,
-    description: "Earn TRN by contributing real-world terrain and yard data",
+    description: "Users can earn TRN by contributing terrain and yard data",
     status: "current",
     progress: 40,
-    timeline: "Q4 2025",
-    milestones: ["TerrainVision AI beta", "Upload & earn system", "First 10k photos analyzed", "Community dashboard"]
+    statusLabel: "In Progress",
+    milestones: ["TerrainVision AI in beta", "Upload system live", "Rewards tracking active"]
   },
   {
     phase: "Phase 3",
     title: "AI Credit Unlocks",
     icon: Cpu,
-    description: "Use TRN to access AI-powered terrain analysis and insights",
-    status: "future",
+    description: "Use TRN to access AI-powered terrain analysis",
+    status: "planned",
     progress: 0,
-    timeline: "Q1-Q2 2026",
-    milestones: ["Pro tier access", "Advanced analysis features", "Mobile app launch", "API access"]
+    statusLabel: "Planned",
+    milestones: ["Pro tier access", "Advanced features", "Mobile app"]
   },
   {
     phase: "Phase 4",
-    title: "Terrain Data Marketplace",
+    title: "Data Marketplace",
     icon: Database,
-    description: "Global marketplace for terrain intelligence and data exchange",
-    status: "future",
+    description: "Marketplace for terrain intelligence and data exchange",
+    status: "planned",
     progress: 0,
-    timeline: "Q3-Q4 2026",
-    milestones: ["Data marketplace launch", "B2B partnerships", "Enterprise features", "DAO governance"]
+    statusLabel: "Planned",
+    milestones: ["Marketplace launch", "B2B partnerships", "Enterprise features"]
   },
   {
     phase: "Phase 5",
-    title: "Robotics Microtasks",
+    title: "Robotics Integration",
     icon: Cog,
-    description: "Integration with autonomous systems for terrain-based tasks",
-    status: "future",
+    description: "Integration with autonomous systems for terrain tasks",
+    status: "planned",
     progress: 0,
-    timeline: "2027+",
-    milestones: ["Robotics partnerships", "IoT integration", "Autonomous data collection", "Global expansion"]
+    statusLabel: "Research",
+    milestones: ["Robotics R&D", "IoT integration", "Autonomous collection"]
   },
   {
     phase: "Phase 6",
     title: "Terrain Academy",
     icon: Gamepad2,
-    description: "Launch educational platform for terrain analysis training and certification",
-    status: "future",
+    description: "Educational platform for terrain analysis training",
+    status: "planned",
     progress: 0,
-    timeline: "2026+",
-    milestones: ["Training platform launch", "Industry certifications", "Mobile app (10 languages)", "100k+ active users"]
+    statusLabel: "Research",
+    milestones: ["Training platform", "Industry certs", "Multi-language"]
   }
 ];
 
@@ -99,6 +101,11 @@ const Roadmap = () => {
     });
   }, [api]);
 
+  // Calculate actual progress based on completed phases
+  const completedPhases = phases.filter(p => p.status === 'complete').length;
+  const currentPhases = phases.filter(p => p.status === 'current').length;
+  const actualProgress = Math.round(((completedPhases + (currentPhases * 0.5)) / phases.length) * 100);
+
   return (
     <section id="roadmap" className="py-16 px-4 relative overflow-hidden">
       {/* Background Pattern */}
@@ -113,16 +120,16 @@ const Roadmap = () => {
           <GlassCard className="p-6 bg-gradient-to-br from-primary/10 to-primary/5">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="font-display text-2xl font-bold">Overall Progress</h3>
-                <p className="text-sm text-muted-foreground">Journey to terrain intelligence</p>
+                <h3 className="font-display text-2xl font-bold">Current Progress</h3>
+                <p className="text-sm text-muted-foreground">Based on completed milestones</p>
               </div>
               <TrendingUp className="w-8 h-8 text-primary" />
             </div>
-            <Progress value={36} className="h-3" />
+            <Progress value={actualProgress} className="h-3" />
             <div className="flex justify-between text-xs text-muted-foreground mt-2">
-              <span>0% Complete</span>
-              <span className="font-bold text-primary">36% Complete</span>
-              <span>100% Complete</span>
+              <span>0%</span>
+              <span className="font-bold text-primary">{actualProgress}% Complete</span>
+              <span>100%</span>
             </div>
           </GlassCard>
         </div>
@@ -132,7 +139,7 @@ const Roadmap = () => {
             The <span className="text-primary">Journey</span>
           </h2>
           <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto">
-            From meme to mission — our phased evolution into terrain intelligence
+            From meme to mission — our evolution into terrain intelligence
           </p>
         </div>
         
@@ -167,6 +174,7 @@ const Roadmap = () => {
                 const Icon = item.icon;
                 const isComplete = item.status === "complete";
                 const isCurrent = item.status === "current";
+                const isPlanned = item.status === "planned";
                 
                 return (
                   <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
@@ -174,14 +182,28 @@ const Roadmap = () => {
                       hover
                       className={`h-[240px] p-6 relative transition-all ${
                         isCurrent ? "border-primary/60 shadow-glow" : ""
-                      } ${item.status === "future" ? "opacity-70" : ""}`}
+                      } ${isPlanned ? "opacity-60" : ""}`}
                     >
-                      {/* Checkmark for completed */}
-                      {isComplete && (
-                        <div className="absolute top-4 right-4">
-                          <CheckCircle className="w-6 h-6 text-primary" />
-                        </div>
-                      )}
+                      {/* Status Badge */}
+                      <div className="absolute top-4 right-4">
+                        {isComplete && (
+                          <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                            <CheckCircle className="w-3 h-3 mr-1" />
+                            Complete
+                          </Badge>
+                        )}
+                        {isCurrent && (
+                          <Badge className="bg-primary/20 text-primary border-primary/30">
+                            <Clock className="w-3 h-3 mr-1" />
+                            Active
+                          </Badge>
+                        )}
+                        {isPlanned && (
+                          <Badge className="bg-muted text-muted-foreground border-muted-foreground/30">
+                            Planned
+                          </Badge>
+                        )}
+                      </div>
 
                       <div className="flex flex-col h-full">
                         {/* Icon & Phase Number */}
@@ -189,14 +211,18 @@ const Roadmap = () => {
                           <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
                             isCurrent 
                               ? "bg-primary/20 animate-glow-pulse" 
+                              : isComplete
+                              ? "bg-green-500/20"
                               : "bg-primary/10"
                           }`}>
                             <Icon className={`w-6 h-6 ${
-                              isCurrent ? "text-primary" : "text-primary/70"
+                              isCurrent ? "text-primary" : 
+                              isComplete ? "text-green-400" : "text-primary/70"
                             }`} />
                           </div>
                           <span className={`font-display text-sm font-semibold ${
-                            isCurrent ? "text-primary" : "text-primary/70"
+                            isCurrent ? "text-primary" : 
+                            isComplete ? "text-green-400" : "text-primary/70"
                           }`}>
                             {item.phase}
                           </span>
@@ -232,7 +258,11 @@ const Roadmap = () => {
                 className={`h-2 rounded-full transition-all ${
                   current === index
                     ? "w-8 bg-primary"
-                    : "w-2 bg-border hover:bg-border/60"
+                    : phase.status === "complete"
+                    ? "w-2 bg-green-400"
+                    : phase.status === "current"
+                    ? "w-2 bg-primary/60"
+                    : "w-2 bg-border"
                 }`}
                 aria-label={`Go to ${phase.phase}`}
               />
@@ -241,7 +271,7 @@ const Roadmap = () => {
 
           {/* Phase Counter */}
           <p className="text-center text-sm text-muted-foreground mt-4">
-            {phases[current].phase} of {phases.length} — {phases[current].title}
+            {phases[current].phase} — {phases[current].title} ({phases[current].statusLabel})
           </p>
         </div>
       </div>
