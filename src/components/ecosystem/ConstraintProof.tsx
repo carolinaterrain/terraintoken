@@ -1,57 +1,112 @@
 import { motion } from 'framer-motion';
-import { Shield, Lock, Clock, Wallet, ExternalLink, CheckCircle2, Ban } from 'lucide-react';
+import { Shield, Lock, Clock, Wallet, ExternalLink, CheckCircle2, Ban, AlertTriangle, Loader2 } from 'lucide-react';
 import { GlassCard } from '@/components/ui/glass-card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { differenceInDays, format } from 'date-fns';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
-// Verified on-chain constraints
-const CONSTRAINTS = {
-  lpLock: {
-    status: 'locked',
-    lockedUntil: new Date('2026-01-15'), // Update with actual lock date
-    lockedAmount: '100%',
-    platform: 'Raydium',
-    proofUrl: 'https://solscan.io/account/H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu'
-  },
+// Correct TRN token address (from pump.fun)
+const TRN_MINT_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+const TRN_TREASURY_WALLET = "H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu";
+
+// Constraint verification status
+type VerificationStatus = 'verified' | 'unverified' | 'loading' | 'error';
+
+interface OnChainConstraints {
   mintAuthority: {
-    status: 'revoked',
-    revokedAt: new Date('2024-11-01'),
-    tokenMint: 'TRNtxUve3PqEvyASfiS3T19gypzaZRL2H9jzgGxhpTT',
-    proofUrl: 'https://solscan.io/token/TRNtxUve3PqEvyASfiS3T19gypzaZRL2H9jzgGxhpTT#metadata'
-  },
-  teamVesting: {
-    totalAllocation: '10%',
-    vestingStart: new Date('2024-11-01'),
-    vestingEnd: new Date('2026-11-01'), // 2 year vesting
-    cliffMonths: 6,
-    monthlyUnlock: '4.17%',
-    proofUrl: 'https://solscan.io/account/H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu'
-  },
+    status: 'revoked' | 'active' | 'unknown';
+    verifiedAt: Date | null;
+    proofUrl: string;
+  };
+  freezeAuthority: {
+    status: 'revoked' | 'active' | 'unknown';
+    verifiedAt: Date | null;
+  };
+  supply: {
+    current: number;
+    decimals: number;
+  };
+  lpLock: {
+    isLocked: boolean;
+    lockedUntil: Date | null;
+    platform: string;
+    verificationStatus: VerificationStatus;
+  };
   treasuryRules: {
-    monthlySpendCap: 5, // % of treasury
-    burnCommitment: 'Usage-driven',
-    multisigRequired: false, // Update when implemented
-    proofUrl: 'https://solscan.io/account/H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu'
+    monthlySpendCapPercent: number;
+    multisigRequired: boolean;
+    verificationStatus: VerificationStatus;
+  };
+}
+
+// Fetch on-chain constraint data
+async function fetchConstraintData(): Promise<OnChainConstraints> {
+  try {
+    const { data, error } = await supabase.functions.invoke('verify-token-constraints', {
+      body: { tokenMint: TRN_MINT_ADDRESS }
+    });
+    
+    if (error) throw error;
+    return data;
+  } catch (err) {
+    console.error('Failed to fetch constraint data:', err);
+    // Return default unverified state
+    return {
+      mintAuthority: {
+        status: 'unknown',
+        verifiedAt: null,
+        proofUrl: `https://solscan.io/token/${TRN_MINT_ADDRESS}#metadata`
+      },
+      freezeAuthority: {
+        status: 'unknown',
+        verifiedAt: null
+      },
+      supply: {
+        current: 0,
+        decimals: 6
+      },
+      lpLock: {
+        isLocked: false,
+        lockedUntil: null,
+        platform: 'Unknown',
+        verificationStatus: 'unverified'
+      },
+      treasuryRules: {
+        monthlySpendCapPercent: 5,
+        multisigRequired: false,
+        verificationStatus: 'unverified'
+      }
+    };
   }
-};
+}
 
 interface ConstraintCardProps {
   icon: React.ReactNode;
   title: string;
-  status: 'verified' | 'locked' | 'revoked' | 'active';
+  status: 'verified' | 'locked' | 'revoked' | 'active' | 'unverified';
   statusLabel: string;
   details: React.ReactNode;
   proofUrl: string;
   index: number;
+  verificationStatus: VerificationStatus;
 }
 
-function ConstraintCard({ icon, title, status, statusLabel, details, proofUrl, index }: ConstraintCardProps) {
+function ConstraintCard({ icon, title, status, statusLabel, details, proofUrl, index, verificationStatus }: ConstraintCardProps) {
   const statusColors = {
     verified: 'bg-green-500/20 text-green-400 border-green-500/30',
     locked: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
     revoked: 'bg-green-500/20 text-green-400 border-green-500/30',
-    active: 'bg-amber-500/20 text-amber-400 border-amber-500/30'
+    active: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+    unverified: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
+  };
+
+  const StatusIcon = () => {
+    if (verificationStatus === 'loading') return <Loader2 className="w-3 h-3 mr-1 animate-spin" />;
+    if (verificationStatus === 'error' || verificationStatus === 'unverified') return <AlertTriangle className="w-3 h-3 mr-1" />;
+    if (status === 'revoked') return <Ban className="w-3 h-3 mr-1" />;
+    return <CheckCircle2 className="w-3 h-3 mr-1" />;
   };
 
   return (
@@ -68,9 +123,9 @@ function ConstraintCard({ icon, title, status, statusLabel, details, proofUrl, i
             </div>
             <div>
               <h3 className="font-semibold text-foreground">{title}</h3>
-              <Badge className={`mt-1 ${statusColors[status]}`}>
-                {status === 'revoked' ? <Ban className="w-3 h-3 mr-1" /> : <CheckCircle2 className="w-3 h-3 mr-1" />}
-                {statusLabel}
+              <Badge className={`mt-1 ${statusColors[verificationStatus === 'unverified' ? 'unverified' : status]}`}>
+                <StatusIcon />
+                {verificationStatus === 'unverified' ? 'UNVERIFIED' : statusLabel}
               </Badge>
             </div>
           </div>
@@ -95,77 +150,125 @@ function ConstraintCard({ icon, title, status, statusLabel, details, proofUrl, i
 }
 
 export function ConstraintProof() {
+  const { data: constraints, isLoading, error } = useQuery({
+    queryKey: ['token-constraints', TRN_MINT_ADDRESS],
+    queryFn: fetchConstraintData,
+    staleTime: 60 * 1000, // 1 minute
+    refetchInterval: 5 * 60 * 1000, // 5 minutes
+  });
+
   const now = new Date();
-  const lpDaysRemaining = differenceInDays(CONSTRAINTS.lpLock.lockedUntil, now);
-  const vestingDaysRemaining = differenceInDays(CONSTRAINTS.teamVesting.vestingEnd, now);
+
+  // Default values with proper verification status
+  const lpLockDate = constraints?.lpLock?.lockedUntil ? new Date(constraints.lpLock.lockedUntil) : null;
+  const lpDaysRemaining = lpLockDate ? differenceInDays(lpLockDate, now) : 0;
+  
+  // Team vesting - these are planned but not yet on-chain
+  const teamVestingStart = new Date('2024-11-01');
+  const teamVestingEnd = new Date('2026-11-01');
+  const vestingDaysRemaining = differenceInDays(teamVestingEnd, now);
   const vestingProgress = Math.min(100, Math.max(0, 
-    ((now.getTime() - CONSTRAINTS.teamVesting.vestingStart.getTime()) / 
-    (CONSTRAINTS.teamVesting.vestingEnd.getTime() - CONSTRAINTS.teamVesting.vestingStart.getTime())) * 100
+    ((now.getTime() - teamVestingStart.getTime()) / 
+    (teamVestingEnd.getTime() - teamVestingStart.getTime())) * 100
   ));
 
-  const constraints = [
+  const getVerificationStatus = (field: string): VerificationStatus => {
+    if (isLoading) return 'loading';
+    if (error) return 'error';
+    if (!constraints) return 'unverified';
+    
+    switch (field) {
+      case 'mintAuthority':
+        return constraints.mintAuthority.status !== 'unknown' ? 'verified' : 'unverified';
+      case 'lpLock':
+        return constraints.lpLock.verificationStatus;
+      case 'treasuryRules':
+        return constraints.treasuryRules.verificationStatus;
+      default:
+        return 'unverified';
+    }
+  };
+
+  const constraintCards = [
     {
       icon: <Lock className="w-5 h-5" />,
       title: 'LP Lock Status',
-      status: 'locked' as const,
-      statusLabel: `Locked ${lpDaysRemaining}+ days`,
-      details: (
-        <>
-          <div className="flex justify-between">
-            <span>Amount Locked:</span>
-            <span className="font-medium text-foreground">{CONSTRAINTS.lpLock.lockedAmount}</span>
-          </div>
-          <div className="flex justify-between">
-            <span>Platform:</span>
-            <span className="font-medium text-foreground">{CONSTRAINTS.lpLock.platform}</span>
-          </div>
-          <div className="flex justify-between">
-            <span>Unlocks:</span>
-            <span className="font-medium text-foreground">{format(CONSTRAINTS.lpLock.lockedUntil, 'MMM d, yyyy')}</span>
-          </div>
-          <p className="text-xs mt-2 text-muted-foreground/70">
-            LP tokens cannot be withdrawn until unlock date. This prevents rug pulls.
-          </p>
-        </>
-      ),
-      proofUrl: CONSTRAINTS.lpLock.proofUrl
-    },
-    {
-      icon: <Ban className="w-5 h-5" />,
-      title: 'Mint Authority',
-      status: 'revoked' as const,
-      statusLabel: 'Permanently Revoked',
+      status: constraints?.lpLock?.isLocked ? 'locked' as const : 'active' as const,
+      statusLabel: lpLockDate ? `Locked ${lpDaysRemaining}+ days` : 'Status Pending',
+      verificationStatus: getVerificationStatus('lpLock'),
       details: (
         <>
           <div className="flex justify-between">
             <span>Status:</span>
-            <span className="font-medium text-green-400">REVOKED</span>
+            <span className={`font-medium ${constraints?.lpLock?.isLocked ? 'text-green-400' : 'text-yellow-400'}`}>
+              {constraints?.lpLock?.isLocked ? 'LOCKED' : 'UNVERIFIED'}
+            </span>
           </div>
           <div className="flex justify-between">
-            <span>Revoked On:</span>
-            <span className="font-medium text-foreground">{format(CONSTRAINTS.mintAuthority.revokedAt, 'MMM d, yyyy')}</span>
+            <span>Platform:</span>
+            <span className="font-medium text-foreground">{constraints?.lpLock?.platform || 'Raydium'}</span>
           </div>
-          <div className="flex justify-between">
-            <span>Token:</span>
-            <span className="font-medium text-foreground font-mono text-xs">{CONSTRAINTS.mintAuthority.tokenMint.slice(0, 8)}...</span>
-          </div>
+          {lpLockDate && (
+            <div className="flex justify-between">
+              <span>Unlocks:</span>
+              <span className="font-medium text-foreground">{format(lpLockDate, 'MMM d, yyyy')}</span>
+            </div>
+          )}
           <p className="text-xs mt-2 text-muted-foreground/70">
-            No new tokens can ever be minted. Supply is permanently fixed.
+            {constraints?.lpLock?.isLocked 
+              ? 'LP tokens cannot be withdrawn until unlock date.'
+              : 'LP lock status requires manual verification on Solscan.'}
           </p>
         </>
       ),
-      proofUrl: CONSTRAINTS.mintAuthority.proofUrl
+      proofUrl: `https://solscan.io/account/${TRN_TREASURY_WALLET}`
+    },
+    {
+      icon: <Ban className="w-5 h-5" />,
+      title: 'Mint Authority',
+      status: constraints?.mintAuthority?.status === 'revoked' ? 'revoked' as const : 'active' as const,
+      statusLabel: constraints?.mintAuthority?.status === 'revoked' ? 'Permanently Revoked' : 'Check On-Chain',
+      verificationStatus: getVerificationStatus('mintAuthority'),
+      details: (
+        <>
+          <div className="flex justify-between">
+            <span>Status:</span>
+            <span className={`font-medium ${constraints?.mintAuthority?.status === 'revoked' ? 'text-green-400' : 'text-yellow-400'}`}>
+              {constraints?.mintAuthority?.status === 'revoked' ? 'REVOKED' : 'VERIFY ON-CHAIN'}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span>Token:</span>
+            <span className="font-medium text-foreground font-mono text-xs">{TRN_MINT_ADDRESS.slice(0, 8)}...</span>
+          </div>
+          {constraints?.mintAuthority?.verifiedAt && (
+            <div className="flex justify-between">
+              <span>Verified:</span>
+              <span className="font-medium text-foreground">
+                {format(new Date(constraints.mintAuthority.verifiedAt), 'MMM d, yyyy h:mm a')}
+              </span>
+            </div>
+          )}
+          <p className="text-xs mt-2 text-muted-foreground/70">
+            {constraints?.mintAuthority?.status === 'revoked'
+              ? 'No new tokens can ever be minted. Supply is permanently fixed.'
+              : 'Click "Verify On-Chain" to check mint authority status on Solscan.'}
+          </p>
+        </>
+      ),
+      proofUrl: `https://solscan.io/token/${TRN_MINT_ADDRESS}#metadata`
     },
     {
       icon: <Clock className="w-5 h-5" />,
       title: 'Team Vesting',
       status: 'active' as const,
       statusLabel: `${vestingDaysRemaining} days remaining`,
+      verificationStatus: 'unverified' as VerificationStatus, // Team vesting is off-chain currently
       details: (
         <>
           <div className="flex justify-between">
             <span>Team Allocation:</span>
-            <span className="font-medium text-foreground">{CONSTRAINTS.teamVesting.totalAllocation}</span>
+            <span className="font-medium text-foreground">10%</span>
           </div>
           <div className="flex justify-between">
             <span>Vesting Period:</span>
@@ -173,7 +276,7 @@ export function ConstraintProof() {
           </div>
           <div className="flex justify-between">
             <span>Monthly Unlock:</span>
-            <span className="font-medium text-foreground">{CONSTRAINTS.teamVesting.monthlyUnlock}</span>
+            <span className="font-medium text-foreground">4.17%</span>
           </div>
           <div className="mt-2">
             <div className="flex justify-between text-xs mb-1">
@@ -187,38 +290,41 @@ export function ConstraintProof() {
               />
             </div>
           </div>
-          <p className="text-xs mt-2 text-muted-foreground/70">
-            Team tokens unlock gradually, preventing large dumps.
+          <p className="text-xs mt-2 text-yellow-400/80">
+            ⚠️ Team vesting is currently off-chain. On-chain vesting contract planned.
           </p>
         </>
       ),
-      proofUrl: CONSTRAINTS.teamVesting.proofUrl
+      proofUrl: `https://solscan.io/account/${TRN_TREASURY_WALLET}`
     },
     {
       icon: <Wallet className="w-5 h-5" />,
       title: 'Treasury Rules',
-      status: 'verified' as const,
-      statusLabel: 'Rules Active',
+      status: 'active' as const,
+      statusLabel: 'Database Enforced',
+      verificationStatus: getVerificationStatus('treasuryRules'),
       details: (
         <>
           <div className="flex justify-between">
             <span>Monthly Spend Cap:</span>
-            <span className="font-medium text-foreground">{CONSTRAINTS.treasuryRules.monthlySpendCap}% max</span>
+            <span className="font-medium text-foreground">{constraints?.treasuryRules?.monthlySpendCapPercent || 5}% max</span>
           </div>
           <div className="flex justify-between">
             <span>Burn Mechanism:</span>
-            <span className="font-medium text-foreground">{CONSTRAINTS.treasuryRules.burnCommitment}</span>
+            <span className="font-medium text-foreground">Usage-driven</span>
           </div>
           <div className="flex justify-between">
             <span>Multisig:</span>
-            <span className="font-medium text-foreground">{CONSTRAINTS.treasuryRules.multisigRequired ? 'Required' : 'Planned'}</span>
+            <span className="font-medium text-foreground">
+              {constraints?.treasuryRules?.multisigRequired ? 'Required' : 'Not Yet Implemented'}
+            </span>
           </div>
-          <p className="text-xs mt-2 text-muted-foreground/70">
-            Treasury spending is capped and burns are tied to actual usage.
+          <p className="text-xs mt-2 text-yellow-400/80">
+            ⚠️ Treasury rules are database-enforced, not smart-contract enforced.
           </p>
         </>
       ),
-      proofUrl: CONSTRAINTS.treasuryRules.proofUrl
+      proofUrl: `https://solscan.io/account/${TRN_TREASURY_WALLET}`
     }
   ];
 
@@ -238,13 +344,16 @@ export function ConstraintProof() {
             Don't Trust. Verify.
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Every constraint is enforced on-chain. Click any card to verify independently on Solscan.
-            These aren't promises — they're immutable rules.
+            Click any card to verify independently on Solscan. Items marked 
+            <Badge className="mx-1 bg-yellow-500/20 text-yellow-400 border-yellow-500/30">
+              <AlertTriangle className="w-3 h-3 mr-1" />UNVERIFIED
+            </Badge>
+            require manual on-chain verification.
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {constraints.map((constraint, index) => (
+          {constraintCards.map((constraint, index) => (
             <ConstraintCard
               key={constraint.title}
               {...constraint}
@@ -257,10 +366,14 @@ export function ConstraintProof() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="mt-8 text-center"
+          className="mt-8 text-center space-y-2"
         >
           <p className="text-xs text-muted-foreground/60">
-            All data verifiable on Solana mainnet • Last verified: {format(new Date(), 'MMM d, yyyy h:mm a')}
+            Token: {TRN_MINT_ADDRESS.slice(0, 12)}...{TRN_MINT_ADDRESS.slice(-8)} • 
+            Last checked: {format(new Date(), 'MMM d, yyyy h:mm a')}
+          </p>
+          <p className="text-xs text-yellow-400/80">
+            ⚠️ Some constraints are database-enforced, not smart-contract enforced. Always verify on-chain.
           </p>
         </motion.div>
       </div>

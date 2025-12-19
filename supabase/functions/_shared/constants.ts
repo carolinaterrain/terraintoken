@@ -1,8 +1,10 @@
 // Shared constants for TRN token across all edge functions
 // IMPORTANT: This is the single source of truth for the TRN mint address and wallets
 
+// CORRECT TRN token address (pump.fun token)
 export const TRN_MINT_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 export const TRN_TREASURY_WALLET = "H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu";
+export const TRN_DECIMALS = 6; // pump.fun tokens use 6 decimals
 
 // Whale tiers for purchase tracking
 export const WHALE_TIERS = {
