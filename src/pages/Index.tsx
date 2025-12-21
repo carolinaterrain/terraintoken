@@ -11,8 +11,6 @@ const SmartHeader = lazy(() => import("@/components/SmartHeader"));
 const Hero = lazy(() => import("@/components/Hero"));
 const ResearchModeContent = lazy(() => import("@/components/ResearchModeContent").then(m => ({ default: m.ResearchModeContent })));
 const OnboardingModal = lazy(() => import("@/components/onboarding/OnboardingModal").then(m => ({ default: m.OnboardingModal })));
-const FloatingCTA = lazy(() => import("@/components/FloatingCTA").then(m => ({ default: m.FloatingCTA })));
-const ExitIntentModal = lazy(() => import("@/components/ExitIntentModal").then(m => ({ default: m.ExitIntentModal })));
 
 // Lightweight skeleton for hero section
 const HeroSkeleton = () => (
@@ -51,7 +49,6 @@ const Index = () => {
       const state = location.state as { activeTab?: string; scrollTo?: string };
       
       if (state.activeTab) {
-        // Dispatch event to change tab
         const event = new CustomEvent('changeTab', { detail: { tab: state.activeTab } });
         window.dispatchEvent(event);
       }
@@ -62,7 +59,6 @@ const Index = () => {
         }, 100);
       }
       
-      // Clear state
       navigate(location.pathname, { replace: true, state: {} });
     }
   }, [location.state, navigate, location.pathname]);
@@ -70,8 +66,8 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>Terrain Token (TRN) - Powering Real-World Terrain Intelligence</title>
-        <meta name="description" content="TRN powers platform access and sustainability within the Terrain ecosystem. Contribute terrain data, access AI analysis, participate in governance. A utility token backed by real operations." />
+        <title>TRN Utility Credits — Optional Access for the Terrain System</title>
+        <meta name="description" content="TRN is an optional utility credit for accessing premium Terrain services. No wallet required for standard use. Not an investment product." />
       </Helmet>
       
       <SkipToContent />
@@ -92,14 +88,6 @@ const Index = () => {
 
       <Suspense fallback={null}>
         <OnboardingModal />
-      </Suspense>
-      
-      <Suspense fallback={null}>
-        <FloatingCTA />
-      </Suspense>
-      
-      <Suspense fallback={null}>
-        <ExitIntentModal />
       </Suspense>
     </>
   );

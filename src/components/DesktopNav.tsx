@@ -43,21 +43,22 @@ const DesktopNav = () => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // De-emphasized Market (moved to More), prioritize Ecosystem
   const navItems = [
     { id: "hero", label: "Home", isRoute: false },
     { id: "ecosystem", label: "Ecosystem", isRoute: true },
-    { id: "market", label: "Market", isRoute: true },
     { id: "whitepaper", label: "Whitepaper", isRoute: true },
-    { id: "drops", label: "Drops", isRoute: true, isNew: true },
-    { id: "investors", label: "Invest", isRoute: true },
+    { id: "transparency", label: "Transparency", isRoute: true },
+    { id: "drops", label: "Drops", isRoute: true },
   ];
 
   const moreItems = [
+    { path: "/market", label: "Market Data", icon: Layers },
+    { path: "/investors", label: "For Investors", icon: FileText },
     { path: "/team", label: "About Us", icon: Heart },
     { path: "/philanthropic-fund", label: "Philanthropic Fund", icon: Heart },
-    { path: "/transparency", label: "Transparency Hub", icon: Shield },
     { path: "/press", label: "Press Kit", icon: Newspaper },
-    { path: "/updates", label: "Blog", icon: BookOpen },
+    { path: "/updates", label: "System Updates", icon: BookOpen },
   ];
 
   const isMoreActive = moreItems.some(item => location.pathname === item.path);
@@ -113,9 +114,6 @@ const DesktopNav = () => {
                 }`}
               >
                 {item.label}
-                {item.isNew && (
-                  <span className="ml-1 px-1.5 py-0.5 text-[10px] font-bold bg-accent text-accent-foreground rounded">NEW</span>
-                )}
                 {(activeSection === item.id || location.pathname === `/${item.id}`) && (
                   <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
                 )}
@@ -157,25 +155,25 @@ const DesktopNav = () => {
             </DropdownMenu>
           </div>
 
-          {/* Right CTAs */}
+          {/* Right CTAs - De-emphasized Buy */}
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <Button
-              variant="default"
+              variant="outline"
               size="sm"
-              className="font-display font-semibold"
+              className="font-display font-semibold text-muted-foreground"
               asChild
             >
               <a
                 href="https://raydium.io/swap/?inputMint=sol&outputMint=2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Buy TRN tokens on Raydium"
+                aria-label="Acquire TRN on Raydium (optional)"
               >
-                Buy TRN
+                Acquire TRN
               </a>
             </Button>
-            <Button variant="outline" size="icon" asChild>
+            <Button variant="ghost" size="icon" asChild>
               <a
                 href="https://discord.gg/rM8b6V5Ce"
                 target="_blank"

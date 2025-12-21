@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Wallet, Coins, Rocket, TrendingUp, ExternalLink, QrCode } from "lucide-react";
+import { Wallet, Coins, ArrowRightLeft, ExternalLink, QrCode, Info } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 import { useFeatureAnalytics } from "@/hooks/useFeatureAnalytics";
@@ -17,27 +17,23 @@ const HowToBuy = () => {
     {
       icon: Wallet,
       title: "Get a Wallet",
-      description: "Download Phantom or any Solana wallet",
-      goblinText: "👋"
+      description: "Download Phantom or any Solana wallet"
     },
     {
       icon: Coins,
       title: "Add SOL",
-      description: "Buy SOL on exchange or via wallet",
-      goblinText: "💰"
+      description: "Buy SOL on exchange or via wallet"
     },
     {
-      icon: Rocket,
+      icon: ArrowRightLeft,
       title: "Swap on Raydium",
-      description: "Trade on Solana's leading DEX",
-      goblinText: "🚀",
+      description: "Trade on Solana's DEX",
       isAction: true
     },
     {
-      icon: TrendingUp,
-      title: "Swap & HODL",
-      description: "Exchange SOL for TRN — become legend",
-      goblinText: "🏆"
+      icon: Wallet,
+      title: "Hold in Wallet",
+      description: "Store TRN in your wallet (optional)"
     }
   ];
   
@@ -52,12 +48,20 @@ const HowToBuy = () => {
       </div>
       
       <div className="container relative z-10">
+        {/* Optionality Disclaimer */}
+        <div className="flex items-center justify-center gap-2 mb-8 bg-muted/30 border border-border/50 rounded-lg px-4 py-3 max-w-2xl mx-auto">
+          <Info className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+          <p className="text-sm text-muted-foreground text-center">
+            TRN acquisition is entirely optional. Standard Terrain services work without it.
+          </p>
+        </div>
+
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground via-terrain-glow to-foreground bg-clip-text text-transparent">
-            How to Join the Ground Crew
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            How to Acquire TRN (Optional)
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Super easy — four simple steps to become a terrain legend
+            Four steps to acquire TRN utility credits. Not required to use Terrain services.
           </p>
         </div>
         
@@ -65,21 +69,16 @@ const HowToBuy = () => {
           {steps.map((step, index) => (
             <Card 
               key={index}
-              className="relative group hover:border-primary/50 transition-all duration-300 hover:shadow-glow overflow-hidden"
+              className="relative group hover:border-primary/50 transition-all duration-300 overflow-hidden"
             >
               <CardContent className="p-6 text-center">
                 {/* Step number */}
-                <div className="absolute top-4 left-4 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold animate-sequence" style={{ animationDelay: `${index * 0.2}s` }}>
+                <div className="absolute top-4 left-4 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
                   {index + 1}
                 </div>
                 
-                {/* Goblin emoji */}
-                <div className="absolute top-4 right-4 text-2xl animate-bounce" style={{ animationDelay: `${index * 0.3}s` }}>
-                  {step.goblinText}
-                </div>
-                
                 {/* Icon */}
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-cyber flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary/10 transition-colors">
                   <step.icon className="w-8 h-8 text-primary" />
                 </div>
                 
@@ -90,9 +89,9 @@ const HowToBuy = () => {
                 {/* Action button for step 3 */}
                 {step.isAction && (
                   <Button 
-                    variant="hero" 
+                    variant="outline" 
                     size="sm"
-                    className="w-full group-hover:scale-105 transition-transform"
+                    className="w-full"
                     asChild
                   >
                     <a 
@@ -101,7 +100,7 @@ const HowToBuy = () => {
                       rel="noopener noreferrer"
                       onClick={handleBuyClick}
                     >
-                      Buy TRN Now <ExternalLink className="ml-2 w-4 h-4" />
+                      Open Raydium <ExternalLink className="ml-2 w-4 h-4" />
                     </a>
                   </Button>
                 )}
@@ -116,7 +115,7 @@ const HowToBuy = () => {
             variant="outline"
             size="lg"
             onClick={() => setShowQR(!showQR)}
-            className="border-primary/30 hover:border-primary"
+            className="border-border hover:border-primary/50"
           >
             <QrCode className="mr-2 w-5 h-5" />
             {showQR ? "Hide" : "Show"} QR Code for Mobile
@@ -125,7 +124,7 @@ const HowToBuy = () => {
           {showQR && (
             <div className="mt-6 inline-block p-6 bg-card border border-border rounded-xl animate-fade-in">
               <p className="text-sm text-muted-foreground mb-4">
-                Scan with your mobile wallet to trade on Raydium
+                Scan with your mobile wallet to swap on Raydium
               </p>
               <div className="bg-white p-4 rounded-lg inline-block">
                 <img 
@@ -144,36 +143,24 @@ const HowToBuy = () => {
         {/* First time tooltip */}
         <div className="mt-8 text-center">
           <details className="inline-block text-left max-w-md">
-            <summary className="cursor-pointer text-primary hover:text-terrain-glow transition-colors">
-              ❓ First time buying crypto?
+            <summary className="cursor-pointer text-muted-foreground hover:text-foreground transition-colors text-sm">
+              First time using a crypto wallet?
             </summary>
             <div className="mt-4 p-4 bg-card border border-border rounded-lg text-sm text-muted-foreground">
-              <p className="mb-2">No worries! Here's a quick start:</p>
+              <p className="mb-2">Here's how to get started:</p>
               <ul className="list-disc list-inside space-y-1 ml-2">
-                <li>Create a Phantom wallet (it's free and takes 2 minutes)</li>
+                <li>Create a Phantom wallet (free, takes 2 minutes)</li>
                 <li>Buy SOL using a credit card directly in Phantom</li>
                 <li>Use the swap feature to exchange SOL for TRN</li>
-                <li>That's it — you're now a terrain legend! 🌱</li>
+                <li>TRN will appear in your wallet</li>
               </ul>
+              <p className="mt-3 text-xs">
+                Remember: TRN is optional. Terrain services work without it.
+              </p>
             </div>
           </details>
         </div>
       </div>
-      
-      <style>{`
-        @keyframes sequence-glow {
-          0%, 100% {
-            box-shadow: 0 0 5px hsl(var(--primary) / 0.3);
-          }
-          50% {
-            box-shadow: 0 0 15px hsl(var(--primary) / 0.6);
-          }
-        }
-        
-        .animate-sequence {
-          animation: sequence-glow 2s ease-in-out infinite;
-        }
-      `}</style>
     </section>
   );
 };
