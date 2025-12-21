@@ -55,13 +55,13 @@ const impactCategories = [
   }
 ];
 
+// Bounded, non-promotional benefits
 const benefits = [
-  "Strengthens TRN's identity as a utility-backed, community-first ecosystem",
-  "Converts platform success into measurable community benefit",
-  "Builds trust with investors, users, and contractors",
-  "Aligns with TerrainVision's practical mission",
-  "Gives holders an ongoing voice in impact decisions",
-  "Demonstrates that Web3 can fund real work"
+  "Provides a structured mechanism for mission-aligned contributions",
+  "Creates transparent allocation with clear governance rules",
+  "Enables community input within defined bounds",
+  "Aligns with Terrain's core mission of land and water stewardship",
+  "All fund activities are publicly tracked and verifiable"
 ];
 
 const PhilanthropicFund = () => {

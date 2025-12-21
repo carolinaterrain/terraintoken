@@ -63,82 +63,61 @@ const Ecosystem = () => {
           </div>
         </section>
 
-        {/* Visual Ecosystem Diagram - Text Description */}
+        {/* Simplified Ecosystem Diagram - Static Text Hierarchy */}
         <section className="py-16 px-4">
-          <div className="container mx-auto max-w-5xl">
-            <h2 className="font-display text-2xl font-bold text-center mb-12">
-              Ecosystem Architecture
+          <div className="container mx-auto max-w-3xl">
+            <h2 className="font-display text-2xl font-bold text-center mb-8">
+              System Architecture
             </h2>
             
-            {/* Three-Tier Visual */}
-            <div className="relative">
-              {/* Connection Lines - Hidden on mobile */}
-              <div className="hidden md:block absolute top-1/2 left-1/4 right-1/4 h-0.5 bg-border" />
-              
-              <div className="grid md:grid-cols-3 gap-6">
-                {/* TerrainVision AI */}
-                <GlassCard className="p-6 text-center relative">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
-                    <Cpu className="w-8 h-8 text-primary" />
-                  </div>
-                  <h3 className="font-display text-xl font-bold mb-2">TerrainVision AI</h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    AI-powered drainage analysis. Users who contribute terrain data may receive TRN credits for quality submissions.
-                  </p>
-                  <Button variant="outline" size="sm" asChild>
-                    <a href="https://terrainvision-ai.com" target="_blank" rel="noopener noreferrer">
-                      Visit Platform <ExternalLink className="ml-2 w-3 h-3" />
-                    </a>
-                  </Button>
-                </GlassCard>
-
-                {/* TerrainGuard - Center */}
-                <GlassCard className="p-6 text-center relative border-primary/30">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
-                    <Shield className="w-8 h-8 text-primary" />
-                  </div>
-                  <h3 className="font-display text-xl font-bold mb-2">TerrainGuard</h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Property protection service. TRN holders may access discounted monitoring. Powered by AI insights.
-                  </p>
-                  <span className="inline-block px-3 py-1 text-xs bg-muted text-muted-foreground rounded-full">
-                    Coming Soon
-                  </span>
-                </GlassCard>
-
-                {/* Carolina Terrain */}
-                <GlassCard className="p-6 text-center relative">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
-                    <HardHat className="w-8 h-8 text-primary" />
-                  </div>
-                  <h3 className="font-display text-xl font-bold mb-2">Carolina Terrain</h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Licensed contractor executing real-world terrain work. Services may be paid with TRN or traditional currency.
-                  </p>
-                  <Button variant="outline" size="sm" asChild>
-                    <a href="https://carolinaterrain.com" target="_blank" rel="noopener noreferrer">
-                      Visit Site <ExternalLink className="ml-2 w-3 h-3" />
-                    </a>
-                  </Button>
-                </GlassCard>
-              </div>
-
-              {/* TRN Layer - The Lubricant */}
-              <div className="mt-8 pt-8 border-t border-border">
-                <GlassCard className="p-6 bg-primary/5 border-primary/20 max-w-2xl mx-auto">
-                  <div className="flex items-center justify-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                      <img src="/trn-coin.png" alt="TRN" className="w-6 h-6" />
+            <GlassCard className="p-8">
+              <div className="space-y-4 font-mono text-sm">
+                <div className="text-foreground font-bold">Terrain System</div>
+                <div className="pl-4 space-y-3 text-muted-foreground">
+                  <div className="flex items-start gap-3">
+                    <span className="text-primary">↳</span>
+                    <div>
+                      <span className="text-foreground font-semibold">TerrainVision</span>
+                      <span className="text-muted-foreground"> — AI-powered terrain diagnostics</span>
                     </div>
-                    <h3 className="font-display text-lg font-bold">TRN Utility Layer</h3>
                   </div>
-                  <p className="text-sm text-muted-foreground text-center">
-                    TRN sits between users and premium services as an <strong>optional access mechanism</strong>. 
-                    It facilitates incentives and discounts but is not required to use any platform.
-                  </p>
-                </GlassCard>
+                  <div className="flex items-start gap-3">
+                    <span className="text-primary">↳</span>
+                    <div>
+                      <span className="text-foreground font-semibold">TerrainGuard</span>
+                      <span className="text-muted-foreground"> — Property protection records</span>
+                      <span className="ml-2 text-xs bg-muted px-1.5 py-0.5 rounded">Coming Soon</span>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-primary">↳</span>
+                    <div>
+                      <span className="text-foreground font-semibold">StormwaterSCM</span>
+                      <span className="text-muted-foreground"> — Compliance management</span>
+                      <span className="ml-2 text-xs bg-muted px-1.5 py-0.5 rounded">Coming Soon</span>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-primary">↳</span>
+                    <div>
+                      <span className="text-foreground font-semibold">Carolina Terrain</span>
+                      <span className="text-muted-foreground"> — Licensed contractor execution</span>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 pt-2 border-t border-border/50">
+                    <span className="text-muted-foreground">↳</span>
+                    <div>
+                      <span className="text-muted-foreground font-semibold">TRN</span>
+                      <span className="text-muted-foreground"> — Optional utility credit</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+              
+              <p className="text-xs text-muted-foreground mt-6 pt-4 border-t border-border/50">
+                TRN operates as a background utility layer. All platforms function independently of TRN.
+              </p>
+            </GlassCard>
           </div>
         </section>
 

@@ -31,22 +31,22 @@ const MobileNav = () => {
     action();
   };
 
-  // Updated: Replaced Earn with Ecosystem for compliance-safe navigation
+  // Regulatory-hardened navigation - de-emphasized trading
   const navItems = [
     { path: "/", label: "Home", icon: Home, onClick: handleHomeClick },
     { path: "/ecosystem", label: "Ecosystem", icon: Layers },
-    { path: "/market", label: "Market", icon: TrendingUp },
-    { path: "/investors", label: "Invest", icon: Briefcase },
+    { path: "/transparency", label: "Transparency", icon: Shield },
+    { path: "/whitepaper", label: "Docs", icon: FileText },
   ];
 
   const moreItems = [
-    { path: "/whitepaper", label: "Whitepaper", icon: FileText },
     { path: "/drops", label: "Drops", icon: Shirt },
+    { path: "/market", label: "Market Data", icon: TrendingUp },
+    { path: "/investors", label: "For Investors", icon: Briefcase },
     { path: "/team", label: "About Us", icon: Users },
     { path: "/philanthropic-fund", label: "Philanthropic Fund", icon: Heart },
-    { path: "/transparency", label: "Transparency Hub", icon: Shield },
     { path: "/press", label: "Press Kit", icon: Newspaper },
-    { path: "/updates", label: "Blog", icon: BookOpen },
+    { path: "/updates", label: "System Updates", icon: BookOpen },
   ];
 
   const isMoreActive = moreItems.some(item => location.pathname === item.path);

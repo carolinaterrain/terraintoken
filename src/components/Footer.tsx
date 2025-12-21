@@ -144,15 +144,15 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom: Disclaimer */}
+        {/* Bottom: Disclaimer - Strengthened */}
         <div className="mt-4 pt-4 border-t border-border/30 text-center">
-          <p className="text-xs text-muted-foreground max-w-3xl mx-auto mb-3">
-            TRN is a utility token that powers platform access and sustainability within the Terrain ecosystem. 
-            TRN is not an investment, does not represent equity or ownership, and makes no promises of profit, appreciation, or yield. 
-            Cryptocurrency involves significant risk. DYOR.
+          <p className="text-xs text-muted-foreground max-w-3xl mx-auto mb-2">
+            <span className="font-semibold text-foreground">TRN is an optional utility credit</span> within the Terrain ecosystem. 
+            It is not an investment, does not represent equity or ownership, and makes no promises of profit, appreciation, or yield.
           </p>
-          <p className="text-xs text-muted-foreground mb-3">
-            Not financial advice. 🌱
+          <p className="text-xs text-muted-foreground max-w-3xl mx-auto mb-3">
+            TRN is not required to use Terrain services. All platforms function without TRN. 
+            Cryptocurrency involves risk. Not financial advice.
           </p>
           <div className="flex items-center justify-center flex-wrap gap-x-6 gap-y-3 mt-3">
             <Link 
