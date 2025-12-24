@@ -1,6 +1,6 @@
 # TerrainToken.com ↔ Terrain Lifecycle V1 Integration
 
-## Status: ✅ INTEGRATED (Read-Only + Light Event Emission)
+## Status: ✅ INTEGRATED (Read-Only + Optional Event Emission)
 
 ---
 
@@ -9,45 +9,42 @@
 ### Local (Lovable Cloud - TerrainToken's Own Data)
 ```
 SUPABASE_URL=https://dihbqhofqfcvjgpzmskx.supabase.co
-SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-Source: .env, src/integrations/supabase/client.ts (auto-managed)
+Source: .env, src/integrations/supabase/client.ts (auto-managed by Lovable)
 ```
 
-### Canonical (Shared Terrain Lifecycle)
+### Canonical (Shared Terrain Lifecycle) ← REPOINTED ✅
 ```
 ECOSYSTEM_URL=https://izxzkqprhekrgiwakepm.supabase.co
-ECOSYSTEM_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ECOSYSTEM_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml6eHprcXByaGVrcmdpd2FrZXBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEyNTA5OTksImV4cCI6MjA3NjgyNjk5OX0.muHEHLDKoqKkruBR_1HNiBKjnoiks_sUWa6nunzzWBk
 Source: src/lib/ecosystemClient.ts (read-only client)
 ```
 
 ---
 
-## 2. Pages & Queries (Read-Only)
+## 2. Queries Used (Read-Only)
 
-| Page | Query | Table | Purpose |
+| Hook | Table | Query | Purpose |
 |------|-------|-------|---------|
-| `/ecosystem` | `useCanonicalEvents()` | `ecosystem_events` | Activity feed from all apps |
-| `/ecosystem` | `useCanonicalPropertyStats()` | `properties` | Total property count |
-| `/ecosystem` | `useCanonicalWorkOrderStats()` | `work_orders` | Work order status breakdown |
-| `/ecosystem` | `useCanonicalComplianceStats()` | `compliance_schedules` | Overdue/upcoming counts |
-| `/ecosystem` | `useCanonicalEventsByProducer()` | `ecosystem_events` | Producer activity health |
+| `useCanonicalEvents(limit)` | `ecosystem_events` | SELECT id, event_type, source_app, producer, property_id, correlation_id, idempotency_key, payload, created_at ORDER BY created_at DESC LIMIT {limit} | Activity feed |
+| `useCanonicalPropertyStats()` | `properties` | SELECT COUNT(*) | Total property count |
+| `useCanonicalWorkOrderStats()` | `work_orders` | SELECT COUNT(*) + filtered by status | Total/pending/completed breakdown |
+| `useCanonicalComplianceStats()` | `compliance_schedules` | SELECT COUNT(*) + filtered by next_due_date | Overdue/upcoming counts |
+| `useCanonicalEventsByProducer()` | `ecosystem_events` | SELECT producer, created_at WHERE created_at > 7d ago | Producer activity health |
 
 ### UI Location
 - **Ecosystem page** (`/ecosystem`) → "Terrain Lifecycle (Canonical)" tab
 
 ---
 
-## 3. Events Emitted by TerrainToken
+## 3. Optional Events Emitted
 
-TerrainToken emits ONLY token-adjacent events. It does NOT own lifecycle entities.
+TerrainToken emits ONLY token-related events. It does NOT own lifecycle entities.
 
-### Event Types
-
-| Event Type | Trigger | Payload Shape |
-|------------|---------|---------------|
+| Event Type | Trigger | Payload |
+|------------|---------|---------|
 | `trn.wallet.linked` | User links wallet | `{ wallet_address, linked_at, verification_method }` |
 | `trn.wallet.unlinked` | User unlinks wallet | `{ wallet_address, unlinked_at, reason }` |
-| `trn.tier.updated` | User tier changes | `{ wallet_address, previous_tier, new_tier, updated_at }` |
+| `trn.report.published` | Monthly report published | `{ report_month, published_at, trn_burned, report_url }` |
 
 ### Emission Behavior
 - Events are emitted to BOTH:
