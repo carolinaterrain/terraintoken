@@ -1,17 +1,72 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
+interface ProducerStats {
+  producer: string;
+  events_24h: number;
+  events_7d: number;
+  last_event_at: string | null;
+  hours_since_last_event: number | null;
+  is_stale: boolean;
+}
+
 export interface EcosystemHealthKPIs {
+  // Webhook metrics
+  webhooks_total: number;
+  webhooks_pending: number;
   webhooks_failed: number;
   webhooks_in_flight: number;
+  webhook_failure_rate: number;
+  
+  // Event metrics
   events_last_hour: number;
-  last_webhook_received: string | null;
-  last_event_created: string | null;
+  events_last_24h: number;
+  events_last_7d: number;
+  last_event_at: string | null;
+  
+  // Per-producer breakdown
+  producers: ProducerStats[];
+  
+  // Report metrics
   reports_finalized: number;
   reports_pending: number;
   total_trn_burned: number;
+  
+  // Wallet metrics
   wallets_verified: number;
+  wallets_connected: number;
+  
+  // Lifecycle metrics
+  properties_count: number;
+  work_orders_pending: number;
+  compliance_overdue: number;
+  
+  // Alerts
+  alerts: string[];
+  
+  // Legacy fields for backward compatibility
+  last_webhook_received?: string | null;
+  last_event_created?: string | null;
+  
+  // Meta
   snapshot_at: string;
+}
+
+export function useEcosystemHealth() {
+  return useQuery({
+    queryKey: ['ecosystem-health-kpis'],
+    queryFn: async (): Promise<EcosystemHealthKPIs | null> => {
+      const { data, error } = await supabase.functions.invoke('get-ecosystem-health');
+      
+      if (error) {
+        console.error('Error fetching ecosystem health:', error);
+        return null;
+      }
+      
+      return data;
+    },
+    refetchInterval: 30000,
+  });
 }
 
 export interface WebhookInboxItem {
@@ -39,24 +94,6 @@ export interface EcosystemEvent {
   created_at: string;
 }
 
-export function useEcosystemHealth() {
-  return useQuery({
-    queryKey: ['ecosystem-health-kpis'],
-    queryFn: async (): Promise<EcosystemHealthKPIs | null> => {
-      // Query the view - need service role access, so we use edge function
-      const { data, error } = await supabase.functions.invoke('get-ecosystem-health');
-      
-      if (error) {
-        console.error('Error fetching ecosystem health:', error);
-        return null;
-      }
-      
-      return data;
-    },
-    refetchInterval: 30000, // Refresh every 30 seconds
-  });
-}
-
 export function useWebhookInbox(limit = 20) {
   return useQuery({
     queryKey: ['webhook-inbox', limit],
@@ -72,7 +109,7 @@ export function useWebhookInbox(limit = 20) {
       
       return data || [];
     },
-    refetchInterval: 10000, // Refresh every 10 seconds
+    refetchInterval: 10000,
   });
 }
 
