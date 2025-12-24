@@ -11,9 +11,9 @@
  */
 import { createClient } from '@supabase/supabase-js';
 
-// Canonical Terrain Ecosystem Supabase
+// Canonical Terrain Ecosystem Supabase (LOCKED)
 const ECOSYSTEM_URL = 'https://izxzkqprhekrgiwakepm.supabase.co';
-const ECOSYSTEM_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml6eHprcXByaGVrcmdpd2FrZXBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0NTg4NzIsImV4cCI6MjA2NDAzNDg3Mn0.51xRHqezxIx6LMz76d3VEsGjXcyYgJnuscPL4TbqFSA';
+const ECOSYSTEM_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml6eHprcXByaGVrcmdpd2FrZXBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEyNTA5OTksImV4cCI6MjA3NjgyNjk5OX0.muHEHLDKoqKkruBR_1HNiBKjnoiks_sUWa6nunzzWBk';
 
 // Read-only client for ecosystem data
 export const ecosystemClient = createClient(ECOSYSTEM_URL, ECOSYSTEM_ANON_KEY, {

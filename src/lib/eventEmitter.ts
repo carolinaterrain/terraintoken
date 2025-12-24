@@ -20,7 +20,8 @@ import { supabase } from '@/integrations/supabase/client';
 export type TerrainTokenEventType = 
   | 'trn.wallet.linked'
   | 'trn.wallet.unlinked'
-  | 'trn.tier.updated';
+  | 'trn.tier.updated'
+  | 'trn.report.published';
 
 export interface TerrainTokenEvent {
   event_type: TerrainTokenEventType;
@@ -141,6 +142,12 @@ export const EVENT_PAYLOAD_SCHEMAS = {
     wallet_address: 'string (required)',
     unlinked_at: 'ISO timestamp',
     reason: 'user_request | admin_action | session_expired',
+  },
+  'trn.report.published': {
+    report_month: 'YYYY-MM format',
+    published_at: 'ISO timestamp',
+    trn_burned: 'number (optional)',
+    report_url: 'string (optional)',
   },
   'trn.tier.updated': {
     wallet_address: 'string (required)',
