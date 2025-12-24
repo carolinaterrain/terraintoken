@@ -6,6 +6,8 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
 import { EcosystemHealthDashboard } from "@/components/ecosystem/EcosystemHealthDashboard";
+import { CanonicalEcosystemDashboard } from "@/components/ecosystem/CanonicalEcosystemDashboard";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   ExternalLink, 
   Cpu, 
@@ -15,7 +17,9 @@ import {
   CheckCircle2,
   XCircle,
   Info,
-  Activity
+  Activity,
+  Database,
+  Eye
 } from "lucide-react";
 
 const Ecosystem = () => {
@@ -74,7 +78,27 @@ const Ecosystem = () => {
                 Live Ecosystem Status
               </h2>
             </div>
-            <EcosystemHealthDashboard />
+            
+            <Tabs defaultValue="canonical" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-6">
+                <TabsTrigger value="canonical" className="flex items-center gap-2">
+                  <Database className="w-4 h-4" />
+                  Terrain Lifecycle (Canonical)
+                </TabsTrigger>
+                <TabsTrigger value="local" className="flex items-center gap-2">
+                  <Eye className="w-4 h-4" />
+                  TerrainToken Local
+                </TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="canonical">
+                <CanonicalEcosystemDashboard />
+              </TabsContent>
+              
+              <TabsContent value="local">
+                <EcosystemHealthDashboard />
+              </TabsContent>
+            </Tabs>
           </div>
         </section>
 
