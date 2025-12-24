@@ -5,6 +5,7 @@ import DesktopNav from "@/components/DesktopNav";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
+import { EcosystemHealthDashboard } from "@/components/ecosystem/EcosystemHealthDashboard";
 import { 
   ExternalLink, 
   Cpu, 
@@ -13,7 +14,8 @@ import {
   ArrowRight,
   CheckCircle2,
   XCircle,
-  Info
+  Info,
+  Activity
 } from "lucide-react";
 
 const Ecosystem = () => {
@@ -60,6 +62,19 @@ const Ecosystem = () => {
                 </p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Ecosystem Health Dashboard */}
+        <section className="py-16 px-4 bg-muted/10">
+          <div className="container mx-auto max-w-4xl">
+            <div className="flex items-center justify-center gap-2 mb-8">
+              <Activity className="w-5 h-5 text-primary" />
+              <h2 className="font-display text-2xl font-bold text-center">
+                Live Ecosystem Status
+              </h2>
+            </div>
+            <EcosystemHealthDashboard />
           </div>
         </section>
 
