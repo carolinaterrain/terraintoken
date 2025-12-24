@@ -1297,6 +1297,7 @@ export type Database = {
           created_at: string | null
           email: string | null
           id: string
+          jobber_client_id: string | null
           metadata: Json | null
           name: string | null
           notes: string | null
@@ -1311,6 +1312,7 @@ export type Database = {
           created_at?: string | null
           email?: string | null
           id?: string
+          jobber_client_id?: string | null
           metadata?: Json | null
           name?: string | null
           notes?: string | null
@@ -1325,6 +1327,7 @@ export type Database = {
           created_at?: string | null
           email?: string | null
           id?: string
+          jobber_client_id?: string | null
           metadata?: Json | null
           name?: string | null
           notes?: string | null
@@ -2103,6 +2106,7 @@ export type Database = {
           city: string | null
           created_at: string | null
           id: string
+          jobber_property_id: string | null
           lat: number | null
           lead_id: string | null
           lng: number | null
@@ -2120,6 +2124,7 @@ export type Database = {
           city?: string | null
           created_at?: string | null
           id?: string
+          jobber_property_id?: string | null
           lat?: number | null
           lead_id?: string | null
           lng?: number | null
@@ -2137,6 +2142,7 @@ export type Database = {
           city?: string | null
           created_at?: string | null
           id?: string
+          jobber_property_id?: string | null
           lat?: number | null
           lead_id?: string | null
           lng?: number | null
@@ -3480,6 +3486,8 @@ export type Database = {
           created_at: string | null
           estimated_cost: number | null
           id: string
+          jobber_job_id: string | null
+          jobber_quote_id: string | null
           metadata: Json | null
           notes: string | null
           property_id: string
@@ -3498,6 +3506,8 @@ export type Database = {
           created_at?: string | null
           estimated_cost?: number | null
           id?: string
+          jobber_job_id?: string | null
+          jobber_quote_id?: string | null
           metadata?: Json | null
           notes?: string | null
           property_id: string
@@ -3516,6 +3526,8 @@ export type Database = {
           created_at?: string | null
           estimated_cost?: number | null
           id?: string
+          jobber_job_id?: string | null
+          jobber_quote_id?: string | null
           metadata?: Json | null
           notes?: string | null
           property_id?: string
@@ -3662,6 +3674,7 @@ export type Database = {
           serial_number: number
         }[]
       }
+      trigger_ecosystem_health_check: { Args: never; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"

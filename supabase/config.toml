@@ -122,3 +122,36 @@ verify_jwt = false
 
 [functions.distribute-rewards]
 verify_jwt = true
+
+[functions.check-ecosystem-health]
+verify_jwt = false
+
+[functions.send-email]
+verify_jwt = false
+
+[functions.submit-investor-interest]
+verify_jwt = false
+
+[functions.dashboard-metrics]
+verify_jwt = false
+
+[functions.collect-holder-snapshot]
+verify_jwt = false
+
+[functions.mint-supporter-nft]
+verify_jwt = true
+
+[functions.manage-subscription]
+verify_jwt = true
+
+[functions.purchase-energy]
+verify_jwt = true
+
+[functions.verify-tool-proof]
+verify_jwt = false
+
+[functions.process-marketplace-sale]
+verify_jwt = true
+
+[functions.generate-discount-code]
+verify_jwt = true
