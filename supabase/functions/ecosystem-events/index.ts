@@ -133,6 +133,7 @@ serve(async (req) => {
         correlation_id: correlationId,
         idempotency_key: idempotencyKey,
         report_month: event.report_month,
+        property_id: event.property_id, // Lifecycle linking
         payload: event.payload || {},
       })
       .select()
