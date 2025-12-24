@@ -476,6 +476,62 @@ export type Database = {
           },
         ]
       }
+      compliance_schedules: {
+        Row: {
+          created_at: string | null
+          frequency_months: number | null
+          id: string
+          last_completed_date: string | null
+          metadata: Json | null
+          next_due_date: string
+          notes: string | null
+          property_id: string
+          reminder_sent_at: string | null
+          schedule_type: string
+          status: string | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          frequency_months?: number | null
+          id?: string
+          last_completed_date?: string | null
+          metadata?: Json | null
+          next_due_date: string
+          notes?: string | null
+          property_id: string
+          reminder_sent_at?: string | null
+          schedule_type: string
+          status?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          frequency_months?: number | null
+          id?: string
+          last_completed_date?: string | null
+          metadata?: Json | null
+          next_due_date?: string
+          notes?: string | null
+          property_id?: string
+          reminder_sent_at?: string | null
+          schedule_type?: string
+          status?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "compliance_schedules_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contest_entries: {
         Row: {
           contest_category: string
@@ -586,6 +642,69 @@ export type Database = {
         }
         Relationships: []
       }
+      documents: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          doc_type: string
+          file_size: number | null
+          id: string
+          metadata: Json | null
+          mime_type: string | null
+          property_id: string | null
+          storage_bucket: string | null
+          storage_path: string
+          title: string | null
+          uploaded_by: string | null
+          work_order_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          doc_type: string
+          file_size?: number | null
+          id?: string
+          metadata?: Json | null
+          mime_type?: string | null
+          property_id?: string | null
+          storage_bucket?: string | null
+          storage_path: string
+          title?: string | null
+          uploaded_by?: string | null
+          work_order_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          doc_type?: string
+          file_size?: number | null
+          id?: string
+          metadata?: Json | null
+          mime_type?: string | null
+          property_id?: string | null
+          storage_bucket?: string | null
+          storage_path?: string
+          title?: string | null
+          uploaded_by?: string | null
+          work_order_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documents_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "documents_work_order_id_fkey"
+            columns: ["work_order_id"]
+            isOneToOne: false
+            referencedRelation: "work_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ecosystem_events: {
         Row: {
           correlation_id: string | null
@@ -598,6 +717,7 @@ export type Database = {
           processed: boolean
           processed_at: string | null
           producer: string | null
+          property_id: string | null
           report_month: string | null
           session_id: string | null
           source_app: string
@@ -615,6 +735,7 @@ export type Database = {
           processed?: boolean
           processed_at?: string | null
           producer?: string | null
+          property_id?: string | null
           report_month?: string | null
           session_id?: string | null
           source_app: string
@@ -632,13 +753,22 @@ export type Database = {
           processed?: boolean
           processed_at?: string | null
           producer?: string | null
+          property_id?: string | null
           report_month?: string | null
           session_id?: string | null
           source_app?: string
           user_id?: string | null
           wallet_address?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "ecosystem_events_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       email_preferences: {
         Row: {
@@ -1158,6 +1288,51 @@ export type Database = {
           utm_campaign?: string | null
           utm_source?: string | null
           wallet_address?: string | null
+        }
+        Relationships: []
+      }
+      leads: {
+        Row: {
+          address: string | null
+          created_at: string | null
+          email: string | null
+          id: string
+          metadata: Json | null
+          name: string | null
+          notes: string | null
+          phone: string | null
+          source: string
+          source_id: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          metadata?: Json | null
+          name?: string | null
+          notes?: string | null
+          phone?: string | null
+          source: string
+          source_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          metadata?: Json | null
+          name?: string | null
+          notes?: string | null
+          phone?: string | null
+          source?: string
+          source_id?: string | null
+          status?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -1921,6 +2096,68 @@ export type Database = {
           validation_status?: string | null
         }
         Relationships: []
+      }
+      properties: {
+        Row: {
+          address: string
+          city: string | null
+          created_at: string | null
+          id: string
+          lat: number | null
+          lead_id: string | null
+          lng: number | null
+          metadata: Json | null
+          owner_email: string | null
+          owner_name: string | null
+          owner_phone: string | null
+          property_type: string | null
+          state: string | null
+          updated_at: string | null
+          zip: string | null
+        }
+        Insert: {
+          address: string
+          city?: string | null
+          created_at?: string | null
+          id?: string
+          lat?: number | null
+          lead_id?: string | null
+          lng?: number | null
+          metadata?: Json | null
+          owner_email?: string | null
+          owner_name?: string | null
+          owner_phone?: string | null
+          property_type?: string | null
+          state?: string | null
+          updated_at?: string | null
+          zip?: string | null
+        }
+        Update: {
+          address?: string
+          city?: string | null
+          created_at?: string | null
+          id?: string
+          lat?: number | null
+          lead_id?: string | null
+          lng?: number | null
+          metadata?: Json | null
+          owner_email?: string | null
+          owner_name?: string | null
+          owner_phone?: string | null
+          property_type?: string | null
+          state?: string | null
+          updated_at?: string | null
+          zip?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "properties_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       purchase_leaderboard: {
         Row: {
@@ -3234,6 +3471,71 @@ export type Database = {
           wallet_address?: string
         }
         Relationships: []
+      }
+      work_orders: {
+        Row: {
+          actual_cost: number | null
+          assigned_to: string | null
+          completed_date: string | null
+          created_at: string | null
+          estimated_cost: number | null
+          id: string
+          metadata: Json | null
+          notes: string | null
+          property_id: string
+          scheduled_date: string | null
+          scope: string | null
+          source_id: string | null
+          source_type: string | null
+          status: string | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          actual_cost?: number | null
+          assigned_to?: string | null
+          completed_date?: string | null
+          created_at?: string | null
+          estimated_cost?: number | null
+          id?: string
+          metadata?: Json | null
+          notes?: string | null
+          property_id: string
+          scheduled_date?: string | null
+          scope?: string | null
+          source_id?: string | null
+          source_type?: string | null
+          status?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          actual_cost?: number | null
+          assigned_to?: string | null
+          completed_date?: string | null
+          created_at?: string | null
+          estimated_cost?: number | null
+          id?: string
+          metadata?: Json | null
+          notes?: string | null
+          property_id?: string
+          scheduled_date?: string | null
+          scope?: string | null
+          source_id?: string | null
+          source_type?: string | null
+          status?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "work_orders_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

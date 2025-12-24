@@ -24,33 +24,62 @@ export const EVENT_ALIAS_MAP: Record<string, string> = {
   'TRN_WALLET_LINKED': 'trn.wallet.linked',
   'TRN_WALLET_UNLINKED': 'trn.wallet.unlinked',
   'TRN_TIER_UPDATED': 'trn.tier.updated',
+  // StormwaterSCM events
+  'SCM_INSPECTION_SCHEDULED': 'scm.inspection.scheduled',
+  'SCM_INSPECTION_COMPLETED': 'scm.inspection.completed',
+  'SCM_FINDING_CREATED': 'scm.finding.created',
+  'SCM_WORKORDER_CREATED': 'scm.workorder.created',
+  // Carolina Terrain events
+  'CT_QUOTE_SENT': 'ct.quote.sent',
+  'CT_JOB_SCHEDULED': 'ct.job.scheduled',
+  'CT_JOB_COMPLETED': 'ct.job.completed',
+  // TerrainGuard events
+  'TG_REMINDER_SENT': 'tg.reminder.sent',
+  'TG_COMPLIANCE_DUE': 'tg.compliance.due',
 };
 
 // Canonical event types
 export type EcosystemEventType = 
+  // TerrainVision events
   | 'tv.month.closed'
   | 'tv.analysis.created'
   | 'tv.analysis.completed'
   | 'tv.payment.succeeded'
   | 'tv.payment.failed'
+  // TRN token events
   | 'trn.band.determined'
   | 'trn.buyback.executed'
   | 'trn.burn.executed'
   | 'trn.report.published'
   | 'trn.wallet.linked'
   | 'trn.wallet.unlinked'
-  | 'trn.tier.updated';
+  | 'trn.tier.updated'
+  | 'trn.reward.created'
+  | 'trn.reward.distributed'
+  // StormwaterSCM events
+  | 'scm.inspection.scheduled'
+  | 'scm.inspection.completed'
+  | 'scm.finding.created'
+  | 'scm.workorder.created'
+  // Carolina Terrain events
+  | 'ct.quote.sent'
+  | 'ct.job.scheduled'
+  | 'ct.job.completed'
+  // TerrainGuard events
+  | 'tg.reminder.sent'
+  | 'tg.compliance.due';
 
 // Canonical event schema
 export interface EcosystemEvent {
   event_type: string;
   idempotency_key: string;
   correlation_id?: string;
-  producer: 'terrainvision' | 'trn';
+  producer: 'terrainvision' | 'trn' | 'stormwaterscm' | 'carolinaterrain' | 'terrainguard';
   user_id?: string;
   session_id?: string;
   wallet_address?: string;
   report_month?: string;
+  property_id?: string; // Canonical property reference for lifecycle linking
   payload: Record<string, unknown>;
 }
 
