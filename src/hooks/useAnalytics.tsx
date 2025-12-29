@@ -11,6 +11,20 @@ const getSessionId = () => {
   return sessionId;
 };
 
+// Get wallet address from session storage if linked
+const getLinkedWallet = (): string | undefined => {
+  return sessionStorage.getItem("trn-linked-wallet") || undefined;
+};
+
+// Set linked wallet in session storage
+export const setLinkedWallet = (walletAddress: string | null) => {
+  if (walletAddress) {
+    sessionStorage.setItem("trn-linked-wallet", walletAddress);
+  } else {
+    sessionStorage.removeItem("trn-linked-wallet");
+  }
+};
+
 const getUTMParam = (param: string) => {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(param) || undefined;
@@ -90,6 +104,7 @@ export const useAnalytics = () => {
       utm_source: getUTMParam("utm_source"),
       utm_medium: getUTMParam("utm_medium"),
       utm_campaign: getUTMParam("utm_campaign"),
+      wallet_address: getLinkedWallet(),
       created_at: new Date().toISOString(),
     });
 
@@ -119,6 +134,7 @@ export const useAnalytics = () => {
       utm_source: getUTMParam("utm_source"),
       utm_medium: getUTMParam("utm_medium"),
       utm_campaign: getUTMParam("utm_campaign"),
+      wallet_address: getLinkedWallet(),
       created_at: new Date().toISOString(),
     });
 

@@ -9,6 +9,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { getSolanaRpcEndpoint } from "@/lib/solanaRpc";
 import { useFeatureAnalytics } from "@/hooks/useFeatureAnalytics";
+import { emitTerrainTokenEvent } from "@/lib/eventEmitter";
+import { getSessionId } from "@/lib/trackingUtils";
+import { setLinkedWallet } from "@/hooks/useAnalytics";
 
 const TRN_MINT = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 const IS_DEV = import.meta.env.DEV;
@@ -27,6 +30,9 @@ export const WalletConnect = () => {
         const address = publicKey.toBase58();
         const walletName = wallet?.adapter?.name || 'unknown';
         console.log('[WalletConnect] Connected:', address);
+        
+        // Link wallet to session for analytics correlation
+        setLinkedWallet(address);
         
         // Track wallet connect success
         trackWalletConnect('success', walletName);
@@ -48,6 +54,8 @@ export const WalletConnect = () => {
           })
         );
       } else {
+        // Clear wallet from session when disconnected
+        setLinkedWallet(null);
         setTrnBalance(0);
         setSOLBalance(0);
         window.dispatchEvent(new CustomEvent("walletChanged", { detail: null }));
@@ -161,6 +169,24 @@ export const WalletConnect = () => {
     }
 
     console.log('[WalletConnect] ✅ VERIFIED - Row exists:', verifyData);
+    
+    // Emit ecosystem event for cross-app observability
+    try {
+      const result = await emitTerrainTokenEvent({
+        event_type: 'trn.wallet.linked',
+        wallet_address: address,
+        session_id: getSessionId(),
+        payload: {
+          linked_at: new Date().toISOString(),
+          verification_method: 'session',
+          first_connection: verifyData.connection_count === 1,
+        },
+      });
+      console.log('[WalletConnect] Ecosystem event emitted:', result);
+    } catch (eventError) {
+      console.warn('[WalletConnect] Event emission failed (non-blocking):', eventError);
+    }
+    
     toast({
       title: "Wallet Tracked",
       description: "Connection recorded successfully!",
@@ -235,7 +261,27 @@ export const WalletConnect = () => {
     }
   };
 
-  const handleDisconnect = () => {
+  const handleDisconnect = async () => {
+    const walletAddress = publicKey?.toBase58();
+    
+    // Emit disconnect event before disconnecting
+    if (walletAddress) {
+      try {
+        await emitTerrainTokenEvent({
+          event_type: 'trn.wallet.unlinked',
+          wallet_address: walletAddress,
+          session_id: getSessionId(),
+          payload: {
+            unlinked_at: new Date().toISOString(),
+            reason: 'user_request',
+          },
+        });
+        console.log('[WalletConnect] Disconnect event emitted');
+      } catch (error) {
+        console.warn('[WalletConnect] Disconnect event failed (non-blocking):', error);
+      }
+    }
+    
     disconnect();
     toast({
       title: "Wallet Disconnected",
