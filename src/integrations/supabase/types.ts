@@ -199,6 +199,7 @@ export type Database = {
           utm_campaign: string | null
           utm_medium: string | null
           utm_source: string | null
+          wallet_address: string | null
         }
         Insert: {
           created_at?: string | null
@@ -215,6 +216,7 @@ export type Database = {
           utm_campaign?: string | null
           utm_medium?: string | null
           utm_source?: string | null
+          wallet_address?: string | null
         }
         Update: {
           created_at?: string | null
@@ -231,6 +233,7 @@ export type Database = {
           utm_campaign?: string | null
           utm_medium?: string | null
           utm_source?: string | null
+          wallet_address?: string | null
         }
         Relationships: []
       }
@@ -2777,6 +2780,7 @@ export type Database = {
           burn_source: string
           created_at: string
           id: string
+          is_test_data: boolean | null
           metadata: Json | null
           related_transaction_id: string | null
           transaction_signature: string | null
@@ -2787,6 +2791,7 @@ export type Database = {
           burn_source: string
           created_at?: string
           id?: string
+          is_test_data?: boolean | null
           metadata?: Json | null
           related_transaction_id?: string | null
           transaction_signature?: string | null
@@ -2797,6 +2802,7 @@ export type Database = {
           burn_source?: string
           created_at?: string
           id?: string
+          is_test_data?: boolean | null
           metadata?: Json | null
           related_transaction_id?: string | null
           transaction_signature?: string | null
@@ -3039,6 +3045,7 @@ export type Database = {
           claimed_at: string | null
           created_at: string | null
           id: string
+          idempotency_key: string | null
           media_id: string | null
           reward_metadata: Json | null
           reward_type: string
@@ -3050,6 +3057,7 @@ export type Database = {
           claimed_at?: string | null
           created_at?: string | null
           id?: string
+          idempotency_key?: string | null
           media_id?: string | null
           reward_metadata?: Json | null
           reward_type: string
@@ -3061,6 +3069,7 @@ export type Database = {
           claimed_at?: string | null
           created_at?: string | null
           id?: string
+          idempotency_key?: string | null
           media_id?: string | null
           reward_metadata?: Json | null
           reward_type?: string
