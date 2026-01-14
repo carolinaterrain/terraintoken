@@ -36,7 +36,7 @@ const systemUpdates: SystemUpdate[] = [
     slug: "how-terrain-token-started",
     title: "Project Background: From Drainage Contractor to Terrain System",
     excerpt: "Background documentation on how TRN emerged from Carolina Terrain's operational needs and platform development.",
-    author: "Alex Purdy & Zac Hyman",
+    author: "Alex Purdy",
     date: "November 15, 2025",
     category: "Background",
     readTime: "10 min"

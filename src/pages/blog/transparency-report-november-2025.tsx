@@ -41,7 +41,7 @@ const TransparencyReportNovember2025 = () => {
       excerpt: "The origin story of how two drainage contractors built a crypto ecosystem backed by real revenue.",
       category: "Origin Story",
       date: "November 15, 2025",
-      author: "Alex Purdy & Zac Hyman",
+      author: "Alex Purdy",
       readTime: "10 min"
     },
     {
@@ -366,8 +366,7 @@ const TransparencyReportNovember2025 = () => {
                 </p>
 
                 <ul className="list-disc pl-6 space-y-2">
-                  <li>Alex Purdy (CEO)</li>
-                  <li>Zac Hyman (COO)</li>
+                  <li>Alex Purdy (Founder & CEO)</li>
                   <li>Lead Developer (pseudonymous for security)</li>
                   <li>Community Representative (elected quarterly)</li>
                   <li>External Auditor (third-party security firm)</li>

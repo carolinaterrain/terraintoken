@@ -7,7 +7,6 @@ import ScrollProgress from "@/components/ScrollProgress";
 import BackToHome from "@/components/BackToHome";
 import { Users, Target, Award, Shield, Linkedin, Twitter, Droplets, Globe, Link as LinkIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import zachHyman from "@/assets/zac-hyman.jpg";
 import alexPurdy from "@/assets/alex-purdy.jpg";
 import terrainMascot from "@/assets/terrain-mascot.png";
 
@@ -25,25 +24,16 @@ const team: TeamMember[] = [
   {
     name: "Alex Purdy",
     role: "Founder",
-    bio: "Tech visionary and drainage expert. Alex combines deep technical expertise with hands-on field experience. Leads the development of TerrainVision AI and the integration of blockchain technology into Carolina Terrain's operations.",
+    bio: "Tech visionary and drainage expert. Alex combines deep technical expertise with hands-on field experience. Leads the development of TerrainVision AI and the integration of blockchain technology into Carolina Terrain's operations. Licensed NC Landscape Contractor with a passion for innovation, bridging traditional landscaping with blockchain technology through TRN.",
     image: alexPurdy,
-    certifications: [
-      "NDS Certified Property Drainage Contractor",
-      "SOX Erosion Control Certified",
-      "Unilock Lifetime Warranty Certified"
-    ],
-    linkedin: "https://www.linkedin.com/in/alexpurdy"
-  },
-  {
-    name: "Zac Hyman",
-    role: "Co-Founder",
-    bio: "Licensed NC Landscape Contractor with a passion for innovation. Zac founded Carolina Terrain LLC to bring professional-grade drainage solutions to homeowners. Now bridging traditional landscaping with blockchain technology through TRN.",
-    image: zachHyman,
     certifications: [
       "Licensed NC Landscape Contractor (CL.1872)",
       "NDS Certified Property Drainage Contractor",
+      "SOX Erosion Control Certified",
+      "Unilock Lifetime Warranty Certified",
       "Keystone Certified Hardscape Contractor"
-    ]
+    ],
+    linkedin: "https://www.linkedin.com/in/alexpurdy"
   }
 ];
 
@@ -79,7 +69,7 @@ const Team = () => {
     <>
       <Helmet>
         <title>Team | Terrain Token (TRN)</title>
-        <meta name="description" content="Meet the founders behind Terrain Token and Carolina Terrain LLC. Licensed contractors building the bridge between traditional landscaping and blockchain technology." />
+        <meta name="description" content="Meet the founder behind Terrain Token and Carolina Terrain LLC. Licensed contractor building the bridge between traditional landscaping and blockchain technology." />
       </Helmet>
 
       <ScrollProgress />
@@ -94,7 +84,7 @@ const Team = () => {
               Meet the <span className="text-primary">Team</span>
             </h1>
             <p className="font-body text-xl text-muted-foreground max-w-3xl mx-auto">
-              Real founders. Real business. Real transparency.
+              Real founder. Real business. Real transparency.
             </p>
           </div>
 
@@ -257,10 +247,10 @@ const Team = () => {
               Our Mission
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-6">
-              "We started Carolina Terrain to solve drainage problems. We launched Terrain Token to prove that meme coins can be more than speculation—they can be backed by real work, real revenue, and real people."
+              "I started Carolina Terrain to solve drainage problems. I launched Terrain Token to prove that meme coins can be more than speculation—they can be backed by real work, real revenue, and real people."
             </p>
             <p className="text-sm text-primary italic">
-              — Alex Purdy, Founder & Zac Hyman, Co-Founder
+              — Alex Purdy, Founder
             </p>
           </GlassCard>
 
