@@ -18,7 +18,7 @@ import {
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
-const TRN_CONTRACT = "trnDyaX8gRGWQoxBgsSJwqHFCCCjXpzrEtHCbYJbfUA";
+const TRN_CONTRACT = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 
 const utilities = [
   {
