@@ -41,9 +41,9 @@ const values = [
 
 const milestones = [
   { year: "2020", event: "Carolina Terrain field operations launched" },
-  { year: "2024", event: "Stormwater SCM platform goes live" },
   { year: "Nov 2025", event: "Development begins on Terrain ecosystem" },
   { year: "Dec 2025", event: "Terrain Vision AI & TRN utility credits launched" },
+  { year: "Jan 2026", event: "Stormwater SCM platform goes live" },
   { year: "2026", event: "Evidence Chain integration in progress" },
   { year: "2026", event: "Drainage Academy & Terrain Guard planned" },
 ];
