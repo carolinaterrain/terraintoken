@@ -34,7 +34,7 @@ const WhyMemeCoinsNeedRealWorldBacking = () => {
       excerpt: "The story of how two drainage contractors decided to launch a meme coin that actually means something.",
       category: "Origin Story",
       date: "November 15, 2025",
-      author: "Alex Purdy & Zac Hyman",
+      author: "Alex Purdy",
       readTime: "10 min"
     },
     {
@@ -437,7 +437,7 @@ const WhyMemeCoinsNeedRealWorldBacking = () => {
 
                 <ul className="list-disc pl-6 space-y-2">
                   <li>North Carolina Licensing Board for General Contractors: Search for "Carolina Terrain" or License #CL.1872</li>
-                  <li>Confirm Alex Purdy and Zac Hyman are listed as principals</li>
+                  <li>Confirm Alex Purdy is listed as principal</li>
                 </ul>
 
                 <h3 className="font-display text-2xl font-bold mt-8 mb-4">2. Check Social Profiles</h3>

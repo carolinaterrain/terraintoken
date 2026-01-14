@@ -72,7 +72,7 @@ const HowTerrainTokenStarted = () => {
         <meta property="og:image" content="https://terraintoken.com/og-terrain.png" />
         <meta property="og:url" content={url} />
         <meta property="article:published_time" content={publishDate} />
-        <meta property="article:author" content="Alex Purdy & Zac Hyman" />
+        <meta property="article:author" content="Alex Purdy" />
         <meta property="article:section" content="Origin Story" />
         <meta property="article:tag" content="Terrain Token" />
         <meta property="article:tag" content="TRN" />
@@ -95,7 +95,7 @@ const HowTerrainTokenStarted = () => {
           "image": "https://terraintoken.com/og-terrain.png",
           "author": {
             "@type": "Person",
-            "name": "Alex Purdy & Zac Hyman",
+            "name": "Alex Purdy",
             "url": "https://terraintoken.com/team"
           },
           "publisher": {
@@ -166,7 +166,7 @@ const HowTerrainTokenStarted = () => {
             <div className="flex flex-wrap items-center gap-4 text-muted-foreground mb-6">
               <div className="flex items-center gap-2">
                 <User className="w-4 h-4" />
-                <span className="text-sm">Alex Purdy & Zac Hyman</span>
+                <span className="text-sm">Alex Purdy</span>
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
@@ -211,11 +211,7 @@ const HowTerrainTokenStarted = () => {
                 </GoblinWisdomBox>
 
                 <p>
-                  Zac Hyman, Alex's co-founder at Carolina Terrain, was initially skeptical. "I thought he was crazy," Zac admits. "We're contractors. We dig ditches, install hardscapes, and manage properties. What business did we have launching a cryptocurrency?"
-                </p>
-
-                <p>
-                  But Alex had a compelling argument: Carolina Terrain was already generating <strong>established revenue streams</strong> through drainage projects, their LawnShift robotic mowing division, and FlowGuardian smart sensors. They weren't some anonymous dev team promising the moon. They had licenses (Licensed NC Landscape Contractor CL.1872), real equipment, actual clients, and verifiable work.
+                  Carolina Terrain was already generating <strong>established revenue streams</strong> through drainage projects, the LawnShift robotic mowing division, and FlowGuardian smart sensors. This wasn't some anonymous dev team promising the moon. There were licenses (Licensed NC Landscape Contractor CL.1872), real equipment, actual clients, and verifiable work.
                 </p>
 
                 <h2 id="graveyard" className="font-display text-3xl font-bold mt-12 mb-6">
@@ -223,7 +219,11 @@ const HowTerrainTokenStarted = () => {
                 </h2>
 
                 <p>
-                  Before launching TRN, Alex and Zac did their homework. They studied the wreckage of failed meme coins—and there was a lot of wreckage.
+                  Before launching TRN, Alex did his homework. He studied the wreckage of failed meme coins—and there was a lot of wreckage.
+                </p>
+
+                <p>
+                  <strong>The stats are brutal:</strong> According to CoinGecko, over 5.3 million meme coins launched on platforms like Pump.fun between January 2024 and January 2025. An estimated <strong>99.2% are now worth zero</strong>. Billions of dollars evaporated.
                 </p>
 
                 <p>
@@ -362,7 +362,7 @@ const HowTerrainTokenStarted = () => {
                 </p>
 
                 <p>
-                  "We needed a way to make drainage sexy," Zac laughs. "Turns out, goblins are perfect for that. They're underground creatures, they're resourceful, they hoard treasure, and they don't give a damn about being pretty. Just like good drainage work."
+                  "We needed a way to make drainage sexy," Alex laughs. "Turns out, goblins are perfect for that. They're underground creatures, they're resourceful, they hoard treasure, and they don't give a damn about being pretty. Just like good drainage work."
                 </p>
 
                 <p>
@@ -479,7 +479,7 @@ const HowTerrainTokenStarted = () => {
                   <div>
                     <h3 className="font-display text-xl font-bold mb-2">Who created Terrain Token?</h3>
                     <p>
-                      Alex Purdy (CEO & Creator) and Zac Hyman (COO) are the founders. Alex is a Licensed NC Landscape Contractor (CL.1872), NDS Certified Drainage Contractor, and the architect behind TRN's digital ecosystem including TerrainVision AI. Zac oversees daily operations at Carolina Terrain and ensures field execution aligns with the token utility model.
+                      Alex Purdy (Founder & CEO) is the creator. Alex is a Licensed NC Landscape Contractor (CL.1872), NDS Certified Drainage Contractor, and the architect behind TRN's digital ecosystem including TerrainVision AI. He oversees both daily operations at Carolina Terrain and ensures field execution aligns with the token utility model.
                     </p>
                   </div>
 
@@ -520,10 +520,10 @@ const HowTerrainTokenStarted = () => {
           </div>
 
           <AuthorCard
-            name="Alex Purdy & Zac Hyman"
-            title="Founders of Terrain Token"
-            bio="Licensed NC drainage contractors who decided to merge meme culture with real-world utility. Alex (CEO) created the TerrainVision AI ecosystem, while Zac (COO) oversees field operations. Together they're proving that crypto can be backed by actual work, not just hype."
-            image="/founders-together.jpg"
+            name="Alex Purdy"
+            title="Founder of Terrain Token"
+            bio="Licensed NC drainage contractor who decided to merge meme culture with real-world utility. Alex created the TerrainVision AI ecosystem and oversees field operations. He's proving that crypto can be backed by actual work, not just hype."
+            image="/founders-headshot.jpg"
             linkedin="https://www.linkedin.com/in/jamesapurdy/"
           />
 
