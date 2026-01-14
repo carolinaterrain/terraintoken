@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { GlassCard } from '@/components/ui/glass-card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { 
   Package, 
@@ -13,9 +14,11 @@ import {
   Clock, 
   AlertCircle,
   Loader2,
-  Wallet
+  Wallet,
+  Palette
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { ArtistSubmissionsTab } from './ArtistSubmissionsTab';
 
 interface Certificate {
   id: string;
@@ -224,7 +227,23 @@ export function CollectorDropsTab() {
   const soldPercentage = ((stats.claimed + stats.reserved) / stats.total) * 100;
 
   return (
-    <div className="space-y-6">
+    <Tabs defaultValue="drops" className="space-y-6">
+      <TabsList className="grid w-full max-w-md grid-cols-2">
+        <TabsTrigger value="drops" className="gap-2">
+          <Package className="w-4 h-4" />
+          Collector Drops
+        </TabsTrigger>
+        <TabsTrigger value="artists" className="gap-2">
+          <Palette className="w-4 h-4" />
+          Artist Submissions
+        </TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="artists">
+        <ArtistSubmissionsTab />
+      </TabsContent>
+
+      <TabsContent value="drops" className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -407,6 +426,7 @@ export function CollectorDropsTab() {
           </div>
         )}
       </Card>
-    </div>
+      </TabsContent>
+    </Tabs>
   );
 }
