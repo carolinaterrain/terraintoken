@@ -237,6 +237,75 @@ export type Database = {
         }
         Relationships: []
       }
+      artist_drop_submissions: {
+        Row: {
+          admin_notes: string | null
+          artist_email: string
+          artist_name: string
+          artist_wallet: string | null
+          commission_rate: number
+          created_at: string
+          description: string | null
+          design_concept: string
+          id: string
+          image_urls: string[] | null
+          portfolio_url: string | null
+          product_types: string[]
+          reviewed_at: string | null
+          reviewed_by: string | null
+          shopify_product_id: string | null
+          status: string
+          title: string
+          total_sales: number | null
+          total_trn_earned: number | null
+          updated_at: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          artist_email: string
+          artist_name: string
+          artist_wallet?: string | null
+          commission_rate?: number
+          created_at?: string
+          description?: string | null
+          design_concept: string
+          id?: string
+          image_urls?: string[] | null
+          portfolio_url?: string | null
+          product_types?: string[]
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          shopify_product_id?: string | null
+          status?: string
+          title: string
+          total_sales?: number | null
+          total_trn_earned?: number | null
+          updated_at?: string
+        }
+        Update: {
+          admin_notes?: string | null
+          artist_email?: string
+          artist_name?: string
+          artist_wallet?: string | null
+          commission_rate?: number
+          created_at?: string
+          description?: string | null
+          design_concept?: string
+          id?: string
+          image_urls?: string[] | null
+          portfolio_url?: string | null
+          product_types?: string[]
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          shopify_product_id?: string | null
+          status?: string
+          title?: string
+          total_sales?: number | null
+          total_trn_earned?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       audit_log: {
         Row: {
           action: string
