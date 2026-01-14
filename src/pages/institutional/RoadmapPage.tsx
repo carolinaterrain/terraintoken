@@ -68,7 +68,7 @@ export default function RoadmapPage() {
           </div>
 
           <DisclosureCallout type="info" title="Roadmap Updates">
-            This roadmap is updated as priorities shift and milestones are achieved. Last updated: January 2026. 
+            This roadmap is updated as priorities shift and milestones are achieved. Development began November 2025. 
             For major announcements, follow our blog or whitepaper updates.
           </DisclosureCallout>
         </div>
