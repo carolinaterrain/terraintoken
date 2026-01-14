@@ -28,6 +28,10 @@ const LegalPage = lazy(() => import("./pages/institutional/LegalPage"));
 const PressPage = lazy(() => import("./pages/institutional/PressPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
+// Shop & Drops
+const Shop = lazy(() => import("./pages/Shop"));
+const Drops = lazy(() => import("./pages/Drops"));
+
 // Admin pages (keep existing)
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const UnifiedAdminDashboard = lazy(() => import("./pages/UnifiedAdminDashboard"));
@@ -58,6 +62,10 @@ const AppContent = () => {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/legal" element={<LegalPage />} />
           <Route path="/press" element={<PressPage />} />
+          
+          {/* Shop & Drops */}
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/drops" element={<Drops />} />
           
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
