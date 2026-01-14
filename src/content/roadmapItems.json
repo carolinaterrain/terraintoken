@@ -11,7 +11,7 @@
       "Licensed and insured contractor status",
       "Documented quality control processes"
     ],
-    "launchDate": "2023-Q1"
+    "launchDate": "2020-Q1"
   },
   {
     "id": "stormwater-scm-platform",
@@ -39,7 +39,7 @@
       "Integration with major drone platforms",
       "Human-in-the-loop verification workflow"
     ],
-    "launchDate": "2024-Q4"
+    "launchDate": "2025-Q4"
   },
   {
     "id": "trn-token-launch",
@@ -53,12 +53,12 @@
       "Buyback/burn mechanism operational",
       "Clear non-investment disclosures"
     ],
-    "launchDate": "2025-Q1",
+    "launchDate": "2025-Q4",
     "optional": true
   },
   {
     "id": "terrain-guard-pilot",
-    "status": "in_progress",
+    "status": "planned",
     "category": "IoT",
     "title": "Terrain Guard Sensor Network",
     "description": "IoT monitoring platform for real-time SCM performance tracking with automated alerting.",
@@ -68,7 +68,7 @@
       "Alert notification system tested",
       "Dashboard beta available"
     ],
-    "targetDate": "2025-Q2"
+    "targetDate": "2026-Q2"
   },
   {
     "id": "evidence-chain-v1",
@@ -82,7 +82,7 @@
       "Audit packet generation",
       "Regulator access portal"
     ],
-    "targetDate": "2025-Q3"
+    "targetDate": "2026-Q1"
   },
   {
     "id": "drainage-academy-mvp",
@@ -96,7 +96,7 @@
       "LMS integration complete",
       "Certificate issuance workflow"
     ],
-    "targetDate": "2025-Q4"
+    "targetDate": "2026-Q3"
   },
   {
     "id": "multi-state-expansion",
@@ -110,7 +110,7 @@
       "Local regulatory compliance",
       "Partner network established"
     ],
-    "targetDate": "2026-Q1"
+    "targetDate": "2026-Q4"
   },
   {
     "id": "enterprise-compliance-suite",
@@ -124,7 +124,7 @@
       "Enterprise SLA availability",
       "Custom integration framework"
     ],
-    "targetDate": "2026-Q2"
+    "targetDate": "2027-Q1"
   },
   {
     "id": "carbon-credit-integration",
@@ -138,6 +138,6 @@
       "Pilot credit issuance",
       "Marketplace integrations"
     ],
-    "targetDate": "2026-Q4"
+    "targetDate": "2027-Q2"
   }
 ]
