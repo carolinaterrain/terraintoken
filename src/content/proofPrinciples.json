@@ -1,0 +1,108 @@
+{
+  "principles": [
+    {
+      "id": "ground-truth",
+      "title": "Ground-Truth Capture",
+      "description": "Every data point originates from a verifiable source—sensors, certified inspections, or AI analysis with human oversight.",
+      "icon": "MapPin",
+      "details": [
+        "GPS-tagged field documentation",
+        "Calibrated sensor networks",
+        "AI confidence scoring",
+        "Human verification workflows"
+      ],
+      "example": "When Terrain Vision analyzes a drone image, the original imagery is archived, the AI model version is logged, confidence scores are recorded, and human reviewers can flag disagreements—all before any report is generated."
+    },
+    {
+      "id": "tamper-resistance",
+      "title": "Tamper Resistance",
+      "description": "Audit trails are append-only and cryptographically linked, making retroactive changes detectable.",
+      "icon": "Lock",
+      "details": [
+        "Append-only event logs",
+        "Cryptographic hash chains",
+        "Distributed backup storage",
+        "Anomaly detection alerts"
+      ],
+      "example": "Each ecosystem event receives a unique hash incorporating the previous event's hash, creating a chain where any modification would invalidate all subsequent entries."
+    },
+    {
+      "id": "transparency",
+      "title": "Radical Transparency",
+      "description": "Methodology, data sources, and calculation logic are documented and accessible for audit.",
+      "icon": "Eye",
+      "details": [
+        "Open methodology documentation",
+        "Data source attribution",
+        "Calculation audit trails",
+        "Public API for verification"
+      ],
+      "example": "TRN reward calculations reference specific contribution records, apply documented formulas, and produce audit logs that any holder can verify against treasury reports."
+    },
+    {
+      "id": "privacy",
+      "title": "Privacy by Design",
+      "description": "Sensitive data is protected while maintaining verifiability through selective disclosure and role-based access.",
+      "icon": "Shield",
+      "details": [
+        "Role-based access controls",
+        "Data minimization practices",
+        "Selective disclosure proofs",
+        "Compliance with data regulations"
+      ],
+      "example": "A regulator can verify that an SCM inspection occurred and passed without accessing the property owner's personal information or detailed business records."
+    }
+  ],
+  "evidenceChain": {
+    "title": "Evidence Chain",
+    "description": "The Evidence Chain is our unified audit infrastructure that connects activities across all Terrain products into a single, verifiable record.",
+    "layers": [
+      {
+        "name": "Source Layer",
+        "description": "Raw data capture from field operations, sensors, and AI systems",
+        "examples": ["Sensor readings", "Field photos", "AI analysis outputs"]
+      },
+      {
+        "name": "Verification Layer", 
+        "description": "Human review, cross-validation, and quality scoring",
+        "examples": ["Inspector sign-offs", "Peer reviews", "Anomaly flags"]
+      },
+      {
+        "name": "Aggregation Layer",
+        "description": "Event correlation and compliance report generation",
+        "examples": ["Monthly reports", "Inspection packets", "Trend analyses"]
+      },
+      {
+        "name": "Immutability Layer",
+        "description": "Tamper-evident storage with cryptographic attestations",
+        "examples": ["Hash chains", "Distributed backups", "Audit certificates"]
+      }
+    ]
+  },
+  "auditPacket": {
+    "title": "Audit Packet",
+    "description": "A downloadable, self-contained evidence package that a regulator or auditor can use to verify any claim made by the Terrain ecosystem.",
+    "contents": [
+      {
+        "item": "Executive Summary",
+        "description": "High-level overview of the claim and verification status"
+      },
+      {
+        "item": "Source Documentation",
+        "description": "Original data, imagery, and sensor readings"
+      },
+      {
+        "item": "Processing Logs",
+        "description": "AI model versions, confidence scores, human reviews"
+      },
+      {
+        "item": "Chain of Custody",
+        "description": "Complete audit trail from capture to report"
+      },
+      {
+        "item": "Verification Instructions",
+        "description": "Steps to independently verify the packet's integrity"
+      }
+    ]
+  }
+}

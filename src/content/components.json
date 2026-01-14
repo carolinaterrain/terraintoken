@@ -1,0 +1,249 @@
+[
+  {
+    "slug": "carolina-terrain",
+    "name": "Carolina Terrain",
+    "tagline": "Professional stormwater construction and maintenance",
+    "whatItIs": "Full-service stormwater management contractor providing design, installation, maintenance, and emergency repair services for SCM infrastructure across the Carolinas.",
+    "whoUses": [
+      "Property developers",
+      "HOA management companies",
+      "Municipal public works",
+      "Commercial property managers",
+      "Environmental consultants"
+    ],
+    "inputs": [
+      "Site assessments and engineering plans",
+      "Maintenance schedules and work orders",
+      "Emergency repair requests",
+      "Regulatory inspection requirements"
+    ],
+    "outputs": [
+      "Installed or repaired SCM infrastructure",
+      "Maintenance completion reports",
+      "Photo documentation packages",
+      "Compliance-ready records"
+    ],
+    "evidence": [
+      "GPS-tagged before/after photos",
+      "Timestamped work logs",
+      "Material certifications",
+      "Client sign-off records"
+    ],
+    "status": "live",
+    "externalUrl": "https://stormwaterscm.com/",
+    "icon": "Shovel",
+    "features": [
+      "24/7 emergency response",
+      "Licensed and insured contractors",
+      "Multi-state coverage",
+      "Integrated reporting"
+    ]
+  },
+  {
+    "slug": "terrain-vision",
+    "name": "Terrain Vision",
+    "tagline": "AI-powered drainage analysis platform",
+    "whatItIs": "Computer vision and machine learning platform that analyzes imagery from drones, satellites, and field inspections to detect drainage issues, measure vegetation health, and predict maintenance needs.",
+    "whoUses": [
+      "Stormwater engineers",
+      "Municipal inspectors",
+      "Property managers",
+      "Environmental compliance officers",
+      "Landscape architects"
+    ],
+    "inputs": [
+      "Drone imagery and video",
+      "Satellite imagery feeds",
+      "Field inspection photos",
+      "Historical performance data"
+    ],
+    "outputs": [
+      "Automated deficiency reports",
+      "Vegetation health scores",
+      "Sediment accumulation estimates",
+      "Priority maintenance rankings"
+    ],
+    "evidence": [
+      "AI model version tracking",
+      "Analysis confidence scores",
+      "Raw imagery archives",
+      "Human verification records"
+    ],
+    "status": "live",
+    "externalUrl": "https://terrainvision-ai.com/",
+    "icon": "Eye",
+    "features": [
+      "95%+ deficiency detection accuracy",
+      "Real-time processing pipeline",
+      "Integration with major GIS platforms",
+      "Custom model training"
+    ]
+  },
+  {
+    "slug": "terrain-guard",
+    "name": "Terrain Guard",
+    "tagline": "Continuous SCM monitoring and alerts",
+    "whatItIs": "IoT sensor network and monitoring platform that provides real-time visibility into stormwater infrastructure performance, with automated alerting for anomalies and threshold breaches.",
+    "whoUses": [
+      "Facility managers",
+      "Stormwater program administrators",
+      "Environmental health officers",
+      "Operations teams",
+      "Regulatory agencies"
+    ],
+    "inputs": [
+      "Flow sensor readings",
+      "Water level measurements",
+      "Turbidity and quality sensors",
+      "Weather station data"
+    ],
+    "outputs": [
+      "Real-time performance dashboards",
+      "Automated alert notifications",
+      "Trend analysis reports",
+      "Predictive maintenance schedules"
+    ],
+    "evidence": [
+      "Immutable sensor data logs",
+      "Alert acknowledgment records",
+      "Calibration certificates",
+      "Uptime and availability metrics"
+    ],
+    "status": "in_progress",
+    "externalUrl": "https://terrainguard-b1f.caffeine.xyz/",
+    "icon": "Shield",
+    "features": [
+      "Sub-minute data collection",
+      "Multi-protocol sensor support",
+      "Edge computing capability",
+      "Offline data buffering"
+    ]
+  },
+  {
+    "slug": "stormwater-scm",
+    "name": "Stormwater SCM",
+    "tagline": "Asset management and compliance platform",
+    "whatItIs": "Comprehensive software platform for managing stormwater control measure inventories, scheduling maintenance, tracking inspections, and generating regulatory compliance reports.",
+    "whoUses": [
+      "MS4 program coordinators",
+      "Stormwater utility managers",
+      "Compliance officers",
+      "Asset management teams",
+      "Consulting engineers"
+    ],
+    "inputs": [
+      "SCM inventory data",
+      "Inspection schedules and results",
+      "Maintenance work orders",
+      "Regulatory reporting requirements"
+    ],
+    "outputs": [
+      "Asset management dashboards",
+      "Inspection tracking reports",
+      "Regulatory compliance packages",
+      "Performance trend analyses"
+    ],
+    "evidence": [
+      "Complete audit trails",
+      "Digital inspection signatures",
+      "Document version history",
+      "Access control logs"
+    ],
+    "status": "live",
+    "externalUrl": "https://stormwaterscm.com/",
+    "icon": "Database",
+    "features": [
+      "GIS integration",
+      "Mobile inspection app",
+      "Automated report generation",
+      "Multi-jurisdiction support"
+    ]
+  },
+  {
+    "slug": "drainage-academy",
+    "name": "Drainage Academy",
+    "tagline": "Certified stormwater education",
+    "whatItIs": "Online learning platform providing certified training courses for stormwater professionals, including regulatory compliance, BMP maintenance, inspection protocols, and emerging technologies.",
+    "whoUses": [
+      "Municipal staff",
+      "Contractor personnel",
+      "Property managers",
+      "Environmental consultants",
+      "Students and career changers"
+    ],
+    "inputs": [
+      "Course enrollment",
+      "Learning management data",
+      "Assessment responses",
+      "Continuing education requirements"
+    ],
+    "outputs": [
+      "Completion certificates",
+      "CE credit documentation",
+      "Competency assessments",
+      "Training transcripts"
+    ],
+    "evidence": [
+      "Identity verification records",
+      "Assessment integrity logs",
+      "Certificate issuance records",
+      "Recertification tracking"
+    ],
+    "status": "planned",
+    "externalUrl": null,
+    "icon": "BookOpen",
+    "features": [
+      "State-approved CE credits",
+      "Interactive simulations",
+      "Progress tracking",
+      "Employer dashboards"
+    ]
+  },
+  {
+    "slug": "trn",
+    "name": "TRN Utility Credits",
+    "tagline": "Optional ecosystem incentive layer",
+    "whatItIs": "Digital utility credits that can be earned through verified contributions to the Terrain ecosystem and redeemed for platform discounts, priority services, and community recognition.",
+    "whoUses": [
+      "Active platform contributors",
+      "Training completers",
+      "Data quality validators",
+      "Community moderators",
+      "Early adopters"
+    ],
+    "inputs": [
+      "Verified contribution records",
+      "Quality scores from platform usage",
+      "Training completion certificates",
+      "Community participation metrics"
+    ],
+    "outputs": [
+      "TRN credit balances",
+      "Redemption for platform benefits",
+      "Achievement recognition",
+      "Leaderboard standings"
+    ],
+    "evidence": [
+      "On-chain transaction records",
+      "Contribution verification proofs",
+      "Reward calculation audit trails",
+      "Treasury transparency reports"
+    ],
+    "status": "live",
+    "externalUrl": null,
+    "icon": "Coins",
+    "optional": true,
+    "features": [
+      "Transparent supply mechanics",
+      "Deflationary buyback/burn",
+      "No staking or yield promises",
+      "Clear utility-only framing"
+    ],
+    "disclaimers": [
+      "TRN is not an investment and has no guaranteed value",
+      "Not required to use any Terrain platform features",
+      "Subject to market volatility",
+      "Consult financial advisor before acquiring"
+    ]
+  }
+]
