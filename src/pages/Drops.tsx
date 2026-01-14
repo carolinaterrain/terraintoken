@@ -5,7 +5,7 @@ import { CartDrawer } from "@/components/shop/CartDrawer";
 import BackToHome from "@/components/BackToHome";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Users, Award, Clock, Shield, Shirt, HardHat, Package, Flame, Image as ImageIcon } from "lucide-react";
+import { Sparkles, Users, Award, Clock, Shield, Shirt, HardHat, Package, Flame, Image as ImageIcon, Palette, Coins, ShoppingBag } from "lucide-react";
 import { CollectorDropCard } from "@/components/shop/CollectorDropCard";
 import { useCollectorDrop } from "@/hooks/useCollectorDrop";
 import { Link } from "react-router-dom";
@@ -15,6 +15,11 @@ import { SocialProofQuotes } from "@/components/drops/SocialProofQuotes";
 import { CollectorBenefits } from "@/components/drops/CollectorBenefits";
 import { FoundersNote } from "@/components/drops/FoundersNote";
 import { ProductGallery } from "@/components/drops/ProductGallery";
+import { ArtistSubmissionForm } from "@/components/drops/ArtistSubmissionForm";
+import { fetchProducts, ShopifyProduct } from "@/lib/shopify";
+import { useQuery } from "@tanstack/react-query";
+import { useCartStore } from "@/stores/cartStore";
+import { toast } from "sonner";
 
 type ItemType = 'shirt' | 'hat' | 'bundle';
 
@@ -375,6 +380,34 @@ const Drops = () => {
           </div>
         </section>
         
+        {/* Artist Submission Section */}
+        <section className="py-16 border-t border-primary/20 bg-gradient-to-b from-background to-card/20">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-10"
+            >
+              <Badge className="mb-4 bg-accent/20 text-accent border-accent/30">
+                <Palette className="w-3 h-3 mr-1" />
+                Artists & Creators
+              </Badge>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+                Create Your Own Drop
+              </h2>
+              <p className="text-muted-foreground max-w-xl mx-auto">
+                Submit your artwork to become a limited TRN drop. 
+                <span className="text-primary font-semibold"> Earn 10% commission in TRN</span> on every sale.
+              </p>
+            </motion.div>
+            
+            <div className="max-w-2xl mx-auto">
+              <ArtistSubmissionForm />
+            </div>
+          </div>
+        </section>
+
         {/* Shop CTA */}
         <section className="py-16 border-t border-primary/20 bg-gradient-to-b from-card/30 to-background">
           <div className="container mx-auto px-4 text-center">
@@ -382,6 +415,7 @@ const Drops = () => {
             <p className="text-muted-foreground mb-6">Check out our full shop for hoodies, mugs, stickers, and more.</p>
             <Link to="/shop">
               <Button size="lg" variant="outline" className="group">
+                <ShoppingBag className="w-4 h-4 mr-2" />
                 Browse Full Shop
                 <Sparkles className="w-4 h-4 ml-2 group-hover:animate-spin" />
               </Button>
