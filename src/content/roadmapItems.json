@@ -1,0 +1,143 @@
+[
+  {
+    "id": "carolina-terrain-ops",
+    "status": "live",
+    "category": "Services",
+    "title": "Carolina Terrain Field Operations",
+    "description": "Full-service stormwater construction, maintenance, and emergency repair services operating across North and South Carolina.",
+    "successCriteria": [
+      "Active client base with recurring maintenance contracts",
+      "24/7 emergency response capability",
+      "Licensed and insured contractor status",
+      "Documented quality control processes"
+    ],
+    "launchDate": "2023-Q1"
+  },
+  {
+    "id": "stormwater-scm-platform",
+    "status": "live",
+    "category": "Software",
+    "title": "Stormwater SCM Platform",
+    "description": "Web-based asset management and compliance tracking platform for municipal and commercial stormwater programs.",
+    "successCriteria": [
+      "Production deployment with active users",
+      "GIS integration operational",
+      "Mobile inspection app available",
+      "Regulatory report generation functional"
+    ],
+    "launchDate": "2024-Q2"
+  },
+  {
+    "id": "terrain-vision-ai",
+    "status": "live",
+    "category": "AI/ML",
+    "title": "Terrain Vision AI Analysis",
+    "description": "Computer vision platform for automated drainage deficiency detection from drone, satellite, and field imagery.",
+    "successCriteria": [
+      "95%+ deficiency detection accuracy",
+      "Production API available",
+      "Integration with major drone platforms",
+      "Human-in-the-loop verification workflow"
+    ],
+    "launchDate": "2024-Q4"
+  },
+  {
+    "id": "trn-token-launch",
+    "status": "live",
+    "category": "Incentives",
+    "title": "TRN Utility Credit Launch",
+    "description": "Optional ecosystem incentive token with transparent supply mechanics and utility-focused design.",
+    "successCriteria": [
+      "Token deployed on Solana mainnet",
+      "Treasury wallet transparency",
+      "Buyback/burn mechanism operational",
+      "Clear non-investment disclosures"
+    ],
+    "launchDate": "2025-Q1",
+    "optional": true
+  },
+  {
+    "id": "terrain-guard-pilot",
+    "status": "in_progress",
+    "category": "IoT",
+    "title": "Terrain Guard Sensor Network",
+    "description": "IoT monitoring platform for real-time SCM performance tracking with automated alerting.",
+    "successCriteria": [
+      "Pilot deployments at 3+ sites",
+      "Sub-minute data collection verified",
+      "Alert notification system tested",
+      "Dashboard beta available"
+    ],
+    "targetDate": "2025-Q2"
+  },
+  {
+    "id": "evidence-chain-v1",
+    "status": "in_progress",
+    "category": "Infrastructure",
+    "title": "Evidence Chain Integration",
+    "description": "Unified audit trail system linking all platform activities with tamper-evident logging.",
+    "successCriteria": [
+      "Cross-platform event correlation",
+      "Immutable log storage",
+      "Audit packet generation",
+      "Regulator access portal"
+    ],
+    "targetDate": "2025-Q3"
+  },
+  {
+    "id": "drainage-academy-mvp",
+    "status": "planned",
+    "category": "Education",
+    "title": "Drainage Academy Launch",
+    "description": "Online learning platform with certified courses for stormwater professionals.",
+    "successCriteria": [
+      "10+ course modules available",
+      "State CE credit approvals",
+      "LMS integration complete",
+      "Certificate issuance workflow"
+    ],
+    "targetDate": "2025-Q4"
+  },
+  {
+    "id": "multi-state-expansion",
+    "status": "planned",
+    "category": "Services",
+    "title": "Multi-State Service Expansion",
+    "description": "Extend Carolina Terrain field operations to Virginia, Georgia, and Tennessee markets.",
+    "successCriteria": [
+      "Licensed in target states",
+      "Regional crew deployment",
+      "Local regulatory compliance",
+      "Partner network established"
+    ],
+    "targetDate": "2026-Q1"
+  },
+  {
+    "id": "enterprise-compliance-suite",
+    "status": "planned",
+    "category": "Software",
+    "title": "Enterprise Compliance Suite",
+    "description": "Integrated platform combining all Terrain products for large-scale municipal and enterprise deployments.",
+    "successCriteria": [
+      "Single sign-on across products",
+      "Unified data warehouse",
+      "Enterprise SLA availability",
+      "Custom integration framework"
+    ],
+    "targetDate": "2026-Q2"
+  },
+  {
+    "id": "carbon-credit-integration",
+    "status": "planned",
+    "category": "Sustainability",
+    "title": "Carbon Credit Integration",
+    "description": "Connect verified stormwater infrastructure performance to carbon credit marketplaces.",
+    "successCriteria": [
+      "Methodology certification",
+      "Verification partner agreements",
+      "Pilot credit issuance",
+      "Marketplace integrations"
+    ],
+    "targetDate": "2026-Q4"
+  }
+]

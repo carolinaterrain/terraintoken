@@ -1,0 +1,159 @@
+[
+  {
+    "id": "plan",
+    "step": 1,
+    "title": "Plan",
+    "purpose": "Site assessment and stormwater system design that meets regulatory requirements from day one.",
+    "inputs": [
+      "Site topography data",
+      "Soil permeability tests",
+      "Local regulatory requirements",
+      "Drainage area calculations"
+    ],
+    "outputs": [
+      "Engineered stormwater management plan",
+      "BMP selection and placement",
+      "Permit-ready documentation",
+      "Construction specifications"
+    ],
+    "evidence": [
+      "Timestamped design files",
+      "Engineer certifications",
+      "Regulatory correspondence logs",
+      "Revision history with signatures"
+    ],
+    "icon": "ClipboardList",
+    "color": "hsl(var(--terrain-green))"
+  },
+  {
+    "id": "build",
+    "step": 2,
+    "title": "Build",
+    "purpose": "Professional installation of stormwater infrastructure with documented quality control.",
+    "inputs": [
+      "Approved construction plans",
+      "Material specifications",
+      "Equipment and crew allocation",
+      "Weather monitoring data"
+    ],
+    "outputs": [
+      "Installed SCM infrastructure",
+      "As-built documentation",
+      "Quality control records",
+      "Photo/video documentation"
+    ],
+    "evidence": [
+      "GPS-tagged installation photos",
+      "Material certifications",
+      "Daily construction logs",
+      "Inspector sign-offs"
+    ],
+    "icon": "Hammer",
+    "color": "hsl(var(--terrain-brown))"
+  },
+  {
+    "id": "monitor",
+    "step": 3,
+    "title": "Monitor",
+    "purpose": "Continuous performance tracking using AI-powered analysis and sensor data.",
+    "inputs": [
+      "Sensor readings (flow, level, turbidity)",
+      "Weather data integration",
+      "Drone/satellite imagery",
+      "Field inspection reports"
+    ],
+    "outputs": [
+      "Performance dashboards",
+      "Anomaly detection alerts",
+      "Trend analysis reports",
+      "Predictive maintenance flags"
+    ],
+    "evidence": [
+      "Immutable sensor logs",
+      "AI analysis audit trails",
+      "Timestamped imagery archives",
+      "Calibration certificates"
+    ],
+    "icon": "Activity",
+    "color": "hsl(var(--primary))"
+  },
+  {
+    "id": "comply",
+    "step": 4,
+    "title": "Comply",
+    "purpose": "Automated regulatory reporting with complete audit trails for inspections.",
+    "inputs": [
+      "Monitoring data aggregates",
+      "Maintenance records",
+      "Inspection schedules",
+      "Regulatory thresholds"
+    ],
+    "outputs": [
+      "Compliance reports (MS4, NPDES)",
+      "Inspection-ready packets",
+      "Deviation documentation",
+      "Corrective action records"
+    ],
+    "evidence": [
+      "Regulator submission receipts",
+      "Digital signatures",
+      "Compliance scoring history",
+      "Enforcement correspondence"
+    ],
+    "icon": "FileCheck",
+    "color": "hsl(var(--chart-2))"
+  },
+  {
+    "id": "train",
+    "step": 5,
+    "title": "Train",
+    "purpose": "Certified education for operators, inspectors, and property managers.",
+    "inputs": [
+      "Role-based curriculum",
+      "Regulatory updates",
+      "Best practice documentation",
+      "Assessment materials"
+    ],
+    "outputs": [
+      "Completion certificates",
+      "Competency assessments",
+      "Continuing education credits",
+      "Knowledge base contributions"
+    ],
+    "evidence": [
+      "Training completion records",
+      "Assessment scores",
+      "Certificate verification",
+      "Recertification tracking"
+    ],
+    "icon": "GraduationCap",
+    "color": "hsl(var(--chart-3))"
+  },
+  {
+    "id": "incentivize",
+    "step": 6,
+    "title": "Incentivize",
+    "purpose": "Optional TRN rewards for verified contributions to ecosystem quality.",
+    "inputs": [
+      "Verified contribution records",
+      "Quality scores from monitoring",
+      "Training completions",
+      "Community participation data"
+    ],
+    "outputs": [
+      "TRN reward distributions",
+      "Leaderboard rankings",
+      "Achievement badges",
+      "Utility credit balances"
+    ],
+    "evidence": [
+      "On-chain transaction records",
+      "Contribution verification proofs",
+      "Reward calculation audit logs",
+      "Distribution schedules"
+    ],
+    "icon": "Award",
+    "color": "hsl(var(--chart-4))",
+    "optional": true
+  }
+]
