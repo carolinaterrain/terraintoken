@@ -10,10 +10,22 @@ import {
   Megaphone, 
   CheckCircle, 
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Palette,
+  Coins
 } from "lucide-react";
 
 const contributionPaths = [
+  {
+    icon: Palette,
+    title: "Artists & Designers",
+    description: "Submit your artwork to become a limited edition TRN drop. Earn 10% commission in TRN on every sale of your design.",
+    requirements: ["Original artwork/designs", "Compatible with apparel printing", "Portfolio or samples"],
+    cta: "Submit Your Design",
+    href: "/drops",
+    highlight: true,
+    badge: "Earn TRN"
+  },
   {
     icon: Users,
     title: "Field Operators",
@@ -63,35 +75,58 @@ export default function ContributePage() {
 
       <Section>
         <div className="grid md:grid-cols-2 gap-6">
-          {contributionPaths.map((path) => (
-            <div key={path.title} className="p-6 rounded-xl border bg-card space-y-4 hover:border-primary/50 transition-colors">
-              <div className="p-3 rounded-lg bg-primary/10 w-fit">
-                <path.icon className="h-6 w-6 text-primary" />
-              </div>
-              
-              <h3 className="text-xl font-semibold">{path.title}</h3>
-              <p className="text-muted-foreground">{path.description}</p>
-              
-              <div className="space-y-2">
-                <p className="text-sm font-medium">Requirements:</p>
-                <ul className="space-y-1">
-                  {path.requirements.map((req, i) => (
-                    <li key={i} className="text-sm text-muted-foreground flex items-center gap-2">
-                      <CheckCircle className="h-3 w-3 text-primary" />
-                      {req}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+          {contributionPaths.map((path) => {
+            const isInternal = path.href.startsWith('/');
+            const CardContent = (
+              <div className={`p-6 rounded-xl border bg-card space-y-4 transition-colors ${
+                path.highlight 
+                  ? 'border-primary/50 ring-1 ring-primary/20 hover:border-primary' 
+                  : 'hover:border-primary/50'
+              }`}>
+                <div className="flex items-start justify-between">
+                  <div className={`p-3 rounded-lg w-fit ${path.highlight ? 'bg-primary/20' : 'bg-primary/10'}`}>
+                    <path.icon className="h-6 w-6 text-primary" />
+                  </div>
+                  {path.badge && (
+                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-accent/20 text-accent text-xs font-medium">
+                      <Coins className="w-3 h-3" />
+                      {path.badge}
+                    </span>
+                  )}
+                </div>
+                
+                <h3 className="text-xl font-semibold">{path.title}</h3>
+                <p className="text-muted-foreground">{path.description}</p>
+                
+                <div className="space-y-2">
+                  <p className="text-sm font-medium">Requirements:</p>
+                  <ul className="space-y-1">
+                    {path.requirements.map((req, i) => (
+                      <li key={i} className="text-sm text-muted-foreground flex items-center gap-2">
+                        <CheckCircle className="h-3 w-3 text-primary" />
+                        {req}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-              <a href={path.href} target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" className="w-full gap-2">
+                <Button variant={path.highlight ? "default" : "outline"} className="w-full gap-2">
                   {path.cta}
                   <ArrowRight className="h-4 w-4" />
                 </Button>
+              </div>
+            );
+
+            return isInternal ? (
+              <Link key={path.title} to={path.href}>
+                {CardContent}
+              </Link>
+            ) : (
+              <a key={path.title} href={path.href} target="_blank" rel="noopener noreferrer">
+                {CardContent}
               </a>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </Section>
 
