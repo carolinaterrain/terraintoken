@@ -25,6 +25,7 @@ const PricingPage = lazy(() => import("./pages/institutional/PricingPage"));
 const WhitepaperPage = lazy(() => import("./pages/institutional/WhitepaperPage"));
 const AboutPage = lazy(() => import("./pages/institutional/AboutPage"));
 const LegalPage = lazy(() => import("./pages/institutional/LegalPage"));
+const PressPage = lazy(() => import("./pages/institutional/PressPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Admin pages (keep existing)
@@ -56,6 +57,7 @@ const AppContent = () => {
           <Route path="/whitepaper" element={<WhitepaperPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/legal" element={<LegalPage />} />
+          <Route path="/press" element={<PressPage />} />
           
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
