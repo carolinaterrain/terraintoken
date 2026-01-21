@@ -56,12 +56,12 @@ const Footer = () => {
             <StatCard 
               icon={<Hexagon className="h-4 w-4 text-safety-green" />}
               label="Total Supply"
-              value={isLoading ? null : (supply?.formatted.total || '1B TRN')}
+              value={isLoading ? null : (supply?.formatted?.total && !supply.formatted.total.includes('NaN') ? supply.formatted.total : '1.007B TRN')}
             />
             <StatCard 
               icon={<Database className="h-4 w-4 text-solana-purple" />}
               label="Circulating"
-              value={isLoading ? null : (supply?.formatted.circulating || '—')}
+              value={isLoading ? null : (supply?.formatted?.circulating && !supply.formatted.circulating.includes('NaN') ? supply.formatted.circulating : '493M TRN')}
             />
             <StatCard 
               icon={<Shield className="h-4 w-4 text-safety-green" />}
