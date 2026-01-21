@@ -8,106 +8,100 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* GOBLIN GREEN PRIMARY */
-    --primary: 142 76% 39%;           /* #00C46A - Goblin Green */
-    --primary-foreground: 0 0% 98%;
-    --primary-glow: 142 84% 47%;      /* #06FF8C - Emerald Glow */
+    /* INDUSTRIAL DePIN THEME - Safety Green + Solana Purple */
+    --primary: 142 71% 45%;           /* #4ADE80 - Safety Green */
+    --primary-foreground: 222 47% 11%;
+    --primary-glow: 142 84% 55%;      /* Brighter glow variant */
     
-    /* DEEP SOIL CHARCOAL DARK */
-    --background: 0 0% 4%;            /* #0B0F12 - Deep Soil */
-    --foreground: 0 0% 98%;
+    /* SLATE-900 INDUSTRIAL DARK */
+    --background: 222 47% 5%;         /* Slate-950 */
+    --foreground: 210 40% 98%;
     
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 98%;
+    --card: 222 47% 8%;               /* Slate-900 */
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 222 47% 8%;
+    --popover-foreground: 210 40% 98%;
 
-    /* METALLIC SILVER ACCENT */
-    --accent: 220 15% 85%;            /* #D3D8E3 - Metallic Silver */
-    --accent-foreground: 0 0% 10%;
+    /* SOLANA PURPLE ACCENT */
+    --accent: 280 65% 60%;            /* Solana Purple */
+    --accent-foreground: 0 0% 98%;
 
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 142 76% 39%;
+    --secondary: 222 47% 11%;         /* Slate-800 */
+    --secondary-foreground: 142 71% 45%;
 
-    --muted: 142 10% 20%;
-    --muted-foreground: 0 0% 70%;     /* Improved from 60% for better contrast (~11:1) */
+    --muted: 217 33% 17%;             /* Slate-700 */
+    --muted-foreground: 215 20% 65%;
     
-    /* Semantic text tokens for accessibility */
-    --text-body: 0 0% 98%;            /* Primary body text - max contrast */
-    --text-secondary: 0 0% 75%;       /* Secondary text - still readable */
-    --text-accent-safe: 142 70% 50%;  /* Lighter green for small text (≥4.5:1) */
+    /* Semantic text tokens */
+    --text-body: 210 40% 98%;
+    --text-secondary: 215 20% 65%;
+    --text-accent-safe: 142 71% 55%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 142 20% 15%;            /* Green-tinted borders */
-    --input: 0 0% 15%;
-    --ring: 142 76% 39%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 142 71% 45%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
     
-    /* TERRAIN SYSTEM */
-    --terrain-glow: 142 84% 47%;
-    --terrain-dark: 0 0% 6%;
-    --terrain-shadow: 0 0% 8%;
-    --terrain-deep: 0 0% 5%;
+    /* TERRAIN INDUSTRIAL SYSTEM */
+    --terrain-glow: 142 84% 55%;
+    --terrain-dark: 222 47% 5%;
+    --terrain-shadow: 222 47% 8%;
+    --terrain-deep: 222 47% 4%;
     --terrain-purple: 280 65% 60%;
     
-    /* GOBLIN COLORS */
+    /* SAFETY & SOLANA COLORS */
+    --safety-green: 142 71% 45%;      /* #4ADE80 */
+    --solana-purple: 280 65% 60%;     /* Purple accent */
     --goblin-green: 142 76% 39%;
     --goblin-gold: 45 95% 50%;
     
     /* EARTHY TERRAIN COLORS */
-    --earth-brown: 25 50% 35%;        /* Soil brown */
-    --forest-green: 142 60% 25%;      /* Deep vegetation green */
-    --clay-red: 15 50% 40%;           /* Erosion control clay */
-    --stone-gray: 30 5% 50%;          /* Gravel/drainage stone */
+    --earth-brown: 25 50% 35%;
+    --forest-green: 142 60% 25%;
+    --clay-red: 15 50% 40%;
+    --stone-gray: 30 5% 50%;
     
-    /* CHART COLORS - Goblin Treasury Edition */
-    --chart-1: 142 84% 47%;           /* #06FF8C - Emerald Revenue (bright goblin green) */
-    --chart-2: 15 85% 55%;            /* #F04823 - Clay Expenses (vibrant terracotta) */
-    --chart-3: 55 95% 50%;            /* #FFE600 - Gold Net Income (treasure gold) */
-    --chart-4: 280 65% 60%;           /* #A855F7 - Mystic Purple (operations) */
-    --chart-5: 200 85% 50%;           /* #0BC5EA - Crystal Blue (other) */
+    /* CHART COLORS - Industrial Edition */
+    --chart-1: 142 71% 45%;           /* Safety Green */
+    --chart-2: 280 65% 60%;           /* Solana Purple */
+    --chart-3: 38 92% 50%;            /* Amber */
+    --chart-4: 199 89% 48%;           /* Cyan */
+    --chart-5: 0 84% 60%;             /* Red */
     
-    /* Chart-specific design tokens */
-    --chart-grid: 142 20% 15%;        /* Subtle grid lines */
-    --chart-background: 0 0% 5%;      /* Dark chart background */
-    --chart-text: 0 0% 85%;           /* Readable text */
+    --chart-grid: 217 33% 17%;
+    --chart-background: 222 47% 5%;
+    --chart-text: 210 40% 85%;
     
     /* GRADIENTS */
-    --gradient-cyber: linear-gradient(135deg, hsl(142 76% 39% / 0.15), hsl(142 84% 47% / 0.05));
-    --gradient-primary: linear-gradient(135deg, hsl(142 76% 39%), hsl(142 84% 47%));
-    --gradient-dark: linear-gradient(180deg, hsl(0 0% 4%), hsl(0 0% 6%));
+    --gradient-cyber: linear-gradient(135deg, hsl(142 71% 45% / 0.15), hsl(280 65% 60% / 0.05));
+    --gradient-primary: linear-gradient(135deg, hsl(142 71% 45%), hsl(142 84% 55%));
+    --gradient-dark: linear-gradient(180deg, hsl(222 47% 5%), hsl(222 47% 8%));
     
     /* SHADOWS & GLOWS */
-    --shadow-glow: 0 0 30px hsl(142 76% 39% / 0.3);
-    --shadow-elegant: 0 10px 30px -10px hsl(142 76% 39% / 0.3);
+    --shadow-glow: 0 0 30px hsl(142 71% 45% / 0.3);
+    --shadow-elegant: 0 10px 30px -10px hsl(142 71% 45% / 0.3);
     
     /* TRANSITIONS */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     
     /* PATTERNS */
-    --terrain-contour: repeating-linear-gradient(45deg, transparent, transparent 10px, hsl(142 76% 39% / 0.03) 10px, hsl(142 76% 39% / 0.03) 20px);
-    --terrain-grid: repeating-linear-gradient(0deg, transparent, transparent 30px, hsl(142 20% 15%) 30px, hsl(142 20% 15%) 31px),
-                    repeating-linear-gradient(90deg, transparent, transparent 30px, hsl(142 20% 15%) 30px, hsl(142 20% 15%) 31px);
+    --terrain-contour: repeating-linear-gradient(45deg, transparent, transparent 10px, hsl(142 71% 45% / 0.03) 10px, hsl(142 71% 45% / 0.03) 20px);
+    --terrain-grid: repeating-linear-gradient(0deg, transparent, transparent 30px, hsl(217 33% 17%) 30px, hsl(217 33% 17%) 31px),
+                    repeating-linear-gradient(90deg, transparent, transparent 30px, hsl(217 33% 17%) 30px, hsl(217 33% 17%) 31px);
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 222 47% 8%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 142 71% 45%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 217 33% 17%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 17%;
+    --sidebar-ring: 142 71% 45%;
   }
 
   /* LIGHT MODE - Complete theme override */
