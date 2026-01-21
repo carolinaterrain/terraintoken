@@ -12,6 +12,9 @@ import { TokenDataProvider } from "./providers/TokenDataProvider";
 const Toaster = lazy(() => import("@/components/ui/toaster").then(m => ({ default: m.Toaster })));
 const Sonner = lazy(() => import("@/components/ui/sonner").then(m => ({ default: m.Toaster })));
 
+// Main landing page (Industrial DePIN)
+const Index = lazy(() => import("./pages/Index"));
+
 // Institutional pages
 const HomePage = lazy(() => import("./pages/institutional/HomePage"));
 const FlywheelPage = lazy(() => import("./pages/institutional/FlywheelPage"));
@@ -48,8 +51,11 @@ const AppContent = () => {
         </div>
       }>
         <Routes>
+          {/* Main Landing Page - Industrial DePIN */}
+          <Route path="/" element={<Index />} />
+          
           {/* Institutional Routes */}
-          <Route path="/" element={<HomePage />} />
+          <Route path="/institutional" element={<HomePage />} />
           <Route path="/flywheel" element={<FlywheelPage />} />
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/products/:slug" element={<ProductDetailPage />} />
