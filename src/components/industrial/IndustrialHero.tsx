@@ -1,10 +1,20 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Globe, FileText, Hexagon, Database, Shield } from "lucide-react";
+import { ArrowRight, Globe, FileText, Hexagon, Database, Shield, Users, TrendingUp, TrendingDown } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTokenData } from "@/providers/TokenDataProvider";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function IndustrialHero() {
+  const { holderCount, stats, isLoading, dataSource } = useTokenData();
+
+  // Live data from TokenDataProvider
+  const holders = holderCount?.holderCount || 0;
+  const marketCap = stats?.marketCap || "$0";
+  const priceChange = stats?.change24h || 0;
+  const volume = stats?.volume24h || "$0";
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-950">
       {/* Animated grid background */}
@@ -124,7 +134,7 @@ export function IndustrialHero() {
             </Link>
           </motion.div>
 
-          {/* Stats bar */}
+          {/* Live Stats bar */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -132,25 +142,41 @@ export function IndustrialHero() {
             className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-12 max-w-4xl mx-auto"
           >
             <StatCard 
-              icon={<Hexagon className="h-5 w-5 text-safety-green" />}
-              value="52,402"
-              label="H3 Hexes Mapped"
+              icon={<Users className="h-5 w-5 text-safety-green" />}
+              value={isLoading ? null : holders.toLocaleString()}
+              label="Token Holders"
+              isLive={dataSource === 'live'}
             />
             <StatCard 
               icon={<Database className="h-5 w-5 text-solana-purple" />}
-              value="1.2TB"
-              label="Point Cloud Data"
+              value={isLoading ? null : marketCap}
+              label="Market Cap"
+              isLive={dataSource === 'live'}
             />
             <StatCard 
-              icon={<Shield className="h-5 w-5 text-safety-green" />}
-              value="4.2M"
-              label="$TRN Burned"
+              icon={priceChange >= 0 ? <TrendingUp className="h-5 w-5 text-safety-green" /> : <TrendingDown className="h-5 w-5 text-destructive" />}
+              value={isLoading ? null : `${priceChange >= 0 ? '+' : ''}${priceChange.toFixed(1)}%`}
+              label="24h Change"
+              isLive={dataSource === 'live'}
+              valueColor={priceChange >= 0 ? 'text-safety-green' : 'text-destructive'}
             />
             <StatCard 
-              icon={<Globe className="h-5 w-5 text-solana-purple" />}
-              value="127"
-              label="Active Surveyors"
+              icon={<Shield className="h-5 w-5 text-solana-purple" />}
+              value={isLoading ? null : volume}
+              label="24h Volume"
+              isLive={dataSource === 'live'}
             />
+          </motion.div>
+
+          {/* Data source indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="flex items-center justify-center gap-2 text-xs text-muted-foreground font-mono"
+          >
+            <span className={`w-2 h-2 rounded-full ${dataSource === 'live' ? 'bg-safety-green animate-pulse' : 'bg-amber-500'}`} />
+            {dataSource === 'live' ? 'Live data from DexScreener & Helius' : 'Cached data'}
           </motion.div>
         </div>
       </div>
@@ -164,19 +190,32 @@ export function IndustrialHero() {
 function StatCard({ 
   icon, 
   value, 
-  label 
+  label,
+  isLive,
+  valueColor = 'text-foreground'
 }: { 
   icon: React.ReactNode; 
-  value: string; 
+  value: string | null;
   label: string;
+  isLive?: boolean;
+  valueColor?: string;
 }) {
   return (
     <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-4 backdrop-blur-sm">
       <div className="flex items-center gap-2 mb-2">
         {icon}
-        <span className="text-2xl font-bold font-mono text-foreground">{value}</span>
+        {value === null ? (
+          <Skeleton className="h-7 w-16" />
+        ) : (
+          <span className={`text-2xl font-bold font-mono ${valueColor}`}>{value}</span>
+        )}
       </div>
-      <p className="text-xs text-muted-foreground font-mono uppercase tracking-wider">{label}</p>
+      <div className="flex items-center gap-2">
+        <p className="text-xs text-muted-foreground font-mono uppercase tracking-wider">{label}</p>
+        {isLive && (
+          <span className="w-1.5 h-1.5 rounded-full bg-safety-green animate-pulse" />
+        )}
+      </div>
     </div>
   );
 }
