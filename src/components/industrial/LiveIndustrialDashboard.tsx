@@ -8,11 +8,13 @@ import {
   Activity,
   TrendingUp,
   Clock,
-  CheckCircle2
+  CheckCircle2,
+  DollarSign
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { useDashboardMetrics } from "@/hooks/useDashboardMetrics";
+import { useTokenData } from "@/providers/TokenDataProvider";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface BurnEvent {
   id: string;
@@ -22,9 +24,15 @@ interface BurnEvent {
 }
 
 export function LiveIndustrialDashboard() {
-  const { data: metrics, isLoading } = useDashboardMetrics();
+  const { holderCount, stats, supply, isLoading, dataSource } = useTokenData();
   const [burnEvents, setBurnEvents] = useState<BurnEvent[]>([]);
   const [showBurnAnimation, setShowBurnAnimation] = useState(false);
+
+  // Live data
+  const holders = holderCount?.holderCount || 0;
+  const marketCap = stats?.marketCap || "$0";
+  const volume = stats?.volume24h || "$0";
+  const priceChange = stats?.change24h || 0;
 
   // Simulate burn events for demo
   useEffect(() => {
@@ -67,41 +75,41 @@ export function LiveIndustrialDashboard() {
             Industrial <span className="text-safety-green">Intelligence</span> Dashboard
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto font-mono">
-            Real-time metrics from the Terrain DePIN network
+            Real-time metrics from DexScreener & Helius APIs
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <MetricCard
-            icon={<Hexagon className="h-5 w-5" />}
-            label="H3 Hexes Mapped"
-            value="52,402"
-            change="+2.4%"
+            icon={<Users className="h-5 w-5" />}
+            label="Token Holders"
+            value={isLoading ? null : holders.toLocaleString()}
+            change={`${dataSource === 'live' ? 'Live' : 'Cached'}`}
             color="text-safety-green"
             isLoading={isLoading}
           />
           <MetricCard
-            icon={<Database className="h-5 w-5" />}
-            label="Point Cloud Data"
-            value="1.2TB"
-            change="+18.2%"
+            icon={<DollarSign className="h-5 w-5" />}
+            label="Market Cap"
+            value={isLoading ? null : marketCap}
+            change={`${priceChange >= 0 ? '+' : ''}${priceChange.toFixed(1)}%`}
             color="text-solana-purple"
             isLoading={isLoading}
           />
           <MetricCard
-            icon={<Flame className="h-5 w-5" />}
-            label="$TRN Burned"
-            value={`${((metrics?.onChain?.volume24h || 4200000) / 1000000).toFixed(1)}M`}
-            change="+5.8%"
+            icon={<TrendingUp className="h-5 w-5" />}
+            label="24h Volume"
+            value={isLoading ? null : volume}
+            change="DexScreener"
             color="text-orange-500"
             highlight={showBurnAnimation}
             isLoading={isLoading}
           />
           <MetricCard
-            icon={<Users className="h-5 w-5" />}
-            label="Token Holders"
-            value={metrics?.onChain?.holders?.current?.toString() || "200+"}
-            change={`+${metrics?.onChain?.holders?.change24h || 0}`}
+            icon={<Database className="h-5 w-5" />}
+            label="Total Supply"
+            value={isLoading ? null : (supply?.formatted?.total && supply.formatted.total !== 'NaN' ? supply.formatted.total : '1.007B TRN')}
+            change="Fixed"
             color="text-safety-green"
             isLoading={isLoading}
           />

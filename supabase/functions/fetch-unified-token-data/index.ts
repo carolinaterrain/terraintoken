@@ -135,12 +135,23 @@ serve(async (req) => {
       ? Date.now() - new Date(cached.lastUpdated).getTime()
       : Infinity;
     
-    // Return cached data if less than 15 minutes old
+    // Always fetch fresh market data from DexScreener (no rate limits)
+    // This ensures price/volume/marketCap is always current even when using cached holder data
+    const freshMarketData = await fetchMarketData();
+    
+    // Return cached holder data + fresh market data if cache is less than 15 minutes old
     if (cached && cacheAge < CACHE_DURATION_MS) {
-      console.log('Returning cached unified token data');
+      console.log('Returning cached holder data with fresh market data');
       return new Response(
         JSON.stringify({
           ...cached,
+          // Override market data with fresh values
+          priceUsd: freshMarketData.priceUsd,
+          priceSol: freshMarketData.priceSol,
+          priceChange24h: freshMarketData.priceChange24h,
+          marketCap: freshMarketData.marketCap,
+          volume24h: freshMarketData.volume24h,
+          liquidity: freshMarketData.liquidity,
           source: 'cache',
           cacheAge: Math.floor(cacheAge / 1000),
         }),
