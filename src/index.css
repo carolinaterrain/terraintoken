@@ -104,54 +104,56 @@ All colors MUST be HSL.
     --sidebar-ring: 142 71% 45%;
   }
 
-  /* LIGHT MODE - Complete theme override */
+  /* LIGHT MODE - Industrial Theme */
   .light {
-    /* PRIMARY - Keep goblin green */
-    --primary: 142 76% 39%;
-    --primary-foreground: 0 0% 98%;
-    --primary-glow: 142 84% 47%;
+    /* PRIMARY - Safety Green */
+    --primary: 142 71% 40%;
+    --primary-foreground: 222 47% 11%;
+    --primary-glow: 142 71% 50%;
     
     /* LIGHT BACKGROUNDS */
-    --background: 0 0% 100%;          /* Pure white */
-    --foreground: 0 0% 10%;           /* Dark text */
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
     
-    --card: 0 0% 98%;                 /* Light gray cards */
-    --card-foreground: 0 0% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
     
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 10%;
+    --popover-foreground: 222 47% 11%;
     
-    /* LIGHT ACCENTS */
-    --accent: 220 15% 20%;            /* Dark accent for light mode */
+    /* ACCENTS */
+    --accent: 280 60% 50%;
     --accent-foreground: 0 0% 98%;
     
-    --secondary: 0 0% 96%;            /* Very light gray */
-    --secondary-foreground: 142 76% 39%;
+    --secondary: 210 20% 96%;
+    --secondary-foreground: 142 71% 40%;
     
-    --muted: 142 10% 90%;             /* Light muted */
-    --muted-foreground: 0 0% 35%;     /* Darker for better contrast on light bg */
+    --muted: 210 20% 94%;
+    --muted-foreground: 215 20% 45%;
     
     /* Light mode semantic text tokens */
-    --text-body: 0 0% 10%;            /* Dark body text */
-    --text-secondary: 0 0% 30%;       /* Secondary text */
-    --text-accent-safe: 142 70% 35%;  /* Darker green for light mode */
+    --text-body: 222 47% 11%;
+    --text-secondary: 215 20% 45%;
+    --text-accent-safe: 142 71% 35%;
     
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
     
-    --border: 142 20% 85%;            /* Light borders */
-    --input: 0 0% 90%;
-    --ring: 142 76% 39%;
+    --border: 210 20% 90%;
+    --input: 210 20% 92%;
+    --ring: 142 71% 40%;
     
     /* TERRAIN SYSTEM */
-    --terrain-glow: 142 84% 47%;
-    --terrain-dark: 0 0% 96%;         /* Light version */
-    --terrain-shadow: 0 0% 92%;
-    --terrain-deep: 0 0% 94%;
+    --terrain-glow: 142 71% 50%;
+    --terrain-dark: 210 20% 96%;
+    --terrain-shadow: 210 20% 92%;
+    --terrain-deep: 210 20% 94%;
     --terrain-purple: 280 60% 50%;
     
-    /* GOBLIN COLORS */
-    --goblin-green: 142 76% 39%;
+    /* INDUSTRIAL COLORS */
+    --safety-green: 142 71% 40%;
+    --solana-purple: 280 60% 50%;
+    --goblin-green: 142 71% 40%;
     --goblin-gold: 45 90% 45%;
     
     /* EARTHY COLORS */
@@ -160,25 +162,25 @@ All colors MUST be HSL.
     --clay-red: 15 50% 40%;
     --stone-gray: 30 5% 50%;
     
-    /* CHART COLORS - Light mode optimized */
-    --chart-1: 142 76% 39%;           /* Deeper green */
-    --chart-2: 15 75% 45%;            /* Deeper red */
-    --chart-3: 45 90% 45%;            /* Deeper gold */
-    --chart-4: 280 60% 50%;           /* Deeper purple */
-    --chart-5: 200 80% 40%;           /* Deeper blue */
-    --chart-grid: 142 15% 80%;        /* Light grid */
-    --chart-background: 0 0% 98%;     /* Light chart bg */
-    --chart-text: 0 0% 20%;           /* Dark text */
+    /* CHART COLORS */
+    --chart-1: 142 71% 40%;
+    --chart-2: 280 60% 50%;
+    --chart-3: 38 92% 45%;
+    --chart-4: 199 89% 40%;
+    --chart-5: 0 84% 55%;
+    --chart-grid: 210 20% 90%;
+    --chart-background: 0 0% 100%;
+    --chart-text: 222 47% 11%;
     
     /* SIDEBAR */
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 142 71% 40%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 210 20% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 210 20% 90%;
+    --sidebar-ring: 142 71% 40%;
   }
 
   /* DARK MODE - Explicit complete theme */
