@@ -1,93 +1,59 @@
 import { Helmet } from "react-helmet-async";
-import { useEffect, lazy, Suspense } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import SkipToContent from "@/components/SkipToContent";
 import ScrollProgress from "@/components/ScrollProgress";
-import { useAnalytics } from "@/hooks/useAnalytics";
 import { Skeleton } from "@/components/ui/skeleton";
 
-// Lazy load heavy components
+// Industrial DePIN components
 const SmartHeader = lazy(() => import("@/components/SmartHeader"));
-const Hero = lazy(() => import("@/components/Hero"));
-const ResearchModeContent = lazy(() => import("@/components/ResearchModeContent").then(m => ({ default: m.ResearchModeContent })));
-const OnboardingModal = lazy(() => import("@/components/onboarding/OnboardingModal").then(m => ({ default: m.OnboardingModal })));
+const IndustrialHero = lazy(() => import("@/components/industrial/IndustrialHero"));
+const DePINFlywheel = lazy(() => import("@/components/industrial/DePINFlywheel"));
+const LiveIndustrialDashboard = lazy(() => import("@/components/industrial/LiveIndustrialDashboard"));
+const H3BountyMap = lazy(() => import("@/components/industrial/H3BountyMap"));
+const IndustrialVerification = lazy(() => import("@/components/industrial/IndustrialVerification"));
+const Footer = lazy(() => import("@/components/Footer"));
 
-// Lightweight skeleton for hero section
-const HeroSkeleton = () => (
-  <section className="min-h-screen pt-20 flex items-center justify-center">
-    <div className="container mx-auto px-4">
-      <div className="grid lg:grid-cols-2 gap-12 items-center">
-        <div className="flex justify-center">
-          <Skeleton className="w-64 h-64 rounded-full" />
-        </div>
-        <div className="space-y-6">
-          <Skeleton className="h-12 w-3/4" />
-          <Skeleton className="h-6 w-full" />
-          <Skeleton className="h-6 w-2/3" />
-          <div className="flex gap-4">
-            <Skeleton className="h-12 w-32" />
-            <Skeleton className="h-12 w-32" />
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+const SectionSkeleton = () => (
+  <div className="min-h-[50vh] bg-slate-950 flex items-center justify-center">
+    <Skeleton className="w-32 h-32 rounded-full" />
+  </div>
 );
 
 const Index = () => {
-  const { trackPageView } = useAnalytics();
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    trackPageView(location.pathname);
-  }, [location.pathname, trackPageView]);
-
-  // Handle navigation with tab/scroll state
-  useEffect(() => {
-    if (location.state) {
-      const state = location.state as { activeTab?: string; scrollTo?: string };
-      
-      if (state.activeTab) {
-        const event = new CustomEvent('changeTab', { detail: { tab: state.activeTab } });
-        window.dispatchEvent(event);
-      }
-      
-      if (state.scrollTo) {
-        setTimeout(() => {
-          document.getElementById(state.scrollTo)?.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      }
-      
-      navigate(location.pathname, { replace: true, state: {} });
-    }
-  }, [location.state, navigate, location.pathname]);
-
   return (
     <>
       <Helmet>
-        <title>TRN Utility Credits — Optional Access for the Terrain System</title>
-        <meta name="description" content="TRN is an optional utility credit for accessing premium Terrain services. No wallet required for standard use. Not an investment product." />
+        <title>Terrain Token — The First 3D Spatial Economy for Earth's Critical Assets</title>
+        <meta name="description" content="Industrial DePIN bridging Carolina Terrain's physical operations with $TRN utility. Map, build, and verify infrastructure the world can't afford to ignore." />
       </Helmet>
       
       <SkipToContent />
       <ScrollProgress />
       
-      <Suspense fallback={<div className="h-16 bg-background/95 backdrop-blur-lg border-b border-primary/20" />}>
+      <Suspense fallback={<div className="h-16 bg-slate-950 border-b border-slate-800" />}>
         <SmartHeader />
       </Suspense>
 
-      <main id="main-content">
-        <Suspense fallback={<HeroSkeleton />}>
-          <Hero />
+      <main id="main-content" className="bg-slate-950">
+        <Suspense fallback={<SectionSkeleton />}>
+          <IndustrialHero />
         </Suspense>
-        <Suspense fallback={<div className="min-h-[50vh]" />}>
-          <ResearchModeContent />
+        <Suspense fallback={<SectionSkeleton />}>
+          <DePINFlywheel />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton />}>
+          <LiveIndustrialDashboard />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton />}>
+          <H3BountyMap />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton />}>
+          <IndustrialVerification />
         </Suspense>
       </main>
 
       <Suspense fallback={null}>
-        <OnboardingModal />
+        <Footer />
       </Suspense>
     </>
   );

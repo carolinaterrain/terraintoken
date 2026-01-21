@@ -14,8 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['Space Grotesk', 'sans-serif'],
-        body: ['Inter', 'sans-serif'],
+        display: ['JetBrains Mono', 'Space Grotesk', 'monospace'],
+        body: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -67,6 +68,15 @@ export default {
           green: "hsl(var(--forest-green))",
           red: "hsl(var(--clay-red))",
           gray: "hsl(var(--stone-gray))",
+        },
+        // Industrial DePIN colors
+        "safety-green": "hsl(var(--safety-green))",
+        "solana-purple": "hsl(var(--solana-purple))",
+        slate: {
+          950: "hsl(222 47% 5%)",
+          900: "hsl(222 47% 8%)",
+          800: "hsl(222 47% 11%)",
+          700: "hsl(217 33% 17%)",
         },
         chart: {
           1: "hsl(var(--chart-1))",
