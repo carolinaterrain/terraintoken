@@ -1,11 +1,10 @@
-import { Users, Twitter, Shield, ExternalLink, Check, Copy, Hexagon, Database, Flame } from "lucide-react";
+import { Users, Twitter, Shield, ExternalLink, Check, Copy, Hexagon, Database, Flame, Radio } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTokenData } from "@/providers/TokenDataProvider";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
 
 const Footer = () => {
   const contractAddress = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
@@ -48,23 +47,23 @@ const Footer = () => {
   };
 
   return (
-    <footer className="border-t border-slate-800 bg-slate-950">
+    <footer className="border-t border-border bg-background">
       {/* Stats Bar */}
-      <div className="border-b border-slate-800">
+      <div className="border-b border-border">
         <div className="container mx-auto px-6 py-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <StatCard 
-              icon={<Hexagon className="h-4 w-4 text-safety-green" />}
+              icon={<Hexagon className="h-4 w-4 text-primary" />}
               label="Total Supply"
               value={isLoading ? null : (supply?.formatted?.total && !supply.formatted.total.includes('NaN') ? supply.formatted.total : '1.007B TRN')}
             />
             <StatCard 
-              icon={<Database className="h-4 w-4 text-solana-purple" />}
+              icon={<Database className="h-4 w-4 text-accent" />}
               label="Circulating"
               value={isLoading ? null : (supply?.formatted?.circulating && !supply.formatted.circulating.includes('NaN') ? supply.formatted.circulating : '493M TRN')}
             />
             <StatCard 
-              icon={<Shield className="h-4 w-4 text-safety-green" />}
+              icon={<Shield className="h-4 w-4 text-primary" />}
               label="Dev Holdings"
               value="~1%"
             />
@@ -82,24 +81,33 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8">
           {/* Brand Column */}
           <div className="col-span-2">
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-2">
               <img src="/trn-coin.png" alt="TRN" className="h-8 w-8" />
-              <span className="font-mono font-bold text-lg">Terrain Token</span>
+              <div className="flex flex-col">
+                <span className="font-mono font-bold text-xs text-muted-foreground uppercase tracking-widest">Terrain Ecosystem</span>
+                <span className="font-mono font-bold text-lg text-primary">Terrain Token</span>
+              </div>
             </div>
             <p className="text-sm text-muted-foreground mb-4 font-mono">
-              Industrial DePIN for Earth's critical infrastructure
+              The Financial Protocol of the Terrain Ecosystem Intelligence Network
             </p>
+            
+            {/* Powered By */}
+            <div className="flex items-center gap-2 mb-4 text-xs text-muted-foreground font-mono">
+              <Radio className="h-3 w-3 text-primary" />
+              <span>Powered by Terrain Vision AI</span>
+            </div>
             
             {/* Contract Address */}
             <div className="mb-4">
               <p className="text-xs text-muted-foreground mb-1 font-mono uppercase tracking-wider">Contract Address</p>
               <button
                 onClick={handleCopyContract}
-                className="font-mono text-xs text-foreground/70 hover:text-safety-green transition-colors flex items-center gap-2"
+                className="font-mono text-xs text-foreground/70 hover:text-primary transition-colors flex items-center gap-2"
               >
                 {contractAddress.slice(0, 8)}...{contractAddress.slice(-8)}
                 {copied ? (
-                  <Check className="w-3 h-3 text-safety-green" />
+                  <Check className="w-3 h-3 text-primary" />
                 ) : (
                   <Copy className="w-3 h-3 opacity-50" />
                 )}
@@ -114,7 +122,7 @@ const Footer = () => {
                 href="https://solscan.io/token/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-safety-green transition-colors"
+                className="text-muted-foreground hover:text-primary transition-colors"
                 title="View on Solscan"
               >
                 <ExternalLink className="h-4 w-4" />
@@ -131,18 +139,19 @@ const Footer = () => {
       </div>
 
       {/* Bottom Disclaimer */}
-      <div className="border-t border-slate-800">
+      <div className="border-t border-border">
         <div className="container mx-auto px-6 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-xs text-muted-foreground font-mono">
-              © {new Date().getFullYear()} Terrain Token • All rights reserved
+              © {new Date().getFullYear()} Terrain Ecosystem. All rights reserved.
             </p>
             <Badge variant="outline" className="text-xs font-mono border-amber-500/30 text-amber-500">
-              ⚠️ TRN is an optional utility credit, not an investment
+              ⚠️ TRN is a proprietary utility asset, not an investment
             </Badge>
           </div>
-          <p className="text-xs text-muted-foreground text-center mt-4 max-w-3xl mx-auto">
-            TRN is not required to use Terrain services. All platforms function without TRN. 
+          <p className="text-xs text-muted-foreground text-center mt-4 max-w-4xl mx-auto font-mono">
+            The Terrain Token is a proprietary utility asset within the Terrain Intelligence framework. 
+            Technical operations managed by Carolina Terrain, LLC. TRN is not required to use Terrain services. 
             Cryptocurrency involves risk. Not financial advice.
           </p>
         </div>
@@ -161,7 +170,7 @@ function StatCard({
   value: string | null;
 }) {
   return (
-    <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-4 text-center">
+    <div className="bg-card/50 border border-border rounded-lg p-4 text-center backdrop-blur-sm">
       <div className="flex items-center justify-center gap-2 mb-2">
         {icon}
         <span className="text-xs text-muted-foreground font-mono uppercase tracking-wider">{label}</span>
@@ -181,7 +190,7 @@ function SocialLink({ href, icon, label }: { href: string; icon: React.ReactNode
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="w-8 h-8 rounded-lg bg-slate-800/50 border border-slate-700 flex items-center justify-center text-muted-foreground hover:text-safety-green hover:border-safety-green/50 transition-colors"
+      className="w-8 h-8 rounded-lg bg-card/50 border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-colors"
       title={label}
     >
       {icon}
@@ -204,7 +213,7 @@ function FooterLinkColumn({
           <li key={link.path}>
             <Link 
               to={link.path}
-              className="text-sm text-muted-foreground hover:text-safety-green transition-colors font-mono"
+              className="text-sm text-muted-foreground hover:text-primary transition-colors font-mono"
             >
               {link.label}
             </Link>
