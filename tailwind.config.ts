@@ -69,8 +69,10 @@ export default {
           red: "hsl(var(--clay-red))",
           gray: "hsl(var(--stone-gray))",
         },
-        // Industrial DePIN colors
+        // Tactical HUD colors
         "safety-green": "hsl(var(--safety-green))",
+        "hud-cyan": "hsl(var(--hud-cyan))",
+        "hud-glow": "hsl(var(--hud-glow))",
         "solana-purple": "hsl(var(--solana-purple))",
         slate: {
           950: "hsl(222 47% 5%)",

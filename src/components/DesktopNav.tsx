@@ -87,9 +87,12 @@ const DesktopNav = () => {
               className="flex items-center gap-2 group"
             >
               <img src={trnCoin} alt="TRN" className="h-8 w-8" />
-              <span className="font-mono font-bold text-lg text-foreground group-hover:text-safety-green transition-colors">
-                TRN
-              </span>
+              <div className="flex flex-col leading-none">
+                <span className="font-mono text-[10px] text-muted-foreground uppercase tracking-widest">Terrain Ecosystem</span>
+                <span className="font-mono font-bold text-lg text-primary group-hover:text-primary/80 transition-colors">
+                  TRN
+                </span>
+              </div>
             </button>
 
             {/* Center Nav */}
@@ -186,7 +189,10 @@ const DesktopNav = () => {
               className="flex items-center gap-2"
             >
               <img src={trnCoin} alt="TRN" className="h-7 w-7" />
-              <span className="font-mono font-bold text-foreground">TRN</span>
+              <div className="flex flex-col leading-none">
+                <span className="font-mono text-[8px] text-muted-foreground uppercase tracking-widest">Ecosystem</span>
+                <span className="font-mono font-bold text-primary">TRN</span>
+              </div>
             </button>
             
             <div className="flex items-center gap-2">

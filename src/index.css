@@ -8,100 +8,104 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* INDUSTRIAL DePIN THEME - Safety Green + Solana Purple */
-    --primary: 142 71% 45%;           /* #4ADE80 - Safety Green */
-    --primary-foreground: 222 47% 11%;
-    --primary-glow: 142 84% 55%;      /* Brighter glow variant */
+    /* TACTICAL HUD THEME - Cyan Protocol + Obsidian */
+    --primary: 185 85% 50%;           /* #00CED1 - Tactical Cyan */
+    --primary-foreground: 222 47% 5%;
+    --primary-glow: 185 100% 60%;     /* Brighter glow variant */
     
-    /* SLATE-900 INDUSTRIAL DARK */
-    --background: 222 47% 5%;         /* Slate-950 */
-    --foreground: 210 40% 98%;
+    /* DEEP OBSIDIAN DARK */
+    --background: 220 25% 4%;         /* Deep Obsidian */
+    --foreground: 185 30% 95%;
     
-    --card: 222 47% 8%;               /* Slate-900 */
-    --card-foreground: 210 40% 98%;
+    --card: 220 25% 7%;               /* Obsidian Surface */
+    --card-foreground: 185 30% 95%;
 
-    --popover: 222 47% 8%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 220 25% 7%;
+    --popover-foreground: 185 30% 95%;
 
     /* SOLANA PURPLE ACCENT */
     --accent: 280 65% 60%;            /* Solana Purple */
     --accent-foreground: 0 0% 98%;
 
-    --secondary: 222 47% 11%;         /* Slate-800 */
-    --secondary-foreground: 142 71% 45%;
+    --secondary: 220 25% 10%;         /* Obsidian Elevated */
+    --secondary-foreground: 185 85% 50%;
 
-    --muted: 217 33% 17%;             /* Slate-700 */
-    --muted-foreground: 215 20% 65%;
+    --muted: 220 20% 15%;             /* Muted Obsidian */
+    --muted-foreground: 185 20% 60%;
     
     /* Semantic text tokens */
-    --text-body: 210 40% 98%;
-    --text-secondary: 215 20% 65%;
-    --text-accent-safe: 142 71% 55%;
+    --text-body: 185 30% 95%;
+    --text-secondary: 185 20% 60%;
+    --text-accent-safe: 185 85% 60%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
-    --ring: 142 71% 45%;
+    --border: 185 30% 15%;
+    --input: 220 20% 15%;
+    --ring: 185 85% 50%;
 
     --radius: 0.5rem;
     
-    /* TERRAIN INDUSTRIAL SYSTEM */
-    --terrain-glow: 142 84% 55%;
-    --terrain-dark: 222 47% 5%;
-    --terrain-shadow: 222 47% 8%;
-    --terrain-deep: 222 47% 4%;
+    /* TERRAIN ECOSYSTEM PROTOCOL */
+    --terrain-glow: 185 100% 60%;
+    --terrain-dark: 220 25% 4%;
+    --terrain-shadow: 220 25% 7%;
+    --terrain-deep: 220 25% 3%;
     --terrain-purple: 280 65% 60%;
     
-    /* SAFETY & SOLANA COLORS */
-    --safety-green: 142 71% 45%;      /* #4ADE80 */
+    /* TACTICAL HUD COLORS */
+    --safety-green: 185 85% 50%;      /* Tactical Cyan replaces green */
     --solana-purple: 280 65% 60%;     /* Purple accent */
-    --goblin-green: 142 76% 39%;
+    --hud-cyan: 185 85% 50%;          /* Primary HUD color */
+    --hud-glow: 185 100% 65%;         /* Glowing accents */
+    --goblin-green: 185 85% 45%;      /* Updated for cyan theme */
     --goblin-gold: 45 95% 50%;
     
     /* EARTHY TERRAIN COLORS */
     --earth-brown: 25 50% 35%;
-    --forest-green: 142 60% 25%;
+    --forest-green: 160 60% 25%;
     --clay-red: 15 50% 40%;
-    --stone-gray: 30 5% 50%;
+    --stone-gray: 220 10% 45%;
     
-    /* CHART COLORS - Industrial Edition */
-    --chart-1: 142 71% 45%;           /* Safety Green */
+    /* CHART COLORS - Tactical Edition */
+    --chart-1: 185 85% 50%;           /* Tactical Cyan */
     --chart-2: 280 65% 60%;           /* Solana Purple */
     --chart-3: 38 92% 50%;            /* Amber */
-    --chart-4: 199 89% 48%;           /* Cyan */
+    --chart-4: 160 70% 45%;           /* Teal */
     --chart-5: 0 84% 60%;             /* Red */
     
-    --chart-grid: 217 33% 17%;
-    --chart-background: 222 47% 5%;
-    --chart-text: 210 40% 85%;
+    --chart-grid: 185 20% 15%;
+    --chart-background: 220 25% 4%;
+    --chart-text: 185 30% 85%;
     
     /* GRADIENTS */
-    --gradient-cyber: linear-gradient(135deg, hsl(142 71% 45% / 0.15), hsl(280 65% 60% / 0.05));
-    --gradient-primary: linear-gradient(135deg, hsl(142 71% 45%), hsl(142 84% 55%));
-    --gradient-dark: linear-gradient(180deg, hsl(222 47% 5%), hsl(222 47% 8%));
+    --gradient-cyber: linear-gradient(135deg, hsl(185 85% 50% / 0.15), hsl(280 65% 60% / 0.08));
+    --gradient-primary: linear-gradient(135deg, hsl(185 85% 50%), hsl(185 100% 60%));
+    --gradient-dark: linear-gradient(180deg, hsl(220 25% 4%), hsl(220 25% 7%));
+    --gradient-hud: linear-gradient(135deg, hsl(185 85% 50% / 0.1), hsl(185 100% 60% / 0.05));
     
     /* SHADOWS & GLOWS */
-    --shadow-glow: 0 0 30px hsl(142 71% 45% / 0.3);
-    --shadow-elegant: 0 10px 30px -10px hsl(142 71% 45% / 0.3);
+    --shadow-glow: 0 0 30px hsl(185 85% 50% / 0.4);
+    --shadow-elegant: 0 10px 30px -10px hsl(185 85% 50% / 0.3);
+    --shadow-hud: 0 0 40px hsl(185 100% 60% / 0.2);
     
     /* TRANSITIONS */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     
-    /* PATTERNS */
-    --terrain-contour: repeating-linear-gradient(45deg, transparent, transparent 10px, hsl(142 71% 45% / 0.03) 10px, hsl(142 71% 45% / 0.03) 20px);
-    --terrain-grid: repeating-linear-gradient(0deg, transparent, transparent 30px, hsl(217 33% 17%) 30px, hsl(217 33% 17%) 31px),
-                    repeating-linear-gradient(90deg, transparent, transparent 30px, hsl(217 33% 17%) 30px, hsl(217 33% 17%) 31px);
+    /* PATTERNS - Tactical Grid */
+    --terrain-contour: repeating-linear-gradient(45deg, transparent, transparent 10px, hsl(185 85% 50% / 0.03) 10px, hsl(185 85% 50% / 0.03) 20px);
+    --terrain-grid: repeating-linear-gradient(0deg, transparent, transparent 30px, hsl(185 30% 15%) 30px, hsl(185 30% 15%) 31px),
+                    repeating-linear-gradient(90deg, transparent, transparent 30px, hsl(185 30% 15%) 30px, hsl(185 30% 15%) 31px);
 
-    --sidebar-background: 222 47% 8%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 142 71% 45%;
-    --sidebar-primary-foreground: 222 47% 11%;
-    --sidebar-accent: 217 33% 17%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 217 33% 17%;
-    --sidebar-ring: 142 71% 45%;
+    --sidebar-background: 220 25% 7%;
+    --sidebar-foreground: 185 30% 95%;
+    --sidebar-primary: 185 85% 50%;
+    --sidebar-primary-foreground: 220 25% 5%;
+    --sidebar-accent: 220 20% 15%;
+    --sidebar-accent-foreground: 185 30% 95%;
+    --sidebar-border: 185 30% 15%;
+    --sidebar-ring: 185 85% 50%;
   }
 
   /* LIGHT MODE - Industrial Theme */
