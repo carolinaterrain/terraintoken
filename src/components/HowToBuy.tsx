@@ -3,11 +3,12 @@ import { Wallet, Coins, ArrowRightLeft, ExternalLink, QrCode, Info } from "lucid
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 import { useFeatureAnalytics } from "@/hooks/useFeatureAnalytics";
+import { TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
 
 const HowToBuy = () => {
   const [showQR, setShowQR] = useState(false);
   const { trackBuyButtonClick } = useFeatureAnalytics();
-  const raydiumUrl = "https://raydium.io/swap/?inputMint=sol&outputMint=2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+  const raydiumUrl = `https://raydium.io/swap/?inputMint=sol&outputMint=${TRN_MINT_ADDRESS}`;
   
   const handleBuyClick = () => {
     trackBuyButtonClick('raydium', 'how_to_buy_section');

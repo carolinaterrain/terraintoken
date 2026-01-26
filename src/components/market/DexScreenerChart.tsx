@@ -3,6 +3,7 @@ import { memo, useState, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { RefreshCw, AlertCircle, ExternalLink } from "lucide-react";
+import { TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
 
 export const DexScreenerChart = memo(() => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -111,7 +112,7 @@ export const DexScreenerChart = memo(() => {
         )}
 
         <iframe
-          src="https://dexscreener.com/solana/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"
+          src={`https://dexscreener.com/solana/${TRN_MINT_ADDRESS}?embed=1&loadChartSettings=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15`}
           className="absolute top-0 left-0 w-full h-full border-0 rounded-lg"
           title="TRN Trading Chart"
           onLoad={() => setIsLoaded(true)}

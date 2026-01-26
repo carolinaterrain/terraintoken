@@ -4,11 +4,11 @@
  */
 
 import { supabase } from "@/integrations/supabase/client";
+import { TRN_MINT_ADDRESS, ADMIN_WALLET, TRN_DECIMALS } from "@/lib/airdropConstants";
 
-// Constants
-export const TRN_MINT_ADDRESS = '2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump';
-export const TRN_TREASURY_WALLET = 'H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu';
-export const TRN_DECIMALS = 6;
+// Re-export for backwards compatibility
+export { TRN_MINT_ADDRESS, TRN_DECIMALS };
+export const TRN_TREASURY_WALLET = ADMIN_WALLET;
 export const MAX_SUPPLY = 1_000_000_000;
 
 // Fee Allocation Model

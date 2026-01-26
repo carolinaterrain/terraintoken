@@ -9,7 +9,8 @@ import {
   CONFIG 
 } from "../_shared/heliusGateway.ts";
 
-const TRN_MINT_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+// CORRECT TRN Token Address - Token-2022 with Interest-Bearing Extension
+const TRN_MINT_ADDRESS = "Dm7FAcF4kzVgsrn6VPEp2C5bN3tGPkydpWaR26wtDR8m";
 const DEXSCREENER_API = "https://api.dexscreener.com/latest/dex/tokens";
 
 const corsHeaders = {

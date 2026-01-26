@@ -56,15 +56,14 @@ export function TRNGrowthCard({ balance: externalBalance, onBalanceChange }: TRN
     }
   }, [externalBalance]);
 
-  // Simulate fetching balance when wallet connects
+  // Fetch real balance when wallet connects
   useEffect(() => {
     if (connected && publicKey && externalBalance === undefined) {
-      // Demo: simulate a balance for connected wallets
-      const demoBalance = 50000 + Math.random() * 100000;
-      setActualBalance(demoBalance);
-      onBalanceChange?.(demoBalance);
+      // TODO: Fetch real balance from Solana RPC
+      // For now, show 0 until real balance is fetched
+      setActualBalance(0);
     }
-  }, [connected, publicKey, externalBalance, onBalanceChange]);
+  }, [connected, publicKey, externalBalance]);
 
   const formatBalance = (value: number) => {
     if (value >= 1000000) {

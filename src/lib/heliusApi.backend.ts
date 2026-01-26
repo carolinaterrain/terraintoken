@@ -2,7 +2,8 @@
 // This file is meant to be imported only in edge functions where Deno is available
 // NOTE: This is a legacy file - prefer using the fetch-holder-data edge function directly
 
-const TRN_MINT_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+// Token-2022 with Interest-Bearing Extension
+const TRN_MINT_ADDRESS = "Dm7FAcF4kzVgsrn6VPEp2C5bN3tGPkydpWaR26wtDR8m";
 
 export interface HolderData {
   address: string;

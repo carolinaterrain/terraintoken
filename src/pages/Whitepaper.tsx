@@ -9,11 +9,12 @@ import BackToHome from "@/components/BackToHome";
 import { useTokenSupply, formatSupply } from "@/hooks/useTokenSupply";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFeatureAnalytics } from "@/hooks/useFeatureAnalytics";
+import { TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
 
 const Whitepaper = () => {
   const { data: supplyData, isLoading } = useTokenSupply();
   const { trackWhitepaperDownload } = useFeatureAnalytics();
-  const contractAddress = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+  const contractAddress = TRN_MINT_ADDRESS;
   
   const sections = [
     {

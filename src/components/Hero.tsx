@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import ContractVerificationBadge from "./ContractVerificationBadge";
 import { useTokenData } from "@/providers/TokenDataProvider";
 import { Skeleton } from "@/components/ui/skeleton";
+import { TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
 
 // Use public folder paths directly for LCP optimization - these match index.html preloads
 const terrainMascot = "/terrain-mascot.png";
@@ -16,7 +17,7 @@ const Hero = memo(() => {
   const { toast } = useToast();
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
   const [goblinPhrase, setGoblinPhrase] = useState("");
-  const contractAddress = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+  const contractAddress = TRN_MINT_ADDRESS;
   const { stats: tokenStats, isLoading } = useTokenData();
   
   const price = tokenStats?.priceUsd ?? "$0.00";
@@ -232,7 +233,7 @@ const Hero = memo(() => {
             {/* Tertiary: Acquire TRN (de-emphasized text link) */}
             <div className="mt-2">
               <a
-                href="https://raydium.io/swap/?inputMint=sol&outputMint=2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
+                href={`https://raydium.io/swap/?inputMint=sol&outputMint=${TRN_MINT_ADDRESS}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-muted-foreground hover:text-primary transition-colors"

@@ -20,7 +20,8 @@ const HELIUS_RPC = Deno.env.get('HELIUS_API_KEY')
   : null;
 const PUBLIC_RPC = 'https://api.mainnet-beta.solana.com';
 
-const TRN_MINT_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+// Token-2022 with Interest-Bearing Extension
+const TRN_MINT_ADDRESS = "Dm7FAcF4kzVgsrn6VPEp2C5bN3tGPkydpWaR26wtDR8m";
 const TRN_TREASURY_WALLET = "H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu";
 
 interface TokenAccountInfo {

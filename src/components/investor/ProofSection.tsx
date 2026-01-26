@@ -2,6 +2,7 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Shield, CheckCircle, ExternalLink, FileCheck, Award } from "lucide-react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
+import { TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
 
 export const ProofSection = () => {
   // Get blog post count
@@ -17,7 +18,7 @@ export const ProofSection = () => {
       icon: Shield,
       title: "Smart Contract Verified",
       description: "Verified on Solscan (third-party audit pending)",
-      link: "https://solscan.io/token/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump",
+      link: `https://solscan.io/token/${TRN_MINT_ADDRESS}`,
       color: "text-chart-1"
     },
     {
