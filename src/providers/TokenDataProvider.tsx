@@ -81,10 +81,11 @@ interface TokenDataContextValue {
 }
 
 // Fallback data for immediate render
+// Fallback data with correct Token-2022 decimals (9)
 const FALLBACK_DATA: UnifiedTokenData = {
-  totalSupply: 1000000000000000,
-  circulatingSupply: 550000000000000,
-  decimals: 6,
+  totalSupply: 1250000000000000000, // 1.25B with 9 decimals
+  circulatingSupply: 1250000000000000000,
+  decimals: 9, // Token-2022 interest-bearing uses 9 decimals
   holderCount: 0,
   holderTiers: { shrimp: 0, crab: 0, fish: 0, dolphin: 0, shark: 0, whale: 0, humpback: 0 },
   top10Percentage: 0,
