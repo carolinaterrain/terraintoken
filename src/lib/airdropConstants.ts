@@ -3,8 +3,12 @@
 // Admin wallet authorized to execute airdrops
 export const ADMIN_WALLET = "H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu";
 
-// TRN Token Mint Address (Token-2022)
-export const TRN_MINT_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+// TRN Token Mint Address (Token-2022 with Interest-Bearing Extension)
+export const TRN_MINT_ADDRESS = "Dm7FAcF4kzVgsrn6VPEp2C5bN3tGPkydpWaR26wtDR8m";
+
+// Interest Rate (15% APY = 1500 BPS)
+export const TRN_APY_RATE = 15;
+export const TRN_APY_BPS = 1500;
 
 // Token-2022 Program ID
 export const TOKEN_2022_PROGRAM_ID = "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb";

@@ -10,13 +10,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { 
   Plane, Shield, AlertTriangle, Play, RefreshCw, 
-  Users, Lock, CheckCircle, XCircle 
+  Users, Lock, CheckCircle, XCircle, Sparkles, ExternalLink 
 } from "lucide-react";
 import { useAirdropRecipients } from "@/hooks/useAirdropRecipients";
 import { AirdropStatsCards } from "@/components/airdrop/AirdropStatsCards";
 import { AirdropRecipientTable } from "@/components/airdrop/AirdropRecipientTable";
 import { AirdropProgressTracker, BatchStatus } from "@/components/airdrop/AirdropProgressTracker";
-import { ADMIN_WALLET, BATCH_SIZE, TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
+import { ADMIN_WALLET, BATCH_SIZE, TRN_MINT_ADDRESS, TRN_APY_RATE } from "@/lib/airdropConstants";
 
 export default function AirdropDashboard() {
   const { publicKey, connected } = useWallet();
@@ -147,6 +147,29 @@ export default function AirdropDashboard() {
         </header>
 
         <main className="container mx-auto px-4 py-8 space-y-8">
+          {/* APY Banner */}
+          <GlassCard className="p-4 border-primary/50 bg-gradient-to-r from-primary/10 via-primary/5 to-transparent">
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-full bg-primary/20 animate-pulse">
+                  <Sparkles className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <p className="font-bold text-primary text-lg">Yield Mode: {TRN_APY_RATE}% APY Active</p>
+                  <p className="text-xs text-muted-foreground">Interest-Bearing Token Extension (1500 BPS)</p>
+                </div>
+              </div>
+              <a
+                href={`https://solscan.io/token/${TRN_MINT_ADDRESS}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-sm text-primary hover:underline"
+              >
+                Verify on Solscan <ExternalLink className="w-4 h-4" />
+              </a>
+            </div>
+          </GlassCard>
+
           {/* Connection Warning */}
           {!connected && (
             <GlassCard className="p-6 border-yellow-500/30 bg-yellow-500/5">
@@ -327,11 +350,21 @@ export default function AirdropDashboard() {
 
         {/* Footer */}
         <footer className="border-t py-6 mt-12">
-          <div className="container mx-auto px-4 text-center text-xs text-muted-foreground">
+          <div className="container mx-auto px-4 text-center text-xs text-muted-foreground space-y-2">
             <p>© 2026 Terrain Ecosystem. Token Airdrop Dashboard - Admin Use Only.</p>
-            <p className="mt-1">
+            <p>
               Powered by Terrain Vision AI • Operationalized by Carolina Terrain, LLC
             </p>
+            <a
+              href={`https://solscan.io/token/${TRN_MINT_ADDRESS}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-primary hover:underline"
+            >
+              <Shield className="w-3 h-3" />
+              Verify Interest-Bearing Extension on Solscan
+              <ExternalLink className="w-3 h-3" />
+            </a>
           </div>
         </footer>
       </div>
