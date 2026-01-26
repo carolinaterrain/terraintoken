@@ -2,46 +2,53 @@ import { useEffect, useState, memo, useMemo } from 'react';
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { TrendingUp, Users, DollarSign } from 'lucide-react';
+import { Users, DollarSign, AlertCircle } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 interface ChartData {
   date: string;
   holders: number;
-  revenue: number;
 }
 
 export const LiveDataCharts = memo(() => {
-  const [data, setData] = useState<ChartData[]>([]);
+  const [holderData, setHolderData] = useState<ChartData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [hasData, setHasData] = useState(false);
 
   useEffect(() => {
-    // Simulate real-time data (replace with actual API call)
-    const generateData = () => {
-      const now = new Date();
-      const mockData: ChartData[] = [];
-      for (let i = 30; i >= 0; i--) {
-        const date = new Date(now);
-        date.setDate(date.getDate() - i);
-        mockData.push({
-          date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-          holders: Math.floor(1200 + Math.random() * 300 + i * 10),
-          revenue: Math.floor(45000 + Math.random() * 5000 + i * 500)
-        });
+    // Fetch real holder snapshot data from database
+    const fetchHolderData = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('holder_snapshots')
+          .select('snapshot_date, total_holders, is_live_data')
+          .eq('is_live_data', true) // Only real data
+          .order('snapshot_date', { ascending: true })
+          .limit(30);
+
+        if (error) {
+          console.error('Error fetching holder snapshots:', error);
+          setLoading(false);
+          return;
+        }
+
+        if (data && data.length > 0) {
+          const chartData = data.map(snapshot => ({
+            date: new Date(snapshot.snapshot_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+            holders: snapshot.total_holders
+          }));
+          setHolderData(chartData);
+          setHasData(true);
+        }
+        
+        setLoading(false);
+      } catch (err) {
+        console.error('Error in fetchHolderData:', err);
+        setLoading(false);
       }
-      return mockData;
     };
 
-    setTimeout(() => {
-      setData(generateData());
-      setLoading(false);
-    }, 500);
-
-    // Auto-refresh every 30 seconds
-    const interval = setInterval(() => {
-      setData(generateData());
-    }, 30000);
-
-    return () => clearInterval(interval);
+    fetchHolderData();
   }, []);
 
   const tooltipStyle = useMemo(() => ({
@@ -54,7 +61,6 @@ export const LiveDataCharts = memo(() => {
     return (
       <div className="space-y-6">
         <Skeleton className="h-[300px] w-full" />
-        <Skeleton className="h-[300px] w-full" />
       </div>
     );
   }
@@ -65,86 +71,53 @@ export const LiveDataCharts = memo(() => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Users className="w-5 h-5 text-primary" />
-            Holder Growth (Last 30 Days)
+            Holder Growth (Historical Snapshots)
           </CardTitle>
-          <CardDescription>Real-time holder count tracking</CardDescription>
+          <CardDescription>
+            {hasData ? 'Real holder count from on-chain snapshots' : 'No historical data available yet'}
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
-            <AreaChart data={data}>
-              <defs>
-                <linearGradient id="holderGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <XAxis 
-                dataKey="date" 
-                stroke="hsl(var(--muted-foreground))"
-                fontSize={10}
-                angle={-45}
-                textAnchor="end"
-                height={60}
-              />
-              <YAxis 
-                stroke="hsl(var(--muted-foreground))"
-                fontSize={10}
-              />
-              <Tooltip contentStyle={tooltipStyle} />
-              <Area
-                type="monotone"
-                dataKey="holders"
-                stroke="hsl(var(--primary))"
-                fill="url(#holderGradient)"
-                strokeWidth={2}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <DollarSign className="w-5 h-5 text-primary" />
-            Revenue Trends (Last 30 Days)
-          </CardTitle>
-          <CardDescription>Business performance over time</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
-            <AreaChart data={data}>
-              <defs>
-                <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--chart-1))" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="hsl(var(--chart-1))" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <XAxis 
-                dataKey="date" 
-                stroke="hsl(var(--muted-foreground))"
-                fontSize={10}
-                angle={-45}
-                textAnchor="end"
-                height={60}
-              />
-              <YAxis 
-                stroke="hsl(var(--muted-foreground))"
-                fontSize={10}
-              />
-              <Tooltip 
-                contentStyle={tooltipStyle}
-                formatter={(value) => `$${Number(value).toLocaleString()}`}
-              />
-              <Area
-                type="monotone"
-                dataKey="revenue"
-                stroke="hsl(var(--chart-1))"
-                fill="url(#revenueGradient)"
-                strokeWidth={2}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
+          {hasData ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <AreaChart data={holderData}>
+                <defs>
+                  <linearGradient id="holderGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <XAxis 
+                  dataKey="date" 
+                  stroke="hsl(var(--muted-foreground))"
+                  fontSize={10}
+                  angle={-45}
+                  textAnchor="end"
+                  height={60}
+                />
+                <YAxis 
+                  stroke="hsl(var(--muted-foreground))"
+                  fontSize={10}
+                />
+                <Tooltip contentStyle={tooltipStyle} />
+                <Area
+                  type="monotone"
+                  dataKey="holders"
+                  stroke="hsl(var(--primary))"
+                  fill="url(#holderGradient)"
+                  strokeWidth={2}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-[300px] text-muted-foreground">
+              <AlertCircle className="h-12 w-12 mb-4 opacity-50" />
+              <p className="text-center font-mono text-sm">No historical snapshots recorded yet</p>
+              <p className="text-center text-xs mt-2">
+                Data will appear as daily snapshots are collected
+              </p>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

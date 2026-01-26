@@ -1,27 +1,13 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Globe, FileText, Hexagon, Database, Shield, Users, TrendingUp, TrendingDown, Radio, Cpu, Activity } from "lucide-react";
+import { ArrowRight, Globe, FileText, Hexagon, Database, Shield, Users, TrendingUp, TrendingDown, Activity } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTokenData } from "@/providers/TokenDataProvider";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useEffect, useState } from "react";
 
 export function IndustrialHero() {
   const { holderCount, stats, isLoading, dataSource } = useTokenData();
-  const [ingestCount, setIngestCount] = useState(0);
-  const [mintCount, setMintCount] = useState(0);
-
-  // Simulate live data ingestion
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIngestCount(prev => prev + Math.floor(Math.random() * 3) + 1);
-      if (Math.random() > 0.7) {
-        setMintCount(prev => prev + 1);
-      }
-    }, 2000);
-    return () => clearInterval(interval);
-  }, []);
 
   // Live data from TokenDataProvider
   const holders = holderCount?.holderCount || 0;
@@ -155,31 +141,6 @@ export function IndustrialHero() {
                 Read 2026 Whitepaper
               </Button>
             </Link>
-          </motion.div>
-
-          {/* Live Data Ingestion Feed */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.35 }}
-            className="bg-card/50 border border-border rounded-lg p-4 max-w-2xl mx-auto backdrop-blur-sm"
-          >
-            <div className="flex items-center justify-between gap-4 font-mono text-sm">
-              <div className="flex items-center gap-3">
-                <div className="w-3 h-3 bg-primary rounded-full animate-pulse" />
-                <span className="text-muted-foreground">LIVE FEED</span>
-              </div>
-              <div className="flex items-center gap-6">
-                <div className="flex items-center gap-2">
-                  <Radio className="h-4 w-4 text-primary" />
-                  <span className="text-foreground">Ingesting Terrain Data: <span className="text-primary">{ingestCount.toLocaleString()}</span></span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Cpu className="h-4 w-4 text-accent" />
-                  <span className="text-foreground">Minting Metadata: <span className="text-accent">{mintCount}</span></span>
-                </div>
-              </div>
-            </div>
           </motion.div>
 
           {/* Live Stats bar */}

@@ -37,8 +37,9 @@ export const GovernanceVoting = () => {
       return;
     }
 
-    // Mock voting power based on wallet (in production, fetch from blockchain)
-    const votingPower = 10000;
+    // Voting power is based on TRN holdings - for now use a base value
+    // In production, this would fetch actual token balance from blockchain
+    const votingPower = 1; // 1 vote per wallet until on-chain balance check is implemented
 
     const { error } = await supabase.from("governance_votes").insert({
       proposal_id: proposalId,
