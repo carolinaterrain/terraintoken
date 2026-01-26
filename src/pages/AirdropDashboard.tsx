@@ -66,11 +66,12 @@ export default function AirdropDashboard() {
     setIsRunning(true);
 
     toast({
-      title: "🚀 Airdrop Started",
-      description: `Processing ${safeRecipients.length} recipients in ${totalBatches} batches...`,
+      title: "⚠️ Simulation Mode",
+      description: `This is a preview only. Real Token-2022 transfers are not yet implemented.`,
+      variant: "destructive",
     });
 
-    // Simulate batch processing (in production, this would be real Token-2022 transfers)
+    // NOTE: Real transfers not yet implemented - showing simulation for planning purposes
     for (let i = 0; i < totalBatches; i++) {
       setCurrentBatch(i);
       
@@ -79,21 +80,19 @@ export default function AirdropDashboard() {
         idx === i ? { ...b, status: "processing" } : b
       ));
 
-      // Simulate transaction delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Simulation delay (no real transfer)
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Simulate success (in production, execute actual transfers here)
-      const mockSignature = `${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`;
-      
+      // Mark as pending - real transfers require signing infrastructure
       setBatches(prev => prev.map((b, idx) => 
-        idx === i ? { ...b, status: "success", signature: mockSignature } : b
+        idx === i ? { ...b, status: "success", signature: "SIMULATION-ONLY" } : b
       ));
     }
 
     setIsRunning(false);
     toast({
-      title: "✅ Airdrop Complete",
-      description: `Successfully processed all ${totalBatches} batches!`,
+      title: "ℹ️ Simulation Complete",
+      description: `Simulated ${totalBatches} batches. No tokens were transferred. Real transfers require signing infrastructure.`,
     });
   };
 
@@ -269,6 +268,20 @@ export default function AirdropDashboard() {
                 </div>
               </GlassCard>
 
+              {/* Simulation Notice */}
+              <GlassCard className="p-4 border-yellow-500/30 bg-yellow-500/5">
+                <div className="flex items-center gap-3">
+                  <AlertTriangle className="w-5 h-5 text-yellow-500" />
+                  <div>
+                    <p className="font-semibold text-yellow-500">Simulation Mode</p>
+                    <p className="text-xs text-muted-foreground">
+                      Real Token-2022 transfers require signing infrastructure. 
+                      This dashboard shows recipient planning and validation only.
+                    </p>
+                  </div>
+                </div>
+              </GlassCard>
+
               {/* Action Buttons */}
               {isAdmin && (
                 <div className="flex items-center gap-4">
@@ -277,22 +290,23 @@ export default function AirdropDashboard() {
                     onClick={startAirdrop}
                     disabled={isRunning || safeRecipients.length === 0}
                     className="gap-2"
+                    variant="outline"
                   >
                     {isRunning ? (
                       <>
                         <RefreshCw className="w-4 h-4 animate-spin" />
-                        Processing...
+                        Simulating...
                       </>
                     ) : (
                       <>
                         <Play className="w-4 h-4" />
-                        Start Airdrop ({stats.safe} recipients)
+                        Run Simulation ({stats.safe} recipients)
                       </>
                     )}
                   </Button>
 
                   {batches.length > 0 && !isRunning && (
-                    <Button variant="outline" onClick={resetAirdrop}>
+                    <Button variant="ghost" onClick={resetAirdrop}>
                       Reset
                     </Button>
                   )}
