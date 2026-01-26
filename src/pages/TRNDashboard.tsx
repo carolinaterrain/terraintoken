@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { DashboardErrorBoundary } from "@/components/charts/DashboardErrorBoundary";
 import { TRNDashboardHeader } from "@/components/dashboard/TRNDashboardHeader";
 import { TRNGrowthCard } from "@/components/dashboard/TRNGrowthCard";
+import { APYHeroBanner } from "@/components/dashboard/APYHeroBanner";
 import { UtilityTrustCards } from "@/components/dashboard/UtilityTrustCards";
 import { LiveTokenStats } from "@/components/dashboard/LiveTokenStats";
 import { DexScreenerChart } from "@/components/market/DexScreenerChart";
@@ -30,12 +31,19 @@ export default function TRNDashboard() {
 
         {/* Main Content */}
         <main className="container mx-auto px-4 py-8 space-y-10 flex-1">
-          {/* Hero Section: Growth Card */}
-          <section className="max-w-4xl mx-auto">
-            <DashboardErrorBoundary componentName="Growth Card">
-              <TRNGrowthCard />
-            </DashboardErrorBoundary>
-          </section>
+        {/* APY Hero Banner - Maximum Prominence */}
+        <section>
+          <DashboardErrorBoundary componentName="APY Banner">
+            <APYHeroBanner />
+          </DashboardErrorBoundary>
+        </section>
+
+        {/* Personal Balance Card */}
+        <section className="max-w-4xl mx-auto">
+          <DashboardErrorBoundary componentName="Growth Card">
+            <TRNGrowthCard />
+          </DashboardErrorBoundary>
+        </section>
 
           {/* Live Token Stats */}
           <section>
