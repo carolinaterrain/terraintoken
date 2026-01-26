@@ -71,8 +71,8 @@ const EcosystemAdmin = lazy(() => import("./pages/EcosystemAdmin"));
 const AnalyticsDashboard = lazy(() => import("./pages/AnalyticsDashboard"));
 const FunnelAnalytics = lazy(() => import("./pages/FunnelAnalytics"));
 const ABTestsDashboard = lazy(() => import("./pages/ABTestsDashboard"));
+const AirdropDashboard = lazy(() => import("./pages/AirdropDashboard"));
 const AdminRoute = lazy(() => import("./components/AdminRoute").then(m => ({ default: m.AdminRoute })));
-
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -144,6 +144,7 @@ const AppContent = () => {
           <Route path="/admin/analytics" element={<AdminRoute><AnalyticsDashboard /></AdminRoute>} />
           <Route path="/admin/funnel" element={<AdminRoute><FunnelAnalytics /></AdminRoute>} />
           <Route path="/admin/ab-tests" element={<AdminRoute><ABTestsDashboard /></AdminRoute>} />
+          <Route path="/admin/airdrop" element={<AirdropDashboard />} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>
@@ -152,22 +153,27 @@ const AppContent = () => {
   );
 };
 
+// Import wallet provider for Solana integration
+import { SolanaWalletProvider } from "./providers/WalletProvider";
+
 const App = () => {
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <TokenDataProvider>
-            <HelmetProvider>
-              <TooltipProvider>
-                <Suspense fallback={null}>
-                  <Toaster />
-                  <Sonner />
-                </Suspense>
-                <AppContent />
-              </TooltipProvider>
-            </HelmetProvider>
-          </TokenDataProvider>
+          <SolanaWalletProvider>
+            <TokenDataProvider>
+              <HelmetProvider>
+                <TooltipProvider>
+                  <Suspense fallback={null}>
+                    <Toaster />
+                    <Sonner />
+                  </Suspense>
+                  <AppContent />
+                </TooltipProvider>
+              </HelmetProvider>
+            </TokenDataProvider>
+          </SolanaWalletProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </ErrorBoundary>
