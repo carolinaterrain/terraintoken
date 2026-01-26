@@ -313,7 +313,7 @@ serve(async (req) => {
 async function fetchTokenSupply(apiKey: string | undefined, supabase: SupabaseClient) {
   if (!apiKey) {
     console.warn('HELIUS_API_KEY not configured, using fallback supply');
-    return { totalSupply: 1000000000000000, circulatingSupply: 550000000000000, decimals: 6 };
+    return { totalSupply: 1250000000000000000, circulatingSupply: 1250000000000000000, decimals: 9 }; // Token-2022 uses 9 decimals
   }
 
   try {
@@ -369,7 +369,7 @@ async function fetchTokenSupply(apiKey: string | undefined, supabase: SupabaseCl
     return { totalSupply, circulatingSupply, decimals };
   } catch (error) {
     console.error('Error fetching token supply:', error);
-    return { totalSupply: 1000000000000000, circulatingSupply: 550000000000000, decimals: 6 };
+    return { totalSupply: 1250000000000000000, circulatingSupply: 1250000000000000000, decimals: 9 }; // Token-2022 uses 9 decimals
   }
 }
 
@@ -435,7 +435,7 @@ async function fetchHolderData(apiKey: string | undefined, cachedData: UnifiedTo
       const tokenAccounts = result?.token_accounts || [];
       
       for (const acc of tokenAccounts) {
-        const balance = parseInt(acc.amount, 10) / 1e6;
+        const balance = parseInt(acc.amount, 10) / 1e9; // Token-2022 uses 9 decimals
         if (balance > 0) {
           holders.push({ address: acc.owner, balance });
         }
@@ -520,9 +520,9 @@ async function fetchMarketData() {
 
 function getFallbackData(): UnifiedTokenData {
   return {
-    totalSupply: 1000000000000000,
-    circulatingSupply: 550000000000000,
-    decimals: 6,
+    totalSupply: 1250000000000000000, // 1.25B with 9 decimals
+    circulatingSupply: 1250000000000000000,
+    decimals: 9, // Token-2022 interest-bearing uses 9 decimals
     holderCount: 0,
     holderTiers: { shrimp: 0, crab: 0, fish: 0, dolphin: 0, shark: 0, whale: 0, humpback: 0 },
     top10Percentage: 0,

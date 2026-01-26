@@ -187,7 +187,7 @@ serve(async (req) => {
       
       // Add non-zero balance accounts to our list
       for (const acc of tokenAccounts) {
-        const balance = parseInt(acc.amount, 10) / 1e6; // Convert to TRN with 6 decimals
+        const balance = parseInt(acc.amount, 10) / 1e9; // Convert to TRN with 9 decimals (Token-2022)
         if (balance > 0) {
           holders.push({
             address: acc.owner,
