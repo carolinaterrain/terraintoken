@@ -4,7 +4,7 @@
 // CORRECT TRN Token Address - Token-2022 with Interest-Bearing Extension
 export const TRN_MINT_ADDRESS = "Dm7FAcF4kzVgsrn6VPEp2C5bN3tGPkydpWaR26wtDR8m";
 export const TRN_TREASURY_WALLET = "H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu";
-export const TRN_DECIMALS = 6; // Token-2022 tokens use 6 decimals
+export const TRN_DECIMALS = 9; // Token-2022 interest-bearing token uses 9 decimals
 
 // Whale tiers for purchase tracking
 export const WHALE_TIERS = {

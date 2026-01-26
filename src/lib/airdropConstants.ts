@@ -16,8 +16,8 @@ export const TOKEN_2022_PROGRAM_ID = "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuE
 // Batch size for transfers (Solana tx size limits)
 export const BATCH_SIZE = 10;
 
-// Token decimals for TRN
-export const TRN_DECIMALS = 6;
+// Token decimals for TRN (Token-2022 uses 9 decimals)
+export const TRN_DECIMALS = 9;
 
 // ===== SAFETY FILTER: Blocked Addresses =====
 // These addresses should NEVER receive airdrops

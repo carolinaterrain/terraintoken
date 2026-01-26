@@ -4,10 +4,10 @@
  */
 
 import { supabase } from "@/integrations/supabase/client";
-import { TRN_MINT_ADDRESS, ADMIN_WALLET, TRN_DECIMALS } from "@/lib/airdropConstants";
+import { TRN_MINT_ADDRESS, ADMIN_WALLET, TRN_DECIMALS, TRN_APY_RATE } from "@/lib/airdropConstants";
 
 // Re-export for backwards compatibility
-export { TRN_MINT_ADDRESS, TRN_DECIMALS };
+export { TRN_MINT_ADDRESS, TRN_DECIMALS, TRN_APY_RATE };
 export const TRN_TREASURY_WALLET = ADMIN_WALLET;
 export const MAX_SUPPLY = 1_000_000_000;
 
