@@ -163,8 +163,8 @@ export const BurnTracker = memo(({ burns, loading, isFallback }: BurnTrackerProp
         {(!burns?.recent_burns || burns.recent_burns.length === 0) && (
           <div className="text-center py-8 text-muted-foreground">
             <Flame className="h-12 w-12 mx-auto mb-2 opacity-50" />
-            <p>No burn events recorded yet</p>
-            <p className="text-sm">Burns will appear here once processing begins</p>
+            <p>No on-chain burns recorded yet</p>
+            <p className="text-sm">Burns will appear when real transactions occur</p>
           </div>
         )}
       </CardContent>

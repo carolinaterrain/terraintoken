@@ -8,25 +8,36 @@ import {
   Activity,
   TrendingUp,
   Clock,
-  CheckCircle2,
-  DollarSign
+  DollarSign,
+  AlertCircle
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useTokenData } from "@/providers/TokenDataProvider";
 import { cn } from "@/lib/utils";
-import { Skeleton } from "@/components/ui/skeleton";
+import { supabase } from "@/integrations/supabase/client";
+import { formatDistanceToNow } from "date-fns";
 
-interface BurnEvent {
+interface RealBurnEvent {
   id: string;
-  amount: number;
-  source: string;
-  timestamp: Date;
+  burn_amount: number;
+  burn_source: string;
+  created_at: string;
+  is_test_data: boolean;
+}
+
+interface RealActivityEvent {
+  id: string;
+  activity_type: string;
+  message: string;
+  created_at: string;
 }
 
 export function LiveIndustrialDashboard() {
   const { holderCount, stats, supply, isLoading, dataSource } = useTokenData();
-  const [burnEvents, setBurnEvents] = useState<BurnEvent[]>([]);
-  const [showBurnAnimation, setShowBurnAnimation] = useState(false);
+  const [realBurns, setRealBurns] = useState<RealBurnEvent[]>([]);
+  const [realActivities, setRealActivities] = useState<RealActivityEvent[]>([]);
+  const [burnsLoading, setBurnsLoading] = useState(true);
+  const [activitiesLoading, setActivitiesLoading] = useState(true);
 
   // Live data
   const holders = holderCount?.holderCount || 0;
@@ -34,31 +45,98 @@ export function LiveIndustrialDashboard() {
   const volume = stats?.volume24h || "$0";
   const priceChange = stats?.change24h || 0;
 
-  // Simulate burn events for demo
+  // Fetch REAL burn events from database (excluding test data)
   useEffect(() => {
-    const interval = setInterval(() => {
-      const sources = [
-        "Inspection Audit Completed",
-        "Survey Data Verified",
-        "Training Module Completed",
-        "Compliance Report Filed"
-      ];
-      
-      const newEvent: BurnEvent = {
-        id: crypto.randomUUID(),
-        amount: Math.floor(Math.random() * 500) + 100,
-        source: sources[Math.floor(Math.random() * sources.length)],
-        timestamp: new Date()
-      };
+    const fetchRealBurns = async () => {
+      setBurnsLoading(true);
+      const { data, error } = await supabase
+        .from('token_burns')
+        .select('id, burn_amount, burn_source, created_at, is_test_data')
+        .eq('is_test_data', false) // Only real burns
+        .order('created_at', { ascending: false })
+        .limit(5);
 
-      setBurnEvents(prev => [newEvent, ...prev.slice(0, 4)]);
-      setShowBurnAnimation(true);
-      
-      setTimeout(() => setShowBurnAnimation(false), 2000);
-    }, 15000); // Every 15 seconds
+      if (!error && data) {
+        setRealBurns(data);
+      }
+      setBurnsLoading(false);
+    };
 
-    return () => clearInterval(interval);
+    fetchRealBurns();
+
+    // Subscribe to real-time updates for new REAL burns
+    const channel = supabase
+      .channel('real_burns')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'token_burns',
+          filter: 'is_test_data=eq.false'
+        },
+        (payload) => {
+          const newBurn = payload.new as RealBurnEvent;
+          setRealBurns(prev => [newBurn, ...prev.slice(0, 4)]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      channel.unsubscribe();
+    };
   }, []);
+
+  // Fetch REAL activity events from database
+  useEffect(() => {
+    const fetchRealActivities = async () => {
+      setActivitiesLoading(true);
+      const { data, error } = await supabase
+        .from('activity_notifications')
+        .select('id, activity_type, message, created_at')
+        .order('created_at', { ascending: false })
+        .limit(4);
+
+      if (!error && data) {
+        setRealActivities(data);
+      }
+      setActivitiesLoading(false);
+    };
+
+    fetchRealActivities();
+
+    // Subscribe to real-time updates
+    const channel = supabase
+      .channel('real_activities')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'activity_notifications'
+        },
+        (payload) => {
+          const newActivity = payload.new as RealActivityEvent;
+          setRealActivities(prev => [newActivity, ...prev.slice(0, 3)]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      channel.unsubscribe();
+    };
+  }, []);
+
+  const getBurnSourceLabel = (source: string) => {
+    const labels: Record<string, string> = {
+      energy_purchase: 'Energy Purchase',
+      marketplace_fee: 'Marketplace Fee',
+      prediction_stake: 'Prediction Stake',
+      mystery_box: 'Mystery Box',
+      buyback: 'Treasury Buyback',
+    };
+    return labels[source] || source;
+  };
 
   return (
     <section className="py-24 bg-gradient-to-b from-slate-950 to-background relative">
@@ -102,7 +180,6 @@ export function LiveIndustrialDashboard() {
             value={isLoading ? null : volume}
             change="DexScreener"
             color="text-orange-500"
-            highlight={showBurnAnimation}
             isLoading={isLoading}
           />
           <MetricCard
@@ -115,25 +192,31 @@ export function LiveIndustrialDashboard() {
           />
         </div>
 
-        {/* Live Burn Tracker */}
+        {/* Live Burn Tracker - REAL DATA ONLY */}
         <div className="grid lg:grid-cols-2 gap-6">
           <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 backdrop-blur-sm">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-semibold flex items-center gap-2">
                 <Flame className="h-5 w-5 text-orange-500" />
-                Live Burn Tracker
+                Burn Tracker
               </h3>
               <Badge variant="outline" className="font-mono text-xs">
-                Usage-Linked
+                On-Chain Only
               </Badge>
             </div>
 
             <div className="space-y-3">
-              <AnimatePresence mode="popLayout">
-                {burnEvents.length > 0 ? (
-                  burnEvents.map((event) => (
+              {burnsLoading ? (
+                <div className="space-y-3">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="h-16 bg-slate-800/50 rounded-lg animate-pulse" />
+                  ))}
+                </div>
+              ) : realBurns.length > 0 ? (
+                <AnimatePresence mode="popLayout">
+                  {realBurns.map((burn) => (
                     <motion.div
-                      key={event.id}
+                      key={burn.id}
                       initial={{ opacity: 0, y: -20, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -148,95 +231,70 @@ export function LiveIndustrialDashboard() {
                           <Flame className="h-4 w-4 text-orange-500" />
                         </div>
                         <div>
-                          <p className="text-sm font-medium">{event.source}</p>
+                          <p className="text-sm font-medium">{getBurnSourceLabel(burn.burn_source)}</p>
                           <p className="text-xs text-muted-foreground font-mono">
-                            {event.timestamp.toLocaleTimeString()}
+                            {formatDistanceToNow(new Date(burn.created_at), { addSuffix: true })}
                           </p>
                         </div>
                       </div>
                       <div className="text-right">
                         <p className="text-sm font-bold text-orange-500 font-mono">
-                          -{event.amount.toLocaleString()} TRN
+                          -{burn.burn_amount.toLocaleString()} TRN
                         </p>
                       </div>
                     </motion.div>
-                  ))
-                ) : (
-                  <div className="text-center py-8 text-muted-foreground font-mono text-sm">
-                    Waiting for burn events...
-                  </div>
-                )}
-              </AnimatePresence>
+                  ))}
+                </AnimatePresence>
+              ) : (
+                <div className="text-center py-8 text-muted-foreground">
+                  <AlertCircle className="h-8 w-8 mx-auto mb-3 opacity-50" />
+                  <p className="font-mono text-sm">No on-chain burns recorded yet</p>
+                  <p className="text-xs mt-1">Burns will appear when real transactions occur</p>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Network activity */}
+          {/* Network Activity - REAL DATA ONLY */}
           <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 backdrop-blur-sm">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-semibold flex items-center gap-2">
                 <Activity className="h-5 w-5 text-safety-green" />
                 Network Activity
               </h3>
-              <div className="flex items-center gap-1 text-safety-green text-xs font-mono">
-                <span className="w-2 h-2 rounded-full bg-safety-green animate-pulse" />
-                Live
-              </div>
+              <Badge variant="outline" className="font-mono text-xs">
+                Database Events
+              </Badge>
             </div>
 
             <div className="space-y-4">
-              <ActivityItem
-                icon={<CheckCircle2 className="h-4 w-4 text-safety-green" />}
-                title="Survey Verification"
-                subtitle="Charlotte Metro Region"
-                time="2 min ago"
-                badge="Surveyor Class"
-              />
-              <ActivityItem
-                icon={<Hexagon className="h-4 w-4 text-solana-purple" />}
-                title="New Hex Claim"
-                subtitle="H3 Index: 8644b1a2fffffff"
-                time="5 min ago"
-                badge="Scout Class"
-              />
-              <ActivityItem
-                icon={<Database className="h-4 w-4 text-safety-green" />}
-                title="Point Cloud Upload"
-                subtitle="342MB LAS file processed"
-                time="8 min ago"
-                badge="Verified"
-              />
-              <ActivityItem
-                icon={<TrendingUp className="h-4 w-4 text-orange-500" />}
-                title="Bounty Completed"
-                subtitle="Waxhaw drainage assessment"
-                time="12 min ago"
-                badge="+1,500 TRN"
-              />
+              {activitiesLoading ? (
+                <div className="space-y-3">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="h-16 bg-slate-800/50 rounded-lg animate-pulse" />
+                  ))}
+                </div>
+              ) : realActivities.length > 0 ? (
+                realActivities.map((activity) => (
+                  <ActivityItem
+                    key={activity.id}
+                    icon={<Activity className="h-4 w-4 text-safety-green" />}
+                    title={activity.activity_type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    subtitle={activity.message}
+                    time={formatDistanceToNow(new Date(activity.created_at), { addSuffix: true })}
+                  />
+                ))
+              ) : (
+                <div className="text-center py-8 text-muted-foreground">
+                  <Activity className="h-8 w-8 mx-auto mb-3 opacity-50" />
+                  <p className="font-mono text-sm">No activity recorded yet</p>
+                  <p className="text-xs mt-1">Events will appear as the network grows</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
-
-      {/* Burn animation overlay */}
-      <AnimatePresence>
-        {showBurnAnimation && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center"
-          >
-            <motion.div
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1.5, opacity: [0, 1, 0] }}
-              transition={{ duration: 1.5 }}
-              className="w-32 h-32"
-            >
-              <Flame className="w-full h-full text-orange-500 drop-shadow-[0_0_30px_rgba(249,115,22,0.8)]" />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }
@@ -247,26 +305,21 @@ function MetricCard({
   value,
   change,
   color,
-  highlight,
   isLoading
 }: {
   icon: React.ReactNode;
   label: string;
-  value: string;
+  value: string | null;
   change: string;
   color: string;
-  highlight?: boolean;
   isLoading?: boolean;
 }) {
   return (
-    <motion.div
+    <div
       className={cn(
         "bg-slate-900/50 border rounded-xl p-5 backdrop-blur-sm transition-all duration-300",
-        highlight 
-          ? "border-orange-500 shadow-lg shadow-orange-500/20" 
-          : "border-slate-800"
+        "border-slate-800"
       )}
-      animate={highlight ? { scale: [1, 1.02, 1] } : {}}
     >
       <div className="flex items-center justify-between mb-3">
         <div className={cn("p-2 rounded-lg bg-slate-800/50", color)}>
@@ -284,7 +337,7 @@ function MetricCard({
         )}
         <p className="text-xs text-muted-foreground uppercase tracking-wider mt-1">{label}</p>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -292,14 +345,12 @@ function ActivityItem({
   icon,
   title,
   subtitle,
-  time,
-  badge
+  time
 }: {
   icon: React.ReactNode;
   title: string;
   subtitle: string;
   time: string;
-  badge: string;
 }) {
   return (
     <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-colors">
@@ -311,9 +362,6 @@ function ActivityItem({
         <p className="text-xs text-muted-foreground font-mono truncate">{subtitle}</p>
       </div>
       <div className="text-right shrink-0">
-        <Badge variant="secondary" className="text-xs font-mono mb-1">
-          {badge}
-        </Badge>
         <p className="text-xs text-muted-foreground flex items-center gap-1">
           <Clock className="h-3 w-3" />
           {time}
