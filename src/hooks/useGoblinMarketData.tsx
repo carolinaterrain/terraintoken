@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
 
 interface TokenStats {
   priceUsd: string;
@@ -20,7 +21,6 @@ interface PriceDataPoint {
 }
 
 const DEXSCREENER_API = "https://api.dexscreener.com/latest/dex/tokens";
-const TRN_TOKEN_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
 
 export function useGoblinMarketData() {
   return useQuery({
@@ -28,7 +28,7 @@ export function useGoblinMarketData() {
     queryFn: async () => {
       try {
         // Use tokens endpoint which returns all pairs for a token
-        const response = await fetch(`${DEXSCREENER_API}/${TRN_TOKEN_ADDRESS}`);
+        const response = await fetch(`${DEXSCREENER_API}/${TRN_MINT_ADDRESS}`);
         
         if (!response.ok) {
           console.error("DexScreener API error:", response.status);

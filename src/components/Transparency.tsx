@@ -6,11 +6,12 @@ import { useToast } from "@/hooks/use-toast";
 import { useTokenData } from "@/providers/TokenDataProvider";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DataFreshnessBadge } from "@/components/ui/data-freshness-badge";
+import { TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
 
 const Transparency = () => {
   const { toast } = useToast();
   const { supply, isLoading, dataSource, lastUpdated } = useTokenData();
-  const contractAddress = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+  const contractAddress = TRN_MINT_ADDRESS;
 
   const copyToClipboard = async (text: string, label: string) => {
     try {

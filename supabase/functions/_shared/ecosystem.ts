@@ -242,7 +242,7 @@ export function createWalletVerificationMessage(nonce: string, walletAddress: st
   return `Terrain Token Ecosystem\n\nSign this message to verify wallet ownership.\n\nWallet: ${walletAddress}\nNonce: ${nonce}\n\nThis signature does not authorize any transactions.`;
 }
 
-// TRN Token constants - CORRECT ADDRESS
-export const TRN_MINT_ADDRESS = '2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump';
-export const TRN_DECIMALS = 6; // pump.fun tokens use 6 decimals
+// TRN Token constants - CORRECT ADDRESS (Token-2022 Interest-Bearing)
+export const TRN_MINT_ADDRESS = 'Dm7FAcF4kzVgsrn6VPEp2C5bN3tGPkydpWaR26wtDR8m';
+export const TRN_DECIMALS = 6; // Token-2022 tokens use 6 decimals
 export const TRN_TREASURY_WALLET = Deno.env.get('TREASURY_WALLET_ADDRESS') || 'H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu';

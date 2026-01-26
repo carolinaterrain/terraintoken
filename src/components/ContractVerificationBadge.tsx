@@ -1,5 +1,6 @@
 import { CheckCircle } from "lucide-react";
 import { Button } from "./ui/button";
+import { TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
 
 const ContractVerificationBadge = () => {
   return (
@@ -10,7 +11,7 @@ const ContractVerificationBadge = () => {
       asChild
     >
       <a
-        href="https://solscan.io/token/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
+        href={`https://solscan.io/token/${TRN_MINT_ADDRESS}`}
         target="_blank"
         rel="noopener noreferrer"
       >

@@ -12,8 +12,9 @@ import { useFeatureAnalytics } from "@/hooks/useFeatureAnalytics";
 import { emitTerrainTokenEvent } from "@/lib/eventEmitter";
 import { getSessionId } from "@/lib/trackingUtils";
 import { setLinkedWallet } from "@/hooks/useAnalytics";
+import { TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
 
-const TRN_MINT = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+const TRN_MINT = TRN_MINT_ADDRESS;
 const IS_DEV = import.meta.env.DEV;
 
 export const WalletConnect = () => {

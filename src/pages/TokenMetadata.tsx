@@ -7,11 +7,12 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import ScrollProgress from "@/components/ScrollProgress";
 import BackToHome from "@/components/BackToHome";
+import { TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
 
 const TokenMetadata = () => {
   const { toast } = useToast();
 
-  const contractAddress = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+  const contractAddress = TRN_MINT_ADDRESS;
   const metadataUri = "https://terrainvision-ai.com/token-metadata.json";
 
   const copyToClipboard = (text: string, label: string) => {

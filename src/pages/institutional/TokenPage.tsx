@@ -17,8 +17,9 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
 
-const TRN_CONTRACT = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+const TRN_CONTRACT = TRN_MINT_ADDRESS;
 
 const utilities = [
   {

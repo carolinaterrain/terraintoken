@@ -1,4 +1,5 @@
 // API helper functions for external services
+import { TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
 
 export interface TokenStats {
   marketCap: string;
@@ -16,7 +17,7 @@ export interface MemeTokenStats {
   commentary: string;
 }
 
-const TRN_CONTRACT = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+const TRN_CONTRACT = TRN_MINT_ADDRESS;
 
 // Fetch TRN token stats from DexScreener
 export async function fetchTRNStats(): Promise<TokenStats | null> {

@@ -6,10 +6,10 @@ import { Button } from '@/components/ui/button';
 import { differenceInDays, format } from 'date-fns';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { TRN_MINT_ADDRESS, ADMIN_WALLET } from '@/lib/airdropConstants';
 
-// Correct TRN token address (from pump.fun)
-const TRN_MINT_ADDRESS = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
-const TRN_TREASURY_WALLET = "H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu";
+// Re-export for component usage
+const TRN_TREASURY_WALLET = ADMIN_WALLET;
 
 // Constraint verification status
 type VerificationStatus = 'verified' | 'unverified' | 'loading' | 'error';

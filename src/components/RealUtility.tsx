@@ -2,6 +2,7 @@ import { Coins, ArrowRight, Sparkles } from "lucide-react";
 import { GlassCard } from "./ui/glass-card";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
+import { TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
 
 const RealUtility = () => {
   const navigate = useNavigate();
@@ -107,7 +108,7 @@ const RealUtility = () => {
             <Button
               onClick={() =>
                 window.open(
-                  "https://raydium.io/swap/?inputMint=sol&outputMint=2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump",
+                  `https://raydium.io/swap/?inputMint=sol&outputMint=${TRN_MINT_ADDRESS}`,
                   "_blank"
                 )
               }

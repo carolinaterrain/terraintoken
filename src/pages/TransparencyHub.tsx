@@ -14,6 +14,7 @@ import { EcosystemImpactCard } from "@/components/ecosystem/EcosystemImpactCard"
 import { MonthlyReportViewer } from "@/components/ecosystem/MonthlyReportViewer";
 import { PoweredByTerrainVision } from "@/components/ecosystem/PoweredByTerrainVision";
 import { ConstraintProof } from "@/components/ecosystem/ConstraintProof";
+import { TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
 
 // Data source badge component
 const DataBadge = ({ type }: { type: 'live' | 'verified' | 'coming-soon' }) => {
@@ -288,7 +289,7 @@ const TransparencyHub = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" variant="outline" className="border-primary" asChild>
-                  <a href="https://solscan.io/token/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump" target="_blank" rel="noopener noreferrer">
+                  <a href={`https://solscan.io/token/${TRN_MINT_ADDRESS}`} target="_blank" rel="noopener noreferrer">
                     View TRN on Solscan
                     <ExternalLink className="ml-2 h-5 w-5" />
                   </a>
