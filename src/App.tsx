@@ -34,6 +34,7 @@ const PressPage = lazy(() => import("./pages/institutional/PressPage"));
 const Ecosystem = lazy(() => import("./pages/Ecosystem"));
 const TransparencyHub = lazy(() => import("./pages/TransparencyHub"));
 const GoblinMarket = lazy(() => import("./pages/GoblinMarket"));
+const TRNDashboard = lazy(() => import("./pages/TRNDashboard"));
 const Team = lazy(() => import("./pages/Team"));
 const Investors = lazy(() => import("./pages/Investors"));
 const Updates = lazy(() => import("./pages/Updates"));
@@ -107,6 +108,7 @@ const AppContent = () => {
           <Route path="/ecosystem" element={<Ecosystem />} />
           <Route path="/transparency" element={<TransparencyHub />} />
           <Route path="/market" element={<GoblinMarket />} />
+          <Route path="/dashboard" element={<TRNDashboard />} />
           <Route path="/team" element={<Team />} />
           <Route path="/investors" element={<Investors />} />
           <Route path="/updates" element={<Updates />} />
