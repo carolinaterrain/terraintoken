@@ -398,11 +398,15 @@ export async function burnTRN(
 /**
  * Get total burned amount from database
  */
+/**
+ * Get total burned amount from database (REAL burns only, excludes test data)
+ */
 export async function getTotalBurned(): Promise<number> {
   try {
     const { data, error } = await supabase
       .from('token_burns')
-      .select('burn_amount');
+      .select('burn_amount, is_test_data')
+      .eq('is_test_data', false); // Only count REAL burns
     
     if (error) {
       console.error('[getTotalBurned] Error:', error);

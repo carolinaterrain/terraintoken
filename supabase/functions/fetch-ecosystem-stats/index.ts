@@ -239,20 +239,20 @@ async function getFallbackData(mode: string) {
       .eq('id', 'ecosystem_cache')
       .single();
 
-    // Get burn stats from local token_burns table
+    // Get burn stats from local token_burns table - REAL DATA ONLY
     const { data: burns } = await supabase
       .from('token_burns')
       .select('*')
-      .eq('status', 'confirmed')
-      .order('burned_at', { ascending: false })
+      .eq('is_test_data', false) // Only real burns
+      .order('created_at', { ascending: false })
       .limit(10);
 
     const { data: burnTotal } = await supabase
       .from('token_burns')
-      .select('amount')
-      .eq('status', 'confirmed');
+      .select('burn_amount')
+      .eq('is_test_data', false); // Only real burns
 
-    const totalBurned = burnTotal?.reduce((sum, b) => sum + (b.amount || 0), 0) || 0;
+    const totalBurned = burnTotal?.reduce((sum, b) => sum + (b.burn_amount || 0), 0) || 0;
 
     // Get rewards stats from local ledger
     const { data: rewards } = await supabase
@@ -282,11 +282,11 @@ async function getFallbackData(mode: string) {
         total_burned: totalBurned,
         burn_count: burns?.length || 0,
         recent_burns: burns?.map(b => ({
-          amount: b.amount,
-          burn_type: b.burn_type || 'unknown',
-          tx_signature: b.tx_signature,
-          solscan_url: b.tx_signature ? `https://solscan.io/tx/${b.tx_signature}` : null,
-          confirmed_at: b.burned_at,
+          amount: b.burn_amount,
+          burn_type: b.burn_source || 'unknown',
+          tx_signature: b.transaction_signature,
+          solscan_url: b.transaction_signature ? `https://solscan.io/tx/${b.transaction_signature}` : null,
+          confirmed_at: b.created_at,
         })) || [],
       },
       rewardStats: {
