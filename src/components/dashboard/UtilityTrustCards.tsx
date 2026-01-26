@@ -8,7 +8,7 @@ const utilityCards = [
   {
     id: "revenue",
     icon: DollarSign,
-    title: "$2M+ Annual Revenue",
+    title: "$1M+ Annual Revenue",
     subtitle: "Real-World Backing",
     description: "Backed by Carolina Terrain's drainage operations across North Carolina. Every service generates ecosystem value.",
     features: [
