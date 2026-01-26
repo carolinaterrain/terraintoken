@@ -3,7 +3,7 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { AlertCircle, CheckCircle, Clock, Database, Zap, TrendingUp } from "lucide-react";
+import { AlertCircle, CheckCircle, Clock, Database, Zap } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 export const CodeHealthTab = () => {
@@ -53,12 +53,11 @@ export const CodeHealthTab = () => {
 
   const isLiveData = dbHealth?.latestSnapshot?.is_live_data ?? false;
 
-  // Mock code metrics (in production, these would come from build analysis)
-  const codeMetrics = {
-    bundleSize: '2.4 MB',
-    totalComponents: 147,
-    unusedComponents: 0,
-    testCoverage: 'N/A',
+  // Code metrics - showing real database stats, not mock build analysis
+  const realMetrics = {
+    bundleSize: 'N/A', // Would require build-time analysis
+    totalDatabaseTables: 5, // From the query above
+    testCoverage: 'N/A', // Would require CI integration
   };
 
   return (
@@ -67,20 +66,22 @@ export const CodeHealthTab = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <GlassCard className="p-6">
           <div className="flex items-center justify-between mb-2">
-            <div className="text-sm text-muted-foreground">Bundle Size</div>
-            <TrendingUp className="w-4 h-4 text-primary" />
+            <div className="text-sm text-muted-foreground">Database Tables</div>
+            <Database className="w-4 h-4 text-primary" />
           </div>
-          <div className="text-3xl font-bold text-foreground">{codeMetrics.bundleSize}</div>
-          <div className="text-xs text-muted-foreground mt-1">Production build</div>
+          <div className="text-3xl font-bold text-foreground">{realMetrics.totalDatabaseTables}</div>
+          <div className="text-xs text-muted-foreground mt-1">Core data tables tracked</div>
         </GlassCard>
 
         <GlassCard className="p-6">
           <div className="flex items-center justify-between mb-2">
-            <div className="text-sm text-muted-foreground">Components</div>
+            <div className="text-sm text-muted-foreground">Total Records</div>
             <Zap className="w-4 h-4 text-primary" />
           </div>
-          <div className="text-3xl font-bold text-foreground">{codeMetrics.totalComponents}</div>
-          <div className="text-xs text-success mt-1">✓ {codeMetrics.unusedComponents} unused</div>
+          <div className="text-3xl font-bold text-foreground">
+            {(dbHealth?.marketplaceItems || 0) + (dbHealth?.mysteryBoxes || 0) + (dbHealth?.tokenBurns || 0) + (dbHealth?.trnPurchases || 0)}
+          </div>
+          <div className="text-xs text-muted-foreground mt-1">Across all tracked tables</div>
         </GlassCard>
 
         <GlassCard className="p-6">
