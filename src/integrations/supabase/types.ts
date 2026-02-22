@@ -3644,6 +3644,45 @@ export type Database = {
         }
         Relationships: []
       }
+      meme_submissions_public: {
+        Row: {
+          caption: string | null
+          contest_date: string | null
+          created_at: string | null
+          engagement_score: number | null
+          id: string | null
+          image_url: string | null
+          placement: number | null
+          prize: string | null
+          status: string | null
+          x_post_url: string | null
+        }
+        Insert: {
+          caption?: string | null
+          contest_date?: string | null
+          created_at?: string | null
+          engagement_score?: number | null
+          id?: string | null
+          image_url?: string | null
+          placement?: number | null
+          prize?: string | null
+          status?: string | null
+          x_post_url?: string | null
+        }
+        Update: {
+          caption?: string | null
+          contest_date?: string | null
+          created_at?: string | null
+          engagement_score?: number | null
+          id?: string | null
+          image_url?: string | null
+          placement?: number | null
+          prize?: string | null
+          status?: string | null
+          x_post_url?: string | null
+        }
+        Relationships: []
+      }
       prediction_leaderboard: {
         Row: {
           accuracy_percentage: number | null
