@@ -30,7 +30,7 @@ const PressKit = () => {
     },
     { label: "Contract Address", value: "2L1x...pump" },
     { label: "Launch Date", value: "Mid-2025" },
-    { label: "Launch Platform", value: "Pump.fun (Fair Launch)" },
+    { label: "Launch Platform", value: "Fair Launch (community)" },
     { label: "Backing Company", value: "Carolina Terrain LLC" },
     { label: "Company Revenue", value: "Established" },
     { label: "License", value: "NC CL.1872" }
@@ -190,7 +190,7 @@ const PressKit = () => {
 
                 <p className="font-bold text-foreground mt-6">Long Version (100 words):</p>
                 <p className="italic bg-background/30 p-4 rounded-lg">
-                  "Terrain Token (TRN) launched in 2025 as a community-driven utility token with a unique twist: it's backed by Carolina Terrain LLC, a North Carolina-based landscaping and drainage company with established revenue streams. Unlike typical meme coins built on speculation, TRN is anchored to real-world services and expertise. The project integrates blockchain technology with traditional landscaping through TerrainVision AI, an analyze-to-earn platform where users upload yard photos and receive TRN rewards. With transparent tokenomics and a commitment to community governance, TRN represents a new category of data contribution tokens."
+                  "Terrain Token (TRN) launched in 2025 as a community-driven utility token with a unique twist: it's backed by Carolina Terrain LLC, a North Carolina-based landscaping and drainage company with established revenue streams. Unlike typical community tokens built on speculation, TRN is anchored to real-world services and expertise. The project integrates blockchain technology with traditional landscaping through TerrainVision AI, an analyze-to-earn platform where users contribute verified field data and earn TRN for verified actions. With transparent tokenomics and a commitment to community governance, TRN represents a new category of data contribution tokens."
                 </p>
               </div>
             </GlassCard>
