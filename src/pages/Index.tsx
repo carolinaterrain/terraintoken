@@ -11,6 +11,8 @@ const DePINFlywheel = lazy(() => import("@/components/industrial/DePINFlywheel")
 const LiveIndustrialDashboard = lazy(() => import("@/components/industrial/LiveIndustrialDashboard"));
 const H3BountyMap = lazy(() => import("@/components/industrial/H3BountyMap"));
 const IndustrialVerification = lazy(() => import("@/components/industrial/IndustrialVerification"));
+const WhatsLiveToday = lazy(() => import("@/components/WhatsLiveToday"));
+const EcosystemFlywheel = lazy(() => import("@/components/EcosystemFlywheel"));
 const Footer = lazy(() => import("@/components/Footer"));
 
 const SectionSkeleton = () => (
@@ -49,6 +51,12 @@ const Index = () => {
         </Suspense>
         <Suspense fallback={<SectionSkeleton />}>
           <IndustrialVerification />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton />}>
+          <WhatsLiveToday />
+        </Suspense>
+        <Suspense fallback={<SectionSkeleton />}>
+          <EcosystemFlywheel />
         </Suspense>
       </main>
 

@@ -23,7 +23,7 @@ export const TRN_DECIMALS = 9;
 // These addresses should NEVER receive airdrops
 
 export const BLOCKED_ADDRESSES = new Set([
-  // Pump.fun Bonding Curve (Liquidity Pool)
+  // Bonding Curve LP
   "7XGAV46ChZ3n5hhMKYgr9gqNy3YeRKHeaoy54YXy6HNG",
   
   // Solana System Programs
