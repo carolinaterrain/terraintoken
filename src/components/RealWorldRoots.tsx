@@ -16,10 +16,10 @@ const RealWorldRoots = () => {
 
   const videoCaptions = [
     "🎬 Behold! The official Terrain Token goblin doing its LEGENDARY victory dance over a French drain! This is what peak performance looks like! ⛏️💚",
-    "When your meme coin mascot has more moves than most crypto influencers 🕺✨ (And it's backed by actual drainage contractors!)",
+    "When your token mascot has more moves than most crypto influencers 🕺✨ (And it's backed by actual drainage contractors!)",
     "This goblin dances on certified French drains installed by Carolina Terrain! The vibes are immaculate! 🌧️⛏️",
     "POV: You just realized this dancing goblin represents a token with REAL construction company backing 🤯💚",
-    "The only meme coin where the mascot's victory dance is powered by NDS-certified drainage energy! 🚰✨",
+    "The only community token where the mascot's victory dance is powered by NDS-certified drainage energy! 🚰✨",
   ];
 
   const handleCarolinaTerrainClick = () => {
@@ -90,11 +90,11 @@ const RealWorldRoots = () => {
             🏗️ Built on <span className="text-primary">Solid Ground</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-4">
-            Most meme coins are built on hot air. Terrain Token is built on top of a company 
+            Most community tokens are built on hot air. Terrain Token is built on top of a company 
             that installs French drains with a 700-gallon beast truck and lifetime Unilock warranties.
           </p>
           <p className="text-sm text-primary italic">
-            Born from the ground down — and that ground is NDS-certified, baby! 🌱⛏️💚
+            Proof over Promises — NDS-certified, on-chain verified. 🌱⛏️💚
           </p>
         </div>
 
@@ -374,7 +374,7 @@ const RealWorldRoots = () => {
         <Card className="p-6 mb-12 bg-gradient-to-br from-primary/5 to-primary/10 border-primary/30">
           <h3 className="text-xl font-bold mb-3 text-center">🌱 Goblin Fun Fact 🌱</h3>
           <p className="text-muted-foreground text-center">
-            While other meme coins are pumping tweets, Carolina Terrain is pumping... well, actual water. 
+            While other community tokens are pumping tweets, Carolina Terrain is pumping... well, actual water. 
             Out of your yard. With 700 gallons of pressure. The goblin approves. 💚
           </p>
         </Card>
@@ -511,7 +511,7 @@ const RealWorldRoots = () => {
             🌱 THE GOBLIN PROCLAMATION 🌱
           </h3>
           <p className="text-lg text-muted-foreground mb-4">
-            Most meme coins are built on hot air.<br />
+            Most community tokens are built on hot air.<br />
             Terrain Token is built on top of a company that installs French drains with a 700-gallon beast truck 
             and lifetime Unilock warranties.
           </p>
@@ -520,7 +520,7 @@ const RealWorldRoots = () => {
             We're eroding actual water damage for HOAs across North Carolina.
           </p>
           <p className="text-md text-muted-foreground italic">
-            Born from the ground down — and that ground is NDS-certified, baby!!! 🌱⛏️💚
+            Proof over Promises — NDS-certified, on-chain verified. 🌱⛏️💚
           </p>
         </Card>
       </div>

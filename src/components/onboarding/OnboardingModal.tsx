@@ -14,7 +14,7 @@ const steps = [
     id: 'welcome',
     icon: Sparkles,
     title: 'Welcome to Terrain Token',
-    description: 'TRN is the first meme coin backed by real construction equipment and active landscaping revenue.',
+    description: 'TRN is the first community token backed by real construction equipment and active landscaping revenue.',
     highlight: "Not just a meme — it's a movement.",
     color: 'from-goblin-gold to-amber-500',
   },
