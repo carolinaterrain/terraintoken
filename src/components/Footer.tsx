@@ -151,10 +151,16 @@ const Footer = () => {
             </Badge>
           </div>
           <p className="text-xs text-muted-foreground text-center mt-4 max-w-4xl mx-auto font-mono">
-            The Terrain Token is a proprietary utility asset within the Terrain Intelligence framework. 
-            Technical operations managed by Carolina Terrain, LLC. TRN is not required to use Terrain services. 
-            Cryptocurrency involves risk. Not financial advice.
+            Operated by <span className="text-foreground">Carolina Terrain LLC · NC License #CL.1872 · Waxhaw, NC</span>.
+            $TRN is not an investment and is not required to use Terrain services. Cryptocurrency involves risk. Not financial advice.
           </p>
+          <div className="mt-3 flex items-start gap-2 max-w-4xl mx-auto p-3 rounded-md border border-amber-500/30 bg-amber-500/5">
+            <AlertTriangle className="h-4 w-4 text-amber-500 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-muted-foreground font-mono">
+              <span className="text-amber-500 font-semibold">Naming collision notice:</span> An unrelated Solana token (Trardun) also trades as "TRN".
+              Always verify the contract address: <span className="text-foreground break-all">{TRN_MINT_ADDRESS}</span>.
+            </p>
+          </div>
         </div>
       </div>
     </footer>
