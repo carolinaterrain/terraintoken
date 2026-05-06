@@ -262,7 +262,7 @@ const Team = () => {
                 <Link to="/whitepaper">Read Our Whitepaper</Link>
               </Button>
               <Button size="lg" variant="outline" className="border-primary" asChild>
-                <a href="https://carolinaterrain.com" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.carolinaterrain.com/" target="_blank" rel="noopener noreferrer">
                   Visit Carolina Terrain
                 </a>
               </Button>

@@ -266,7 +266,7 @@ const Ecosystem = () => {
                 </a>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <a href="https://carolinaterrain.com" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.carolinaterrain.com/" target="_blank" rel="noopener noreferrer">
                   Carolina Terrain <ArrowRight className="ml-2 w-4 h-4" />
                 </a>
               </Button>
