@@ -152,7 +152,7 @@ const Whitepaper = () => {
                 <a
                   href="/Terrain_Token_TRN_Whitepaper.pdf"
                   download
-                  onClick={() => trackWhitepaperDownload?.()}
+                  onClick={() => trackWhitepaperDownload?.('download', 'whitepaper-page')}
                 >
                   <Download className="h-4 w-4 mr-2" /> Download PDF
                 </a>
