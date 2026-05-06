@@ -1,3 +1,15 @@
+/**
+ * ARCHIVED — May 6, 2026
+ *
+ * This component contained stale phase-planning copy that contradicted
+ * the canonical WhatsLiveToday.tsx source of truth. Retired during the
+ * terraintoken.com Phase 1.6 cleanup.
+ *
+ * Do not import. If a forward-looking roadmap surface is needed in the
+ * future, build a new component sourced from /content/roadmap.md (parallel
+ * to the WhatsLiveToday → /content/status.md pattern).
+ */
+
 import { GlassCard } from "@/components/ui/glass-card";
 import { Progress } from "@/components/ui/progress";
 import { Sparkles, Users, Gift, Cpu, Database, Cog, CheckCircle, Clock, TrendingUp, Gamepad2 } from "lucide-react";

@@ -9,7 +9,7 @@ import { InvestorInterestForm } from "@/components/investor/InvestorInterestForm
 import { StickyNavigation } from "@/components/investor/StickyNavigation";
 import { EarlyStageDisclaimer } from "@/components/investor/EarlyStageDisclaimer";
 import { GlassCard } from "@/components/ui/glass-card";
-import Roadmap from "@/components/Roadmap";
+import WhatsLiveToday from "@/components/WhatsLiveToday";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import SmartHeader from "@/components/SmartHeader";
@@ -64,24 +64,9 @@ const Investors = () => {
           <InvestmentTiers />
         </section>
 
-        {/* 6. Roadmap */}
-        <section id="roadmap" className="py-20">
-          <div className="container mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-12"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-chart-2 bg-clip-text text-transparent">
-                Ecosystem Roadmap
-              </h2>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                From utility foundation to terrain intelligence network
-              </p>
-            </motion.div>
-            <Roadmap />
-          </div>
+        {/* 6. Current Operational Status */}
+        <section id="roadmap">
+          <WhatsLiveToday />
         </section>
 
         {/* 7. Trust & Proof */}

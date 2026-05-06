@@ -396,7 +396,7 @@ const RealWorldRoots = () => {
               className="font-display font-semibold"
               asChild
             >
-              <a href="https://carolinaterrain.com" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.carolinaterrain.com/" target="_blank" rel="noopener noreferrer">
                 See Our Work Gallery 🏗️
               </a>
             </Button>
@@ -454,7 +454,7 @@ const RealWorldRoots = () => {
             </ul>
             
             <Button variant="outline" className="w-full" asChild>
-              <a href="https://carolinaterrain.com" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.carolinaterrain.com/" target="_blank" rel="noopener noreferrer">
                 Visit Carolina Terrain
                 <ExternalLink className="ml-2 w-4 h-4" />
               </a>
