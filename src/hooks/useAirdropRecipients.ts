@@ -53,7 +53,7 @@ export function useAirdropRecipients() {
           if (!isSafeAddress(address)) {
             isSafe = false;
             if (address === "7XGAV46ChZ3n5hhMKYgr9gqNy3YeRKHeaoy54YXy6HNG") {
-              filterReason = "Pump.fun Bonding Curve (Liquidity Pool)";
+              filterReason = "Bonding Curve LP";
             } else if (address === ADMIN_WALLET) {
               filterReason = "Admin Wallet (Self)";
             } else {
