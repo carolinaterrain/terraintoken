@@ -143,7 +143,7 @@ export function TRNValuationCard() {
 
       <div className="mt-6 p-4 bg-muted/20 rounded-lg">
         <p className="text-xs text-muted-foreground leading-relaxed">
-          <strong>How this works:</strong> Unlike pure memecoins, TRN is backed by real business assets and revenue.
+          <strong>How this works:</strong> Unlike pure community tokens, TRN is backed by real business assets and revenue.
           This model calculates fair value based on Carolina Terrain's equipment, service income, community growth, and network effects.
           Market price may differ due to speculation, but fundamentals anchor long-term value.
         </p>

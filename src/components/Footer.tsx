@@ -1,13 +1,14 @@
-import { Users, Twitter, Shield, ExternalLink, Check, Copy, Hexagon, Database, Flame, Radio } from "lucide-react";
+import { Users, Twitter, Shield, ExternalLink, Check, Copy, Hexagon, Database, Flame, Radio, AlertTriangle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTokenData } from "@/providers/TokenDataProvider";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { useState } from "react";
+import { TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
 
 const Footer = () => {
-  const contractAddress = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+  const contractAddress = TRN_MINT_ADDRESS;
   const { supply, isLoading } = useTokenData();
   const [copied, setCopied] = useState(false);
 
@@ -55,22 +56,22 @@ const Footer = () => {
             <StatCard 
               icon={<Hexagon className="h-4 w-4 text-primary" />}
               label="Total Supply"
-              value={isLoading ? null : (supply?.formatted?.total && !supply.formatted.total.includes('NaN') ? supply.formatted.total : '1.007B TRN')}
+              value={isLoading ? null : (supply?.formatted?.total && !supply.formatted.total.includes('NaN') ? supply.formatted.total : '1.25B TRN')}
             />
             <StatCard 
               icon={<Database className="h-4 w-4 text-accent" />}
-              label="Circulating"
-              value={isLoading ? null : (supply?.formatted?.circulating && !supply.formatted.circulating.includes('NaN') ? supply.formatted.circulating : '493M TRN')}
+              label="Standard"
+              value="Token-2022"
             />
             <StatCard 
               icon={<Shield className="h-4 w-4 text-primary" />}
-              label="Dev Holdings"
-              value="~1%"
+              label="Native Yield"
+              value="15% APY"
             />
             <StatCard 
               icon={<Flame className="h-4 w-4 text-orange-500" />}
               label="Liquidity"
-              value="Community"
+              value="LP Burned"
             />
           </div>
         </div>
@@ -119,7 +120,7 @@ const Footer = () => {
               <SocialLink href="https://discord.gg/rM8b6V5Ce" icon={<Users className="h-4 w-4" />} label="Discord" />
               <SocialLink href="https://x.com/carolinaterrain" icon={<Twitter className="h-4 w-4" />} label="Twitter" />
               <a
-                href="https://solscan.io/token/2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
+                href={`https://solscan.io/token/${TRN_MINT_ADDRESS}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-colors"
@@ -150,10 +151,16 @@ const Footer = () => {
             </Badge>
           </div>
           <p className="text-xs text-muted-foreground text-center mt-4 max-w-4xl mx-auto font-mono">
-            The Terrain Token is a proprietary utility asset within the Terrain Intelligence framework. 
-            Technical operations managed by Carolina Terrain, LLC. TRN is not required to use Terrain services. 
-            Cryptocurrency involves risk. Not financial advice.
+            Operated by <span className="text-foreground">Carolina Terrain LLC · NC License #CL.1872 · Waxhaw, NC</span>.
+            $TRN is not an investment and is not required to use Terrain services. Cryptocurrency involves risk. Not financial advice.
           </p>
+          <div className="mt-3 flex items-start gap-2 max-w-4xl mx-auto p-3 rounded-md border border-amber-500/30 bg-amber-500/5">
+            <AlertTriangle className="h-4 w-4 text-amber-500 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-muted-foreground font-mono">
+              <span className="text-amber-500 font-semibold">Naming collision notice:</span> An unrelated Solana token (Trardun) also trades as "TRN".
+              Always verify the contract address: <span className="text-foreground break-all">{TRN_MINT_ADDRESS}</span>.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

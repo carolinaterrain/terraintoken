@@ -165,7 +165,7 @@ export function WaitlistModal({ open, onOpenChange, source = "direct" }: Waitlis
               You'll be the first to know about rewards, drops, and exclusive opportunities.
             </p>
             <Button onClick={handleClose} className="w-full">
-              Let's Go! 🚀
+              Join the Waitlist
             </Button>
           </div>
         ) : (

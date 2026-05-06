@@ -247,7 +247,7 @@ const Team = () => {
               Our Mission
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-6">
-              "I started Carolina Terrain to solve drainage problems. I launched Terrain Token to prove that meme coins can be more than speculation—they can be backed by real work, real revenue, and real people."
+              "I started Carolina Terrain to solve drainage problems. I launched Terrain Token to prove that community tokens can be more than speculation—they can be backed by real work, real revenue, and real people."
             </p>
             <p className="text-sm text-primary italic">
               — Alex Purdy, Founder

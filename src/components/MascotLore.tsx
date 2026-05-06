@@ -29,7 +29,7 @@ const MascotLore = () => {
                 Meet <span className="text-primary">Terry the Terrain Goblin</span>
               </h2>
               <p className="font-body text-lg text-muted-foreground leading-relaxed">
-                A certified drainage contractor who discovered that meme coins and French drains have one thing in common: both prevent erosion. While other coins pump hot air, Terry pumps water. And data. And occasionally, vibes. 🌱⛏️
+                A certified drainage contractor who discovered that community tokens and French drains have one thing in common: both prevent erosion. While other coins pump hot air, Terry pumps water. And data. And occasionally, vibes. 🌱⛏️
               </p>
             </div>
           </div>

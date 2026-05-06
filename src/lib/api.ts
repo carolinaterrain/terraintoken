@@ -57,7 +57,7 @@ export async function fetchTRNStats(): Promise<TokenStats | null> {
   }
 }
 
-// Fetch meme coin stats for the terrain report
+// Fetch token stats for the terrain report
 export async function fetchMemeStats(): Promise<MemeTokenStats[]> {
   const memeCoins = [
     { symbol: "BONK", address: "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263", commentary: "Much wow! 🐕" },

@@ -35,7 +35,7 @@ const RealUtility = () => {
             TRN Has <span className="text-primary">Real Value</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Unlike most meme coins, TRN is backed by actual business utility. Redeem for real discounts.
+            Unlike most community tokens, TRN is backed by actual business utility. Redeem for real discounts.
           </p>
         </div>
 
@@ -94,7 +94,7 @@ const RealUtility = () => {
         {/* Bottom CTA */}
         <div className="text-center mt-12 space-y-4">
           <p className="text-muted-foreground">
-            Join the first meme coin with real-world drainage utility
+            Join the first community token with real-world drainage utility
           </p>
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <Button

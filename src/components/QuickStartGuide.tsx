@@ -24,7 +24,7 @@ export const QuickStartGuide = () => {
       bgColor: "bg-blue-500/10",
       borderColor: "border-blue-500/20",
       description: "Transparency over promises",
-      details: "Unlike most meme coins backed by nothing, TRN shows complete financial transparency: real equipment, established business operations, and verified on-chain data. No speculation required."
+      details: "Unlike most community tokens backed by nothing, TRN shows complete financial transparency: real equipment, established business operations, and verified on-chain data. No speculation required."
     },
     {
       icon: Zap,

@@ -49,7 +49,7 @@ const Transparency = () => {
       icon: Lock,
       label: "Liquidity Status",
       value: "Community Pool",
-      description: "Fair launch on Pump.fun",
+      description: "Fair community launch",
       copyable: false,
     },
   ];
@@ -75,7 +75,7 @@ const Transparency = () => {
             No secrets, no rug pulls, no BS. Just straight facts from the goblins.
           </p>
           <p className="font-body text-sm text-primary italic max-w-2xl mx-auto">
-            Unlike other meme coins that imploded (*cough* BEER *cough*), we're putting everything on the table. 
+            Unlike other community tokens that imploded (*cough* BEER *cough*), we're putting everything on the table. 
             This is how you build trust in crypto. 💚
           </p>
         </div>
@@ -194,7 +194,7 @@ const Transparency = () => {
                 💪 Backed by Real Operations
               </h3>
               <p className="text-muted-foreground mb-4">
-                Unlike 99% of meme coins built on speculation alone, TRN is connected to <strong className="text-primary">Carolina Terrain</strong> — 
+                Unlike 99% of community tokens built on speculation alone, TRN is connected to <strong className="text-primary">Carolina Terrain</strong> — 
                 a licensed drainage contractor with <strong className="text-primary">established revenue streams</strong> from real projects.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">

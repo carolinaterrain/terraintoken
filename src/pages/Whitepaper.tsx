@@ -63,7 +63,7 @@ const Whitepaper = () => {
     "Meme-Origin, Real-Backed by licensed NC contractor",
     "Solana-Powered (65k TPS, ~400ms blocks, negligible fees)",
     "Fixed Supply with mint authority removed",
-    "Fair Launch on Pump.fun (no presale/VC)",
+    "Fair Launch on Solana (no presale/VC)",
     "Energy/XP System planned for token utility",
     "Liquidity Locked for community protection",
     "Team tokens locked 1 year + quarterly vesting",
@@ -322,7 +322,7 @@ const Whitepaper = () => {
                 <div className="border-l-4 border-primary pl-6">
                   <h3 className="font-display text-xl font-bold mb-2">Phase 1: Genesis (2025)</h3>
                   <p className="text-muted-foreground">
-                    Fair launch on Pump.fun, community building, website & social presence, transparency reports, initial ecosystem infrastructure deployment.
+                    Fair community launch, community building, website & social presence, transparency reports, initial ecosystem infrastructure deployment.
                   </p>
                 </div>
                 <div className="border-l-4 border-earth-green pl-6">

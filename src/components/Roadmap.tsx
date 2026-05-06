@@ -19,11 +19,11 @@ const phases = [
     phase: "Phase 0",
     title: "Meme",
     icon: Sparkles,
-    description: "Launched as a community-driven meme token on Pump.fun",
+    description: "Launched as a community-driven token via fair launch",
     status: "complete",
     progress: 100,
     statusLabel: "Complete",
-    milestones: ["Fair launch on Pump.fun", "Liquidity established", "Community channels active"]
+    milestones: ["Fair community launch", "Liquidity established", "Community channels active"]
   },
   {
     phase: "Phase 1",

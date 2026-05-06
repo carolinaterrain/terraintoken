@@ -44,7 +44,7 @@ export const BusinessCredentials = () => {
 
   const differentiators = [
     "Real business backing — not just a whitepaper",
-    "Fair launch on Pump.fun — no VC, no presale, no insider allocation",
+    "Fair launch — no VC, no presale, no insider allocation",
     "Liquidity locked — community protection first",
     "TerrainVision AI LIVE — earning real usage today",
     "Verifiable on-chain and off-chain credentials",
