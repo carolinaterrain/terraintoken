@@ -28,7 +28,7 @@ const cards: EcosystemCard[] = [
     stage: "Build",
     product: "Carolina Terrain",
     body: "Licensed drainage contractor moving real dirt and water in North Carolina.",
-    url: "https://carolinaterrain.com",
+    url: "https://www.carolinaterrain.com/",
     icon: Hammer,
   },
 ];

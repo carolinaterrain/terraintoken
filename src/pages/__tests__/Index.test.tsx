@@ -27,8 +27,8 @@ vi.mock('@/components/HowToBuy', () => ({
   default: () => <div data-testid="how-to-buy">How To Buy</div>,
 }));
 
-vi.mock('@/components/Roadmap', () => ({
-  default: () => <div data-testid="roadmap">Roadmap</div>,
+vi.mock('@/components/WhatsLiveToday', () => ({
+  default: () => <div data-testid="whats-live-today">Whats Live Today</div>,
 }));
 
 vi.mock('@/components/MascotLore', () => ({
