@@ -129,6 +129,39 @@ const Tokenomics = () => {
           </Button>
         </div>
 
+        {/* What This Means in Practice — operator-readable explainers */}
+        <div className="mt-16 max-w-4xl mx-auto">
+          <h3 className="font-display text-2xl md:text-3xl font-bold text-center mb-8">
+            What This Means <span className="text-primary">in Practice</span>
+          </h3>
+          <div className="grid md:grid-cols-3 gap-6">
+            <GlassCard className="p-6">
+              <h4 className="font-display text-lg font-bold mb-3 text-primary">Why is supply fixed?</h4>
+              <p className="font-body text-sm text-muted-foreground">
+                The total supply of $TRN is locked at 1,250,000,000. The mint authority is revoked on-chain,
+                which means no more $TRN can ever be created. Every token that will ever exist already exists —
+                no future inflation, no surprise dilution.
+              </p>
+            </GlassCard>
+            <GlassCard className="p-6">
+              <h4 className="font-display text-lg font-bold mb-3 text-primary">How does the 15% yield work?</h4>
+              <p className="font-body text-sm text-muted-foreground">
+                $TRN uses Solana's Token-2022 interest-bearing extension. Yield accrues natively on-chain at the
+                protocol level — not through staking, not through emissions, not through dilution. Holding the
+                token is the action; the rate is encoded in the mint itself.
+              </p>
+            </GlassCard>
+            <GlassCard className="p-6">
+              <h4 className="font-display text-lg font-bold mb-3 text-primary">What does "LP burned" mean?</h4>
+              <p className="font-body text-sm text-muted-foreground">
+                The liquidity pool tokens were destroyed at launch. That means liquidity cannot be withdrawn or
+                rugged by anyone — including the team. The pool is permanently locked into the market, and the
+                burn transaction is verifiable on-chain.
+              </p>
+            </GlassCard>
+          </div>
+        </div>
+
         {/* Interactive Dashboard */}
         <div className="mt-16">
           <TokenomicsDashboard />
