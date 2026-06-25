@@ -125,10 +125,10 @@ export const FinancialHealthScore = () => {
       {/* Explanation */}
       <div className="p-4 rounded-lg bg-muted/50 border border-muted">
         <p className="text-sm text-muted-foreground leading-relaxed">
-          <span className="font-semibold text-foreground">🏆 Financial Strength:</span> Carolina Terrain demonstrates
-          strong financial health across all key metrics. The A+ overall rating reflects exceptional growth, profitability,
-          and operational efficiency. <span className="font-bold text-primary">TRN is backed by a thriving business</span>, 
-          not speculative promises.
+          <span className="font-semibold text-foreground">Operational Strength:</span> Carolina Terrain demonstrates
+          strong operational health across these metrics. <span className="font-bold text-primary">$TRN is tied to an active
+          licensed contracting business</span> — but business performance does not guarantee token value. $TRN is a
+          utility/incentive token, not an investment or security.
         </p>
       </div>
     </Card>

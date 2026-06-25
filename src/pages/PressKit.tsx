@@ -28,11 +28,11 @@ const PressKit = () => {
       label: "Total Supply", 
       value: isLoading ? "..." : supplyData ? `${formatSupply(supplyData.totalSupply, supplyData.decimals)} TRN` : "—"
     },
-    { label: "Contract Address", value: "2L1x...pump" },
+    { label: "Contract Address", value: "Dm7FAc…wtDR8m (Token-2022)" },
     { label: "Launch Date", value: "Mid-2025" },
     { label: "Launch Platform", value: "Fair Launch (community)" },
-    { label: "Backing Company", value: "Carolina Terrain LLC" },
-    { label: "Company Revenue", value: "Established" },
+    { label: "Operating Company", value: "Carolina Terrain LLC" },
+    { label: "Company Status", value: "Active · Licensed" },
     { label: "License", value: "NC CL.1872" }
   ];
 
@@ -185,12 +185,12 @@ const PressKit = () => {
               <div className="space-y-4 text-muted-foreground">
                 <p className="font-bold text-foreground">Short Version (50 words):</p>
                 <p className="italic bg-background/30 p-4 rounded-lg">
-                  "Terrain Token (TRN) is a Solana-based utility token powering platform access and sustainability within the Terrain ecosystem. Backed by Carolina Terrain LLC—a licensed drainage contractor with established revenue streams—TRN bridges blockchain technology and traditional landscaping services through AI-powered terrain analysis."
+                  "Terrain Token (TRN) is a Solana Token-2022 utility/incentive token powering platform access within the Terrain ecosystem. Built by Carolina Terrain LLC — a licensed NC drainage contractor — TRN connects on-chain coordination to traditional landscaping and stormwater work through AI-powered terrain analysis. $TRN is not an investment or security and carries no promise of profit, yield, or return."
                 </p>
 
                 <p className="font-bold text-foreground mt-6">Long Version (100 words):</p>
                 <p className="italic bg-background/30 p-4 rounded-lg">
-                  "Terrain Token (TRN) launched in 2025 as a community-driven utility token with a unique twist: it's backed by Carolina Terrain LLC, a North Carolina-based landscaping and drainage company with established revenue streams. Unlike typical community tokens built on speculation, TRN is anchored to real-world services and expertise. The project integrates blockchain technology with traditional landscaping through TerrainVision AI, an analyze-to-earn platform where users contribute verified field data and earn TRN for verified actions. With transparent tokenomics and a commitment to community governance, TRN represents a new category of data contribution tokens."
+                  "Terrain Token (TRN) launched in 2025 as a community-driven utility/incentive token built by Carolina Terrain LLC, a North Carolina-based licensed landscaping and drainage company. Unlike typical community tokens built on speculation alone, TRN is connected to real-world services and field expertise. The project integrates Solana Token-2022 with traditional landscaping through TerrainVision AI, a contribution platform where users provide verified field data and earn TRN for verified actions. With transparent tokenomics and a commitment to community governance, TRN represents a new category of data-contribution tokens. $TRN is not an investment or security and carries no promise of profit, yield, or return."
                 </p>
               </div>
             </GlassCard>

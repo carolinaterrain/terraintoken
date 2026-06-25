@@ -1,156 +1,87 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { Loader2 } from "lucide-react";
-import { useTokenStats } from "@/hooks/useTokenStats";
-import { getCumulativeEquipmentValue } from "@/lib/equipmentData";
-import { calculateMetrics } from "@/lib/financialData";
+import { Shield, AlertTriangle, ExternalLink, Copy, Check, Flame } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+import { TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
 
-interface ValuationData {
-  monthlyRevenue: number;
-  equipmentValue: number;
-  holderCount: number;
-  waitlistSize: number;
-  circulatingSupply: number;
-  marketPrice: number;
-  isSupplyLive: boolean;
-}
-
+/**
+ * NOTE (compliance, May 2026):
+ * This card previously rendered an "Intrinsic Value Calculator" that derived a
+ * dollar-per-token "fair value" from `annualRevenue * 0.15 + equipment + holders*$50 + waitlist*$10`
+ * and compared it to market price as "Undervalued/Overvalued by N%". That model
+ * implied a return and is incompatible with $TRN's positioning as a utility/incentive
+ * token. The calculator has been removed in its entirety. This component is now a
+ * neutral Token-2022 fact panel and is currently not imported anywhere.
+ */
 export function TRNValuationCard() {
-  const { data: tokenStats } = useTokenStats();
-  
-  const { data: valuation, isLoading } = useQuery({
-    queryKey: ["trn-valuation"],
-    queryFn: async () => {
-      // Fetch real data in parallel
-      const [waitlistResult, snapshotResult, supplyResult] = await Promise.all([
-        supabase.from("terrainscape_waitlist").select("*", { count: "exact", head: true }),
-        supabase.from("holder_snapshots").select("total_holders").order("snapshot_date", { ascending: false }).limit(1).maybeSingle(),
-        supabase.functions.invoke("fetch-token-supply"),
-      ]);
+  const [copied, setCopied] = useState(false);
 
-      // Get real business data
-      const equipmentData = getCumulativeEquipmentValue();
-      const financialData = calculateMetrics();
-      
-      // Use live supply if available, otherwise use fallback
-      const liveSupply = supplyResult.data?.circulatingSupply;
-      const isSupplyLive = !supplyResult.error && liveSupply && !supplyResult.data?.isStale;
-      
-      const data: ValuationData = {
-        monthlyRevenue: financialData.avgMonthlyRevenue,
-        equipmentValue: equipmentData.totalCurrentValue,
-        holderCount: snapshotResult.data?.total_holders || 0,
-        waitlistSize: waitlistResult.count || 0,
-        circulatingSupply: liveSupply || 1000000000, // Fallback to 1B if API fails
-        marketPrice: tokenStats?.priceUsd ? parseFloat(tokenStats.priceUsd.replace(/[^0-9.]/g, '')) : 0,
-        isSupplyLive: !!isSupplyLive,
-      };
-
-      return data;
-    },
-    refetchInterval: 300000, // Refresh every 5 minutes
-  });
-
-  if (isLoading) {
-    return (
-      <Card className="p-6">
-        <div className="flex items-center justify-center h-64">
-          <Loader2 className="w-8 h-8 animate-spin text-goblin-gold" />
-        </div>
-      </Card>
-    );
-  }
-
-  if (!valuation) return null;
-
-  // Calculate fair value
-  const annualizedRevenue = valuation.monthlyRevenue * 12;
-  const revenueValue = annualizedRevenue * 0.15; // 15% revenue multiplier
-  const assetValue = valuation.equipmentValue;
-  const networkValue = valuation.holderCount * 50; // $50 per holder
-  const growthPremium = valuation.waitlistSize * 10; // $10 per waitlist user
-
-  const totalEcosystemValue = revenueValue + assetValue + networkValue + growthPremium;
-  const fairValue = totalEcosystemValue / valuation.circulatingSupply;
-
-  const mispricing = ((fairValue - valuation.marketPrice) / valuation.marketPrice) * 100;
+  const handleCopy = () => {
+    navigator.clipboard.writeText(TRN_MINT_ADDRESS);
+    setCopied(true);
+    toast.success("Contract address copied");
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
-    <Card className="p-6 border-terrain-purple/30">
-      <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-        🔮 TRN Intrinsic Value Calculator
-        {!valuation.isSupplyLive && (
-          <Badge variant="outline" className="text-yellow-500 border-yellow-500/50 text-xs">
-            Estimated Supply
-          </Badge>
-        )}
-      </h3>
-
-      {/* Fair Value vs Market Price */}
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        <div>
-          <div className="text-sm text-muted-foreground">Fair Value (Model)</div>
-          <div className="text-3xl font-bold text-goblin-green">${fairValue.toFixed(8)}</div>
-        </div>
-        <div>
-          <div className="text-sm text-muted-foreground">Market Price</div>
-          <div className="text-3xl font-bold">${valuation.marketPrice.toFixed(8)}</div>
-        </div>
-      </div>
-
-      {/* Mispricing Indicator */}
-      <div className="mb-6">
-        <div className="text-sm text-muted-foreground mb-2">Valuation Gap</div>
-        <Badge
-          variant={mispricing > 0 ? "default" : "destructive"}
-          className={mispricing > 0 ? "bg-goblin-green text-black" : ""}
-        >
-          {mispricing > 0 ? "Undervalued" : "Overvalued"} by {Math.abs(mispricing).toFixed(1)}%
+    <Card className="p-6 border-primary/30">
+      <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+        <h3 className="text-xl font-bold flex items-center gap-2">
+          <Shield className="w-5 h-5 text-primary" />
+          $TRN — Token-2022 Facts
+        </h3>
+        <Badge variant="outline" className="border-amber-500/40 text-amber-500 text-xs">
+          Utility Token · Not an Investment
         </Badge>
       </div>
 
-      {/* Breakdown */}
       <div className="space-y-3 text-sm">
-        <div className="flex justify-between items-center">
-          <span className="text-muted-foreground">Annual Revenue × 15%</span>
-          <span className="font-medium">${revenueValue.toLocaleString()}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-muted-foreground">Equipment Assets</span>
-          <span className="font-medium">${assetValue.toLocaleString()}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-muted-foreground">Network Value ({valuation.holderCount} holders × $50)</span>
-          <span className="font-medium">${networkValue.toLocaleString()}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-muted-foreground">Growth Premium ({valuation.waitlistSize} waitlist × $10)</span>
-          <span className="font-medium">${growthPremium.toLocaleString()}</span>
-        </div>
+        <Row label="Standard" value="Solana Token-2022" />
+        <Row label="Total Supply" value="1,250,000,000 (fixed)" />
+        <Row label="Mint Authority" value="Revoked" />
+        <Row label="Liquidity Pool" value={<span className="inline-flex items-center gap-1"><Flame className="w-3 h-3 text-orange-500" />Burned</span>} />
+        <Row label="Decimals" value="9" />
         <Separator className="my-2" />
-        <div className="flex justify-between items-center font-bold text-base">
-          <span>Total Ecosystem Value</span>
-          <span className="text-goblin-gold">${totalEcosystemValue.toLocaleString()}</span>
-        </div>
-        <div className="flex justify-between items-center text-xs text-muted-foreground">
-          <span>Circulating Supply</span>
-          <span>{(valuation.circulatingSupply / 1000000000).toFixed(3)}B TRN</span>
+        <div>
+          <div className="text-xs text-muted-foreground mb-1 uppercase tracking-wider">Contract Address</div>
+          <button
+            onClick={handleCopy}
+            className="font-mono text-xs text-foreground/80 hover:text-primary transition-colors flex items-center gap-2 break-all text-left w-full"
+            aria-label="Copy contract address"
+          >
+            <span>{TRN_MINT_ADDRESS}</span>
+            {copied ? <Check className="w-3 h-3 text-primary flex-shrink-0" /> : <Copy className="w-3 h-3 opacity-50 flex-shrink-0" />}
+          </button>
+          <a
+            href={`https://solscan.io/token/${TRN_MINT_ADDRESS}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-2"
+          >
+            Verify on Solscan <ExternalLink className="w-3 h-3" />
+          </a>
         </div>
       </div>
 
-      <div className="mt-6 p-4 bg-muted/20 rounded-lg">
+      <div className="mt-6 flex items-start gap-3 p-4 rounded-lg border border-amber-500/30 bg-amber-500/5">
+        <AlertTriangle className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
         <p className="text-xs text-muted-foreground leading-relaxed">
-          <strong>How this works:</strong> Unlike pure community tokens, TRN is backed by real business assets and revenue.
-          This model calculates fair value based on Carolina Terrain's equipment, service income, community growth, and network effects.
-          Market price may differ due to speculation, but fundamentals anchor long-term value.
-        </p>
-        <p className="text-xs text-muted-foreground mt-2">
-          * Not financial advice. Markets may misprice assets. Always DYOR.
+          <span className="font-semibold text-amber-500">$TRN is a utility/incentive token, not an investment or security.</span>{" "}
+          It carries no promise of profit, yield, or return. Nothing on this page is financial advice. Always verify the
+          contract address before interacting.
         </p>
       </div>
     </Card>
+  );
+}
+
+function Row({ label, value }: { label: string; value: React.ReactNode }) {
+  return (
+    <div className="flex justify-between items-center gap-3">
+      <span className="text-muted-foreground">{label}</span>
+      <span className="font-medium text-foreground text-right">{value}</span>
+    </div>
   );
 }

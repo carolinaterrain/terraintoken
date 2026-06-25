@@ -16,9 +16,9 @@ const RealWorldRoots = () => {
 
   const videoCaptions = [
     "🎬 Behold! The official Terrain Token goblin doing its LEGENDARY victory dance over a French drain! This is what peak performance looks like! ⛏️💚",
-    "When your token mascot has more moves than most crypto influencers 🕺✨ (And it's backed by actual drainage contractors!)",
+    "When your token mascot has more moves than most crypto influencers 🕺✨ (And it's built by actual drainage contractors!)",
     "This goblin dances on certified French drains installed by Carolina Terrain! The vibes are immaculate! 🌧️⛏️",
-    "POV: You just realized this dancing goblin represents a token with REAL construction company backing 🤯💚",
+    "POV: You just realized this dancing goblin represents a token built by a real construction company 🤯💚",
     "The only community token where the mascot's victory dance is powered by NDS-certified drainage energy! 🚰✨",
   ];
 

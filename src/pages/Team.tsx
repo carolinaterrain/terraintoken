@@ -60,7 +60,7 @@ const companyStats = [
     icon: Target,
     label: "Established Business",
     value: "Since 2022",
-    description: "Real company backing"
+    description: "Active licensed contractor"
   }
 ];
 
@@ -223,7 +223,7 @@ const Team = () => {
               {/* Second Quote */}
               <div className="border-l-4 border-primary bg-primary/5 pl-6 py-4 rounded-r my-6">
                 <p className="italic text-foreground">
-                  "What if a token could be backed by real measurable land data, real work, and real environmental outcomes?"
+                  "What if a token could be tied to real measurable land data, real work, and real environmental outcomes?"
                 </p>
               </div>
 
@@ -247,7 +247,7 @@ const Team = () => {
               Our Mission
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-6">
-              "I started Carolina Terrain to solve drainage problems. I launched Terrain Token to prove that community tokens can be more than speculation—they can be backed by real work, real revenue, and real people."
+              "I started Carolina Terrain to solve drainage problems. I launched Terrain Token to prove that community tokens can be more than speculation — they can be tied to real work and real people. $TRN is a utility/incentive token, not an investment."
             </p>
             <p className="text-sm text-primary italic">
               — Alex Purdy, Founder
