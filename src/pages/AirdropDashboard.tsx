@@ -146,16 +146,16 @@ export default function AirdropDashboard() {
         </header>
 
         <main className="container mx-auto px-4 py-8 space-y-8">
-          {/* APY Banner */}
+          {/* Token-2022 Extension Banner */}
           <GlassCard className="p-4 border-primary/50 bg-gradient-to-r from-primary/10 via-primary/5 to-transparent">
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-full bg-primary/20 animate-pulse">
+                <div className="p-2 rounded-full bg-primary/20">
                   <Sparkles className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <p className="font-bold text-primary text-lg">Yield Mode: {TRN_APY_RATE}% APY Active</p>
-                  <p className="text-xs text-muted-foreground">Interest-Bearing Token Extension (1500 BPS)</p>
+                  <p className="font-bold text-primary text-lg">Token-2022 Interest-Bearing Extension Enabled</p>
+                  <p className="text-xs text-muted-foreground">Technical property of the mint (1500 BPS). Not an investment, not a promised return.</p>
                 </div>
               </div>
               <a

@@ -99,14 +99,13 @@ export function TRNGrowthCard({ balance: externalBalance, onBalanceChange }: TRN
               <h2 className="text-lg font-bold text-foreground">Your TRN Balance</h2>
               <p className="text-xs text-muted-foreground flex items-center gap-1">
                 <Shield className="w-3 h-3" />
-                Token-2022 Interest-Bearing
+                Token-2022 (Interest-Bearing Extension Enabled)
               </p>
             </div>
           </div>
           
-          <Badge className="bg-gradient-to-r from-primary/20 to-terrain-glow/20 border-primary/50 text-primary animate-pulse">
-            <Sparkles className="w-3 h-3 mr-1" />
-            {TRN_APY_RATE}% APY Active
+          <Badge variant="outline" className="border-amber-500/40 text-amber-500">
+            Utility Token · Not an Investment
           </Badge>
         </div>
 
@@ -119,7 +118,7 @@ export function TRNGrowthCard({ balance: externalBalance, onBalanceChange }: TRN
             <div>
               <h3 className="text-xl font-bold text-foreground mb-2">Connect Your Wallet</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                View your TRN balance and watch your {TRN_APY_RATE}% APY accrue in real-time
+                View your on-chain $TRN balance. Balances reflect the Token-2022 interest-bearing extension as a technical property of the mint — not a promised return.
               </p>
             </div>
             <WalletMultiButton className="!bg-primary hover:!bg-primary/90 !rounded-xl !px-8 !py-3 !font-semibold" />

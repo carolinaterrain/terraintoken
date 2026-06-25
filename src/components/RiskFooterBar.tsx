@@ -84,16 +84,17 @@ export const RiskFooterBar = () => {
 
             <div className="text-sm text-muted-foreground space-y-2 pl-9">
               <p>
-                <strong className="text-foreground">TRN is a speculative meme token</strong> backed by Carolina Terrain LLC, 
-                a real drainage company. Token performance is <strong className="text-foreground">separate from business financials</strong>. 
-                We provide full transparency about our operations, but this does not guarantee token value.
+                <strong className="text-foreground">$TRN is a utility/incentive token, not an investment or security.</strong> It
+                carries no promise of profit, yield, or return. Carolina Terrain LLC's business performance is
+                <strong className="text-foreground"> separate from token value</strong>. Nothing on this site is financial advice.
+                Always verify the contract address before interacting.
               </p>
               <div className="flex flex-wrap gap-4 text-xs">
                 <span className="flex items-center gap-1">
                   ⚠️ <strong>High Volatility</strong>
                 </span>
                 <span className="flex items-center gap-1">
-                  💸 <strong>Speculative Asset</strong>
+                  🔧 <strong>Utility Token Only</strong>
                 </span>
                 <span className="flex items-center gap-1">
                   📉 <strong>Risk of Total Loss</strong>

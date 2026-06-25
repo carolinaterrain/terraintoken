@@ -28,7 +28,7 @@ export const InvestorHero = () => {
           >
             <Badge variant="secondary" className="mb-4 text-sm px-4 py-2">
               <Shield className="w-4 h-4 mr-2" />
-              Utility Token Backed by Real Operations
+              Utility Token Tied to Real Operations
             </Badge>
           </motion.div>
 
@@ -36,12 +36,12 @@ export const InvestorHero = () => {
           <h1 className="text-5xl md:text-7xl font-bold leading-tight">
             <span className="bg-gradient-to-r from-primary via-chart-2 to-chart-3 bg-clip-text text-transparent">Real Contractors.</span>
             <br />
-            <span className="text-foreground">Real Revenue. Real Token.</span>
+            <span className="text-foreground">Real Work. Real Token.</span>
           </h1>
 
           {/* Subline - Business-focused */}
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            TRN is powered by <span className="text-primary font-semibold">Carolina Terrain LLC</span> — a licensed North Carolina drainage contractor with <span className="text-chart-2 font-semibold">$2M+ annual revenue</span>, real equipment, and years of operational history.
+            $TRN is the incentive layer of an ecosystem tied to <span className="text-primary font-semibold">Carolina Terrain LLC</span> — a licensed North Carolina drainage contractor. $TRN is a utility/incentive token — not an investment, not a security, no promised return.
           </p>
 
           {/* Key Stats Badges */}

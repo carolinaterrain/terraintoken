@@ -43,10 +43,11 @@ const RiskDisclosure = () => {
               <div className="flex items-start gap-4 mb-4">
                 <AlertTriangle className="w-8 h-8 text-yellow-500 flex-shrink-0" />
                 <div>
-                  <h2 className="font-display text-2xl font-bold mb-2">Speculative Meme Token</h2>
+                  <h2 className="font-display text-2xl font-bold mb-2">Utility / Incentive Token — Not an Investment</h2>
                   <p className="text-muted-foreground">
-                    TRN is a <strong className="text-foreground">meme token</strong> with speculative value. While backed by a real business (Carolina Terrain LLC), 
-                    the token itself is primarily a community-driven digital asset with no guaranteed intrinsic value.
+                    $TRN is a <strong className="text-foreground">utility/incentive token</strong>, not an investment and not a
+                    security. It carries no promise of profit, yield, or return. While tied to a real licensed contractor
+                    (Carolina Terrain LLC), the token itself has no guaranteed intrinsic value.
                   </p>
                 </div>
               </div>
@@ -58,8 +59,9 @@ const RiskDisclosure = () => {
                 <div>
                   <h2 className="font-display text-2xl font-bold mb-2">High Volatility Risk</h2>
                   <p className="text-muted-foreground">
-                    Cryptocurrency and meme tokens are <strong className="text-foreground">extremely volatile</strong>. TRN's price can fluctuate 
-                    dramatically in short periods. You could lose <strong className="text-red-400">100% of your investment</strong>.
+                    Cryptocurrency markets are <strong className="text-foreground">extremely volatile</strong>. $TRN's price can
+                    fluctuate dramatically in short periods. You could lose <strong className="text-red-400">100% of any funds
+                    used to acquire it</strong>.
                   </p>
                 </div>
               </div>

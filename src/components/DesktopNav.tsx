@@ -167,7 +167,7 @@ const DesktopNav = () => {
                 asChild
               >
                 <a
-                  href="https://raydium.io/swap/?inputMint=sol&outputMint=2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
+                  href="https://raydium.io/swap/?inputMint=sol&outputMint=Dm7FAcF4kzVgsrn6VPEp2C5bN3tGPkydpWaR26wtDR8m"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -241,7 +241,7 @@ const DesktopNav = () => {
                 asChild
               >
                 <a
-                  href="https://raydium.io/swap/?inputMint=sol&outputMint=2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump"
+                  href="https://raydium.io/swap/?inputMint=sol&outputMint=Dm7FAcF4kzVgsrn6VPEp2C5bN3tGPkydpWaR26wtDR8m"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

@@ -18,10 +18,10 @@ export default function TRNDashboard() {
   return (
     <>
       <Helmet>
-        <title>{`TRN Dashboard - ${TRN_APY_RATE}% APY Interest-Bearing Token | Terrain Ecosystem`}</title>
+        <title>TRN Dashboard — Token-2022 Utility Token | Terrain Ecosystem</title>
         <meta
           name="description"
-          content={`Track your $TRN balance with real-time ${TRN_APY_RATE}% APY accrual. Backed by $2M+ revenue from Carolina Terrain drainage operations. Token-2022 interest-bearing technology.`}
+          content="Track your $TRN balance on Solana Token-2022. An incentive layer tied to Carolina Terrain LLC, a licensed NC drainage contractor. $TRN is a utility/incentive token — not an investment, not a security."
         />
       </Helmet>
       

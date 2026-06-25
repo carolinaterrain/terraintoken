@@ -8,7 +8,7 @@ interface StatusItem {
 
 const items: StatusItem[] = [
   { status: "live", text: "Token deployed on Solana Token-2022. Contract verified, mint revoked, LP burned." },
-  { status: "live", text: "15% annual interest-bearing yield active." },
+  { status: "live", text: "Token-2022 interest-bearing extension enabled on the mint (1500 BPS) — a technical property of the mint, not a promised return." },
   { status: "live", text: "Carolina Terrain LLC operating as licensed contractor (NC #CL.1872)." },
   { status: "live", text: "Terrain Vision AI live for site analysis." },
   { status: "live", text: "Stormwater SCM live for compliance documentation." },

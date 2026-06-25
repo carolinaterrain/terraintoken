@@ -1,27 +1,27 @@
 {
   "name": "Terrain Token",
   "symbol": "TRN",
-  "description": "Terrain Token (TRN) powers the Carolina Terrain ecosystem – drainage-first landscaping backed by $2M+ annual revenue, Terrain Vision AI for stormwater intelligence, and future FlowGuardian technology. Built by real contractors, for real utility.",
-  "image": "https://terrainvision-ai.com/trn-coin.png",
-  "external_url": "https://terrainvision-ai.com/",
+  "description": "Terrain Token ($TRN) is the incentive layer of the Terrain Ecosystem — a stormwater infrastructure protocol on Solana Token-2022 with a fixed 1.25B supply. Tied to Carolina Terrain LLC, a licensed NC drainage contractor (CL.1872). $TRN is a utility/incentive token. It is not an investment, not a security, and carries no promise of profit or yield.",
+  "image": "https://terraintoken.com/trn-coin.png",
+  "external_url": "https://terraintoken.com/",
   "extensions": {
-    "website": "https://terrainvision-ai.com/",
+    "website": "https://terraintoken.com/",
     "twitter": "https://x.com/carolinaterrain",
     "x": "https://x.com/carolinaterrain",
     "discord": "https://discord.gg/BmUmr2Kx",
-    "whitepaper": "https://terrainvision-ai.com/whitepaper",
-    "docs": "https://terrainvision-ai.com/trn",
+    "whitepaper": "https://terraintoken.com/whitepaper",
+    "docs": "https://terraintoken.com/whitepaper",
     "contact": "mailto:info@carolinaterrain.com"
   },
   "tags": [
     "utility",
     "stormwater",
     "drainage",
-    "real-world-backing",
+    "incentive-layer",
     "ecosystem"
   ],
   "creator": {
     "name": "Carolina Terrain",
-    "site": "https://terrainvision-ai.com/"
+    "site": "https://terraintoken.com/"
   }
 }
