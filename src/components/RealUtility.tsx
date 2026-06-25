@@ -35,7 +35,7 @@ const RealUtility = () => {
             TRN Has <span className="text-primary">Real Value</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Unlike most community tokens, TRN is backed by actual business utility. Redeem for real discounts.
+            $TRN is a utility/incentive token tied to a licensed NC drainage contractor. Redeem it for real service discounts.
           </p>
         </div>
 

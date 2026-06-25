@@ -14,17 +14,17 @@ export const QuickStartGuide = () => {
       color: "text-yellow-500",
       bgColor: "bg-yellow-500/10",
       borderColor: "border-yellow-500/20",
-      description: "A utility token with real backing",
-      details: "TRN powers platform access and sustainability within the Terrain Token ecosystem. Backed by Carolina Terrain, a licensed drainage contractor with established revenue streams."
+      description: "A utility/incentive token",
+      details: "TRN powers platform access within the Terrain Token ecosystem. Built by Carolina Terrain, a licensed NC drainage contractor. $TRN is not an investment or security and carries no promise of profit, yield, or return."
     },
     {
       icon: Shield,
-      title: "Why Backing Matters",
+      title: "Why Transparency Matters",
       color: "text-blue-500",
       bgColor: "bg-blue-500/10",
       borderColor: "border-blue-500/20",
-      description: "Transparency over promises",
-      details: "Unlike most community tokens backed by nothing, TRN shows complete financial transparency: real equipment, established business operations, and verified on-chain data. No speculation required."
+      description: "Verifiable, not speculative",
+      details: "TRN publishes on-chain data, equipment inventories, and operational status. The token is tied to a licensed contracting business with established operations — but business performance does not guarantee token value."
     },
     {
       icon: Zap,

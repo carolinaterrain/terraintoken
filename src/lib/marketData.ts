@@ -96,8 +96,8 @@ export const competitiveLandscape: CompetitiveLandscape[] = [
   {
     category: 'Utility Tokens',
     competitors: ['Generic community tokens', 'Reflection tokens'],
-    gap: 'No real-world backing or utility',
-    trnAdvantage: 'Token backed by real business, AI platform, and marketplace'
+    gap: 'No real-world utility or operational tie-in',
+    trnAdvantage: 'Token tied to a licensed contracting business, AI platform, and marketplace'
   }
 ];
 

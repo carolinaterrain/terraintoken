@@ -9,7 +9,7 @@ import { ShareButtons } from "@/components/blog/ShareButtons";
 import { TableOfContents } from "@/components/blog/TableOfContents";
 import { CallToAction } from "@/components/blog/CallToAction";
 import { GoblinWisdomBox } from "@/components/blog/GoblinWisdomBox";
-import { Calendar, User, Clock, Brain, Droplets } from "lucide-react";
+import { Calendar, User, Clock, Brain, Droplets, AlertTriangle } from "lucide-react";
 
 const AIPoweredDrainageAnalysisFuture = () => {
   const title = "AI-Powered Drainage Analysis: How TerrainVision Uses Machine Learning to Prevent Flooding";
@@ -143,6 +143,16 @@ const AIPoweredDrainageAnalysisFuture = () => {
               Urban and suburban areas are increasingly vulnerable to flooding due to changing rainfall patterns, aging infrastructure, and expanding impervious surfaces. Traditional drainage design can't keep up. Enter TerrainVision AI—a machine learning platform that predicts drainage issues before they happen.
             </p>
           </header>
+
+          <div className="my-6 p-4 rounded-lg border border-amber-500/40 bg-amber-500/5 flex items-start gap-3" role="note">
+            <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+            <p className="text-sm text-foreground/90">
+              <strong className="text-amber-500">Note:</strong> This post was published before $TRN was repositioned as a
+              utility/incentive token. Some language here reflects earlier framing. For current, canonical positioning, see
+              the <a href="/whitepaper" className="text-primary underline hover:no-underline">whitepaper</a>. $TRN is not an
+              investment or security.
+            </p>
+          </div>
 
           <ShareButtons title={title} description={description} url={url} />
 

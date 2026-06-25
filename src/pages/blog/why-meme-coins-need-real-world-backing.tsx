@@ -12,8 +12,8 @@ import { GoblinWisdomBox } from "@/components/blog/GoblinWisdomBox";
 import { Calendar, User, Clock, AlertTriangle } from "lucide-react";
 
 const WhyMemeCoinsNeedRealWorldBacking = () => {
-  const title = "Why Every Meme Coin Needs Real-World Backing: Lessons from $2B in Failures";
-  const description = "5.3M meme coins launched in 2024—99% failed. Learn why Terrain Token's established revenue backing, transparent treasury, and real utility make it different. Avoid rug pulls.";
+  const title = "How Terrain Token Connects to Real-World Work";
+  const description = "A 2025 analysis of community-token failures and how Terrain Token is positioned alongside a licensed NC drainage contractor. $TRN is a utility/incentive token, not an investment or security.";
   const url = "https://terraintoken.com/blog/why-meme-coins-need-real-world-backing";
   const publishDate = "2025-11-10T10:00:00-05:00";
   const modifiedDate = "2025-11-10T10:00:00-05:00";
@@ -140,6 +140,16 @@ const WhyMemeCoinsNeedRealWorldBacking = () => {
               According to Investopedia, meme coins are altcoins created to follow trends and employ humor to build a sense of community. They typically lack utility and rely on belief and hype rather than any fundamental value. Here's why that model is broken—and how Terrain Token does it differently.
             </p>
           </header>
+
+          <div className="my-6 p-4 rounded-lg border border-amber-500/40 bg-amber-500/5 flex items-start gap-3" role="note">
+            <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+            <p className="text-sm text-foreground/90">
+              <strong className="text-amber-500">Note:</strong> This post was published before $TRN was repositioned as a
+              utility/incentive token. Some language here reflects earlier framing. For current, canonical positioning, see
+              the <a href="/whitepaper" className="text-primary underline hover:no-underline">whitepaper</a>. $TRN is not an
+              investment or security.
+            </p>
+          </div>
 
           <ShareButtons title={title} description={description} url={url} />
 
