@@ -135,7 +135,7 @@ const HowToBuy = () => {
                 />
               </div>
               <p className="text-xs text-muted-foreground mt-4">
-                Contract: 2L1x...pump
+                Contract: Dm7FAc…wtDR8m
               </p>
             </div>
           )}
