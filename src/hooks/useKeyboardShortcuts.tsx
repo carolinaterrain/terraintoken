@@ -21,7 +21,7 @@ export const useKeyboardShortcuts = () => {
 
       // Copy contract address with 'c' key
       if (e.key === "c" && !e.ctrlKey && !e.metaKey) {
-        const contractAddress = "2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump";
+        const contractAddress = "Dm7FAcF4kzVgsrn6VPEp2C5bN3tGPkydpWaR26wtDR8m";
         navigator.clipboard.writeText(contractAddress);
       }
 

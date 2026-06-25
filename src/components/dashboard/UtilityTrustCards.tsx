@@ -6,21 +6,21 @@ import { TRN_APY_RATE } from "@/lib/airdropConstants";
 
 const utilityCards = [
   {
-    id: "revenue",
+    id: "operations",
     icon: DollarSign,
-    title: "$1M+ Annual Revenue",
-    subtitle: "Real-World Backing",
-    description: "Backed by Carolina Terrain's drainage operations across North Carolina. Every service generates ecosystem value.",
+    title: "Licensed NC Contractor",
+    subtitle: "Tied to Real Operations",
+    description: "$TRN is tied to Carolina Terrain LLC — a licensed North Carolina drainage and stormwater contractor (NC #CL.1872). Business performance does not guarantee token value.",
     features: [
       "Licensed drainage contractor",
       "Active operations since 2019",
-      "Verified on-chain revenue allocation"
+      "Public transparency reporting"
     ],
     accentColor: "from-green-500/20 to-emerald-500/10",
     borderColor: "border-green-500/30",
     iconColor: "text-green-500",
     link: "/transparency",
-    linkText: "View Revenue Reports"
+    linkText: "View Transparency Reports"
   },
   {
     id: "ai",
@@ -40,15 +40,15 @@ const utilityCards = [
     linkText: "Explore AI Features"
   },
   {
-    id: "yield",
+    id: "token2022",
     icon: Sparkles,
-    title: `${TRN_APY_RATE}% APY Native Yield`,
-    subtitle: "Token-2022 Extension",
-    description: "Interest-bearing capability hard-coded into the token contract. No staking, no locking, no complexity.",
+    title: "Token-2022 Standard",
+    subtitle: "Interest-Bearing Extension Enabled",
+    description: "$TRN is deployed under Solana's Token-2022 standard with the interest-bearing extension enabled as a technical property of the mint. This is a feature of the token standard — not a yield, not a promised return.",
     features: [
-      "Auto-accruing interest",
-      "No staking required",
-      "Verified on Solscan"
+      "Mint authority revoked",
+      "Fixed 1.25B supply",
+      "Verifiable on Solscan"
     ],
     accentColor: "from-primary/20 to-cyan-500/10",
     borderColor: "border-primary/30",

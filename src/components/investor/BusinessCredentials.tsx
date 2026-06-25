@@ -61,14 +61,14 @@ export const BusinessCredentials = () => {
         >
           <Badge variant="secondary" className="mb-4">
             <Shield className="w-4 h-4 mr-2" />
-            Backed by Real Operations
+            Tied to Real Operations
           </Badge>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             Not Just Another Token
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            TRN is backed by Carolina Terrain LLC — a licensed North Carolina drainage contractor 
-            with real revenue, real equipment, and real customers.
+            $TRN is the incentive layer of an ecosystem tied to Carolina Terrain LLC — a licensed North Carolina drainage contractor.
+            Business performance does not guarantee token value. $TRN is a utility/incentive token, not an investment or security.
           </p>
         </motion.div>
 

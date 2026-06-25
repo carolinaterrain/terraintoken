@@ -65,8 +65,8 @@ const Footer = () => {
             />
             <StatCard 
               icon={<Shield className="h-4 w-4 text-primary" />}
-              label="Native Yield"
-              value="15% APY"
+              label="Mint Authority"
+              value="Revoked"
             />
             <StatCard 
               icon={<Flame className="h-4 w-4 text-orange-500" />}
@@ -147,12 +147,13 @@ const Footer = () => {
               © {new Date().getFullYear()} Terrain Ecosystem. All rights reserved.
             </p>
             <Badge variant="outline" className="text-xs font-mono border-amber-500/30 text-amber-500">
-              ⚠️ TRN is a proprietary utility asset, not an investment
+              ⚠️ $TRN is a utility/incentive token — not an investment, not a security
             </Badge>
           </div>
           <p className="text-xs text-muted-foreground text-center mt-4 max-w-4xl mx-auto font-mono">
             Operated by <span className="text-foreground">Carolina Terrain LLC · NC License #CL.1872 · Waxhaw, NC</span>.
-            $TRN is not an investment and is not required to use Terrain services. Cryptocurrency involves risk. Not financial advice.
+            $TRN is a utility/incentive token, not an investment or security. It carries no promise of profit, yield, or return.
+            Nothing on this site is financial advice. Always verify the contract address before interacting.
           </p>
           <div className="mt-3 flex items-start gap-2 max-w-4xl mx-auto p-3 rounded-md border border-amber-500/30 bg-amber-500/5">
             <AlertTriangle className="h-4 w-4 text-amber-500 flex-shrink-0 mt-0.5" />

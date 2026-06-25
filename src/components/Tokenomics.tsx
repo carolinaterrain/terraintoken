@@ -144,11 +144,11 @@ const Tokenomics = () => {
               </p>
             </GlassCard>
             <GlassCard className="p-6">
-              <h4 className="font-display text-lg font-bold mb-3 text-primary">How does the 15% yield work?</h4>
+              <h4 className="font-display text-lg font-bold mb-3 text-primary">What is the interest-bearing extension?</h4>
               <p className="font-body text-sm text-muted-foreground">
-                $TRN uses Solana's Token-2022 interest-bearing extension. Yield accrues natively on-chain at the
-                protocol level — not through staking, not through emissions, not through dilution. Holding the
-                token is the action; the rate is encoded in the mint itself.
+                $TRN uses Solana's Token-2022 interest-bearing extension — a technical property encoded in the mint.
+                This is a feature of the token standard, not a yield, not a return, and not a promise of profit.
+                $TRN is a utility/incentive token, not an investment. Always verify on-chain.
               </p>
             </GlassCard>
             <GlassCard className="p-6">

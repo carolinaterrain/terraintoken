@@ -208,7 +208,7 @@ const SubmitMeme = () => {
               🌱 BURY YOUR MEME IN THE SACRED GROUNDS
             </h1>
             <p className="text-lg text-muted-foreground">
-              Submit your best TRN meme and join the erosion revolution!
+              Submit your best TRN meme and share your work with the community.
             </p>
           </div>
 

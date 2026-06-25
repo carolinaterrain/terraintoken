@@ -22,14 +22,14 @@ const Investors = () => {
   return (
     <>
       <Helmet>
-        <title>TRN Investors - Utility Token Backed by Real Operations</title>
+        <title>TRN — Utility Token Tied to Real Operations | Terrain Ecosystem</title>
         <meta
           name="description"
-          content="TRN is powered by Carolina Terrain LLC — a licensed NC drainage contractor with $2M+ annual revenue. Real business backing, not just promises."
+          content="$TRN is the incentive layer of an ecosystem tied to Carolina Terrain LLC — a licensed NC drainage contractor. Solana Token-2022, 1.25B fixed supply. Not an investment, not a security, no promised return."
         />
-        <meta name="keywords" content="TRN investment, terrain token, real utility, licensed contractor, Carolina Terrain" />
-        <meta property="og:title" content="TRN - Real Contractors. Real Revenue. Real Token." />
-        <meta property="og:description" content="Utility token backed by Carolina Terrain LLC — licensed NC contractor with $2M+ revenue, real equipment, and verifiable credentials." />
+        <meta name="keywords" content="TRN, terrain token, utility token, incentive layer, licensed contractor, Carolina Terrain, Token-2022" />
+        <meta property="og:title" content="TRN — Real Contractors. Real Work. Real Token." />
+        <meta property="og:description" content="Solana Token-2022. 1.25B fixed supply. An incentive layer tied to a licensed NC drainage contractor — not a yield, not a security, no promised return." />
       </Helmet>
 
       <SkipToContent />
@@ -88,8 +88,8 @@ const Investors = () => {
             <p className="text-muted-foreground mb-4">Know someone who should see this?</p>
             <div className="flex justify-center">
               <SocialShareButtons 
-                title="TRN - Real Contractors. Real Revenue. Real Token."
-                description="Utility token backed by Carolina Terrain LLC — licensed NC contractor with $2M+ revenue, real equipment, and verifiable credentials."
+                title="TRN — Real Contractors. Real Work. Real Token."
+                description="Utility token tied to Carolina Terrain LLC — a licensed NC drainage contractor. Not an investment, not a security."
               />
             </div>
           </div>

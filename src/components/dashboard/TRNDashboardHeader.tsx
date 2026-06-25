@@ -19,12 +19,12 @@ export function TRNDashboardHeader() {
             className="flex items-center gap-3"
           >
             <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-primary/10 via-primary/5 to-transparent border border-primary/30">
-              <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+              <Sparkles className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-primary">
-                Yield Mode: {TRN_APY_RATE}% APY Active
+                Token-2022 Interest-Bearing Extension
               </span>
-              <Badge variant="outline" className="text-xs border-primary/30 text-primary">
-                Token-2022
+              <Badge variant="outline" className="text-xs border-amber-500/30 text-amber-500">
+                Utility Token · Not an Investment
               </Badge>
             </div>
             <a
