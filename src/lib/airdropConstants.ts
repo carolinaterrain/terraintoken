@@ -7,6 +7,7 @@ export const ADMIN_WALLET = "H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu";
 export const TRN_MINT_ADDRESS = "Dm7FAcF4kzVgsrn6VPEp2C5bN3tGPkydpWaR26wtDR8m";
 
 // Interest Rate (15% APY = 1500 BPS)
+// NOTE: reflects on-chain InterestBearingConfig rate; pending rate-zero on-chain.
 export const TRN_APY_RATE = 15;
 export const TRN_APY_BPS = 1500;
 

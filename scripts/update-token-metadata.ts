@@ -31,7 +31,7 @@ import {
 // Configuration
 const CONFIG = {
   // Terrain Token mint address
-  MINT_ADDRESS: '2L1xfpJ56tjevGzqzDCqxvuAgU4pDZL166hKQSeKpump',
+  MINT_ADDRESS: 'Dm7FAcF4kzVgsrn6VPEp2C5bN3tGPkydpWaR26wtDR8m',
   
   // Metadata URI - points to your hosted JSON
   METADATA_URI: 'https://terrainvision-ai.com/token-metadata.json',

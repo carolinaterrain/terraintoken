@@ -38,7 +38,7 @@ const TransparencyReportNovember2025 = () => {
     {
       slug: "how-terrain-token-started",
       title: "How Terrain Token Started",
-      excerpt: "The origin story of how two drainage contractors built a crypto ecosystem backed by real revenue.",
+      excerpt: "The origin story of how a licensed NC drainage contractor built the Terrain ecosystem.",
       category: "Origin Story",
       date: "November 15, 2025",
       author: "Alex Purdy",
@@ -47,7 +47,7 @@ const TransparencyReportNovember2025 = () => {
     {
       slug: "why-meme-coins-need-real-world-backing",
       title: "Why Every Meme Coin Needs Real-World Backing",
-      excerpt: "The BEER collapse and why TRN's established revenue backing makes it different from 99% of meme coins.",
+      excerpt: "How TRN is structured as a utility/incentive token tied to a licensed NC drainage contractor's operations.",
       category: "Analysis",
       date: "November 10, 2025",
       author: "TRN Team",
@@ -659,7 +659,7 @@ const TransparencyReportNovember2025 = () => {
 
                 <CallToAction
                   title="Want to Understand TRN's Origin?"
-                  description="Read the complete story of how two drainage contractors built a crypto ecosystem backed by real revenue and AI technology."
+                  description="Read the complete story of how a licensed NC drainage contractor built the Terrain ecosystem and AI technology."
                   buttonText="Read Origin Story"
                   buttonLink="/blog/how-terrain-token-started"
                   variant="primary"
@@ -674,7 +674,7 @@ const TransparencyReportNovember2025 = () => {
           <AuthorCard
             name="TRN Team"
             title="Transparency & Operations"
-            bio="The TRN team is committed to radical transparency—publishing detailed monthly reports on financials, community metrics, and development progress. No secrets, no surprises, just facts."
+            bio="The TRN team is committed to radical transparency—publishing detailed monthly reports on community metrics, treasury activity, and development progress. $TRN is a utility/incentive token tied to a licensed NC drainage contractor — not an investment or security."
             image="/terrain-mascot.png"
           />
 

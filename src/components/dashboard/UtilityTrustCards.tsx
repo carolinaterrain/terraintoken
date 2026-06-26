@@ -92,7 +92,7 @@ export function UtilityTrustCards() {
           What Makes <span className="text-primary">$TRN</span> Different
         </h2>
         <p className="text-muted-foreground max-w-2xl mx-auto">
-          Real utility, real revenue, and real technology backing every token.
+          A utility/incentive token tied to a licensed NC drainage contractor.
         </p>
       </div>
 

@@ -31,7 +31,7 @@ const WhyMemeCoinsNeedRealWorldBacking = () => {
     {
       slug: "how-terrain-token-started",
       title: "How Terrain Token Started – From Drainage Ditches to Digital Revolution",
-      excerpt: "The story of how two drainage contractors decided to launch a meme coin that actually means something.",
+      excerpt: "The origin story of how a licensed NC drainage contractor launched the Terrain Token utility/incentive layer.",
       category: "Origin Story",
       date: "November 15, 2025",
       author: "Alex Purdy",
@@ -40,7 +40,7 @@ const WhyMemeCoinsNeedRealWorldBacking = () => {
     {
       slug: "transparency-report-november-2025",
       title: "TRN Transparency Report – November 2025",
-      excerpt: "Full transparency: 2,100 holders, $180K revenue, 620K USDC treasury. See exactly where every TRN token is.",
+      excerpt: "Monthly transparency report covering wallet holdings, treasury activity, and ecosystem metrics.",
       category: "Transparency",
       date: "November 1, 2025",
       author: "TRN Team",
@@ -525,7 +525,7 @@ const WhyMemeCoinsNeedRealWorldBacking = () => {
           <AuthorCard
             name="TRN Team"
             title="Terrain Token Research & Analysis"
-            bio="The TRN team combines expertise in crypto tokenomics, landscaping operations, and AI development. Our mission: prove that meme coins can be backed by real businesses generating real revenue."
+            bio="The TRN team combines expertise in crypto tokenomics, landscaping operations, and AI development. $TRN is a utility/incentive token tied to a licensed NC drainage contractor — not an investment or security. No promise of profit, yield, or return."
             image="/terrain-mascot.png"
           />
 

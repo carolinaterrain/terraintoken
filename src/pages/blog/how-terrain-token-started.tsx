@@ -13,7 +13,7 @@ import { Calendar, User, Clock, AlertTriangle } from "lucide-react";
 
 const HowTerrainTokenStarted = () => {
   const title = "How Terrain Token Started – From Drainage Ditches to Digital Revolution";
-  const description = "Discover how two NC drainage contractors built Terrain Token (TRN)—a utility token backed by established revenue streams, AI technology, and real-world utility. No hype, just French drains and blockchain.";
+  const description = "How Terrain Token (TRN) emerged from a licensed NC drainage contractor's operations. $TRN is a utility/incentive token — not an investment or security. No promised yield or return.";
   const url = "https://terraintoken.com/blog/how-terrain-token-started";
   const publishDate = "2025-11-15T09:00:00-05:00";
   const modifiedDate = "2025-11-15T09:00:00-05:00";
@@ -32,7 +32,7 @@ const HowTerrainTokenStarted = () => {
     {
       slug: "why-meme-coins-need-real-world-backing",
       title: "Why Every Meme Coin Needs Real-World Backing",
-      excerpt: "The BEER collapse showed us what happens when meme coins have nothing behind them. TRN is different — here's why backing matters.",
+      excerpt: "How TRN is structured as a utility/incentive token tied to a licensed NC drainage contractor's operations.",
       category: "Analysis",
       date: "November 10, 2025",
       author: "TRN Team",
@@ -532,7 +532,7 @@ const HowTerrainTokenStarted = () => {
           <AuthorCard
             name="Alex Purdy"
             title="Founder of Terrain Token"
-            bio="Licensed NC drainage contractor who decided to merge meme culture with real-world utility. Alex created the TerrainVision AI ecosystem and oversees field operations. He's proving that crypto can be backed by actual work, not just hype."
+            bio="Licensed NC drainage contractor and founder of the Terrain ecosystem. Alex created TerrainVision AI and oversees field operations. $TRN is a utility/incentive token tied to a licensed NC drainage contractor — not an investment or security."
             image="/founders-headshot.jpg"
             linkedin="https://www.linkedin.com/in/jamesapurdy/"
           />
