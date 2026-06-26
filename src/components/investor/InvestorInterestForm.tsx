@@ -61,7 +61,7 @@ const investmentRanges = [
 ];
 
 const interestReasons = [
-  { id: "utility", label: "Real-world utility backing" },
+  { id: "utility", label: "Real-world utility & operations tie-in" },
   { id: "transparency", label: "Transparency & on-chain verification" },
   { id: "ai", label: "TerrainVision AI technology" },
   { id: "community", label: "Community & governance" },
