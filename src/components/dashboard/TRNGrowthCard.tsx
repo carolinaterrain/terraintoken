@@ -19,6 +19,7 @@ export function TRNGrowthCard({ balance: externalBalance, onBalanceChange }: TRN
   const [lastTick, setLastTick] = useState<Date>(new Date());
 
   // Calculate yield per second based on 15% APY
+  // NOTE: reflects on-chain InterestBearingConfig rate; pending rate-zero on-chain.
   const calculateYieldPerSecond = useCallback((balance: number) => {
     // 15% APY = 0.15 / 365 / 24 / 60 / 60 per second
     const annualRate = TRN_APY_RATE / 100;
