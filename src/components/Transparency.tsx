@@ -200,16 +200,16 @@ const Transparency = () => {
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
                 <div className="p-4 bg-background/50 rounded-lg">
-                  <p className="text-sm text-muted-foreground mb-1">Certifications</p>
-                  <p className="font-display text-lg font-bold text-primary">8+ Industry Certs</p>
-                </div>
-                <div className="p-4 bg-background/50 rounded-lg">
                   <p className="text-sm text-muted-foreground mb-1">License</p>
-                  <p className="font-display text-lg font-bold text-primary">NC #CL.1872</p>
+                  <p className="font-display text-lg font-bold text-primary">NC · CL.1872</p>
                 </div>
                 <div className="p-4 bg-background/50 rounded-lg">
-                  <p className="text-sm text-muted-foreground mb-1">Google Reviews</p>
-                  <p className="font-display text-lg font-bold text-primary">125+ ⭐⭐⭐⭐⭐</p>
+                  <p className="text-sm text-muted-foreground mb-1">Accreditation</p>
+                  <p className="font-display text-lg font-bold text-primary">BBB A+ Accredited</p>
+                </div>
+                <div className="p-4 bg-background/50 rounded-lg">
+                  <p className="text-sm text-muted-foreground mb-1">Operations</p>
+                  <p className="font-display text-lg font-bold text-primary">Operating Since 2022</p>
                 </div>
               </div>
               <div className="mt-6">

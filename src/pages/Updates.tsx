@@ -44,8 +44,8 @@ const systemUpdates: SystemUpdate[] = [
   {
     id: "why-real-backing",
     slug: "why-meme-coins-need-real-world-backing",
-    title: "Context: Understanding Utility-Backed Token Design",
-    excerpt: "Technical analysis of utility token design principles and how TRN's structure differs from speculative tokens.",
+    title: "Context: How Terrain Token Connects to Real-World Work",
+    excerpt: "Analysis of utility/incentive token design and how TRN connects to a licensed NC drainage contractor's operations.",
     author: "TRN Team",
     date: "November 10, 2025",
     category: "Technical",

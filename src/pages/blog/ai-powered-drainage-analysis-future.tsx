@@ -34,7 +34,7 @@ const AIPoweredDrainageAnalysisFuture = () => {
     {
       slug: "how-terrain-token-started",
       title: "How Terrain Token Started",
-      excerpt: "The origin story of how two drainage contractors built a crypto ecosystem backed by AI and real revenue.",
+      excerpt: "The origin story of how a licensed NC drainage contractor built the Terrain ecosystem and AI platform.",
       category: "Origin Story",
       date: "November 15, 2025",
       author: "Alex Purdy & Zac Hyman",
@@ -43,7 +43,7 @@ const AIPoweredDrainageAnalysisFuture = () => {
     {
       slug: "why-meme-coins-need-real-world-backing",
       title: "Why Every Meme Coin Needs Real-World Backing",
-      excerpt: "The BEER collapse and why TRN's established revenue backing makes it different from 99% of meme coins.",
+      excerpt: "How TRN is structured as a utility/incentive token tied to a licensed NC drainage contractor's operations.",
       category: "Analysis",
       date: "November 10, 2025",
       author: "TRN Team",
@@ -52,7 +52,7 @@ const AIPoweredDrainageAnalysisFuture = () => {
     {
       slug: "transparency-report-november-2025",
       title: "TRN Transparency Report – November 2025",
-      excerpt: "Full financial breakdown: 2,100 holders, $180K revenue, 620K USDC treasury. No secrets.",
+      excerpt: "Monthly transparency report covering wallet holdings, treasury activity, and ecosystem metrics.",
       category: "Transparency",
       date: "November 1, 2025",
       author: "TRN Team",
@@ -568,7 +568,7 @@ const AIPoweredDrainageAnalysisFuture = () => {
           <AuthorCard
             name="TRN Development Team"
             title="AI & Blockchain Engineers"
-            bio="The TRN dev team combines machine learning expertise, civil engineering knowledge, and blockchain development skills. We're building the future of infrastructure—one drainage ditch at a time."
+            bio="The TRN dev team combines machine learning expertise, civil engineering knowledge, and blockchain development skills. $TRN is a utility/incentive token tied to a licensed NC drainage contractor — not an investment or security."
             image="/terrain-mascot.png"
           />
 

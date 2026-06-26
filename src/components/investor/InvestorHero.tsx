@@ -53,15 +53,15 @@ export const InvestorHero = () => {
           >
             <Badge variant="outline" className="text-sm px-4 py-2 border-chart-2/50">
               <Award className="w-4 h-4 mr-2 text-chart-2" />
-              NC License #CL.1872
+              NC License · CL.1872
             </Badge>
             <Badge variant="outline" className="text-sm px-4 py-2 border-chart-3/50">
-              <TrendingUp className="w-4 h-4 mr-2 text-chart-3" />
-              $2M+ Annual Revenue
+              <Shield className="w-4 h-4 mr-2 text-chart-3" />
+              BBB A+ Accredited
             </Badge>
             <Badge variant="outline" className="text-sm px-4 py-2 border-chart-4/50">
               <Truck className="w-4 h-4 mr-2 text-chart-4" />
-              $500K+ Equipment
+              Operating Since 2022
             </Badge>
           </motion.div>
 

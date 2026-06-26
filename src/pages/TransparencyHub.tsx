@@ -66,7 +66,7 @@ const TransparencyHub = () => {
         
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Transparency Hub | Terrain Token" />
-        <meta name="twitter:description" content="Complete archive of monthly transparency reports. See how TRN's real-world backing translates to real growth." />
+        <meta name="twitter:description" content="Complete archive of monthly transparency reports for the Terrain Token ($TRN) ecosystem." />
       </Helmet>
 
       <ScrollProgress />
