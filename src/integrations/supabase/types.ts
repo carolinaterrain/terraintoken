@@ -3747,6 +3747,11 @@ export type Database = {
         Args: { p_drop_id: string }
         Returns: number
       }
+      get_live_viewer_count: { Args: { p_page_path: string }; Returns: number }
+      get_or_assign_ab_variant: {
+        Args: { p_session_id: string; p_test_id: string; p_variant: string }
+        Returns: string
+      }
       get_public_leaderboard: {
         Args: { limit_count?: number }
         Returns: {
@@ -3784,6 +3789,12 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_active_ab_test: { Args: { p_test_id: string }; Returns: boolean }
+      register_live_viewer: {
+        Args: { p_page_path: string; p_session_id: string }
+        Returns: undefined
+      }
+      remove_live_viewer: { Args: { p_session_id: string }; Returns: undefined }
       reserve_next_certificate: {
         Args: { p_drop_id: string; p_session_id: string }
         Returns: {

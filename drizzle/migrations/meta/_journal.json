@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1795353844097,
+      "tag": "0000_harden_access_rules_and_storage",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1795353928777,
+      "tag": "0001_harden_access_rules_and_storage_v2",
+      "breakpoints": true
+    }
+  ]
+}

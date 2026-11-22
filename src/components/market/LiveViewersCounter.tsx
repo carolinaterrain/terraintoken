@@ -7,7 +7,7 @@ export const LiveViewersCounter = () => {
   const [sessionId] = useState(() => {
     const existing = sessionStorage.getItem("viewer_session");
     if (existing) return existing;
-    const newId = Math.random().toString(36).substring(2);
+    const newId = crypto.randomUUID();
     sessionStorage.setItem("viewer_session", newId);
     return newId;
   });
@@ -15,12 +15,9 @@ export const LiveViewersCounter = () => {
   // Register this viewer
   useEffect(() => {
     const registerViewer = async () => {
-      await supabase.from("live_viewers").upsert({
-        session_id: sessionId,
-        page_path: "/goblin-market",
-        last_ping: new Date().toISOString(),
-      }, {
-        onConflict: "session_id",
+      await supabase.rpc("register_live_viewer", {
+        p_session_id: sessionId,
+        p_page_path: "/goblin-market",
       });
     };
 
@@ -32,7 +29,7 @@ export const LiveViewersCounter = () => {
     // Cleanup on unmount
     return () => {
       clearInterval(interval);
-      supabase.from("live_viewers").delete().eq("session_id", sessionId);
+      supabase.rpc("remove_live_viewer", { p_session_id: sessionId });
     };
   }, [sessionId]);
 
@@ -43,11 +40,9 @@ export const LiveViewersCounter = () => {
       await supabase.rpc("cleanup_stale_viewers");
 
       // Count active viewers
-      const { count } = await supabase
-        .from("live_viewers")
-        .select("*", { count: "exact", head: true })
-        .eq("page_path", "/goblin-market")
-        .gte("last_ping", new Date(Date.now() - 5 * 60 * 1000).toISOString());
+      const { data: count } = await supabase.rpc("get_live_viewer_count", {
+        p_page_path: "/goblin-market",
+      });
 
       return count || 0;
     },

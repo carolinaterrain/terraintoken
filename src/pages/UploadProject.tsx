@@ -141,68 +141,40 @@ const UploadProject = () => {
     }, 120000);
 
     try {
-      setUploadProgress("Checking rate limits...");
-      
-      // Check rate limit first
-      const { data: rateLimitData, error: rateLimitError } = await supabase.functions.invoke('upload-project-media', {
-        body: {}
+      setUploadProgress("Uploading image...");
+
+      // Upload and save the project on the server (validated + rate limited)
+      const formData = new FormData();
+      formData.append("file", imageFile);
+      formData.append("title", title || "");
+      formData.append("category", category);
+      formData.append("location", location || "");
+      formData.append("description", description || "");
+      formData.append("wallet_address", walletAddress || "");
+      formData.append("is_featured", String(isFeatured));
+      formData.append("data_consent", String(dataConsent));
+
+      const { data: uploadData, error: uploadError } = await supabase.functions.invoke('upload-project-media', {
+        body: formData,
       });
 
-      if (rateLimitError || !rateLimitData?.success) {
-        clearTimeout(timeoutRef.current);
-        toast({
-          title: "Rate Limit Exceeded",
-          description: "You've uploaded too many projects recently. Please try again later.",
-          variant: "destructive",
-        });
-        setIsSubmitting(false);
-        setIsAnalyzing(false);
-        return;
+      if (uploadError || !uploadData?.success) {
+        const status = (uploadError as { context?: { status?: number } } | null)?.context?.status;
+        if (status === 429) {
+          clearTimeout(timeoutRef.current);
+          toast({
+            title: "Rate Limit Exceeded",
+            description: "You've uploaded too many projects recently. Please try again later.",
+            variant: "destructive",
+          });
+          setIsSubmitting(false);
+          setIsAnalyzing(false);
+          return;
+        }
+        throw uploadError || new Error("Upload failed");
       }
 
-      setUploadProgress("Uploading image...");
-      
-      // Upload image to Supabase Storage
-      const fileExt = imageFile.name.split('.').pop();
-      const fileName = `${Date.now()}.${fileExt}`;
-      
-      const { error: uploadError } = await supabase.storage
-        .from('carolina-terrain-projects')
-        .upload(fileName, imageFile);
-
-      if (uploadError) throw uploadError;
-
-      setUploadProgress("Processing image...");
-      
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('carolina-terrain-projects')
-        .getPublicUrl(fileName);
-
-      setUploadProgress("Analyzing terrain features...");
-      
-      // Simulate AI analysis delay (in real implementation, this would be actual AI processing)
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      setUploadProgress("Saving results...");
-      
-      // Insert into database
-      const { data: insertData, error: insertError } = await supabase
-        .from('project_media')
-        .insert({
-          image_url: publicUrl,
-          title: title || null,
-          category,
-          location: location || null,
-          description: description || null,
-          is_featured: isFeatured,
-          user_wallet_address: walletAddress || null,
-          data_consent: dataConsent,
-        })
-        .select()
-        .maybeSingle();
-
-      if (insertError) throw insertError;
+      const insertData = { id: uploadData.id as string };
 
       setUploadedMediaId(insertData.id);
       

@@ -54,54 +54,25 @@ export const useABTest = (testName: string) => {
 
       setTestId(testData.id);
 
-      // Check if already assigned
-      const { data: existingAssignment } = await supabase
-        .from("ab_test_assignments")
-        .select("variant")
-        .eq("test_id", testData.id)
-        .eq("session_id", sessionId)
-        .maybeSingle();
+      // Get existing assignment or create a new one (validated on the server)
+      const proposedVariant = selectVariant(testData.traffic_split as Record<string, number>);
+      const { data: assignedVariant } = await supabase.rpc("get_or_assign_ab_variant", {
+        p_test_id: testData.id,
+        p_session_id: sessionId,
+        p_variant: proposedVariant,
+      });
 
-      if (existingAssignment) {
-        setVariant(existingAssignment.variant);
-        
-        // Auto-track view event for existing assignment
-        await supabase.from("ab_test_events").insert({
-          test_id: testData.id,
-          session_id: sessionId,
-          variant: existingAssignment.variant,
-          event_type: "view",
-          event_data: null,
-        });
-      } else {
-        // Assign new variant
-        const newVariant = selectVariant(testData.traffic_split as Record<string, number>);
-        
-        // Use upsert to handle race conditions
-        const { data: assignmentData } = await supabase
-          .from("ab_test_assignments")
-          .upsert({
-            test_id: testData.id,
-            session_id: sessionId,
-            variant: newVariant,
-          }, {
-            onConflict: 'test_id,session_id',
-            ignoreDuplicates: false
-          })
-          .select()
-          .maybeSingle();
+      const finalVariant = (assignedVariant as string | null) || proposedVariant;
+      setVariant(finalVariant);
 
-        setVariant(assignmentData?.variant || newVariant);
-        
-        // Auto-track view event for new assignment
-        await supabase.from("ab_test_events").insert({
-          test_id: testData.id,
-          session_id: sessionId,
-          variant: assignmentData?.variant || newVariant,
-          event_type: "view",
-          event_data: null,
-        });
-      }
+      // Auto-track view event
+      await supabase.from("ab_test_events").insert({
+        test_id: testData.id,
+        session_id: sessionId,
+        variant: finalVariant,
+        event_type: "view",
+        event_data: null,
+      });
     } catch (error) {
       console.error("Error assigning A/B test variant:", error);
     } finally {

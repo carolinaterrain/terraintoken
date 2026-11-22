@@ -123,49 +123,31 @@ const SubmitMeme = () => {
     setIsSubmitting(true);
     
     try {
-      // Check rate limit first
-      const { data: rateLimitData, error: rateLimitError } = await supabase.functions.invoke('submit-meme-entry', {
-        body: {}
+      // Upload and save the submission on the server (validated + rate limited)
+      const formData = new FormData();
+      formData.append("file", imageFile);
+      formData.append("x_handle", xHandle || "");
+      formData.append("caption", caption || "");
+      formData.append("x_post_url", xPostUrl || "");
+      formData.append("email", email || "");
+
+      const { data: submitData, error: submitError } = await supabase.functions.invoke('submit-meme-entry', {
+        body: formData,
       });
 
-      if (rateLimitError || !rateLimitData?.success) {
-        toast({
-          title: "Rate Limit Exceeded",
-          description: "You've submitted too many memes recently. Please try again later.",
-          variant: "destructive",
-        });
-        setIsSubmitting(false);
-        return;
+      if (submitError || !submitData?.success) {
+        const status = (submitError as { context?: { status?: number } } | null)?.context?.status;
+        if (status === 429) {
+          toast({
+            title: "Rate Limit Exceeded",
+            description: "You've submitted too many memes recently. Please try again later.",
+            variant: "destructive",
+          });
+          setIsSubmitting(false);
+          return;
+        }
+        throw submitError || new Error("Submission failed");
       }
-
-      // Upload image to Supabase Storage
-      const fileExt = imageFile.name.split(".").pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-      
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from("meme-submissions")
-        .upload(fileName, imageFile);
-      
-      if (uploadError) throw uploadError;
-      
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from("meme-submissions")
-        .getPublicUrl(fileName);
-      
-      // Save submission to database
-      const { error: insertError } = await supabase
-        .from("meme_submissions")
-        .insert({
-          image_url: publicUrl,
-          x_handle: xHandle || null,
-          caption: caption || null,
-          x_post_url: xPostUrl || null,
-          email: email || null,
-          status: "pending"
-        });
-      
-      if (insertError) throw insertError;
       
       // Success!
       confetti({

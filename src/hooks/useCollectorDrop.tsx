@@ -41,11 +41,9 @@ export function useCollectorDrop(symbol: string = 'TRNCE0') {
       setDrop(dropData);
 
       // Get remaining count
-      const { count, error: countError } = await supabase
-        .from('collector_nft_certificates')
-        .select('*', { count: 'exact', head: true })
-        .eq('drop_id', dropData.id)
-        .eq('status', 'available');
+      const { data: count, error: countError } = await supabase.rpc('get_drop_remaining_supply', {
+        p_drop_id: dropData.id,
+      });
 
       if (countError) throw countError;
       setRemaining(count || 0);
@@ -60,24 +58,11 @@ export function useCollectorDrop(symbol: string = 'TRNCE0') {
   useEffect(() => {
     fetchDrop();
 
-    // Subscribe to real-time updates
-    const channel = supabase
-      .channel('collector-drop-updates')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'collector_nft_certificates',
-        },
-        () => {
-          fetchDrop();
-        }
-      )
-      .subscribe();
+    // Refresh remaining supply periodically (certificate rows are private)
+    const interval = setInterval(fetchDrop, 30000);
 
     return () => {
-      supabase.removeChannel(channel);
+      clearInterval(interval);
     };
   }, [fetchDrop]);
 
