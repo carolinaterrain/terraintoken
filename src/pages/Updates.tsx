@@ -23,33 +23,13 @@ interface SystemUpdate {
 const systemUpdates: SystemUpdate[] = [
   {
     id: "whitepaper-release",
-    slug: "whitepaper",
+    slug: "/whitepaper",
     title: "Documentation Update: Official Whitepaper v1.0",
-    excerpt: "The complete TRN documentation is now available, covering tokenomics structure, platform integration, and governance framework.",
+    excerpt: "The complete TRN documentation is now available, covering fixed-supply token mechanics, platform integration, and risk disclosures.",
     author: "TRN Team",
     date: "November 20, 2025",
     category: "Documentation",
     readTime: "3 min"
-  },
-  {
-    id: "origin-story",
-    slug: "how-terrain-token-started",
-    title: "Project Background: From Drainage Contractor to Terrain System",
-    excerpt: "Background documentation on how TRN emerged from Carolina Terrain's operational needs and platform development.",
-    author: "Alex Purdy",
-    date: "November 15, 2025",
-    category: "Background",
-    readTime: "10 min"
-  },
-  {
-    id: "why-real-backing",
-    slug: "why-meme-coins-need-real-world-backing",
-    title: "Context: How Terrain Token Connects to Real-World Work",
-    excerpt: "Analysis of utility/incentive token design and how TRN connects to a licensed NC drainage contractor's operations.",
-    author: "TRN Team",
-    date: "November 10, 2025",
-    category: "Technical",
-    readTime: "8 min"
   },
   {
     id: "ai-drainage-future",
@@ -61,16 +41,6 @@ const systemUpdates: SystemUpdate[] = [
     category: "Platform",
     readTime: "12 min"
   },
-  {
-    id: "transparency-report-nov",
-    slug: "transparency-report-november-2025",
-    title: "Transparency Report — November 2025",
-    excerpt: "Monthly transparency report covering wallet holdings, treasury activity, and ecosystem metrics.",
-    author: "TRN Team",
-    date: "November 1, 2025",
-    category: "Transparency",
-    readTime: "10 min"
-  }
 ];
 
 const Updates = () => {
@@ -143,7 +113,7 @@ const Updates = () => {
           {/* Updates List */}
           <div className="space-y-4">
             {systemUpdates.slice(1).map((update) => (
-              <Link key={update.id} to={`/blog/${update.slug}`}>
+              <Link key={update.id} to={update.slug.startsWith("/") ? update.slug : `/blog/${update.slug}`}>
                 <GlassCard hover className="p-5 cursor-pointer">
                   <div className="flex flex-col md:flex-row md:items-center gap-4">
                     <div className="flex-1">

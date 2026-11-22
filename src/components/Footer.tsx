@@ -90,7 +90,7 @@ const Footer = () => {
               </div>
             </div>
             <p className="text-sm text-muted-foreground mb-4 font-mono">
-              The Financial Protocol of the Terrain Ecosystem Intelligence Network
+              The Incentive Layer of the Terrain Ecosystem Intelligence Network
             </p>
             
             {/* Powered By */}
@@ -152,7 +152,7 @@ const Footer = () => {
           </div>
           <p className="text-xs text-muted-foreground text-center mt-4 max-w-4xl mx-auto font-mono">
             Operated by <span className="text-foreground">Carolina Terrain LLC · NC License #CL.1872 · Waxhaw, NC</span>.
-            $TRN is a utility/incentive token, not an investment or security. It carries no promise of profit, yield, or return.
+            $TRN is a utility/incentive token, not an investment or security. It carries no expectation of profit.
             Nothing on this site is financial advice. Always verify the contract address before interacting.
           </p>
           <div className="mt-3 flex items-start gap-2 max-w-4xl mx-auto p-3 rounded-md border border-amber-500/30 bg-amber-500/5">

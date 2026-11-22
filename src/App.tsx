@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { HelmetProvider } from "react-helmet-async";
@@ -25,7 +25,6 @@ const RoadmapPage = lazy(() => import("./pages/institutional/RoadmapPage"));
 const ContributePage = lazy(() => import("./pages/institutional/ContributePage"));
 const TokenPage = lazy(() => import("./pages/institutional/TokenPage"));
 const PricingPage = lazy(() => import("./pages/institutional/PricingPage"));
-const WhitepaperPage = lazy(() => import("./pages/institutional/WhitepaperPage"));
 const AboutPage = lazy(() => import("./pages/institutional/AboutPage"));
 const LegalPage = lazy(() => import("./pages/institutional/LegalPage"));
 const PressPage = lazy(() => import("./pages/institutional/PressPage"));
@@ -33,10 +32,8 @@ const PressPage = lazy(() => import("./pages/institutional/PressPage"));
 // Core pages
 const Ecosystem = lazy(() => import("./pages/Ecosystem"));
 const TransparencyHub = lazy(() => import("./pages/TransparencyHub"));
-const GoblinMarket = lazy(() => import("./pages/GoblinMarket"));
 const TRNDashboard = lazy(() => import("./pages/TRNDashboard"));
 const Team = lazy(() => import("./pages/Team"));
-const Investors = lazy(() => import("./pages/Investors"));
 const Updates = lazy(() => import("./pages/Updates"));
 const TokenMetadata = lazy(() => import("./pages/TokenMetadata"));
 
@@ -46,10 +43,7 @@ const Terms = lazy(() => import("./pages/Terms"));
 const RiskDisclosure = lazy(() => import("./pages/RiskDisclosure"));
 
 // Blog pages
-const BlogHowTerrainStarted = lazy(() => import("./pages/blog/how-terrain-token-started"));
-const BlogWhyMemeCoins = lazy(() => import("./pages/blog/why-meme-coins-need-real-world-backing"));
 const BlogAIDrainage = lazy(() => import("./pages/blog/ai-powered-drainage-analysis-future"));
-const BlogTransparencyReport = lazy(() => import("./pages/blog/transparency-report-november-2025"));
 
 // Shop & Drops
 const Shop = lazy(() => import("./pages/Shop"));
@@ -58,7 +52,6 @@ const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 const RedeemTRN = lazy(() => import("./pages/RedeemTRN"));
 
 // Community pages
-const GoblinCave = lazy(() => import("./pages/GoblinCave"));
 const SubmitMeme = lazy(() => import("./pages/SubmitMeme"));
 const PhilanthropicFund = lazy(() => import("./pages/PhilanthropicFund"));
 const UploadProject = lazy(() => import("./pages/UploadProject"));
@@ -107,13 +100,11 @@ const AppContent = () => {
           {/* Core Pages */}
           <Route path="/ecosystem" element={<Ecosystem />} />
           <Route path="/transparency" element={<TransparencyHub />} />
-          <Route path="/market" element={<GoblinMarket />} />
           <Route path="/dashboard" element={<TRNDashboard />} />
           <Route path="/team" element={<Team />} />
-          <Route path="/investors" element={<Investors />} />
           <Route path="/updates" element={<Updates />} />
           <Route path="/token-metadata" element={<TokenMetadata />} />
-          <Route path="/whitepaper" element={<WhitepaperPage />} />
+          <Route path="/whitepaper" element={<Whitepaper />} />
           
           {/* Legal Pages */}
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -121,10 +112,7 @@ const AppContent = () => {
           <Route path="/risk-disclosure" element={<RiskDisclosure />} />
           
           {/* Blog */}
-          <Route path="/blog/how-terrain-token-started" element={<BlogHowTerrainStarted />} />
-          <Route path="/blog/why-meme-coins-need-real-world-backing" element={<BlogWhyMemeCoins />} />
           <Route path="/blog/ai-powered-drainage-analysis-future" element={<BlogAIDrainage />} />
-          <Route path="/blog/transparency-report-november-2025" element={<BlogTransparencyReport />} />
           
           {/* Shop & Drops */}
           <Route path="/shop" element={<Shop />} />
@@ -133,7 +121,6 @@ const AppContent = () => {
           <Route path="/redeem" element={<RedeemTRN />} />
           
           {/* Community */}
-          <Route path="/goblin-cave" element={<GoblinCave />} />
           <Route path="/submit-meme" element={<SubmitMeme />} />
           <Route path="/philanthropic-fund" element={<PhilanthropicFund />} />
           <Route path="/upload-project" element={<UploadProject />} />
@@ -148,6 +135,14 @@ const AppContent = () => {
           <Route path="/admin/ab-tests" element={<AdminRoute><ABTestsDashboard /></AdminRoute>} />
           <Route path="/admin/airdrop" element={<AirdropDashboard />} />
           
+          {/* Retired routes (compliance cleanup) — redirect so old links do not 404 */}
+          <Route path="/investors" element={<Navigate to="/" replace />} />
+          <Route path="/goblin-cave" element={<Navigate to="/" replace />} />
+          <Route path="/market" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/blog/how-terrain-token-started" element={<Navigate to="/updates" replace />} />
+          <Route path="/blog/why-meme-coins-need-real-world-backing" element={<Navigate to="/updates" replace />} />
+          <Route path="/blog/transparency-report-november-2025" element={<Navigate to="/updates" replace />} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

@@ -1,18 +1,13 @@
 import { Helmet } from "react-helmet-async";
 import { DashboardErrorBoundary } from "@/components/charts/DashboardErrorBoundary";
 import { TRNDashboardHeader } from "@/components/dashboard/TRNDashboardHeader";
-import { TRNGrowthCard } from "@/components/dashboard/TRNGrowthCard";
-import { APYHeroBanner } from "@/components/dashboard/APYHeroBanner";
 import { UtilityTrustCards } from "@/components/dashboard/UtilityTrustCards";
 import { LiveTokenStats } from "@/components/dashboard/LiveTokenStats";
-import { DexScreenerChart } from "@/components/market/DexScreenerChart";
 import { LiveHolderTracker } from "@/components/market/LiveHolderTracker";
-import { BurnBandIndicator } from "@/components/ecosystem/BurnBandIndicator";
 import Footer from "@/components/Footer";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { TRN_MINT_ADDRESS, TRN_APY_RATE } from "@/lib/airdropConstants";
+import { TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
 
 export default function TRNDashboard() {
   return (
@@ -31,20 +26,6 @@ export default function TRNDashboard() {
 
         {/* Main Content */}
         <main className="container mx-auto px-4 py-8 space-y-10 flex-1">
-        {/* APY Hero Banner - Maximum Prominence */}
-        <section>
-          <DashboardErrorBoundary componentName="APY Banner">
-            <APYHeroBanner />
-          </DashboardErrorBoundary>
-        </section>
-
-        {/* Personal Balance Card */}
-        <section className="max-w-4xl mx-auto">
-          <DashboardErrorBoundary componentName="Growth Card">
-            <TRNGrowthCard />
-          </DashboardErrorBoundary>
-        </section>
-
           {/* Live Token Stats */}
           <section>
             <DashboardErrorBoundary componentName="Token Stats">
@@ -55,20 +36,6 @@ export default function TRNDashboard() {
           {/* Utility & Trust Cards */}
           <DashboardErrorBoundary componentName="Utility Cards">
             <UtilityTrustCards />
-          </DashboardErrorBoundary>
-
-          {/* Price Chart */}
-          <section>
-            <DashboardErrorBoundary componentName="Price Chart">
-              <DexScreenerChart />
-            </DashboardErrorBoundary>
-          </section>
-
-          {/* Burn Band Indicator */}
-          <DashboardErrorBoundary componentName="Burn Band">
-            <Card className="p-6 bg-card/50 backdrop-blur border-border/50">
-              <BurnBandIndicator showProgress />
-            </Card>
           </DashboardErrorBoundary>
 
           {/* Holder Tracker */}

@@ -1,4 +1,4 @@
-import { Home, Briefcase, Layers, TrendingUp, MoreHorizontal, Heart, FileText, Shield, Newspaper, BookOpen, Users, RotateCcw, Shirt } from "lucide-react";
+import { Home, Layers, TrendingUp, MoreHorizontal, Heart, FileText, Shield, Newspaper, BookOpen, Users, RotateCcw, Shirt } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
@@ -41,8 +41,7 @@ const MobileNav = () => {
 
   const moreItems = [
     { path: "/drops", label: "Drops", icon: Shirt },
-    { path: "/market", label: "Market Data", icon: TrendingUp },
-    { path: "/investors", label: "For Investors", icon: Briefcase },
+    { path: "/dashboard", label: "Token Dashboard", icon: TrendingUp },
     { path: "/team", label: "About Us", icon: Users },
     { path: "/philanthropic-fund", label: "Philanthropic Fund", icon: Heart },
     { path: "/press", label: "Press Kit", icon: Newspaper },

@@ -3,14 +3,6 @@ import { render } from '@/test/test-utils';
 import Index from '@/pages/Index';
 
 // Mock heavy components to speed up tests
-vi.mock('@/components/Hero', () => ({
-  default: () => <div data-testid="hero-section">Hero Section</div>,
-}));
-
-vi.mock('@/components/TokenStats', () => ({
-  default: () => <div data-testid="token-stats">Token Stats</div>,
-}));
-
 vi.mock('@/components/About', () => ({
   default: () => <div data-testid="about-section">About Section</div>,
 }));

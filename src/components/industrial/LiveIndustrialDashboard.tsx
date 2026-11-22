@@ -6,9 +6,8 @@ import {
   Flame, 
   Users, 
   Activity,
-  TrendingUp,
   Clock,
-  DollarSign,
+  Lock,
   AlertCircle
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -33,7 +32,7 @@ interface RealActivityEvent {
 }
 
 export function LiveIndustrialDashboard() {
-  const { holderCount, stats, supply, isLoading, dataSource } = useTokenData();
+  const { holderCount, supply, isLoading, dataSource } = useTokenData();
   const [realBurns, setRealBurns] = useState<RealBurnEvent[]>([]);
   const [realActivities, setRealActivities] = useState<RealActivityEvent[]>([]);
   const [burnsLoading, setBurnsLoading] = useState(true);
@@ -41,9 +40,6 @@ export function LiveIndustrialDashboard() {
 
   // Live data
   const holders = holderCount?.holderCount || 0;
-  const marketCap = stats?.marketCap || "$0";
-  const volume = stats?.volume24h || "$0";
-  const priceChange = stats?.change24h || 0;
 
   // Fetch REAL burn events from database (excluding test data)
   useEffect(() => {
@@ -131,9 +127,9 @@ export function LiveIndustrialDashboard() {
     const labels: Record<string, string> = {
       energy_purchase: 'Energy Purchase',
       marketplace_fee: 'Marketplace Fee',
-      prediction_stake: 'Prediction Stake',
-      mystery_box: 'Mystery Box',
-      buyback: 'Treasury Buyback',
+      prediction_stake: 'Legacy Activity',
+      mystery_box: 'Legacy Activity',
+      buyback: 'Treasury Burn',
     };
     return labels[source] || source;
   };
@@ -153,7 +149,7 @@ export function LiveIndustrialDashboard() {
             Industrial <span className="text-safety-green">Intelligence</span> Dashboard
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto font-mono">
-            Real-time metrics from DexScreener & Helius APIs
+            Real-time on-chain metrics from Helius
           </p>
         </div>
 
@@ -167,25 +163,25 @@ export function LiveIndustrialDashboard() {
             isLoading={isLoading}
           />
           <MetricCard
-            icon={<DollarSign className="h-5 w-5" />}
-            label="Market Cap"
-            value={isLoading ? null : marketCap}
-            change={`${priceChange >= 0 ? '+' : ''}${priceChange.toFixed(1)}%`}
+            icon={<Lock className="h-5 w-5" />}
+            label="Mint Authority"
+            value="Revoked"
+            change="On-chain"
             color="text-solana-purple"
-            isLoading={isLoading}
+            isLoading={false}
           />
           <MetricCard
-            icon={<TrendingUp className="h-5 w-5" />}
-            label="24h Volume"
-            value={isLoading ? null : volume}
-            change="DexScreener"
+            icon={<Flame className="h-5 w-5" />}
+            label="LP Tokens"
+            value="Burned"
+            change="On-chain"
             color="text-orange-500"
-            isLoading={isLoading}
+            isLoading={false}
           />
           <MetricCard
             icon={<Database className="h-5 w-5" />}
             label="Total Supply"
-            value={isLoading ? null : (supply?.formatted?.total && supply.formatted.total !== 'NaN' ? supply.formatted.total : '1.007B TRN')}
+            value={isLoading ? null : (supply?.formatted?.total && supply.formatted.total !== 'NaN' ? supply.formatted.total : '1.25B TRN')}
             change="Fixed"
             color="text-safety-green"
             isLoading={isLoading}

@@ -1,19 +1,30 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Globe, FileText, Hexagon, Database, Shield, Users, TrendingUp, TrendingDown, Activity } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, Globe, FileText, Hexagon, Database, Shield, Users, Lock, Copy, Check, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTokenData } from "@/providers/TokenDataProvider";
 import { Skeleton } from "@/components/ui/skeleton";
+import { TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
+import { HERO_NOT_INVESTMENT_LINE } from "@/lib/complianceCopy";
 
 export function IndustrialHero() {
-  const { holderCount, stats, isLoading, dataSource } = useTokenData();
+  const { holderCount, isLoading, dataSource } = useTokenData();
+  const [copied, setCopied] = useState(false);
 
-  // Live data from TokenDataProvider
+  // Live holder count from TokenDataProvider
   const holders = holderCount?.holderCount || 0;
-  const marketCap = stats?.marketCap || "$0";
-  const priceChange = stats?.change24h || 0;
-  const volume = stats?.volume24h || "$0";
+
+  const copyContract = async () => {
+    try {
+      await navigator.clipboard.writeText(TRN_MINT_ADDRESS);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard unavailable — address is still visible and selectable
+    }
+  };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
@@ -85,7 +96,7 @@ export function IndustrialHero() {
               className="px-4 py-2 text-xs font-mono border-primary/30 text-primary bg-primary/5 uppercase tracking-widest"
             >
               <span className="mr-2 inline-block w-2 h-2 bg-primary rounded-full animate-pulse" />
-              Terrain Ecosystem • Financial Protocol
+              Terrain Ecosystem • Incentive Layer
             </Badge>
           </motion.div>
 
@@ -97,7 +108,7 @@ export function IndustrialHero() {
             className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight"
           >
             <span className="text-foreground">The </span>
-            <span className="text-primary">Financial Protocol</span>
+            <span className="text-primary">Incentive Layer</span>
             <br />
             <span className="text-foreground">of the Terrain Ecosystem</span>
           </motion.h1>
@@ -112,6 +123,16 @@ export function IndustrialHero() {
             Tokenizing Ground-Truth Metadata for the Next Generation of Terrain Intelligence.
             <br />
             <span className="text-primary/70">Powered by Terrain Vision AI • Operationalized by Carolina Terrain, LLC</span>
+          </motion.p>
+
+          {/* Compliance line */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.25 }}
+            className="text-sm md:text-base text-foreground/90 max-w-2xl mx-auto"
+          >
+            {HERO_NOT_INVESTMENT_LINE}
           </motion.p>
 
           {/* CTAs */}
@@ -158,23 +179,43 @@ export function IndustrialHero() {
             />
             <StatCard 
               icon={<Database className="h-5 w-5 text-accent" />}
-              value={isLoading ? null : marketCap}
-              label="Market Cap"
-              isLive={dataSource === 'live'}
+              value="1.25B"
+              label="Fixed Supply"
             />
             <StatCard 
-              icon={priceChange >= 0 ? <TrendingUp className="h-5 w-5 text-primary" /> : <TrendingDown className="h-5 w-5 text-destructive" />}
-              value={isLoading ? null : `${priceChange >= 0 ? '+' : ''}${priceChange.toFixed(1)}%`}
-              label="24h Change"
-              isLive={dataSource === 'live'}
-              valueColor={priceChange >= 0 ? 'text-primary' : 'text-destructive'}
+              icon={<Lock className="h-5 w-5 text-primary" />}
+              value="Revoked"
+              label="Mint Authority"
             />
             <StatCard 
-              icon={<Activity className="h-5 w-5 text-accent" />}
-              value={isLoading ? null : volume}
-              label="24h Volume"
-              isLive={dataSource === 'live'}
+              icon={<Shield className="h-5 w-5 text-accent" />}
+              value="Burned"
+              label="LP Tokens"
             />
+          </motion.div>
+
+          {/* Official contract address */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="max-w-3xl mx-auto bg-card/60 border border-primary/30 rounded-lg p-4 backdrop-blur-sm"
+          >
+            <p className="text-xs text-muted-foreground font-mono uppercase tracking-wider mb-2">Official $TRN Contract (Solana Token-2022)</p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <code className="font-mono text-sm md:text-base text-primary break-all select-all">{TRN_MINT_ADDRESS}</code>
+              <div className="flex gap-2 flex-shrink-0">
+                <Button size="sm" variant="outline" onClick={copyContract} className="gap-1 font-mono" aria-label="Copy contract address">
+                  {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                  {copied ? "Copied" : "Copy"}
+                </Button>
+                <Button size="sm" variant="outline" asChild className="gap-1 font-mono">
+                  <a href={`https://solscan.io/token/${TRN_MINT_ADDRESS}`} target="_blank" rel="noopener noreferrer">
+                    Solscan <ExternalLink className="h-3 w-3" />
+                  </a>
+                </Button>
+              </div>
+            </div>
           </motion.div>
 
           {/* Data source indicator */}
@@ -185,7 +226,7 @@ export function IndustrialHero() {
             className="flex items-center justify-center gap-2 text-xs text-muted-foreground font-mono"
           >
             <span className={`w-2 h-2 rounded-full ${dataSource === 'live' ? 'bg-primary animate-pulse' : 'bg-amber-500'}`} />
-            {dataSource === 'live' ? 'Live Protocol Data • DexScreener + Helius' : 'Cached data'}
+            {dataSource === 'live' ? 'Live holder data • Helius' : 'Cached data'}
           </motion.div>
         </div>
       </div>

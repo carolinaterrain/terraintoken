@@ -84,8 +84,8 @@ export default function ProofPage() {
             <div className="p-6 rounded-xl border bg-card space-y-4">
               <h3 className="font-semibold">Whitepaper</h3>
               <p className="text-sm text-muted-foreground">
-                Our whitepaper documents the complete methodology, including supply mechanics, 
-                burn calculations, and ecosystem governance.
+                Our whitepaper documents the complete methodology, including fixed-supply mechanics, 
+                verification procedures, and risk disclosures.
               </p>
               <Link to="/whitepaper">
                 <Button variant="outline" size="sm" className="gap-2">

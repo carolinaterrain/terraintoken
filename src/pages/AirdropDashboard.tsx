@@ -16,7 +16,8 @@ import { useAirdropRecipients } from "@/hooks/useAirdropRecipients";
 import { AirdropStatsCards } from "@/components/airdrop/AirdropStatsCards";
 import { AirdropRecipientTable } from "@/components/airdrop/AirdropRecipientTable";
 import { AirdropProgressTracker, BatchStatus } from "@/components/airdrop/AirdropProgressTracker";
-import { ADMIN_WALLET, BATCH_SIZE, TRN_MINT_ADDRESS, TRN_APY_RATE } from "@/lib/airdropConstants";
+import { ADMIN_WALLET, BATCH_SIZE, TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
+import { INTEREST_SETTING_DISCLOSURE } from "@/lib/complianceCopy";
 
 export default function AirdropDashboard() {
   const { publicKey, connected } = useWallet();
@@ -154,8 +155,8 @@ export default function AirdropDashboard() {
                   <Sparkles className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <p className="font-bold text-primary text-lg">Token-2022 Interest-Bearing Extension Enabled</p>
-                  <p className="text-xs text-muted-foreground">Technical property of the mint (1500 BPS). Not an investment, not a promised return.</p>
+                  <p className="font-bold text-primary text-lg">Solana Token-2022 · Fixed Supply</p>
+                  <p className="text-xs text-muted-foreground">{INTEREST_SETTING_DISCLOSURE}</p>
                 </div>
               </div>
               <a
@@ -376,7 +377,7 @@ export default function AirdropDashboard() {
               className="inline-flex items-center gap-2 text-primary hover:underline"
             >
               <Shield className="w-3 h-3" />
-              Verify Interest-Bearing Extension on Solscan
+              Verify Mint on Solscan
               <ExternalLink className="w-3 h-3" />
             </a>
           </div>

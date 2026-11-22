@@ -12,7 +12,7 @@ const LegalDisclaimers = () => {
               <h3 className="font-display text-xl font-bold mb-4">Important Information</h3>
               
               <ul className="font-body text-sm text-muted-foreground space-y-3">
-                <li>• TRN rewards are recognition tokens for data contribution, not investment returns</li>
+                <li>• TRN rewards are recognition tokens for data contribution, not investments</li>
                 <li>• TRN has no guaranteed monetary value and is subject to market fluctuations</li>
                 <li>• Participation does not constitute an investment or financial relationship</li>
                 <li>• Data provided is used for AI training and ecosystem improvement</li>

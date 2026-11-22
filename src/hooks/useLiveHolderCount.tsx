@@ -33,7 +33,7 @@ export function useLiveHolderCount() {
     totalHolders: data.holderCount,
     tiers: data.holderTiers,
     top10Percentage: data.top10Percentage,
-    holders: [], // Top holders fetched separately by TopHoldersLeaderboard
+    holders: [],
     source: dataSource,
     lastUpdated: lastUpdated || new Date().toISOString(),
   } : undefined;

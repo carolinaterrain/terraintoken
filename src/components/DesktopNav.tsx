@@ -60,7 +60,6 @@ const DesktopNav = () => {
     { path: "/proof", label: "Proof", section: "Platform" },
     { path: "/pricing", label: "Pricing", section: "Platform" },
     { path: "/token", label: "Token", section: "Token" },
-    { path: "/investors", label: "For Investors", section: "Token" },
     { path: "/about", label: "About", section: "Company" },
     { path: "/team", label: "Team", section: "Company" },
     { path: "/press", label: "Press", section: "Company" },

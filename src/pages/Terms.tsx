@@ -34,7 +34,6 @@ const Terms = () => {
               <ul className="list-disc pl-6 text-muted-foreground space-y-2">
                 <li>Access to TerrainVision AI analysis tools</li>
                 <li>Participation in the terrain data contribution ecosystem</li>
-                <li>Governance participation for token holders</li>
                 <li>Access to exclusive collector drops and merchandise</li>
               </ul>
             </section>
@@ -53,7 +52,7 @@ const Terms = () => {
                 <p className="text-yellow-400 font-semibold mb-2">⚠️ Important Notice</p>
                 <p className="text-muted-foreground">
                   TRN is a utility token. It is NOT an investment, security, or financial instrument. TRN does not 
-                  represent equity, ownership, or any promise of profit, appreciation, or yield. The value of TRN 
+                  represent equity, ownership, or any expectation of profit or appreciation. The value of TRN 
                   may fluctuate significantly and you could lose your entire purchase.
                 </p>
               </div>

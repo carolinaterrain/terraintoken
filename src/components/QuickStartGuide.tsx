@@ -15,7 +15,7 @@ export const QuickStartGuide = () => {
       bgColor: "bg-yellow-500/10",
       borderColor: "border-yellow-500/20",
       description: "A utility/incentive token",
-      details: "TRN powers platform access within the Terrain Token ecosystem. Built by Carolina Terrain, a licensed NC drainage contractor. $TRN is not an investment or security and carries no promise of profit, yield, or return."
+      details: "TRN powers platform access within the Terrain Token ecosystem. Built by Carolina Terrain, a licensed NC drainage contractor. $TRN is not an investment or security and carries no expectation of profit."
     },
     {
       icon: Shield,

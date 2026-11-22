@@ -1,3 +1,4 @@
+import { INTEREST_SETTING_DISCLOSURE } from "@/lib/complianceCopy";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Download, Copy, Check, ExternalLink, AlertTriangle, ShieldCheck, CheckCircle2, Hammer } from "lucide-react";
@@ -149,13 +150,15 @@ const Whitepaper = () => {
             </div>
             <div className="flex flex-wrap gap-3 print:hidden">
               <Button asChild>
-                <a
-                  href="/Terrain_Token_TRN_Whitepaper.pdf"
-                  download
-                  onClick={() => trackWhitepaperDownload?.('download', 'whitepaper-page')}
+                <button
+                  type="button"
+                  onClick={() => {
+                    trackWhitepaperDownload?.('download', 'whitepaper-page');
+                    window.print();
+                  }}
                 >
-                  <Download className="h-4 w-4 mr-2" /> Download PDF
-                </a>
+                  <Download className="h-4 w-4 mr-2" /> Print / Save as PDF
+                </button>
               </Button>
               <Button variant="outline" asChild>
                 <a href={SOLSCAN_URL} target="_blank" rel="noopener noreferrer">
@@ -227,8 +230,7 @@ const Whitepaper = () => {
                 with $TRN aligning rewards to verifiable physical actions and contributed terrain data.
               </P>
               <P>
-                The token is deployed as a fixed-supply Solana Token-2022 with the native interest-bearing extension
-                enabled (1500 BPS) — a technical property of the mint, not a promised yield or return. There is no
+                The token is deployed as a fixed-supply Solana Token-2022. {INTEREST_SETTING_DISCLOSURE} There is no
                 mint authority, no presale, no VC allocation, and no ability for the operating team to mint additional
                 supply. $TRN is a utility/incentive token. It is not an investment and not a security.
               </P>
@@ -281,7 +283,7 @@ const Whitepaper = () => {
                       ["Liquidity Pool", "Burned (LP cannot be withdrawn)"],
                       ["Metadata", "Locked"],
                       ["Founder Allocation", "Time-locked"],
-                      ["Interest-Bearing Extension", "Enabled at 1500 BPS — technical property of the mint, not a promised yield or return"],
+                      ["Interest Setting", INTEREST_SETTING_DISCLOSURE],
                       [
                         "Verification",
                         <a key="v" href={SOLSCAN_URL} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline break-all">
@@ -306,21 +308,11 @@ const Whitepaper = () => {
                 which token values are diluted in early-stage projects.
               </P>
 
-              <H3>3.3 How the Interest-Bearing Extension Works</H3>
+              <H3>3.3 The Interest Setting on the Mint</H3>
               <P>
-                The mint uses the Token-2022 <strong>interest-bearing extension</strong> — a native on-chain
-                mechanism, not a staking contract, not an emissions schedule, not a reward pool. This is a technical
-                property of the mint, not a promise of yield, profit, or return. $TRN is a utility/incentive token,
-                not an investment and not a security.
+                {INTEREST_SETTING_DISCLOSURE} $TRN is a utility/incentive token, not an investment and not a
+                security. Minting is permanently revoked and the supply is fixed at 1,250,000,000.
               </P>
-              <P>This matters because:</P>
-              <ul className="list-disc pl-6 space-y-2 mb-4 text-sm md:text-base text-foreground/85">
-                <li><strong>No dilution to non-stakers.</strong> Yield is paid in updated token amounts on the same supply, not minted from a separate pool.</li>
-                <li><strong>No unlock cliff or vesting wall.</strong> Yield accrues continuously.</li>
-                <li><strong>No claim transactions.</strong> Yield is reflected in account balances natively.</li>
-                <li><strong>No staking contract risk.</strong> There is no third-party contract holding tokens hostage; yield is a property of the mint itself.</li>
-              </ul>
-              <P>This is the lowest-friction yield mechanism available on Solana, and it is fully verifiable on Solscan.</P>
 
               <H3>3.4 What "LP Burned" Means in Practice</H3>
               <P>The liquidity provider tokens — which represent ownership of the TRN/SOL liquidity pool — were destroyed at deployment. This means:</P>
@@ -365,7 +357,7 @@ const Whitepaper = () => {
                 {
                   emoji: "🧱", stage: "Plan", name: "TerrainVision AI", status: "live" as const,
                   url: "https://terrainvision-ai.com", urlLabel: "terrainvision-ai.com",
-                  body: "AI-powered site analysis. Takes drone imagery or photos, returns evidence-ready scope packages including identified drainage problem areas, recommended interventions, and asset measurements where extractable from imagery. Built by Carolina Terrain to scope sites faster and more consistently — modeled on real installs in NC clay soils, not abstract data.",
+                  body: "AI-powered site analysis. Takes drone imagery or photos and produces evidence-ready scope packages including identified drainage problem areas, recommended interventions, and asset measurements where extractable from imagery. Built by Carolina Terrain to scope sites faster and more consistently — modeled on real installs in NC clay soils, not abstract data.",
                 },
                 {
                   emoji: "🚜", stage: "Build", name: "Carolina Terrain LLC", status: "live" as const,
@@ -432,7 +424,7 @@ const Whitepaper = () => {
                 <ul className="space-y-2.5">
                   {[
                     { s: "live" as const, t: "Token deployed on Solana Token-2022. Contract verified, mint revoked, LP burned." },
-                    { s: "live" as const, t: "Token-2022 interest-bearing extension enabled on the mint (1500 BPS)." },
+                    { s: "live" as const, t: INTEREST_SETTING_DISCLOSURE },
                     { s: "live" as const, t: "Carolina Terrain LLC operating as licensed contractor (NC #CL.1872)." },
                     { s: "live" as const, t: "TerrainVision AI live for site analysis." },
                     { s: "live" as const, t: "Stormwater SCM live for compliance documentation." },
@@ -626,7 +618,7 @@ const Whitepaper = () => {
                     explorer.solana.com/address/{CONTRACT}
                   </a>
                 </li>
-                <li><strong>Verify on-chain that:</strong> mint authority is disabled, supply is 1,250,000,000, Token-2022 program is in use, interest-bearing extension is enabled.</li>
+                <li><strong>Verify on-chain that:</strong> mint authority is disabled, supply is 1,250,000,000, Token-2022 program is in use.</li>
               </ul>
 
               <H3>9.2 Operating Entity Verification</H3>
@@ -680,7 +672,6 @@ const Whitepaper = () => {
                   "Total supply equals 1,250,000,000 on Solscan",
                   "Mint authority is disabled on Solscan",
                   "Token-2022 program is in use on Solscan",
-                  "Interest-bearing extension is enabled on the mint",
                   "LP burn transaction is verifiable on Solana",
                   "Carolina Terrain LLC is licensed under NC #CL.1872 (verifiable through state systems)",
                   "At least one operational ecosystem site (terrainvision-ai.com, stormwaterscm.com, or www.carolinaterrain.com) resolves correctly",

@@ -4,14 +4,14 @@ import { Badge } from "@/components/ui/badge";
 import { WalletConnect } from "@/components/market/WalletConnect";
 import { LiveViewersCounter } from "@/components/market/LiveViewersCounter";
 import { AdminAirdropButton } from "./AdminAirdropButton";
-import { TRN_MINT_ADDRESS, TRN_APY_RATE } from "@/lib/airdropConstants";
+import { TRN_MINT_ADDRESS } from "@/lib/airdropConstants";
 import BackToHome from "@/components/BackToHome";
 
 export function TRNDashboardHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/50 bg-background/95 backdrop-blur-xl">
       <div className="container mx-auto px-4">
-        {/* Top bar with APY banner */}
+        {/* Top bar: utility notice */}
         <div className="flex items-center justify-center py-2 border-b border-border/30">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -21,7 +21,7 @@ export function TRNDashboardHeader() {
             <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-primary/10 via-primary/5 to-transparent border border-primary/30">
               <Sparkles className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-primary">
-                Token-2022 Interest-Bearing Extension
+                Solana Token-2022 · Fixed 1.25B Supply
               </span>
               <Badge variant="outline" className="text-xs border-amber-500/30 text-amber-500">
                 Utility Token · Not an Investment
@@ -55,7 +55,7 @@ export function TRNDashboardHeader() {
               Terrain Token ($TRN)
             </h1>
             <p className="text-xs text-muted-foreground">
-              The Financial Protocol of the Terrain Ecosystem
+              The Incentive Layer of the Terrain Ecosystem
             </p>
           </div>
 

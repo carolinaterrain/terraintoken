@@ -90,7 +90,7 @@ const About = () => {
             </div>
             <div className="flex items-start gap-2">
               <span className="text-destructive font-bold">✕</span>
-              <p><span className="text-foreground font-semibold">Not a promise of returns.</span> Value may decrease to zero.</p>
+              <p><span className="text-foreground font-semibold">Not an investment.</span> Value may decrease to zero.</p>
             </div>
             <div className="flex items-start gap-2">
               <span className="text-destructive font-bold">✕</span>

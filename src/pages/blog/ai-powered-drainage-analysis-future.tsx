@@ -4,7 +4,6 @@ import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
 import BackToHome from "@/components/BackToHome";
 import { AuthorCard } from "@/components/blog/AuthorCard";
-import { RelatedArticles } from "@/components/blog/RelatedArticles";
 import { ShareButtons } from "@/components/blog/ShareButtons";
 import { TableOfContents } from "@/components/blog/TableOfContents";
 import { CallToAction } from "@/components/blog/CallToAction";
@@ -30,35 +29,6 @@ const AIPoweredDrainageAnalysisFuture = () => {
     { id: "faq", text: "FAQ: The Technical Questions", level: 2 }
   ];
 
-  const relatedArticles = [
-    {
-      slug: "how-terrain-token-started",
-      title: "How Terrain Token Started",
-      excerpt: "The origin story of how a licensed NC drainage contractor built the Terrain ecosystem and AI platform.",
-      category: "Origin Story",
-      date: "November 15, 2025",
-      author: "Alex Purdy & Zac Hyman",
-      readTime: "10 min"
-    },
-    {
-      slug: "why-meme-coins-need-real-world-backing",
-      title: "Why Every Meme Coin Needs Real-World Backing",
-      excerpt: "How TRN is structured as a utility/incentive token tied to a licensed NC drainage contractor's operations.",
-      category: "Analysis",
-      date: "November 10, 2025",
-      author: "TRN Team",
-      readTime: "8 min"
-    },
-    {
-      slug: "transparency-report-november-2025",
-      title: "TRN Transparency Report – November 2025",
-      excerpt: "Monthly transparency report covering wallet holdings, treasury activity, and ecosystem metrics.",
-      category: "Transparency",
-      date: "November 1, 2025",
-      author: "TRN Team",
-      readTime: "10 min"
-    }
-  ];
 
   return (
     <>
@@ -374,7 +344,7 @@ const AIPoweredDrainageAnalysisFuture = () => {
                 </ul>
 
                 <p>
-                  <strong>Network effect:</strong> With 1,200+ sensors deployed (and growing), TerrainVision has the largest proprietary drainage dataset in North Carolina. More data = Better predictions = Better outcomes.
+                  <strong>Network effect:</strong> With 1,200+ sensors deployed, TerrainVision has the largest proprietary drainage dataset in North Carolina. More data = Better predictions = Better outcomes.
                 </p>
 
                 <h2 id="reinforcement" className="font-display text-3xl font-bold mt-12 mb-6">
@@ -431,21 +401,17 @@ const AIPoweredDrainageAnalysisFuture = () => {
                     <li><strong className="text-primary">Step 2:</strong> Sensors collect drainage data</li>
                     <li><strong className="text-primary">Step 3:</strong> Homeowner earns TRN tokens for data contribution</li>
                     <li><strong className="text-primary">Step 4:</strong> Data improves TerrainVision AI accuracy</li>
-                    <li><strong className="text-primary">Step 5:</strong> Better AI = Better service = More customers</li>
-                    <li><strong className="text-primary">Step 6:</strong> More customers = More revenue</li>
-                    <li><strong className="text-primary">Step 7:</strong> Revenue → TRN treasury → Token buybacks</li>
-                    <li><strong className="text-primary">Step 8:</strong> Token value increases</li>
-                    <li><strong className="text-primary">Step 9:</strong> More incentive for homeowners to participate</li>
-                    <li><strong className="text-primary">Step 10:</strong> REPEAT → Network effect accelerates</li>
+                    <li><strong className="text-primary">Step 5:</strong> Better AI = more accurate drainage recommendations</li>
+                    <li><strong className="text-primary">Step 6:</strong> More verified field work gets documented and rewarded</li>
                   </ol>
                 </div>
 
                 <p>
-                  <strong>Data is the new drainage.</strong> The more data TerrainVision collects, the smarter it gets. The smarter it gets, the more valuable TRN becomes. The more valuable TRN becomes, the more people contribute data. Classic flywheel economics.
+                  <strong>Data is the new drainage.</strong> The more verified data TerrainVision collects, the more accurate its drainage analysis becomes. $TRN rewards verified physical work. It is not an investment and carries no expectation of profit.
                 </p>
 
                 <GoblinWisdomBox>
-                  Other tokens reward you for staking or providing liquidity. TRN rewards you for helping solve actual problems. Your yard becomes a node in the world's smartest drainage network. And you get paid for it.
+                  TRN is a recognition credit for verified physical work and contributed field data. Your yard becomes a node in a drainage data network.
                 </GoblinWisdomBox>
 
                 <h2 id="competitive" className="font-display text-3xl font-bold mt-12 mb-6">
@@ -572,7 +538,6 @@ const AIPoweredDrainageAnalysisFuture = () => {
             image="/terrain-mascot.png"
           />
 
-          <RelatedArticles articles={relatedArticles} />
         </article>
       </main>
 

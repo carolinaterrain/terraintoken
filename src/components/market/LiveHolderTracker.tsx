@@ -1,4 +1,4 @@
-import { Users, TrendingUp, Clock } from "lucide-react";
+import { Users, Activity, Clock } from "lucide-react";
 import { useTokenData } from "@/providers/TokenDataProvider";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DataFreshnessBadge } from "@/components/ui/data-freshness-badge";
@@ -12,8 +12,6 @@ export const LiveHolderTracker = () => {
   }
 
   const count = holderCount?.holderCount || 0;
-  const target = 5000;
-  const progress = (count / target) * 100;
   const formattedTime = lastUpdated ? new Date(lastUpdated) : null;
 
   return (
@@ -32,22 +30,8 @@ export const LiveHolderTracker = () => {
           </div>
         </div>
         <div className="flex items-center gap-1 text-goblin-green animate-pulse">
-          <TrendingUp className="w-4 h-4" />
+          <Activity className="w-4 h-4" />
           <span className="text-sm font-semibold">Live</span>
-        </div>
-      </div>
-
-      {/* Progress to target */}
-      <div className="space-y-2">
-        <div className="flex justify-between text-xs text-muted-foreground">
-          <span>Progress to {target.toLocaleString()} holders</span>
-          <span>{progress.toFixed(1)}%</span>
-        </div>
-        <div className="h-2 bg-terrain-shadow rounded-full overflow-hidden">
-          <div
-            className="h-full bg-gradient-to-r from-goblin-green to-terrain-purple transition-all duration-500"
-            style={{ width: `${Math.min(progress, 100)}%` }}
-          />
         </div>
       </div>
 

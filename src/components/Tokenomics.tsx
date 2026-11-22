@@ -1,3 +1,4 @@
+import { INTEREST_SETTING_DISCLOSURE } from "@/lib/complianceCopy";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import TokenomicsDashboard from "@/components/TokenomicsDashboard";
@@ -6,7 +7,6 @@ import { useTokenData } from "@/providers/TokenDataProvider";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DataFreshnessBadge } from "@/components/ui/data-freshness-badge";
 import { GlossaryTooltip } from "@/components/ecosystem/GlossaryTooltip";
-import { EcosystemImpactCard } from "@/components/ecosystem/EcosystemImpactCard";
 import { Link } from "react-router-dom";
 
 const Tokenomics = () => {
@@ -110,11 +110,6 @@ const Tokenomics = () => {
           })}
         </div>
 
-        {/* Ecosystem Impact Card - Compact view */}
-        <div className="mt-12 flex justify-center">
-          <EcosystemImpactCard variant="compact" className="max-w-md" />
-        </div>
-
         {/* Cross-App Navigation */}
         <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
           <Button asChild>
@@ -123,8 +118,8 @@ const Tokenomics = () => {
             </Link>
           </Button>
           <Button variant="outline" asChild>
-            <Link to="/market">
-              Live Market Data
+            <Link to="/dashboard">
+              Token Dashboard
             </Link>
           </Button>
         </div>
@@ -144,11 +139,9 @@ const Tokenomics = () => {
               </p>
             </GlassCard>
             <GlassCard className="p-6">
-              <h4 className="font-display text-lg font-bold mb-3 text-primary">What is the interest-bearing extension?</h4>
+              <h4 className="font-display text-lg font-bold mb-3 text-primary">What is the interest setting?</h4>
               <p className="font-body text-sm text-muted-foreground">
-                $TRN uses Solana's Token-2022 interest-bearing extension — a technical property encoded in the mint.
-                This is a feature of the token standard, not a yield, not a return, and not a promise of profit.
-                $TRN is a utility/incentive token, not an investment. Always verify on-chain.
+                {INTEREST_SETTING_DISCLOSURE} $TRN is a utility/incentive token, not an investment. Always verify on-chain.
               </p>
             </GlassCard>
             <GlassCard className="p-6">

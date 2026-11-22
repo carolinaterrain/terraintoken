@@ -10,7 +10,6 @@ import {
   Users, 
   Heart,
   CheckCircle,
-  ExternalLink,
   ArrowLeft,
   Copy,
   Check,
@@ -50,7 +49,7 @@ const impactCategories = [
   },
   {
     icon: Users,
-    title: "Community-Voted Causes",
+    title: "Community-Suggested Causes",
     description: "Any initiative aligned with Terrain's mission"
   }
 ];
@@ -58,8 +57,8 @@ const impactCategories = [
 // Bounded, non-promotional benefits
 const benefits = [
   "Provides a structured mechanism for mission-aligned contributions",
-  "Creates transparent allocation with clear governance rules",
-  "Enables community input within defined bounds",
+  "Creates transparent allocation with clear, published rules",
+  "Accepts community suggestions within defined bounds",
   "Aligns with Terrain's core mission of land and water stewardship",
   "All fund activities are publicly tracked and verifiable"
 ];
@@ -91,7 +90,7 @@ const PhilanthropicFund = () => {
         <title>Philanthropic Fund | Terrain Token (TRN)</title>
         <meta 
           name="description" 
-          content="The Terrain Philanthropic Fund is a community-governed initiative to direct meaningful support toward real-world projects selected by TRN holders." 
+          content="The Terrain Philanthropic Fund directs meaningful support toward real-world land and water stewardship projects." 
         />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://terrainvision-ai.com/philanthropic-fund" />
@@ -151,9 +150,9 @@ const PhilanthropicFund = () => {
                 </h2>
                 
                 <p className={`${typography.body} text-muted-foreground mb-6`}>
-                  The Terrain Philanthropic Fund is a community-governed resource pool created by the 
-                  TerrainVision and Terrain Token (TRN) ecosystem. Its purpose is to direct meaningful 
-                  support toward real-world projects selected by the community.
+                  The Terrain Philanthropic Fund is a resource pool created by the TerrainVision and 
+                  Terrain Token (TRN) ecosystem. Its purpose is to direct meaningful support toward 
+                  real-world projects. Community members can suggest projects.
                 </p>
                 
                 <p className={`${typography.body} text-muted-foreground mb-4`}>
@@ -162,7 +161,7 @@ const PhilanthropicFund = () => {
                 
                 <ul className="space-y-3 mb-4">
                   {[
-                    "A portion of platform revenue",
+                    "Contributions from Carolina Terrain LLC",
                     "Optional community contributions",
                     "Seasonal TRN allocations"
                   ].map((source, index) => (
@@ -252,62 +251,6 @@ const PhilanthropicFund = () => {
                     </li>
                   ))}
                 </ul>
-              </GlassCard>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Community Vote CTA */}
-        <section className={spacing.section.major}>
-          <div className="container mx-auto px-4 max-w-3xl">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <GlassCard className="p-8 md:p-12 text-center border-primary/30">
-                <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-6">
-                  <Users className="w-8 h-8 text-primary" />
-                </div>
-                
-                <h2 className={`${typography.h2} font-bold text-foreground mb-4`}>
-                  Community Vote
-                </h2>
-                
-                <p className={`${typography.body} text-muted-foreground mb-4`}>
-                  The first community vote includes three key questions:
-                </p>
-                
-                <ol className="text-left max-w-xl mx-auto mb-8 space-y-3">
-                  <li className="flex items-start gap-3">
-                    <span className="w-6 h-6 rounded-full bg-primary/20 text-primary text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
-                    <span className="text-muted-foreground">Should we activate the Terrain Philanthropic Fund?</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-6 h-6 rounded-full bg-primary/20 text-primary text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
-                    <span className="text-muted-foreground">Should a small, fixed portion of monthly platform revenue be allocated to the fund?</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-6 h-6 rounded-full bg-primary/20 text-primary text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
-                    <span className="text-muted-foreground">Should TRN holders vote on the first beneficiary project during the next community cycle?</span>
-                  </li>
-                </ol>
-                
-                <p className={`${typography.small} text-muted-foreground mb-8`}>
-                  Voting is open to all TRN holders. Results will be published transparently.
-                </p>
-                
-                <Button size="lg" className="gap-2" asChild>
-                  <a
-                    href="https://docs.google.com/forms/d/e/1FAIpQLSckbxOz881hhJlWrCnyZy3Gj9VNNARGyTVXuUs1LFzLBDhsNw/viewform?usp=header"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Cast Your Vote
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
-                </Button>
               </GlassCard>
             </motion.div>
           </div>
@@ -434,9 +377,8 @@ const PhilanthropicFund = () => {
                 <h3 className="font-semibold text-foreground mb-3">Disclaimer</h3>
                 <p className="text-sm text-muted-foreground">
                   The Terrain Philanthropic Fund is a community initiative. TRN is a utility token—not 
-                  an investment vehicle. Participation in voting or contributions does not guarantee any 
-                  financial return. All fund allocations are subject to community governance and 
-                  operational review.
+                  an investment vehicle and carries no expectation of profit. TRN holders have no voting or 
+                  governance rights. All fund allocations are subject to operational review.
                 </p>
               </div>
             </motion.div>

@@ -223,7 +223,7 @@ const Ecosystem = () => {
                 <div className="flex items-start gap-3">
                   <XCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
                   <p className="text-sm text-muted-foreground">
-                    <strong className="text-foreground">Not an investment product.</strong> TRN does not promise returns, appreciation, or yield.
+                    <strong className="text-foreground">Not an investment product.</strong> TRN carries no expectation of profit or appreciation.
                   </p>
                 </div>
                 <div className="flex items-start gap-3">

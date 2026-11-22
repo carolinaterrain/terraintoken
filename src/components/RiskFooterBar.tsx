@@ -85,7 +85,7 @@ export const RiskFooterBar = () => {
             <div className="text-sm text-muted-foreground space-y-2 pl-9">
               <p>
                 <strong className="text-foreground">$TRN is a utility/incentive token, not an investment or security.</strong> It
-                carries no promise of profit, yield, or return. Carolina Terrain LLC's business performance is
+                carries no expectation of profit. Carolina Terrain LLC's business performance is
                 <strong className="text-foreground"> separate from token value</strong>. Nothing on this site is financial advice.
                 Always verify the contract address before interacting.
               </p>

@@ -55,18 +55,18 @@ const NotFound = () => {
         {/* Quick Navigation Links */}
         <div className="flex justify-center gap-6 text-sm">
           <Link 
-            to="/market" 
+            to="/transparency" 
             className="flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors"
           >
             <TrendingUp className="w-4 h-4" />
-            Market
+            Transparency
           </Link>
           <Link 
-            to="/earn-trn" 
+            to="/contribute" 
             className="flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors"
           >
             <Gift className="w-4 h-4" />
-            Earn
+            Contribute
           </Link>
           <Link 
             to="/shop" 

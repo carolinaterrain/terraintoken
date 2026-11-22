@@ -235,8 +235,8 @@
     "optional": true,
     "features": [
       "Transparent supply mechanics",
-      "Deflationary buyback/burn",
-      "No staking or yield promises",
+      "Fixed supply, minting permanently revoked",
+      "No staking programs or profit promises",
       "Clear utility-only framing"
     ],
     "disclaimers": [

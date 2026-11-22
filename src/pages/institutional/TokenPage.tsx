@@ -34,8 +34,8 @@ const utilities = [
   },
   {
     icon: Flame,
-    title: "Deflationary Mechanics",
-    description: "A portion of platform revenue is used for monthly buyback and burn, reducing total supply over time."
+    title: "Fixed Supply",
+    description: "Minting is permanently revoked. The supply is fixed at 1,250,000,000 $TRN and no new tokens can ever be created."
   }
 ];
 

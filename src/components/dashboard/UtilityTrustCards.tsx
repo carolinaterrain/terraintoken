@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { DollarSign, Brain, Sparkles, ExternalLink, CheckCircle, Shield, TrendingUp } from "lucide-react";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
-import { TRN_APY_RATE } from "@/lib/airdropConstants";
+import { INTEREST_SETTING_DISCLOSURE } from "@/lib/complianceCopy";
 
 const utilityCards = [
   {
@@ -13,7 +13,7 @@ const utilityCards = [
     description: "$TRN is tied to Carolina Terrain LLC — a licensed North Carolina drainage and stormwater contractor (NC #CL.1872). Business performance does not guarantee token value.",
     features: [
       "Licensed drainage contractor",
-      "Active operations since 2019",
+      "Active operations since 2022",
       "Public transparency reporting"
     ],
     accentColor: "from-green-500/20 to-emerald-500/10",
@@ -43,8 +43,8 @@ const utilityCards = [
     id: "token2022",
     icon: Sparkles,
     title: "Token-2022 Standard",
-    subtitle: "Interest-Bearing Extension Enabled",
-    description: "$TRN is deployed under Solana's Token-2022 standard with the interest-bearing extension enabled as a technical property of the mint. This is a feature of the token standard — not a yield, not a promised return.",
+    subtitle: "Fixed Supply · Mint Revoked",
+    description: INTEREST_SETTING_DISCLOSURE,
     features: [
       "Mint authority revoked",
       "Fixed 1.25B supply",

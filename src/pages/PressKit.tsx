@@ -67,11 +67,11 @@ const PressKit = () => {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Button size="lg" className="font-display h-auto py-4" asChild>
-                  <a href="/Terrain_Token_TRN_Whitepaper.pdf" download>
+                  <a href="/whitepaper">
                     <FileText className="mr-2 h-5 w-5" />
                     <div className="text-left">
                       <div className="font-bold">Whitepaper</div>
-                      <div className="text-xs opacity-80">PDF • 2.1 MB</div>
+                      <div className="text-xs opacity-80">Read online · printable</div>
                     </div>
                   </a>
                 </Button>
@@ -185,12 +185,12 @@ const PressKit = () => {
               <div className="space-y-4 text-muted-foreground">
                 <p className="font-bold text-foreground">Short Version (50 words):</p>
                 <p className="italic bg-background/30 p-4 rounded-lg">
-                  "Terrain Token (TRN) is a Solana Token-2022 utility/incentive token powering platform access within the Terrain ecosystem. Built by Carolina Terrain LLC — a licensed NC drainage contractor — TRN connects on-chain coordination to traditional landscaping and stormwater work through AI-powered terrain analysis. $TRN is not an investment or security and carries no promise of profit, yield, or return."
+                  "Terrain Token (TRN) is a Solana Token-2022 utility/incentive token powering platform access within the Terrain ecosystem. Built by Carolina Terrain LLC — a licensed NC drainage contractor — TRN connects on-chain coordination to traditional landscaping and stormwater work through AI-powered terrain analysis. $TRN is not an investment or security and carries no expectation of profit."
                 </p>
 
                 <p className="font-bold text-foreground mt-6">Long Version (100 words):</p>
                 <p className="italic bg-background/30 p-4 rounded-lg">
-                  "Terrain Token (TRN) launched in 2025 as a community-driven utility/incentive token built by Carolina Terrain LLC, a North Carolina-based licensed landscaping and drainage company. Unlike typical community tokens built on speculation alone, TRN is connected to real-world services and field expertise. The project integrates Solana Token-2022 with traditional landscaping through TerrainVision AI, a contribution platform where users provide verified field data and earn TRN for verified actions. With transparent tokenomics and a commitment to community governance, TRN represents a new category of data-contribution tokens. $TRN is not an investment or security and carries no promise of profit, yield, or return."
+                  "Terrain Token (TRN) launched in 2025 as a community-driven utility/incentive token built by Carolina Terrain LLC, a North Carolina-based licensed landscaping and drainage company. Unlike typical community tokens built on speculation alone, TRN is connected to real-world services and field expertise. The project integrates Solana Token-2022 with traditional landscaping through TerrainVision AI, a contribution platform where users provide verified field data and earn TRN for verified actions. With transparent, fixed-supply tokenomics, TRN represents a new category of data-contribution tokens. $TRN is not an investment or security and carries no expectation of profit."
                 </p>
               </div>
             </GlassCard>

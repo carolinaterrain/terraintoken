@@ -38,7 +38,7 @@ const steps = [
     id: 'transparency',
     icon: BarChart3,
     title: 'Full Transparency',
-    description: 'Track live holder counts, treasury balance, equipment depreciation, and revenue metrics — all on-chain and verifiable.',
+    description: 'Track live holder counts, treasury balance, and on-chain supply — all verifiable on Solscan.',
     highlight: 'Nothing hidden, everything proven',
     color: 'from-blue-500 to-cyan-500',
   },

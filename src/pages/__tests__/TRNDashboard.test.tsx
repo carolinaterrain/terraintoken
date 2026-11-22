@@ -46,24 +46,13 @@ vi.mock('@/hooks/useTokenSupply', () => ({
 }));
 
 // Minimal smoke tests - just verify modules can be imported
-describe('GoblinMarket Page', () => {
+describe('TRN Dashboard Page', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it('should be importable without errors', async () => {
-    const module = await import('@/pages/GoblinMarket');
-    expect(module.default).toBeDefined();
-  });
-});
-
-describe('Investors Page', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it('should be importable without errors', async () => {
-    const module = await import('@/pages/Investors');
+    const module = await import('@/pages/TRNDashboard');
     expect(module.default).toBeDefined();
   });
 });

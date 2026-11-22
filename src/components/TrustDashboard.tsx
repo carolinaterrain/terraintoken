@@ -10,9 +10,9 @@ export const TrustDashboard = () => {
 
   // Anti-Rug checks
   const checks = [
-    { label: "Real Business Revenue", passed: true, score: 20 },
+    { label: "Licensed and Insured Business", passed: true, score: 20 },
     { label: "Team Doxxed & Verified", passed: true, score: 20 },
-    { label: "Contract Verified (Solscan)", passed: true, score: 15, note: "Third-party audit pending" },
+    { label: "Contract Verified (Solscan)", passed: true, score: 15, note: "No formal smart contract audit has been performed" },
     { label: "Liquidity Locked", passed: true, score: 15 },
     { label: "No Hidden Mints", passed: true, score: 15 },
     { label: "Active Development", passed: true, score: 15 },

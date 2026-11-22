@@ -50,7 +50,7 @@
     "successCriteria": [
       "Token deployed on Solana mainnet",
       "Treasury wallet transparency",
-      "Buyback/burn mechanism operational",
+      "Mint authority revoked; supply fixed at 1.25B",
       "Clear non-investment disclosures"
     ],
     "launchDate": "2025-Q4",

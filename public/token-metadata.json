@@ -1,7 +1,7 @@
 {
   "name": "Terrain Token",
   "symbol": "TRN",
-  "description": "Terrain Token ($TRN) is the incentive layer of the Terrain Ecosystem — a stormwater infrastructure protocol on Solana Token-2022 with a fixed 1.25B supply. Tied to Carolina Terrain LLC, a licensed NC drainage contractor (CL.1872). $TRN is a utility/incentive token. It is not an investment, not a security, and carries no promise of profit or yield.",
+  "description": "Terrain Token ($TRN) is the incentive layer of the Terrain Ecosystem — a stormwater infrastructure protocol on Solana Token-2022 with a fixed 1.25B supply. Tied to Carolina Terrain LLC, a licensed NC drainage contractor (CL.1872). $TRN is a utility/incentive token. It is not an investment, not a security, and carries no expectation of profit.",
   "image": "https://terraintoken.com/trn-coin.png",
   "external_url": "https://terraintoken.com/",
   "extensions": {

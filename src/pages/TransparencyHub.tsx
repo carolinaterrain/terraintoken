@@ -7,10 +7,9 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "react-router-dom";
-import { TrendingUp, TrendingDown, Users, DollarSign, Calendar, ExternalLink, Activity, Wallet, BarChart3 } from "lucide-react";
+import { Users, Calendar, ExternalLink, Wallet, BarChart3 } from "lucide-react";
 import { useTokenData } from "@/providers/TokenDataProvider";
 import { useTreasuryBalance } from "@/hooks/useTreasuryBalance";
-import { EcosystemImpactCard } from "@/components/ecosystem/EcosystemImpactCard";
 import { MonthlyReportViewer } from "@/components/ecosystem/MonthlyReportViewer";
 import { PoweredByTerrainVision } from "@/components/ecosystem/PoweredByTerrainVision";
 import { ConstraintProof } from "@/components/ecosystem/ConstraintProof";
@@ -27,20 +26,9 @@ const DataBadge = ({ type }: { type: 'live' | 'verified' | 'coming-soon' }) => {
   return <div className={`text-xs mt-2 ${badge.className}`}>{badge.text}</div>;
 };
 
-// Format SOL price with appropriate precision
-const formatSolPrice = (price: string | undefined): string => {
-  if (!price || price === '0') return '0';
-  const numPrice = parseFloat(price);
-  if (isNaN(numPrice)) return '0';
-  if (numPrice >= 1) return numPrice.toFixed(4);
-  if (numPrice >= 0.001) return numPrice.toFixed(6);
-  return numPrice.toFixed(10).replace(/\.?0+$/, '');
-};
-
 const TransparencyHub = () => {
   // Use unified TokenDataProvider for all token data
   const { 
-    stats,
     holderCount: holderData,
     dataSource,
     isLoading: tokenLoading,
@@ -56,12 +44,12 @@ const TransparencyHub = () => {
     <>
       <Helmet>
         <title>Transparency Hub - All Monthly Reports | Terrain Token</title>
-        <meta name="description" content="Complete archive of TRN monthly transparency reports with holder growth, revenue tracking, treasury balances, and development updates. Full financial transparency." />
+        <meta name="description" content="Archive of TRN monthly transparency reports: holder counts, on-chain supply, treasury wallets, and development updates." />
         <link rel="canonical" href="https://terraintoken.com/transparency" />
         
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Transparency Hub - All Monthly Reports | Terrain Token" />
-        <meta property="og:description" content="Complete archive of TRN monthly transparency reports with holder growth, revenue tracking, treasury balances, and development updates." />
+        <meta property="og:description" content="Archive of TRN monthly transparency reports: holder counts, on-chain supply, treasury wallets, and development updates." />
         <meta property="og:image" content="https://terraintoken.com/og-terrain.png" />
         
         <meta name="twitter:card" content="summary_large_image" />
@@ -85,14 +73,9 @@ const TransparencyHub = () => {
               Transparency <span className="text-primary">Hub</span>
             </h1>
             <p className="font-body text-xl text-muted-foreground max-w-3xl mx-auto">
-              Complete archive of TRN's monthly transparency reports. Track our growth, revenue, and community metrics over time. No secrets, just facts.
+              Complete archive of TRN's monthly transparency reports. On-chain supply, holder counts, and development updates over time. No secrets, just facts.
             </p>
           </div>
-
-          {/* Ecosystem Impact Card */}
-          <section className="mb-16">
-            <EcosystemImpactCard variant="full" className="max-w-2xl mx-auto" />
-          </section>
 
           {/* Live Stats Dashboard */}
           <section className="mb-16">
@@ -112,28 +95,26 @@ const TransparencyHub = () => {
                 <DataBadge type={isLive ? "live" : "verified"} />
               </GlassCard>
 
-              {/* Market Cap - LIVE from DexScreener */}
+              {/* Total Supply - fixed on-chain */}
               <GlassCard className="p-6 text-center">
                 <BarChart3 className="w-10 h-10 text-primary mx-auto mb-3" />
-                {tokenLoading ? (
-                  <Skeleton className="h-9 w-24 mx-auto mb-2" />
-                ) : (
-                  <div className="text-3xl font-bold text-primary mb-1">{stats?.marketCap || '$--'}</div>
-                )}
-                <div className="text-sm text-muted-foreground">Market Cap</div>
-                <DataBadge type="live" />
+                <div className="text-3xl font-bold text-primary mb-1">1.25B</div>
+                <div className="text-sm text-muted-foreground">Fixed Total Supply</div>
+                <DataBadge type="verified" />
               </GlassCard>
 
-              {/* Volume - LIVE from DexScreener */}
+              {/* Contract - verify on Solscan */}
               <GlassCard className="p-6 text-center">
-                <DollarSign className="w-10 h-10 text-primary mx-auto mb-3" />
-                {tokenLoading ? (
-                  <Skeleton className="h-9 w-24 mx-auto mb-2" />
-                ) : (
-                  <div className="text-3xl font-bold text-primary mb-1">{stats?.volume24h || '$--'}</div>
-                )}
-                <div className="text-sm text-muted-foreground">24h Volume</div>
-                <DataBadge type="live" />
+                <ExternalLink className="w-10 h-10 text-primary mx-auto mb-3" />
+                <a
+                  href={`https://solscan.io/token/${TRN_MINT_ADDRESS}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-lg font-bold text-primary mb-1 hover:underline block"
+                >
+                  Verify on Solscan
+                </a>
+                <div className="text-xs text-muted-foreground font-mono break-all">{TRN_MINT_ADDRESS}</div>
               </GlassCard>
 
               {/* Treasury TRN Balance - LIVE */}
@@ -152,77 +133,6 @@ const TransparencyHub = () => {
 
           {/* Constraint Proof Dashboard */}
           <ConstraintProof />
-
-          {/* 24h Market Metrics - LIVE */}
-          <section className="mb-16">
-            <GlassCard className="p-8">
-              <h3 className="font-display text-2xl font-bold mb-6 flex items-center gap-2">
-                <Activity className="w-6 h-6 text-primary" />
-                24h Market Activity
-                <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full ml-2">LIVE</span>
-              </h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                {/* Price */}
-                <div className="p-4 bg-card/40 rounded-lg border border-primary/10">
-                  <div className="text-sm text-muted-foreground mb-1">Current Price</div>
-                  {tokenLoading ? (
-                    <Skeleton className="h-8 w-28" />
-                  ) : (
-                    <div className="text-2xl font-bold text-foreground">
-                      ${stats?.priceUsd || '0.00'}
-                    </div>
-                  )}
-                </div>
-
-                {/* 24h Change */}
-                <div className="p-4 bg-card/40 rounded-lg border border-primary/10">
-                  <div className="text-sm text-muted-foreground mb-1">24h Change</div>
-                  {tokenLoading ? (
-                    <Skeleton className="h-8 w-20" />
-                  ) : (
-                    <div className={`text-2xl font-bold flex items-center gap-1 ${(stats?.change24h || 0) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                      {(stats?.change24h || 0) >= 0 ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
-                      {(stats?.change24h || 0) >= 0 ? '+' : ''}{(stats?.change24h || 0).toFixed(2)}%
-                    </div>
-                  )}
-                </div>
-
-                {/* 24h Volume */}
-                <div className="p-4 bg-card/40 rounded-lg border border-primary/10">
-                  <div className="text-sm text-muted-foreground mb-1">24h Volume</div>
-                  {tokenLoading ? (
-                    <Skeleton className="h-8 w-24" />
-                  ) : (
-                    <div className="text-2xl font-bold text-foreground">{stats?.volume24h || '$--'}</div>
-                  )}
-                </div>
-
-                {/* Price in SOL */}
-                <div className="p-4 bg-card/40 rounded-lg border border-primary/10">
-                  <div className="text-sm text-muted-foreground mb-1">Price (SOL)</div>
-                  {tokenLoading ? (
-                    <Skeleton className="h-8 w-28" />
-                  ) : (
-                    <div className="text-2xl font-bold text-foreground">
-                      {formatSolPrice(stats?.priceSol)} SOL
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="mt-4 text-center">
-                <a 
-                  href="https://dexscreener.com/solana/7xgav46chz3n5hhmkygr9gqny3yerkheaoy54yxy6hng" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-xs text-muted-foreground hover:text-primary transition-colors inline-flex items-center gap-1"
-                >
-                  Data from DexScreener <ExternalLink className="w-3 h-3" />
-                </a>
-              </div>
-            </GlassCard>
-          </section>
 
           {/* Monthly Reports Archive - Using MonthlyReportViewer */}
           <section className="mb-16">
@@ -266,8 +176,8 @@ const TransparencyHub = () => {
           <section className="mb-16">
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
-                <Link to="/market">
-                  View Live Market →
+                <Link to="/proof">
+                  View Proof of Work →
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
@@ -295,8 +205,8 @@ const TransparencyHub = () => {
                   </a>
                 </Button>
                 <Button size="lg" asChild>
-                  <Link to="/blog/why-meme-coins-need-real-world-backing">
-                    Why Transparency Matters
+                  <Link to="/risk-disclosure">
+                    Read the Risk Disclosure
                     <ExternalLink className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>

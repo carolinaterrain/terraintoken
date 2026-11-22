@@ -89,7 +89,7 @@ export const NFTBadgeDisplay = ({ walletAddress }: NFTBadgeDisplayProps) => {
         <div className="text-center py-8">
           <p className="text-muted-foreground mb-2">No badges earned yet</p>
           <p className="text-xs text-muted-foreground">
-            Make predictions to unlock collectible NFTs!
+            Contribute verified work to unlock collectible NFTs!
           </p>
         </div>
       ) : (

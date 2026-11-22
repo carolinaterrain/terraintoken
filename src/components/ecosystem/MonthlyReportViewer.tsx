@@ -6,9 +6,7 @@ import {
   Check, 
   Clock, 
   Flame, 
-  DollarSign,
   Users,
-  TrendingUp,
   Shield
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,7 +14,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
-import { useMonthlyReports, useBurnBands, type MonthlyReport } from '@/hooks/useEcosystemData';
+import { useMonthlyReports, type MonthlyReport } from '@/hooks/useEcosystemData';
 import { PoweredByTerrainVision } from './PoweredByTerrainVision';
 
 interface MonthlyReportViewerProps {
@@ -29,27 +27,8 @@ export const MonthlyReportViewer: React.FC<MonthlyReportViewerProps> = ({
   limit = 6,
 }) => {
   const { data: reports, isLoading: reportsLoading } = useMonthlyReports(limit);
-  const { data: bands } = useBurnBands();
-
-  const formatCurrency = (value: number) =>
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value);
-  
   const formatNumber = (value: number) =>
     new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(value);
-
-  const formatPercent = (value: number) => `${(value * 100).toFixed(2)}%`;
-
-  const getBandLabel = (bandId: string | null) => {
-    if (!bandId || !bands) return 'N/A';
-    const band = bands.find(b => b.id === bandId);
-    if (!band) return 'N/A';
-    return `${formatCurrency(band.min_revenue)}${band.max_revenue ? ` - ${formatCurrency(band.max_revenue)}` : '+'}`;
-  };
-
-  const truncateHash = (hash: string | null) => {
-    if (!hash) return 'N/A';
-    return `${hash.slice(0, 8)}...${hash.slice(-6)}`;
-  };
 
   if (reportsLoading) {
     return (
@@ -60,8 +39,8 @@ export const MonthlyReportViewer: React.FC<MonthlyReportViewerProps> = ({
               <Skeleton className="h-6 w-48" />
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {[1, 2, 3, 4].map(j => (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {[1, 2, 3].map(j => (
                   <Skeleton key={j} className="h-16" />
                 ))}
               </div>
@@ -97,11 +76,7 @@ export const MonthlyReportViewer: React.FC<MonthlyReportViewerProps> = ({
         <ReportCard 
           key={report.id} 
           report={report}
-          formatCurrency={formatCurrency}
           formatNumber={formatNumber}
-          formatPercent={formatPercent}
-          getBandLabel={getBandLabel}
-          truncateHash={truncateHash}
         />
       ))}
     </div>
@@ -110,20 +85,12 @@ export const MonthlyReportViewer: React.FC<MonthlyReportViewerProps> = ({
 
 interface ReportCardProps {
   report: MonthlyReport;
-  formatCurrency: (value: number) => string;
   formatNumber: (value: number) => string;
-  formatPercent: (value: number) => string;
-  getBandLabel: (bandId: string | null) => string;
-  truncateHash: (hash: string | null) => string;
 }
 
 const ReportCard: React.FC<ReportCardProps> = ({
   report,
-  formatCurrency,
   formatNumber,
-  formatPercent,
-  getBandLabel,
-  truncateHash,
 }) => {
   const reportDate = new Date(report.report_month);
 
@@ -161,23 +128,17 @@ const ReportCard: React.FC<ReportCardProps> = ({
       </CardHeader>
 
       <CardContent className="pt-6">
-        {/* Key Metrics Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <MetricBox
-            icon={<DollarSign className="h-4 w-4 text-green-500" />}
-            label="Net AI Revenue"
-            value={formatCurrency(report.net_ai_revenue)}
-          />
+        {/* Key Metrics Grid — on-chain and usage data only (no business financials) */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
           <MetricBox
             icon={<Users className="h-4 w-4 text-blue-500" />}
             label="Verified Analyses"
             value={formatNumber(report.verified_analyses)}
           />
           <MetricBox
-            icon={<TrendingUp className="h-4 w-4 text-primary" />}
-            label="Burn Rate"
-            value={formatPercent(report.final_burn_rate || 0)}
-            badge={report.usage_bonus_applied ? '+Bonus' : undefined}
+            icon={<Users className="h-4 w-4 text-primary" />}
+            label="Active Users"
+            value={formatNumber(report.active_users)}
           />
           <MetricBox
             icon={<Flame className="h-4 w-4 text-orange-500" />}
@@ -186,77 +147,22 @@ const ReportCard: React.FC<ReportCardProps> = ({
           />
         </div>
 
-        <Separator className="my-4" />
-
-        {/* Details */}
-        <div className="grid md:grid-cols-2 gap-6 text-sm">
-          <div className="space-y-2">
-            <h4 className="font-medium text-muted-foreground">Revenue Breakdown</h4>
-            <div className="space-y-1">
-              <div className="flex justify-between">
-                <span>Gross AI Revenue</span>
-                <span className="font-medium">{formatCurrency(report.gross_ai_revenue)}</span>
-              </div>
-              <div className="flex justify-between text-muted-foreground">
-                <span>Variable AI Costs</span>
-                <span>-{formatCurrency(report.variable_ai_costs)}</span>
-              </div>
-              <Separator />
-              <div className="flex justify-between font-medium">
-                <span>Net AI Revenue</span>
-                <span className="text-green-600">{formatCurrency(report.net_ai_revenue)}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <h4 className="font-medium text-muted-foreground">Burn Details</h4>
-            <div className="space-y-1">
-              <div className="flex justify-between">
-                <span>Band</span>
-                <span className="font-medium">{getBandLabel(report.determined_band_id)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>USD for Buyback</span>
-                <span className="font-medium">{formatCurrency(report.usd_for_buyback || 0)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Active Users</span>
-                <span className="font-medium">{formatNumber(report.active_users)}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Transaction Verification */}
-        {(report.buyback_tx_hash || report.burn_tx_hash) && (
+        {report.burn_tx_hash && (
           <>
             <Separator className="my-4" />
             <div className="flex items-center gap-2 text-sm">
               <Shield className="h-4 w-4 text-green-500" />
               <span className="text-muted-foreground">On-chain verification:</span>
-              {report.buyback_tx_hash && (
-                <Button variant="link" size="sm" className="h-auto p-0" asChild>
-                  <a
-                    href={`https://solscan.io/tx/${report.buyback_tx_hash}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Buyback Tx <ExternalLink className="h-3 w-3 ml-1" />
-                  </a>
-                </Button>
-              )}
-              {report.burn_tx_hash && (
-                <Button variant="link" size="sm" className="h-auto p-0" asChild>
-                  <a
-                    href={`https://solscan.io/tx/${report.burn_tx_hash}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Burn Tx <ExternalLink className="h-3 w-3 ml-1" />
-                  </a>
-                </Button>
-              )}
+              <Button variant="link" size="sm" className="h-auto p-0" asChild>
+                <a
+                  href={`https://solscan.io/tx/${report.burn_tx_hash}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Burn Tx <ExternalLink className="h-3 w-3 ml-1" />
+                </a>
+              </Button>
             </div>
           </>
         )}

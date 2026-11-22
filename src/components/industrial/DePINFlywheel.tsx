@@ -79,9 +79,9 @@ const flywheelSteps: FlywheelStep[] = [
     title: "Incentivize",
     icon: <Coins className="h-6 w-6" />,
     color: "from-safety-green to-emerald-500",
-    tool: "$TRN Surge Pricing",
+    tool: "$TRN Rewards",
     description: "Optional token layer rewarding verified contributions to ecosystem quality",
-    outputs: ["TRN rewards", "Bounty completions", "Reputation scores", "Revenue share"]
+    outputs: ["TRN rewards", "Bounty completions", "Reputation scores"]
   }
 ];
 

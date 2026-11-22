@@ -10,7 +10,7 @@ import { AlertTriangle, ShieldCheck } from "lucide-react";
 const faqs = [
   {
     question: "Is TRN an investment?",
-    answer: "No. TRN is a utility access token, not a security or investment product. It grants optional access to platform services. There is no promise of returns, no expectation of profit, and TRN may lose value or become worthless. Do not purchase TRN expecting financial gain."
+    answer: "No. TRN is a utility access token, not a security or investment product. It grants optional access to platform services. There is no expectation of profit, and TRN may lose value or become worthless. Do not purchase TRN expecting financial gain."
   },
   {
     question: "Do I need crypto to use the platform?",
@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     question: "Who controls TRN usage inside the platform?",
-    answer: "The Terrain ecosystem team sets service pricing, contribution rewards, and platform rules. All transactions are logged in a tamper-evident ledger. Users can participate in governance discussions but operational control remains with the licensed business entity."
+    answer: "The Terrain ecosystem team sets service pricing, contribution rewards, and platform rules. All transactions are logged in a tamper-evident ledger. Token holders have no governance or voting rights; operational control remains with the licensed business entity."
   },
   {
     question: "Can TRN lose value?",
@@ -30,7 +30,7 @@ const faqs = [
   },
   {
     question: "What can I actually do with TRN?",
-    answer: "Access premium AI analysis tiers on TerrainVision, earn credits by contributing terrain data, receive service discounts from Carolina Terrain, and participate in community governance. All utility is optional—you can use basic services without TRN."
+    answer: "Access premium AI analysis tiers on TerrainVision, earn credits by contributing terrain data, and receive service discounts from Carolina Terrain. All utility is optional—you can use basic services without TRN."
   },
   {
     question: "How do I earn TRN without buying?",
@@ -81,7 +81,7 @@ const FAQ = () => {
           </div>
           <ul className="space-y-2 font-body text-sm text-muted-foreground">
             <li>• <span className="text-foreground font-medium">Not an investment product</span> — no expectation of profit</li>
-            <li>• <span className="text-foreground font-medium">Not a promise of returns</span> — value may decrease to zero</li>
+            <li>• <span className="text-foreground font-medium">Not an investment</span> — value may decrease to zero</li>
             <li>• <span className="text-foreground font-medium">Not required</span> — all core services work without TRN</li>
             <li>• <span className="text-foreground font-medium">Not a substitute for real revenue</span> — the business operates on USD</li>
           </ul>
@@ -92,7 +92,7 @@ const FAQ = () => {
           <AlertDescription className="text-sm leading-relaxed">
             <strong className="text-foreground">Legal Disclaimer:</strong> Terrain Token (TRN) is a utility access token, 
             not an investment, security, or financial instrument. TRN has no expectation of profit, may lose all value, 
-            and is not redeemable for cash. Do not purchase TRN expecting financial returns. All token purchases are 
+            and is not redeemable for cash. Do not purchase TRN expecting profit. All token purchases are 
             final and non-refundable. Nothing on this site constitutes financial, legal, or investment advice. 
             Always do your own research and never risk more than you can afford to lose completely.
           </AlertDescription>

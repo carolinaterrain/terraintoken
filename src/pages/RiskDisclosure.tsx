@@ -46,7 +46,7 @@ const RiskDisclosure = () => {
                   <h2 className="font-display text-2xl font-bold mb-2">Utility / Incentive Token — Not an Investment</h2>
                   <p className="text-muted-foreground">
                     $TRN is a <strong className="text-foreground">utility/incentive token</strong>, not an investment and not a
-                    security. It carries no promise of profit, yield, or return. While tied to a real licensed contractor
+                    security. It carries no expectation of profit. While tied to a real licensed contractor
                     (Carolina Terrain LLC), the token itself has no guaranteed intrinsic value.
                   </p>
                 </div>
@@ -74,7 +74,7 @@ const RiskDisclosure = () => {
                   <h2 className="font-display text-2xl font-bold mb-2">Business Separation</h2>
                   <p className="text-muted-foreground">
                     Carolina Terrain LLC's business performance is <strong className="text-foreground">separate from token value</strong>. 
-                    Even if the business grows and generates revenue, there is <strong className="text-foreground">no guarantee</strong> that 
+                    Regardless of how the business performs, there is <strong className="text-foreground">no guarantee</strong> that 
                     TRN token price will increase.
                   </p>
                 </div>
@@ -146,7 +146,7 @@ const RiskDisclosure = () => {
             <GlassCard className="p-8 bg-gradient-to-br from-primary/10 to-primary/5 border-primary/40">
               <h2 className="font-display text-2xl font-bold mb-4">What We <span className="text-primary">Do Provide</span></h2>
               <div className="space-y-3 text-sm text-muted-foreground">
-                <p>✅ <strong className="text-foreground">Full Transparency:</strong> Monthly reports on holder count, business revenue, and treasury.</p>
+                <p>✅ <strong className="text-foreground">Full Transparency:</strong> Monthly reports on holder count, on-chain supply, and treasury wallets.</p>
                 <p>✅ <strong className="text-foreground">Real Business Backing:</strong> Carolina Terrain LLC is a legitimate drainage company with verifiable operations.</p>
                 <p>✅ <strong className="text-foreground">Active Development:</strong> We're building AI-powered terrain analysis and drainage assessment tools.</p>
                 <p>✅ <strong className="text-foreground">Engaged Community:</strong> Active Discord and social media presence.</p>

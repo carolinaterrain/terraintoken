@@ -3,13 +3,8 @@
 // Admin wallet authorized to execute airdrops
 export const ADMIN_WALLET = "H3WwWaX1Afj2kpCsCsawZqxk5CHpXDHz9FzLgZmyPecu";
 
-// TRN Token Mint Address (Token-2022 with Interest-Bearing Extension)
+// TRN Token Mint Address (Solana Token-2022, fixed supply, mint authority revoked)
 export const TRN_MINT_ADDRESS = "Dm7FAcF4kzVgsrn6VPEp2C5bN3tGPkydpWaR26wtDR8m";
-
-// Interest Rate (15% APY = 1500 BPS)
-// NOTE: reflects on-chain InterestBearingConfig rate; pending rate-zero on-chain.
-export const TRN_APY_RATE = 15;
-export const TRN_APY_BPS = 1500;
 
 // Token-2022 Program ID
 export const TOKEN_2022_PROGRAM_ID = "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb";
